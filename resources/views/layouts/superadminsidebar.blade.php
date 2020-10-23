@@ -1,25 +1,25 @@
 <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
-  <a href="{{ route('home') }}">
+  <a href="/home">
     <i class="nc-icon nc-tv-2"></i>
     <p>Dashboard</p>
   </a>
 </li>
 
-<li class="{{ request()->routeIs('user') ? 'active' : '' }}">
-  <a href="{{ route('home') }}">
-    <i class="nc-icon nc-tv-2"></i>
-    <p>Mi perfil</p>
+<li class="{{ request()->routeIs('ordenes') ? 'active' : '' }}">
+  <a href="/ordenes">
+    <i class="fal fa-network-wired"></i>
+    <p>Ordenes de trabajo</p>
   </a>
 </li>
 
-<li class="{{ request()->routeIs('matri') ? 'active' : '' }}">
-  <a href="{{ route('home') }}">
-    <i class="nc-icon nc-tv-2"></i>
-    <p>Matrículas</p>
+<li class="{{ request()->routeIs('clientes') ? 'active' : '' }}">
+  <a href="/clientes">
+    <i class="fal fa-handshake"></i>
+    <p>Clientes</p>
   </a>
 </li>
 
-<li>
+<!--li>
   <a href="./map.html">
     <i class="fal fa-chalkboard-teacher"></i>
     <p>Asignación</p>
@@ -42,4 +42,4 @@
     <i class="nc-icon nc-money-coins"></i>
     <p>Pagos</p>
   </a>
-</li>
+</li-->

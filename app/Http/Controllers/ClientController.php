@@ -15,6 +15,8 @@ class ClientController extends Controller
     public function index()
     {
         //
+        $clientes = Client::all();
+        return view('clientes.index', compact('clientes'));
     }
 
     /**
@@ -25,6 +27,7 @@ class ClientController extends Controller
     public function create()
     {
         //
+        return view('clientes.create');
     }
 
     /**
@@ -36,6 +39,35 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         //
+        $rules = [
+            'ruc' => 'required|min:8',
+            'razon_social' => 'required',
+        ];
+
+        $messages = [
+            'ruc.required' => 'Agrega el nombre del estudiante.',
+        ];
+
+        $this->validate($request, $rules);
+
+        //creamos una variable que es un objeto de nuesta instancia de nuestro modelo
+        $cliente = new Client();
+        
+        $cliente->ruc = $request->input('ruc');
+        $cliente->razon_social = $request->input('razon_social');
+        $cliente->direccion = $request->input('direccion');
+        $cliente->telefono = $request->input('telefono');
+        $cliente->celular = $request->input('celular');
+        $cliente->contacto = $request->input('contacto');
+        $cliente->telefono_contacto = $request->input('telefono_contacto');
+        $cliente->correo = $request->input('correo');
+        $cliente->info = $request->input('info');
+
+        $cliente->save();
+
+
+        $clientes = Client::all();
+        return view('clientes.index', compact('clientes'));
     }
 
     /**

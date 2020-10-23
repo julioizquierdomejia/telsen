@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ot;
+use App\Models\BrandMotor;
 use Illuminate\Http\Request;
 
-class OtController extends Controller
+class BrandMotorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,7 @@ class OtController extends Controller
      */
     public function index()
     {
-        //Listar OTs
-        $ots = Ot::all();
-        return view('ordenes.index', compact('ots'));
+        //
     }
 
     /**
@@ -27,10 +25,6 @@ class OtController extends Controller
     public function create()
     {
         //
-        //Revisar el ultimo numero de OT
-        $totalOts = Ot::count();
-        $ot_numero = $totalOts + 1;
-        return view('ordenes.create', compact('ot_numero'));
     }
 
     /**
@@ -42,16 +36,15 @@ class OtController extends Controller
     public function store(Request $request)
     {
         //
-        return $request;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Ot  $ot
+     * @param  \App\Models\BrandMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function show(Ot $ot)
+    public function show(BrandMotor $brandMotor)
     {
         //
     }
@@ -59,10 +52,10 @@ class OtController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Ot  $ot
+     * @param  \App\Models\BrandMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function edit(Ot $ot)
+    public function edit(BrandMotor $brandMotor)
     {
         //
     }
@@ -71,10 +64,10 @@ class OtController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ot  $ot
+     * @param  \App\Models\BrandMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ot $ot)
+    public function update(Request $request, BrandMotor $brandMotor)
     {
         //
     }
@@ -82,10 +75,10 @@ class OtController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Ot  $ot
+     * @param  \App\Models\BrandMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ot $ot)
+    public function destroy(BrandMotor $brandMotor)
     {
         //
     }

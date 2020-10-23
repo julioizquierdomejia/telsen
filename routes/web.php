@@ -20,3 +20,20 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//rutas para ordenes de trabajo
+Route::resource('ordenes', App\Http\Controllers\OtController::class);
+/*
+Route::get('ordenes', [App\Http\Controllers\OtController::class, 'index'])->name('ot');
+Route::get('ordenes.crear', [App\Http\Controllers\OtController::class, 'create'])->name('crearot');
+Route::put('ordenes.store', [App\Http\Controllers\OtController::class, 'store'])->name('ot.store');
+*/
+
+
+//rutas para Clientes
+Route::resource('clientes', App\Http\Controllers\ClientController::class);
+/*
+Route::get('clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes');
+Route::put('clientes', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
+*/
+

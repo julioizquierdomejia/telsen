@@ -40,7 +40,7 @@ class ClientController extends Controller
     {
         //
         $rules = [
-            'ruc' => 'required|min:8',
+            'ruc' => 'required|min:8|unique:clients',
             'razon_social' => 'required',
         ];
 

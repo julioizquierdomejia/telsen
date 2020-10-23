@@ -9,12 +9,12 @@
             <div class="row">
               <div class="col-5 col-md-4">
                 <div class="icon-big text-center icon-warning">
-                  <i class="fal fa-user-md-chat text-warning"></i>
+                  <i class="fal fa-project-diagram text-warning"></i>
                 </div>
               </div>
               <div class="col-7 col-md-8">
                 <div class="numbers">
-                  <p class="card-category">Usuarios Gestor</p>
+                  <p class="card-category">Ordenes Creadas</p>
                   <p class="card-title">12<p>
                 </div>
               </div>
@@ -35,12 +35,12 @@
             <div class="row">
               <div class="col-5 col-md-4">
                 <div class="icon-big text-center icon-warning">
-                  <i class="fal fa-user-graduate text-success"></i>
+                  <i class="fal fa-cogs text-success"></i>
                 </div>
               </div>
               <div class="col-7 col-md-8">
                 <div class="numbers">
-                  <p class="card-category">Usuarios Moodle</p>
+                  <p class="card-category">Ordenes Pendientes</p>
                   <p class="card-title">12<p>
                 </div>
               </div>
@@ -50,7 +50,7 @@
             <hr>
             <div class="stats">
               <i class="fa fa-calendar-o"></i>
-              Actualizado desde Moodle
+              Actualizado
             </div>
           </div>
         </div>
@@ -61,12 +61,12 @@
             <div class="row">
               <div class="col-5 col-md-4">
                 <div class="icon-big text-center icon-warning">
-                  <i class="fal fa-journal-whills text-danger"></i>
+                  <i class="fal fa-wrench text-danger"></i>
                 </div>
               </div>
               <div class="col-7 col-md-8">
                 <div class="numbers">
-                  <p class="card-category">Cursos</p>
+                  <p class="card-category">Ordenes Atendidas</p>
                   <p class="card-title">12<p>
                 </div>
               </div>
@@ -76,7 +76,7 @@
             <hr>
             <div class="stats">
               <i class="fa fa-clock-o"></i>
-              Actualizado desde Moodle
+              Actualizado
             </div>
           </div>
         </div>
@@ -87,12 +87,12 @@
             <div class="row">
               <div class="col-5 col-md-4">
                 <div class="icon-big text-center icon-warning">
-                  <i class="fal fa-file-certificate text-primary"></i>
+                  <i class="fal fa-chart-pie text-primary"></i>
                 </div>
               </div>
               <div class="col-7 col-md-8">
                 <div class="numbers">
-                  <p class="card-category">Certificados Emitidos</p>
+                  <p class="card-category">Promedio Ots al Mes</p>
                   <p class="card-title">69<p>
                 </div>
               </div>
@@ -102,7 +102,7 @@
             <hr>
             <div class="stats">
               <i class="fa fa-refresh"></i>
-              Actualizado desde el gestor
+              Actualizado
             </div>
           </div>
         </div>

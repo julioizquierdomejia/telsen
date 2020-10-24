@@ -31,9 +31,13 @@ Route::put('ordenes.store', [App\Http\Controllers\OtController::class, 'store'])
 
 
 //rutas para Clientes
-Route::resource('clientes', App\Http\Controllers\ClientController::class);
-/*
-Route::get('clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes');
-Route::put('clientes', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
-*/
+//Route::resource('clientes', App\Http\Controllers\ClientController::class);
+
+Route::get('clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes.index');
+Route::get('clientes/crear', [App\Http\Controllers\ClientController::class, 'create'])->name('clientes.create');
+Route::post('clientes', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
+Route::get('clientes/{client}/editar', [App\Http\Controllers\ClientController::class, 'edit'])->name('clientes.edit');
+
+//Route::patch('clientes', [App\Http\Controllers\ClientController::class, 'update'])->name('clientes.update');
+//Route::put('clientes', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
 

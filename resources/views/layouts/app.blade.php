@@ -87,6 +87,7 @@ Coded by www.creative-tim.com
       //demo.initChartsPages();
     });
   </script>
+  <script type="text/javascript" src="../js/app.js"></script>
 </body>
 
 </html>

@@ -12,6 +12,7 @@ class Client extends Model
 
     protected $fillable = [
         'ruc', 'razon_social', 'direccion', 'telefono', 'celular', 'contacto','telefono_contacto','correo', 'info',
+
     ];
 
     public function ots(){

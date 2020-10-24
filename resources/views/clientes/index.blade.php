@@ -4,7 +4,7 @@
 
 <div class="row">
 	<div class="col">
-		<a href="/clientes/create" class="btn btn-primary">Crear Cliente</a>
+		<a href="{{ route('clientes.create') }}" class="btn btn-primary">Crear Cliente</a>
 	</div>
 </div>
 <div class="row">
@@ -49,7 +49,7 @@
 	                  {{$cliente->celular}}
 	                </td>
 	                <td>
-	                	<a href="" class="btn btn-warning"><i class="fal fa-edit"></i></a>
+	                	<a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>
 	              </tr>

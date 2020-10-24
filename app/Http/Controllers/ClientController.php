@@ -76,9 +76,12 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show(Client $client)
+    public function show($id)
     {
-        //
+        $cliente = Client::findOrFail($id);
+
+        return view('clientes.show', compact('cliente'));
+        
     }
 
     /**
@@ -87,9 +90,9 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(Client $client)
+    public function edit(Client $cliente)
     {
-        //
+        return view('clientes.edit', compact('cliente'));
     }
 
     /**
@@ -101,7 +104,14 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        
+
+        return $request;
+
+        
+
+        
+
     }
 
     /**

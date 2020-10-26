@@ -38,6 +38,7 @@ Route::get('clientes/crear', [App\Http\Controllers\ClientController::class, 'cre
 Route::post('clientes', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
 Route::get('clientes/{client}/editar', [App\Http\Controllers\ClientController::class, 'edit'])->name('clientes.edit');
 
-//Route::patch('clientes', [App\Http\Controllers\ClientController::class, 'update'])->name('clientes.update');
-//Route::put('clientes', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
 
+
+Route::get('marca', [App\Http\Controllers\BrandMotorController::class, 'index'])->name('marca.index');
+Route::get('marca/{marca}/editar', [App\Http\Controllers\BrandMotorController::class, 'editar'])->name('marca.edit');

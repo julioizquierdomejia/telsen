@@ -10,7 +10,7 @@
         <h5 class="card-title">Registrar Nuevo Cliente</h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="/clientes" enctype="multipart/form-data">
+        <form class="form-group" method="POST" action="" enctype="multipart/form-data">
           @csrf
           <div class="row">
           	<div class="col-md-3">
@@ -18,9 +18,9 @@
                 <label>RUC del cliente</label>
                 <input type="text" class="form-control @error('ruc') is-invalid @enderror" placeholder="" value="" name='ruc' id="inputruc">
               </div>
-			@error('ruc')
-				<p class="error-message text-danger">{{ $message }}</p>
-			@enderror
+          			@error('ruc')
+          				<p class="error-message text-danger">{{ $message }}</p>
+          			@enderror
             </div>
 
 
@@ -29,9 +29,9 @@
                 <label>Razon social</label>
                 <input type="text" class="form-control @error('razon_social') is-invalid @enderror" placeholder="" value="" name="razon_social">
               </div>
-				@error('razon_social')
-					<p class="error-message text-danger">{{ $message }}</p>
-				@enderror
+        				@error('razon_social')
+        					<p class="error-message text-danger">{{ $message }}</p>
+        				@enderror
             </div>
           </div>
           <div class="row">

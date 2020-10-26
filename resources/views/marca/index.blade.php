@@ -4,14 +4,14 @@
 
 <div class="row">
 	<div class="col">
-		<a href="{{ route('clientes.create') }}" class="btn btn-primary">Crear Cliente</a>
+		<a href="{{ route('clientes.create') }}" class="btn btn-primary">Crear Marca</a>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title"> Lista de Cliente</h4>
+        <h4 class="card-title"> Marca de motores</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -21,35 +21,29 @@
                 Id
               </th>
               <th>
-                RUC
+                Marca
               </th>
               <th>
-                Razón Social
+                Descripción
               </th>
               <th>
-                Marca del motor
-              </th>
-              <th class="text-center">
                 Herramientas
               </th>
             </thead>
             <tbody>
-            	@foreach($clientes as $cliente)
+            	@foreach($marcas as $marca)
 	              <tr>
 	                <td>
-	                  {{$cliente->id}}
+	                  {{$marca->id}}
 	                </td>
 	                <td>
-	                  {{$cliente->ruc}}
+	                  {{$marca->name}}
 	                </td>
 	                <td>
-	                  {{$cliente->razon_social}}
-	                </td>
-	                <td class="text-center">
-	                  {{$cliente->celular}}
+	                  {{$marca->descripcion}}
 	                </td>
 	                <td>
-	                	<a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
+	                	<a href=" {{ route('marca.edit'), $marca }} " class="btn btn-warning"><i class="fal fa-edit"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>
 	              </tr>

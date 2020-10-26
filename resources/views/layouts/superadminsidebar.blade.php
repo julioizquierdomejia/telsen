@@ -1,5 +1,5 @@
 <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
-  <a href="/home">
+  <a href="{{ route('home')}}">
     <i class="nc-icon nc-tv-2"></i>
     <p>Dashboard</p>
   </a>
@@ -12,10 +12,24 @@
   </a>
 </li>
 
-<li class="{{ request()->routeIs('clientes') ? 'active' : '' }}">
+<li class="{{ request()->routeIs('clientes.index') ? 'active' : '' }}">
   <a href="{{route('clientes.index')}}">
     <i class="fal fa-handshake"></i>
     <p>Clientes</p>
+  </a>
+</li>
+
+<li class="{{ request()->routeIs('marca.index') ? 'active' : '' }}">
+  <a href="{{route('marca.index')}}">
+    <i class="fal fa-copyright"></i>
+    <p>Marca de Motores</p>
+  </a>
+</li>
+
+<li class="{{ request()->routeIs('marca') ? 'active' : '' }}">
+  <a href="{{route('marca.index')}}">
+    <i class="fas fa-barcode"></i>
+    <p>Modelo de Motores</p>
   </a>
 </li>
 

@@ -15,6 +15,8 @@ class BrandMotorController extends Controller
     public function index()
     {
         //
+        $marcas = BrandMotor::all();
+        return view('marca.index', compact('marcas'));
     }
 
     /**
@@ -58,6 +60,7 @@ class BrandMotorController extends Controller
     public function edit(BrandMotor $brandMotor)
     {
         //
+        return 'Editamos la marca';
     }
 
     /**

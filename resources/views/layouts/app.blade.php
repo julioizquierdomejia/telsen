@@ -24,6 +24,10 @@ Coded by www.creative-tim.com
     Paper Dashboard 2 by Creative Tim
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   <!-- CSS Files -->
@@ -68,6 +72,8 @@ Coded by www.creative-tim.com
     </div>
   </div>
   <!--   Core JS Files   -->
+  
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
   <script src="../assets/js/core/jquery.min.js"></script>
   <script src="../assets/js/core/popper.min.js"></script>
   <script src="../assets/js/core/bootstrap.min.js"></script>
@@ -81,13 +87,15 @@ Coded by www.creative-tim.com
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="../assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
   <!--script src="../assets/demo/demo.js"></script-->
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/assets-for-demo/js/demo.js
-      //demo.initChartsPages();
-    });
-  </script>
+  
   <script type="text/javascript" src="../js/app.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('#tablas').DataTable();
+    } );
+  </script>
+
 </body>
 
 </html>

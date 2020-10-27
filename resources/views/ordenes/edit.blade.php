@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => 'Editar "O.T. ' . sprintf('%05d', $orden->id) .' | '. $orden->marca["name"] . '"' ])
 
 @section('css')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
@@ -20,7 +20,7 @@
             <div class="col-md-5">
               <div class="form-group">
                 <label>Número de Orden</label>
-                <input type="text" class="form-control" disabled="" placeholder="Company" value="0T - {{$ot_numero}}" name="id">
+                <input type="text" class="form-control" disabled="" placeholder="Company" value="0T - {{$orden->id}}" name="id">
               </div>
             </div>
             <div class="col-md-4">

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-  <div class="container">
+  <div class="container-fluid container-nav">
     <div class="navbar-wrapper">
       <div class="navbar-toggle">
         <button type="button" class="navbar-toggler">
@@ -8,7 +8,7 @@
           <span class="navbar-toggler-bar bar3"></span>
         </button>
       </div>
-      <a class="navbar-brand" href="/"><img alt="Telsen Ingenieros" src="/images/logo.gif" width="250" height="40"></a>
+      <a class="navbar-brand" href="/">Telsen Ingenieros</a>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -68,8 +68,7 @@
             @endif
         @else
             <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    
+                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ Auth::user()->email }}
                 </a>
 

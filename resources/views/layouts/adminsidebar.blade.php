@@ -12,7 +12,7 @@
   </a>
 </li>
 
-<li class="{{ request()->routeIs('clientes') ? 'active' : '' }}">
+<li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">
   <a href="/clientes">
     <i class="fal fa-handshake"></i>
     <p>Clientes</p>

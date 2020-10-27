@@ -28968,8 +28968,8 @@ readers do not read off random characters that represent icons */
   padding: 0 5px;
 }
 
-.page_client .sidebar {
-  display: none;
+.page_client .container-nav {
+  max-width: 1140px;
 }
 
 .page_client .main-panel {
@@ -28982,6 +28982,7 @@ readers do not read off random characters that represent icons */
 
 .page_client .main-panel > .content {
   padding: 0 15px;
+  max-width: 1140px;
 }
 
 .ots-welcome {

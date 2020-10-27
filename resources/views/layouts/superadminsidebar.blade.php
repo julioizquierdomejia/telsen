@@ -5,28 +5,27 @@
   </a>
 </li>
 
-<li class="{{ request()->routeIs('ordenes') ? 'active' : '' }}">
+<li class="{{ request()->segment(1) == 'ordenes' ? 'active' : '' }}">
   <a href="/ordenes">
     <i class="fal fa-network-wired"></i>
     <p>Ordenes de trabajo</p>
   </a>
 </li>
-
-<li class="{{ request()->routeIs('clientes.index') ? 'active' : '' }}">
+<li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">
   <a href="{{route('clientes.index')}}">
     <i class="fal fa-handshake"></i>
     <p>Clientes</p>
   </a>
 </li>
 
-<li class="{{ request()->routeIs('marcas.index') ? 'active' : '' }}">
+<li class="{{ request()->segment(1) == 'marcas' ? 'active' : '' }}">
   <a href="{{route('marcas.index')}}">
     <i class="fal fa-copyright"></i>
     <p>Marca de Motores</p>
   </a>
 </li>
 
-<li class="{{ request()->routeIs('modelos') ? 'active' : '' }}">
+<li class="{{ request()->segment(1) == 'modelos' ? 'active' : '' }}">
   <a href="{{route('modelos.index')}}">
     <i class="fas fa-barcode"></i>
     <p>Modelo de Motores</p>

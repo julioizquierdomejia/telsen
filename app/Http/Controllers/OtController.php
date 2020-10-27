@@ -123,15 +123,12 @@ class OtController extends Controller
      */
     public function edit($id)
     {
-        $totalOts = Ot::count();
-        $ot_numero = $totalOts + 1;
-
         $clientes = Client::all();
         $marcas = BrandMotor::all();
         $modelos = ModelMotor::all();
         $orden = Ot::findOrFail($id);
 
-        return view('ordenes.edit', compact('ot_numero', 'orden', 'clientes', 'marcas', 'modelos'));
+        return view('ordenes.edit', compact('orden', 'clientes', 'marcas', 'modelos'));
     }
 
     /**

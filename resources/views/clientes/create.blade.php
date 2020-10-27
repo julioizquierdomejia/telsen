@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => 'Registrar Cliente'])
 
 @section('content')
 
@@ -7,7 +7,7 @@
   <div class="col-md-12">
     <div class="card card-user">
       <div class="card-header">
-        <h5 class="card-title">Registrar Nuevo Cliente</h5>
+        <h5 class="card-title">Registrar Cliente</h5>
       </div>
       <div class="card-body">
         <form class="form-group" method="POST" action="/clientes" enctype="multipart/form-data">

@@ -1,4 +1,5 @@
-@extends('layouts.app', ['body_class' => 'page_client'])
+<?php $body_class = Auth::user()->roles->first()->name == 'client' ? 'page_client' : '' ?>
+@extends('layouts.app', ['body_class' => $body_class])
 
 @section('content')
 
@@ -17,6 +18,7 @@
         <h4 class="card-title mb-1">Proceso virtual</h4>
         <p class="mb-0">Revisa aquí un breve resumen del proceso virtual del trabajo que estamos realizando para ti.</p>
       </div>
+      @if($ordenes->count())
             <div class="table-responsive">
           <table class="table table-ots">
             <!-- <thead class=" text-primary">
@@ -49,6 +51,12 @@
             </tbody>
           </table>
         </div>
+        @else
+        <div class="empty-list text-center p-4 bg-light">
+          <p class="mb-2">Por el momento no tiene ordenes.</p>
+          <strong class="h3">¯\_(ツ)_/¯</strong>
+        </div>
+        @endif
           </div>
           <div class="col-md-4">
             <div class="card inventario-card">

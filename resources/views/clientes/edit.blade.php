@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => 'Editar '. $cliente->razon_social])
 
 @section('content')
 

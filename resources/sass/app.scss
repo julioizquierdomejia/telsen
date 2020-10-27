@@ -32,8 +32,8 @@ body {
 }
 
 .page_client {
-	.sidebar {
-		display: none;
+	.container-nav {
+		max-width: 1140px;
 	}
 	.main-panel {
 		width: 100%;
@@ -42,6 +42,7 @@ body {
 		}
 		> .content {
 			padding: 0 15px;
+			max-width: 1140px;
 		}
 	}
 }

@@ -40,6 +40,8 @@ Route::get('clientes/{client}/editar', [App\Http\Controllers\ClientController::c
 Route::post('clientes/{client}/editar', [App\Http\Controllers\ClientController::class, 'update'])->name('clientes.update');
 
 
-
-Route::get('marca', [App\Http\Controllers\BrandMotorController::class, 'index'])->name('marca.index');
-Route::get('marca/{marca}/editar', [App\Http\Controllers\BrandMotorController::class, 'editar'])->name('marca.edit');
+Route::get('marcas', [App\Http\Controllers\BrandMotorController::class, 'index'])->name('marcas.index');
+Route::get('marcas/crear', [App\Http\Controllers\BrandMotorController::class, 'create'])->name('marcas.create');
+Route::post('marcas', [App\Http\Controllers\BrandMotorController::class, 'store'])->name('marcas.store');
+Route::get('marcas/{marca}/editar', [App\Http\Controllers\BrandMotorController::class, 'edit'])->name('marcas.edit');
+Route::post('marcas/{marca}/editar', [App\Http\Controllers\BrandMotorController::class, 'update'])->name('marcas.update');

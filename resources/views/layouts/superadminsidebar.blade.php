@@ -19,15 +19,15 @@
   </a>
 </li>
 
-<li class="{{ request()->routeIs('marca.index') ? 'active' : '' }}">
-  <a href="{{route('marca.index')}}">
+<li class="{{ request()->routeIs('marcas.index') ? 'active' : '' }}">
+  <a href="{{route('marcas.index')}}">
     <i class="fal fa-copyright"></i>
     <p>Marca de Motores</p>
   </a>
 </li>
 
-<li class="{{ request()->routeIs('marca') ? 'active' : '' }}">
-  <a href="{{route('marca.index')}}">
+<li class="{{ request()->routeIs('marcas') ? 'active' : '' }}">
+  <a href="{{route('marcas.index')}}">
     <i class="fas fa-barcode"></i>
     <p>Modelo de Motores</p>
   </a>

@@ -7,7 +7,7 @@
   <div class="col-md-12">
     <div class="card card-user">
       <div class="card-header">
-        <h5 class="card-title">Editar Cliente</h5>
+        <h5 class="card-title">Editar Cliente <strong>{{$cliente->razon_social}}</strong></h5>
       </div>
       <div class="card-body">
         <form class="form-group" method="POST" action="{{route('clientes.edit', ['client' => $cliente->id])}}" enctype="multipart/form-data">

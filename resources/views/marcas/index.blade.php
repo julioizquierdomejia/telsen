@@ -4,7 +4,7 @@
 
 <div class="row">
 	<div class="col">
-		<a href="{{ route('clientes.create') }}" class="btn btn-primary">Crear Marca</a>
+		<a href="{{ route('marcas.create') }}" class="btn btn-primary">Crear Marca</a>
 	</div>
 </div>
 <div class="row">
@@ -40,10 +40,10 @@
 	                  {{$marca->name}}
 	                </td>
 	                <td>
-	                  {{$marca->descripcion}}
+	                  {{$marca->description}}
 	                </td>
 	                <td>
-	                	<a href=" {{ route('marca.edit'), $marca }} " class="btn btn-warning"><i class="fal fa-edit"></i></a>
+	                	<a href=" {{ route('marcas.edit', $marca) }} " class="btn btn-warning"><i class="fal fa-edit"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>
 	              </tr>

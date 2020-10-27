@@ -16,7 +16,7 @@ class BrandMotorController extends Controller
     {
         //
         $marcas = BrandMotor::all();
-        return view('marca.index', compact('marcas'));
+        return view('marcas.index', compact('marcas'));
     }
 
     /**
@@ -24,9 +24,10 @@ class BrandMotorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        return view('marcas.create');
     }
 
     /**
@@ -38,6 +39,15 @@ class BrandMotorController extends Controller
     public function store(Request $request)
     {
         //
+        $brand = new BrandMotor();
+        
+        $brand->name = $request->input('name');
+        $brand->description = $request->input('description');
+
+        $brand->save();
+
+        $marcas = BrandMotor::all();
+        return view('marcas.index', compact('marcas'));
     }
 
     /**
@@ -46,9 +56,12 @@ class BrandMotorController extends Controller
      * @param  \App\Models\BrandMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function show(BrandMotor $brandMotor)
+    public function show($id)
     {
         //
+        $marca = Client::findOrFail($id);
+
+        return view('marcas.show', compact('marca'));
     }
 
     /**
@@ -57,10 +70,10 @@ class BrandMotorController extends Controller
      * @param  \App\Models\BrandMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function edit(BrandMotor $brandMotor)
+    public function edit($id)
     {
-        //
-        return 'Editamos la marca';
+        $marca = BrandMotor::findOrFail($id);
+        return view('marcas.edit', compact('marca'));
     }
 
     /**
@@ -70,9 +83,31 @@ class BrandMotorController extends Controller
      * @param  \App\Models\BrandMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BrandMotor $brandMotor)
+    public function update(Request $request, $id)
     {
-        //
+        // validate
+        // read more on validation at http://laravel.com/docs/validation
+        $rules = array(
+            'name'       => 'required',
+            'description'      => 'required',
+        );
+        $validator = \Validator::make($request->all(), $rules);
+
+        // process the login
+        if ($validator->fails()) {
+            return redirect('marcas/' . $id . '/editar')
+                ->withErrors($validator);
+        } else {
+            // store
+            $marca = BrandMotor::find($id);
+            $marca->name       = $request->get('name');
+            $marca->description      = $request->get('description');
+            $marca->save();
+
+            // redirect
+            \Session::flash('message', 'Successfully updated marca!');
+            return redirect('marcas');
+        }
     }
 
     /**

@@ -78,7 +78,7 @@ class OtController extends Controller
         
         $ot->client_id = $request->input('client_id');
         $ot->fecha_creacion = $request->input('fecha_creacion');
-        //$ot->guia_cliente = $request->input('guia_cliente');
+        $ot->guia_cliente = $request->input('guia_cliente');
         //$ot->solped = $request->input('solped');
         $ot->descripcion_motor = $request->input('descripcion_motor');
         $ot->codigo_motor = $request->input('codigo_motor');
@@ -91,9 +91,7 @@ class OtController extends Controller
 
         $ot->save();
 
-
-        $ordenes = Ot::all();
-        return view('ordenes.index', compact('ordenes'));
+        return redirect('ordenes');
     }
 
     /**

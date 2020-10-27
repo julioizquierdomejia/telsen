@@ -26,7 +26,7 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label>Fecha de creación <span class="text-danger">(*)</span></label>
-                <input type="date" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="" name="fecha_creacion" value="Aqui un date Picker" required>
+                <input type="date" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="" name="fecha_creacion" value="{{date('Y-m-d')}}" required>
                 <input type="hidden" name="user_id" class="form-control mb-2" value="{{ Auth::user()->id }}">
                 @error('fecha_creacion')
                   <p class="error-message text-danger">{{ $message }}</p>
@@ -106,9 +106,9 @@
                 <label>Marca</label>
                 <!-- <input type="text" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="Ingrese Marca" value="" name="marca"> -->
                 <select name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca">
-                  <option>Selecciona la marca</option>
+                  <option value="">Selecciona la marca</option>
                   @foreach($marcas as $marca)
-                    <option>{{ $marca->name }}</option>
+                    <option value="{{ $marca->id }}">{{ $marca->name }}</option>
                   @endforeach
                 </select>
               </div>
@@ -118,9 +118,9 @@
                 <label>Modelo</label>
                 <!-- <input type="number" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
                 <select name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
-                  <option>Selecciona el modelo</option>
+                  <option value="">Selecciona el modelo</option>
                   @foreach($modelos as $modelo)
-                    <option>{{ $modelo->name }}</option>
+                    <option value="{{ $modelo->id }}">{{ $modelo->name }}</option>
                   @endforeach
                 </select>
               </div>

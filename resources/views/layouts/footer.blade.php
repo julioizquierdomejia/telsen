@@ -9,9 +9,7 @@
     </nav>
     <div class="credits ml-auto">
       <span class="copyright">
-        © <script>
-          document.write(new Date().getFullYear())
-        </script>, made with <i class="fa fa-heart heart"></i> by Beyond studios
+        © <?= date('Y') ?>, made with <i class="fa fa-heart heart"></i> by Beyond studios
       </span>
     </div>
   </div>

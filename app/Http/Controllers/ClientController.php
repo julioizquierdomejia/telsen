@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -64,6 +66,20 @@ class ClientController extends Controller
         $cliente->info = $request->input('info');
 
         $cliente->save();
+
+
+        //Agregamos cliente como usuario
+        $role_user = Role::where('name', 'client')->first();
+        if ($role_user) {
+            $user = new User();
+            $user->email = $cliente->correo;
+            $user->password = bcrypt('123456');
+            $user->status = 1;
+            $user->save();
+
+            //vamos a relacionar roles con usuarios
+            $user->roles()->attach($role_user);
+        }
 
 
         $clientes = Client::all();

@@ -26,8 +26,8 @@
   </a>
 </li>
 
-<li class="{{ request()->routeIs('marcas') ? 'active' : '' }}">
-  <a href="{{route('marcas.index')}}">
+<li class="{{ request()->routeIs('modelos') ? 'active' : '' }}">
+  <a href="{{route('modelos.index')}}">
     <i class="fas fa-barcode"></i>
     <p>Modelo de Motores</p>
   </a>

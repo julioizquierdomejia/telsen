@@ -15,6 +15,8 @@ class ModelMotorController extends Controller
     public function index()
     {
         //
+        $modelos = ModelMotor::all();
+        return view('modelos.index', compact('modelos'));
     }
 
     /**
@@ -22,9 +24,10 @@ class ModelMotorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         //
+        return view('modelos.create');
     }
 
     /**
@@ -36,49 +39,84 @@ class ModelMotorController extends Controller
     public function store(Request $request)
     {
         //
+        $brand = new ModelMotor();
+        
+        $brand->name = $request->input('name');
+        $brand->description = $request->input('description');
+
+        $brand->save();
+
+        $modelos = ModelMotor::all();
+        return view('modelos.index', compact('modelos'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ModelMotor  $modelMotor
+     * @param  \App\Models\ModelMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function show(ModelMotor $modelMotor)
+    public function show($id)
     {
         //
+        $marca = Client::findOrFail($id);
+
+        return view('modelos.show', compact('marca'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ModelMotor  $modelMotor
+     * @param  \App\Models\ModelMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function edit(ModelMotor $modelMotor)
+    public function edit($id)
     {
-        //
+        $marca = ModelMotor::findOrFail($id);
+        return view('modelos.edit', compact('marca'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ModelMotor  $modelMotor
+     * @param  \App\Models\ModelMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ModelMotor $modelMotor)
+    public function update(Request $request, $id)
     {
-        //
+        // validate
+        // read more on validation at http://laravel.com/docs/validation
+        $rules = array(
+            'name'       => 'required',
+            'description'      => 'required',
+        );
+        $validator = \Validator::make($request->all(), $rules);
+
+        // process the login
+        if ($validator->fails()) {
+            return redirect('modelos/' . $id . '/editar')
+                ->withErrors($validator);
+        } else {
+            // store
+            $marca = ModelMotor::find($id);
+            $marca->name       = $request->get('name');
+            $marca->description      = $request->get('description');
+            $marca->save();
+
+            // redirect
+            \Session::flash('message', 'Successfully updated marca!');
+            return redirect('modelos');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ModelMotor  $modelMotor
+     * @param  \App\Models\ModelMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ModelMotor $modelMotor)
+    public function destroy(ModelMotor $brandMotor)
     {
         //
     }

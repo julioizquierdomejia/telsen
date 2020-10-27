@@ -4,14 +4,14 @@
 
 <div class="row">
 	<div class="col">
-		<a href="{{ route('marcas.create') }}" class="btn btn-primary">Crear Marca</a>
+		<a href="{{ route('modelos.create') }}" class="btn btn-primary">Crear Modelo</a>
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title"> Marca de motores</h4>
+        <h4 class="card-title"> Modelos de motores</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -31,19 +31,19 @@
               </th>
             </thead>
             <tbody>
-            	@foreach($marcas as $marca)
+            	@foreach($modelos as $modelo)
 	              <tr>
 	                <td>
-	                  {{$marca->id}}
+	                  {{$modelo->id}}
 	                </td>
 	                <td>
-	                  {{$marca->name}}
+	                  {{$modelo->name}}
 	                </td>
 	                <td>
-	                  {{$marca->description}}
+	                  {{$modelo->description}}
 	                </td>
 	                <td>
-	                	<a href=" {{ route('marcas.edit', $marca) }} " class="btn btn-warning"><i class="fal fa-edit"></i></a>
+	                	<a href=" {{ route('modelos.edit', $modelo) }} " class="btn btn-warning"><i class="fal fa-edit"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>
 	              </tr>

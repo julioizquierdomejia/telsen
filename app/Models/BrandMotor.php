@@ -9,8 +9,6 @@ class BrandMotor extends Model
 {
     use HasFactory;
 
-    protected $table = 'brand_motors';
-
     protected $fillable = [
         'name',
         'description'

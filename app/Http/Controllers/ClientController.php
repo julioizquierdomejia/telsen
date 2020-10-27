@@ -90,8 +90,9 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit(Client $cliente)
+    public function edit($id)
     {
+        $cliente = Client::findOrFail($id);
         return view('clientes.edit', compact('cliente'));
     }
 

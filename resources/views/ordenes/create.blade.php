@@ -40,8 +40,8 @@
           <div class="row">
           	<div class="col-md-4">
               <div class="form-group">
-                <label for="exampleFormControlSelect1">Ingrese RUC</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+                <label for="selectRuc">Ingrese RUC</label>
+                <select class="form-control" id="selectRuc">
                   <option>Ingresa RUC</option>
                   @foreach($clientes as $cliente)
                     <option>{{ $cliente->ruc }}</option>
@@ -152,7 +152,11 @@
 
 <script type="text/javascript">
   $(document).ready(function(){
-    $('#exampleFormControlSelect1').select2();
+
+    
+    $('#selectRuc').select2();
+
+
   })
   </script>
 @endsection

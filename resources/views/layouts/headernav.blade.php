@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-  <div class="container-fluid">
+  <div class="container">
     <div class="navbar-wrapper">
       <div class="navbar-toggle">
         <button type="button" class="navbar-toggler">

@@ -23,6 +23,14 @@ class OtController extends Controller
         return view('ordenes.index', compact('ordenes'));
     }
 
+    public function list()
+    {
+        //Listar OTs
+        $ordenes = Ot::all();
+
+        return view('ordenes.list', compact('ordenes'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

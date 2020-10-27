@@ -68,7 +68,7 @@ Coded by www.creative-tim.com
       <!-- Navbar -->
         @include('layouts.headernav')
       <!-- End Navbar -->
-      <div class="content container">
+      <div class="content">
         @yield('content')
       </div>
       <footer class="footer footer-black  footer-white ">

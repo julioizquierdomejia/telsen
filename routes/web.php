@@ -27,7 +27,10 @@ Route::get('ordenes', [App\Http\Controllers\OtController::class, 'index'])->name
 Route::get('ordenes/crear', [App\Http\Controllers\OtController::class, 'create'])->name('ordenes.create');
 Route::post('ordenes', [App\Http\Controllers\OtController::class, 'store'])->name('ordenes.store');
 Route::get('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'edit'])->name('ordenes.edit');
+Route::get('ordenes/{orden}/ver', [App\Http\Controllers\OtController::class, 'show'])->name('ordenes.show');
 Route::post('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'update'])->name('ordenes.update');
+
+Route::get('ordenes/lista', [App\Http\Controllers\OtController::class, 'list'])->name('ordenes.list');
 
 
 //rutas para Clientes
@@ -41,6 +44,7 @@ Route::get('clientes/{client}/editar', [App\Http\Controllers\ClientController::c
 Route::post('clientes/{client}/editar', [App\Http\Controllers\ClientController::class, 'update'])->name('clientes.update');
 
 
+//rutas para Marcas
 Route::get('marcas', [App\Http\Controllers\BrandMotorController::class, 'index'])->name('marcas.index');
 Route::get('marcas/crear', [App\Http\Controllers\BrandMotorController::class, 'create'])->name('marcas.create');
 Route::post('marcas', [App\Http\Controllers\BrandMotorController::class, 'store'])->name('marcas.store');

@@ -153,14 +153,9 @@
 <script type="text/javascript">
   $(document).ready(function(){
 
-    alert('hola');
-
     
     $('#selectRuc').select2();
 
-    $('#selectRuc').chage(function(){
-
-    }).change();
 
   })
   </script>

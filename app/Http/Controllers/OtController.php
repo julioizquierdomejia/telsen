@@ -112,7 +112,9 @@ class OtController extends Controller
     {
         $orden = Ot::findOrFail($id);
 
-        return view('ordenes.show', compact('orden'));
+        $ordenes = Ot::where('id', '<>', $id)->get();
+
+        return view('ordenes.show', compact('orden', 'ordenes'));
     }
 
     /**

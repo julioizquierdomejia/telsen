@@ -61,7 +61,7 @@
             <div class="col-md-8">
               <div class="form-group">
                 <label>Razon social</label>
-                <input type="text" class="form-control" placeholder="" value="" disabled="" name="name">
+                <input type="text" class="form-control razon_social" placeholder="" value="" disabled="" name="name">
               </div>
             </div>
           </div>
@@ -69,19 +69,19 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Direccion</label>
-                <input type="text" class="form-control" placeholder="" value="" disabled="" name="address">
+                <input type="text" class="form-control direccion" placeholder="" value="" disabled="" name="address">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label>Telefono de contacto</label>
-                <input type="text" class="form-control" placeholder="" value="" disabled="" name="phone">
+                <input type="text" class="form-control telefono_contacto" placeholder="" value="" disabled="" name="phone">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label>Celular</label>
-                <input type="text" class="form-control" placeholder="" value="" disabled="" name="celular">
+                <input type="text" class="form-control celular" placeholder="" value="" disabled="" name="celular">
               </div>
             </div>
           </div>
@@ -176,6 +176,26 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('.dropdown2').select2();
+
+    $.ajax({
+        url: "/clientes/<?= $orden->client_id ?>/ver",
+        data: {},
+        type: 'GET',
+        beforeSend: function () {
+        },
+        complete: function () {
+        },
+        success: function (response) {
+            $('.razon_social').val(response.razon_social);
+            $('.direccion').val(response.direccion);
+            $('.telefono').val(response.telefono);
+            $('.celular').val(response.celular);
+            $('.telefono_contacto').val(response.telefono_contacto);
+        },
+        error: function (request, status, error) { // if error occured
+
+        }
+    });
   })
   </script>
 @endsection

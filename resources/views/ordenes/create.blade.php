@@ -48,9 +48,9 @@
               <div class="form-group">
                 <label for="selectRuc">Ingrese RUC</label>
                 <select class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
-                  <option>Ingresa RUC</option>
+                  <option value="">Ingresa RUC</option>
                   @foreach($clientes as $cliente)
-                    <option>{{ $cliente->ruc }}</option>
+                    <option value="{{ $cliente->id }}">{{ $cliente->ruc }}</option>
                   @endforeach
                 </select>
                 @error('client_id')
@@ -61,7 +61,7 @@
             <div class="col-md-8">
               <div class="form-group">
                 <label>Razon social</label>
-                <input type="text" class="form-control" placeholder="" value="" disabled="" name="name">
+                <input type="text" class="form-control razon_social" placeholder="" value="" disabled="" name="name">
               </div>
             </div>
           </div>
@@ -69,19 +69,19 @@
           	<div class="col-md-6">
               <div class="form-group">
                 <label>Direccion</label>
-                <input type="text" class="form-control" placeholder="" value="" disabled="" name="address">
+                <input type="text" class="form-control direccion" placeholder="" value="" disabled="" name="address">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label>Telefono de contacto</label>
-                <input type="text" class="form-control" placeholder="" value="" disabled="" name="phone">
+                <input type="text" class="form-control telefono_contacto" placeholder="" value="" disabled="" name="phone">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label>Celular</label>
-                <input type="text" class="form-control" placeholder="" value="" disabled="" name="celular">
+                <input type="text" class="form-control celular" placeholder="" value="" disabled="" name="celular">
               </div>
             </div>
           </div>
@@ -174,6 +174,37 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('.dropdown2').select2();
+
+    $('#selectRuc').change(function () {
+      var val = $(this).val();
+      if (!val) {
+        $('.razon_social').val("");
+        $('.direccion').val("");
+        $('.telefono').val("");
+        $('.celular').val("");
+        $('.telefono_contacto').val("");
+        return;
+      }
+      $.ajax({
+        url: "/clientes/"+val+"/ver",
+        data: {},
+        type: 'GET',
+        beforeSend: function () {
+        },
+        complete: function () {
+        },
+        success: function (response) {
+            $('.razon_social').val(response.razon_social);
+            $('.direccion').val(response.direccion);
+            $('.telefono').val(response.telefono);
+            $('.celular').val(response.celular);
+            $('.telefono_contacto').val(response.telefono_contacto);
+        },
+        error: function (request, status, error) { // if error occured
+
+        }
+      });
+    })
   })
   </script>
 @endsection

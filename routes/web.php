@@ -34,6 +34,7 @@ Route::post('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class,
 //Route::resource('clientes', App\Http\Controllers\ClientController::class);
 
 Route::get('clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes.index');
+Route::get('clientes/{client}/ver', [App\Http\Controllers\ClientController::class, 'show'])->name('clientes.ver');
 Route::get('clientes/crear', [App\Http\Controllers\ClientController::class, 'create'])->name('clientes.create');
 Route::post('clientes', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
 Route::get('clientes/{client}/editar', [App\Http\Controllers\ClientController::class, 'edit'])->name('clientes.edit');

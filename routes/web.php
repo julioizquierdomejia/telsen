@@ -37,6 +37,7 @@ Route::get('clientes', [App\Http\Controllers\ClientController::class, 'index'])-
 Route::get('clientes/crear', [App\Http\Controllers\ClientController::class, 'create'])->name('clientes.create');
 Route::post('clientes', [App\Http\Controllers\ClientController::class, 'store'])->name('clientes.store');
 Route::get('clientes/{client}/editar', [App\Http\Controllers\ClientController::class, 'edit'])->name('clientes.edit');
+Route::post('clientes/{client}/editar', [App\Http\Controllers\ClientController::class, 'update'])->name('clientes.update');
 
 
 

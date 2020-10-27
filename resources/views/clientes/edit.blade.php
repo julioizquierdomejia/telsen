@@ -10,7 +10,7 @@
         <h5 class="card-title">Editar Cliente</h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="" enctype="multipart/form-data">
+        <form class="form-group" method="POST" action="{{route('clientes.edit', ['client' => $cliente->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
           	<div class="col-md-3">
@@ -87,7 +87,7 @@
 
           <div class="row">
             <div class="update ml-auto mr-auto">
-              <button type="submit" class="btn btn-primary btn-round">Crear Cliente</button>
+              <button type="submit" class="btn btn-primary btn-round">Actualizar Cliente</button>
             </div>
           </div>
         </form>

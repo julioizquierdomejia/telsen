@@ -105,9 +105,20 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        
+        $data = [];
+        $data['ruc'] = $request->get('ruc');
+        $data['razon_social'] = $request->get('razon_social');
+        $data['direccion'] = $request->get('direccion');
+        $data['telefono'] = $request->get('telefono');
+        $data['celular'] = $request->get('celular');
+        $data['contacto'] = $request->get('contacto');
+        $data['telefono_contacto'] = $request->get('telefono_contacto');
+        $data['correo'] = $request->get('correo');
+        $data['info'] = $request->get('info');
 
-        return $request;
+        $client->update($data);
+
+        return redirect('clientes');
 
         
 

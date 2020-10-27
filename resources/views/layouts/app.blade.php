@@ -60,12 +60,13 @@ Coded by www.creative-tim.com
   </div>
   <!--   Core JS Files   -->
   
-  <script src="{{ asset('assets/js/core/jquery.min.js') }}"></script>
-  <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
   
+  <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+  <!-- <script src="{{ asset('assets/js/core/jquery.min.js') }}"></script> -->
 
   <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
   <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
   <script src="{{ asset('assets/js/plugins/perfect-scrollbar.jquery.min.js') }}"></script>
   <!--  Google Maps Plugin    -->
   <!--script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script-->
@@ -77,11 +78,10 @@ Coded by www.creative-tim.com
   <script src="{{ asset('assets/js/paper-dashboard.min.js?v=2.0.1') }}" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
   <!--script src="../assets/demo/demo.js"></script-->
 
-  <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 
   <script type="text/javascript">
     $(document).ready(function() {
-        //$('#tablas').DataTable();
+        $('#tablas').DataTable();
     } );
   </script>
 

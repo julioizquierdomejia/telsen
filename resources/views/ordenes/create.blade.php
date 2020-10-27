@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+@endsection
+
 @section('content')
 
 <div class="row">
@@ -36,8 +40,14 @@
           <div class="row">
           	<div class="col-md-4">
               <div class="form-group">
-                <label>RUC del cliente</label>
-                <input type="text" class="form-control" placeholder="Ingrese Ruc del cliente" value="">
+                <label for="exampleFormControlSelect1">Ingrese RUC</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                  <option>Beyond</option>
+                  <option>rhino</option>
+                  <option>Julio</option>
+                  <option>Milagritos</option>
+                  <option>Maju</option>
+                </select>
               </div>
             </div>
             <div class="col-md-8">
@@ -135,4 +145,15 @@
   </div>
 </div>
 
+@endsection
+
+
+@section('javascript')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#exampleFormControlSelect1').select2();
+  })
+  </script>
 @endsection

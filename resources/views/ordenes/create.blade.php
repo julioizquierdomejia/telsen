@@ -42,11 +42,10 @@
               <div class="form-group">
                 <label for="exampleFormControlSelect1">Ingrese RUC</label>
                 <select class="form-control" id="exampleFormControlSelect1">
-                  <option>Beyond</option>
-                  <option>rhino</option>
-                  <option>Julio</option>
-                  <option>Milagritos</option>
-                  <option>Maju</option>
+                  <option>Ingresa RUC</option>
+                  @foreach($clientes as $cliente)
+                    <option>{{ $cliente->ruc }}</option>
+                  @endforeach
                 </select>
               </div>
             </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ot;
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class OtController extends Controller
@@ -16,6 +17,7 @@ class OtController extends Controller
     {
         //Listar OTs
         $ots = Ot::all();
+
         return view('ordenes.index', compact('ots'));
     }
 
@@ -30,7 +32,11 @@ class OtController extends Controller
         //Revisar el ultimo numero de OT
         $totalOts = Ot::count();
         $ot_numero = $totalOts + 1;
-        return view('ordenes.create', compact('ot_numero'));
+
+        $clientes = Client::all();
+
+
+        return view('ordenes.create', compact('ot_numero', 'clientes'));
     }
 
     /**

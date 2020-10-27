@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Ot;
 use App\Models\Client;
+use App\Models\BrandMotor;
+use App\Models\ModelMotor;
 use Illuminate\Http\Request;
 
 class OtController extends Controller
@@ -16,9 +18,9 @@ class OtController extends Controller
     public function index()
     {
         //Listar OTs
-        $ots = Ot::all();
+        $ordenes = Ot::all();
 
-        return view('ordenes.index', compact('ots'));
+        return view('ordenes.index', compact('ordenes'));
     }
 
     /**
@@ -34,9 +36,11 @@ class OtController extends Controller
         $ot_numero = $totalOts + 1;
 
         $clientes = Client::all();
+        $marcas = BrandMotor::all();
+        $modelos = ModelMotor::all();
 
 
-        return view('ordenes.create', compact('ot_numero', 'clientes'));
+        return view('ordenes.create', compact('ot_numero', 'clientes', 'marcas', 'modelos'));
     }
 
     /**
@@ -48,7 +52,48 @@ class OtController extends Controller
     public function store(Request $request)
     {
         //
-        return $request;
+        $rules = [
+            'client_id' => 'required|integer',
+            'fecha_creacion' => 'required',
+            'guia_cliente' => 'required',
+            //'solped' => 'required',
+            'descripcion_motor' => 'required',
+            'codigo_motor' => 'required',
+            'marca_id' => 'required',
+            'modelo_id' => 'required',
+            'numero_potencia' => 'required',
+            'medida_potencia' => 'required',
+            'voltaje' => 'required',
+            'velocidad' => 'required',
+        ];
+
+        $messages = [
+            //'ruc.required' => 'Agrega el nombre del estudiante.',
+        ];
+
+        $this->validate($request, $rules);
+
+        //creamos una variable que es un objeto de nuesta instancia de nuestro modelo
+        $ot = new Ot();
+        
+        $ot->client_id = $request->input('client_id');
+        $ot->fecha_creacion = $request->input('fecha_creacion');
+        //$ot->guia_cliente = $request->input('guia_cliente');
+        //$ot->solped = $request->input('solped');
+        $ot->descripcion_motor = $request->input('descripcion_motor');
+        $ot->codigo_motor = $request->input('codigo_motor');
+        $ot->marca_id = $request->input('marca_id');
+        $ot->modelo_id = $request->input('modelo_id');
+        $ot->numero_potencia = $request->input('numero_potencia');
+        $ot->medida_potencia = $request->input('medida_potencia');
+        $ot->voltaje = $request->input('voltaje');
+        $ot->velocidad = $request->input('velocidad');
+
+        $ot->save();
+
+
+        $ordenes = Ot::all();
+        return view('ordenes.index', compact('ordenes'));
     }
 
     /**
@@ -57,9 +102,11 @@ class OtController extends Controller
      * @param  \App\Models\Ot  $ot
      * @return \Illuminate\Http\Response
      */
-    public function show(Ot $ot)
+    public function show($id)
     {
-        //
+        $orden = Ot::findOrFail($id);
+
+        return view('ordenes.show', compact('orden'));
     }
 
     /**
@@ -68,9 +115,17 @@ class OtController extends Controller
      * @param  \App\Models\Ot  $ot
      * @return \Illuminate\Http\Response
      */
-    public function edit(Ot $ot)
+    public function edit($id)
     {
-        //
+        $totalOts = Ot::count();
+        $ot_numero = $totalOts + 1;
+
+        $clientes = Client::all();
+        $marcas = BrandMotor::all();
+        $modelos = ModelMotor::all();
+        $orden = Ot::findOrFail($id);
+
+        return view('ordenes.edit', compact('ot_numero', 'orden', 'clientes', 'marcas', 'modelos'));
     }
 
     /**
@@ -80,9 +135,49 @@ class OtController extends Controller
      * @param  \App\Models\Ot  $ot
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ot $ot)
+    public function update(Request $request, $id)
     {
-        //
+        $rules = array(
+            'client_id' => 'required|integer',
+            'fecha_creacion' => 'required',
+            'guia_cliente' => 'required',
+            //'solped' => 'required',
+            'descripcion_motor' => 'required',
+            'codigo_motor' => 'required',
+            'marca_id' => 'required',
+            'modelo_id' => 'required',
+            'numero_potencia' => 'required',
+            'medida_potencia' => 'required',
+            'voltaje' => 'required',
+            'velocidad' => 'required',
+        );
+        $validator = \Validator::make($request->all(), $rules);
+
+        // process the login
+        if ($validator->fails()) {
+            return redirect('ordenes/' . $id . '/editar')
+                ->withErrors($validator);
+        } else {
+            // store
+            $ot = Ot::find($id);
+            $ot->client_id = $request->get('client_id');
+            $ot->fecha_creacion = $request->get('fecha_creacion');
+            $ot->guia_cliente = $request->get('guia_cliente');
+            //$ot->solped = $request->get('solped');
+            $ot->descripcion_motor = $request->get('descripcion_motor');
+            $ot->codigo_motor = $request->get('codigo_motor');
+            $ot->marca_id = $request->get('marca_id');
+            $ot->modelo_id = $request->get('modelo_id');
+            $ot->numero_potencia = $request->get('numero_potencia');
+            $ot->medida_potencia = $request->get('medida_potencia');
+            $ot->voltaje = $request->get('voltaje');
+            $ot->velocidad = $request->get('velocidad');
+            $ot->save();
+
+            // redirect
+            \Session::flash('message', '¡Se actualizó la orden!');
+            return redirect('ordenes');
+        }
     }
 
     /**

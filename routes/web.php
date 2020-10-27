@@ -22,12 +22,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //rutas para ordenes de trabajo
-Route::resource('ordenes', App\Http\Controllers\OtController::class);
-/*
-Route::get('ordenes', [App\Http\Controllers\OtController::class, 'index'])->name('ot');
-Route::get('ordenes.crear', [App\Http\Controllers\OtController::class, 'create'])->name('crearot');
-Route::put('ordenes.store', [App\Http\Controllers\OtController::class, 'store'])->name('ot.store');
-*/
+//Route::resource('ordenes', App\Http\Controllers\OtController::class);
+Route::get('ordenes', [App\Http\Controllers\OtController::class, 'index'])->name('ordenes.index');
+Route::get('ordenes/crear', [App\Http\Controllers\OtController::class, 'create'])->name('ordenes.create');
+Route::post('ordenes', [App\Http\Controllers\OtController::class, 'store'])->name('ordenes.store');
+Route::get('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'edit'])->name('ordenes.edit');
+Route::post('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'update'])->name('ordenes.update');
 
 
 //rutas para Clientes

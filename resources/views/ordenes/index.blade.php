@@ -4,7 +4,7 @@
 
 <div class="row">
 	<div class="col">
-		<a href="/ordenes/create" class="btn btn-primary">Crear Orden de Trabajo</a>
+		<a href="/ordenes/crear" class="btn btn-primary">Crear Orden de Trabajo</a>
 	</div>
 </div>
 <div class="row">
@@ -29,27 +29,27 @@
               <th class="text-right">
                 Marca del motor
               </th>
-              <th class="text-right">
+              <th class="text-center">
                 Herramientas
               </th>
             </thead>
             <tbody>
-            	@foreach($ots as $ot)
+            	@foreach($ordenes as $orden)
 	              <tr>
 	                <td>
-	                  {{$ot->id}}
+	                  {{$orden->id}}
 	                </td>
 	                <td>
-	                  {{$ot->fecha_creacion}}
+	                  {{$orden->fecha_creacion}}
 	                </td>
 	                <td>
-	                  {{$ot->descripcion_motor}}
+	                  {{$orden->descripcion_motor}}
 	                </td>
 	                <td class="text-right">
-	                  {{$ot->marca_id}}
+	                  {{$orden->marca['name']}}
 	                </td>
-	                <td>
-	                	<a href="" class="btn btn-warning"><i class="fal fa-edit"></i></a>
+	                <td class="text-center">
+	                	<a href="{{ route('ordenes.edit', $orden) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>
 	              </tr>

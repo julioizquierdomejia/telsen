@@ -19,12 +19,12 @@
         <p>Revisa aquí el proceso virtual del trabajo que estamos realizando para ti:</p>
         @if($ordenes->count())
         <div class="ot-list pb-2">
-          @foreach($ordenes as $item)
           <select class="form-control select-ot dropdown2" id="select-orden" onchange="window.location=this.value">
             <option value="">Selecciona un O.T.</option>
+            @foreach($ordenes as $item)
             <option value="/ordenes/{{$item->id}}/ver">{{ sprintf('%05d', $item->id) }} | {{ $item->marca['name'] }}</option>
+            @endforeach
           </select>
-          @endforeach
         </div>
         @endif
         <h5 class="card-title ot-main-title">O.T. {{ sprintf('%05d', $orden->id) }} | {{ $orden->marca['name'] }}</h5>

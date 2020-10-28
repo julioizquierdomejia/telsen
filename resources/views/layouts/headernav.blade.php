@@ -100,8 +100,8 @@
 @if($role_user == 'client')
 <nav class="container-fluid container-nav client-nav">
 <ul class="col-xs-12 c-menu-list list-inline mb-0">
-  <li class="d-md-inline-block"><a class="nav-link" href="/ordenes/lista">Inicio</a></li>
-  <li class="d-md-inline-block"><a class="nav-link" href="/ordenes/">Proceso virtual</a></li>
+  <li class="d-md-inline-block"><a class="nav-link" href="/home">Inicio</a></li>
+  <li class="d-md-inline-block{{ request()->segment(2) == 'procesovirtual' || request()->segment(3) == 'ver' ? ' active' : '' }}"><a class="nav-link" href="/ordenes/procesovirtual">Proceso virtual</a></li>
   <li class="d-md-inline-block"><a class="nav-link" href="/">Inventario</a></li>
   <li class="d-md-inline-block"><a class="nav-link" href="/">Recursos</a></li>
 </ul>

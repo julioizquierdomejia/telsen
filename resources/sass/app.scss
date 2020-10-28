@@ -71,15 +71,24 @@ body {
 		padding-bottom: 0;
 	}
 	.client-nav {
+		border-top: 1px solid #c9c9c9;
 		max-width: none;
 		.c-menu-list {
 			max-width: 1140px;
 			margin: 0 auto;
 			width: 100%;
+			padding-left: 15px;
 			li {
 				.nav-link {
+					color: #0c76b1;
 					display: block;
-					padding: 2px 10px;
+					padding: 6px 10px;
+				}
+				&.active {
+					.nav-link {
+						border-bottom: 3px solid #2e4386;
+						color: #2e4386;
+					}
 				}
 			}
 		}
@@ -384,6 +393,24 @@ body {
 				.s-title {
 					color: #2e4386;
 				}
+			}
+		}
+	}
+}
+@media (min-width: 992px) {
+	.page_client {
+		.client-nav {
+			.c-menu-list {
+				li {
+					.nav-link {
+						padding: 16px 10px;
+					}
+				}
+			}
+		}
+		.main-panel {
+			> .content {
+				margin-top: 150px;
 			}
 		}
 	}

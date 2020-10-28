@@ -28,6 +28,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('ordenes/crear', [App\Http\Controllers\OtController::class, 'create'])->name('ordenes.create');
 	Route::post('ordenes', [App\Http\Controllers\OtController::class, 'store'])->name('ordenes.store');
 	Route::get('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'edit'])->name('ordenes.edit');
+	Route::get('ordenes/procesovirtual', [App\Http\Controllers\OtController::class, 'pvirtual'])->name('ordenes.pvirtual');
 	Route::get('ordenes/{orden}/ver', [App\Http\Controllers\OtController::class, 'show'])->name('ordenes.show');
 	Route::post('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'update'])->name('ordenes.update');
 

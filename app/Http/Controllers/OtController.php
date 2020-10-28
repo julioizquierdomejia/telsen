@@ -119,6 +119,12 @@ class OtController extends Controller
         return view('ordenes.show', compact('orden', 'ordenes'));
     }
 
+    public function pvirtual()
+    {
+        $ordenes = Ot::all();
+        return view('ordenes.pvirtual', compact('ordenes'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

@@ -20,7 +20,8 @@
         @if($ordenes->count())
         <div class="ot-list pb-2">
           @foreach($ordenes as $item)
-          <select class="form-control select-ot dropdown2" id="select-orden">
+          <select class="form-control select-ot dropdown2" id="select-orden" onchange="window.location=this.value">
+            <option value="">Selecciona un O.T.</option>
             <option value="/ordenes/{{$item->id}}/ver">{{ sprintf('%05d', $item->id) }} | {{ $item->marca['name'] }}</option>
           </select>
           @endforeach

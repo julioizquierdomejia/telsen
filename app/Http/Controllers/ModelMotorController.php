@@ -12,9 +12,10 @@ class ModelMotorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $modelos = ModelMotor::all();
         return view('modelos.index', compact('modelos'));
     }
@@ -26,7 +27,8 @@ class ModelMotorController extends Controller
      */
     public function create(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         return view('modelos.create');
     }
 
@@ -38,7 +40,8 @@ class ModelMotorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $brand = new ModelMotor();
         
         $brand->name = $request->input('name');
@@ -56,9 +59,10 @@ class ModelMotorController extends Controller
      * @param  \App\Models\ModelMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $marca = Client::findOrFail($id);
 
         return view('modelos.show', compact('marca'));
@@ -70,10 +74,12 @@ class ModelMotorController extends Controller
      * @param  \App\Models\ModelMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $marca = ModelMotor::findOrFail($id);
-        return view('modelos.edit', compact('marca'));
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $modelo = ModelMotor::findOrFail($id);
+        return view('modelos.edit', compact('modelo'));
     }
 
     /**
@@ -85,6 +91,8 @@ class ModelMotorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        
         // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
@@ -116,8 +124,8 @@ class ModelMotorController extends Controller
      * @param  \App\Models\ModelMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ModelMotor $brandMotor)
+    public function destroy(Request $request, ModelMotor $brandMotor)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
     }
 }

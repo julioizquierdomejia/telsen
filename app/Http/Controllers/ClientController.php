@@ -14,9 +14,10 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        
         $clientes = Client::all();
         return view('clientes.index', compact('clientes'));
     }
@@ -26,9 +27,10 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         return view('clientes.create');
     }
 
@@ -40,7 +42,8 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $rules = [
             'ruc' => 'required|min:8|unique:clients',
             'razon_social' => 'required',
@@ -92,7 +95,7 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         //$cliente = Client::findOrFail($id);
         return Client::findOrFail($id);
@@ -107,8 +110,10 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $cliente = Client::findOrFail($id);
         return view('clientes.edit', compact('cliente'));
     }
@@ -122,6 +127,8 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $data = [];
         $data['ruc'] = $request->get('ruc');
         $data['razon_social'] = $request->get('razon_social');
@@ -136,11 +143,6 @@ class ClientController extends Controller
         $client->update($data);
 
         return redirect('clientes');
-
-        
-
-        
-
     }
 
     /**
@@ -149,8 +151,8 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client)
+    public function destroy(Request $request, Client $client)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
     }
 }

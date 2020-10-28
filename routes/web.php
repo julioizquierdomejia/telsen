@@ -54,5 +54,5 @@ Route::post('marcas/{marca}/editar', [App\Http\Controllers\BrandMotorController:
 Route::get('modelos', [App\Http\Controllers\ModelMotorController::class, 'index'])->name('modelos.index');
 Route::get('modelos/crear', [App\Http\Controllers\ModelMotorController::class, 'create'])->name('modelos.create');
 Route::post('modelos', [App\Http\Controllers\ModelMotorController::class, 'store'])->name('modelos.store');
-Route::get('modelos/{marca}/editar', [App\Http\Controllers\ModelMotorController::class, 'edit'])->name('modelos.edit');
-Route::post('modelos/{marca}/editar', [App\Http\Controllers\ModelMotorController::class, 'update'])->name('modelos.update');
+Route::get('modelos/{modelo}/editar', [App\Http\Controllers\ModelMotorController::class, 'edit'])->name('modelos.edit');
+Route::post('modelos/{modelo}/editar', [App\Http\Controllers\ModelMotorController::class, 'update'])->name('modelos.update');

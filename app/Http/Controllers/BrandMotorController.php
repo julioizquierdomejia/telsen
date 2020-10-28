@@ -12,9 +12,10 @@ class BrandMotorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        
         $marcas = BrandMotor::all();
         return view('marcas.index', compact('marcas'));
     }
@@ -26,7 +27,8 @@ class BrandMotorController extends Controller
      */
     public function create(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         return view('marcas.create');
     }
 
@@ -38,7 +40,8 @@ class BrandMotorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $brand = new BrandMotor();
         
         $brand->name = $request->input('name');
@@ -70,8 +73,10 @@ class BrandMotorController extends Controller
      * @param  \App\Models\BrandMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $marca = BrandMotor::findOrFail($id);
         return view('marcas.edit', compact('marca'));
     }
@@ -85,6 +90,8 @@ class BrandMotorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        
         // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
@@ -116,8 +123,8 @@ class BrandMotorController extends Controller
      * @param  \App\Models\BrandMotor  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BrandMotor $brandMotor)
+    public function destroy(Request $request, BrandMotor $brandMotor)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
     }
 }

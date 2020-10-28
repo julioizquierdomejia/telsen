@@ -15,7 +15,7 @@ class OtController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //Listar OTs
         $ordenes = Ot::all();
@@ -23,7 +23,7 @@ class OtController extends Controller
         return view('ordenes.index', compact('ordenes'));
     }
 
-    public function list()
+    public function list(Request $request)
     {
         //Listar OTs
         $ordenes = Ot::all();
@@ -36,8 +36,9 @@ class OtController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         //
         //Revisar el ultimo numero de OT
         $totalOts = Ot::count();
@@ -59,6 +60,7 @@ class OtController extends Controller
      */
     public function store(Request $request)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         //
         $rules = [
             'client_id' => 'required|integer',
@@ -108,7 +110,7 @@ class OtController extends Controller
      * @param  \App\Models\Ot  $ot
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $orden = Ot::findOrFail($id);
 
@@ -123,8 +125,10 @@ class OtController extends Controller
      * @param  \App\Models\Ot  $ot
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $clientes = Client::all();
         $marcas = BrandMotor::all();
         $modelos = ModelMotor::all();
@@ -142,6 +146,8 @@ class OtController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
         $rules = array(
             'client_id' => 'required|integer',
             'fecha_creacion' => 'required',
@@ -191,8 +197,8 @@ class OtController extends Controller
      * @param  \App\Models\Ot  $ot
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ot $ot)
+    public function destroy(Request $request, Ot $ot)
     {
-        //
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
     }
 }

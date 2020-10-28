@@ -1,5 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-  <div class="container-fluid container-nav">
+<?php $role_user = Auth::user()->roles->first()->name ?>
+<header class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent flex-wrap">
+<nav class="container-fluid container-nav">
     <div class="navbar-wrapper">
       <div class="navbar-toggle">
         <button type="button" class="navbar-toggler">
@@ -8,7 +9,11 @@
           <span class="navbar-toggler-bar bar3"></span>
         </button>
       </div>
+      @if ( $role_user == 'client')
+      <a class="navbar-brand" href="/"><img src="/images/logo.gif"></a>
+      @else
       <a class="navbar-brand" href="/">Telsen Ingenieros</a>
+      @endif
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -69,7 +74,11 @@
         @else
             <li class="nav-item dropdown">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   @if($role_user == 'client')
+                    {{ substr(Auth::user()->email, 0, 1) }}
+                    @else
                     {{ Auth::user()->email }}
+                    @endif
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -87,5 +96,15 @@
         @endguest
       </ul>
     </div>
-  </div>
 </nav>
+@if($role_user == 'client')
+<nav class="container-fluid container-nav client-nav">
+<ul class="col-xs-12 c-menu-list list-inline mb-0">
+  <li class="d-md-inline-block"><a class="nav-link" href="/ordenes/lista">Inicio</a></li>
+  <li class="d-md-inline-block"><a class="nav-link" href="/ordenes/">Proceso virtual</a></li>
+  <li class="d-md-inline-block"><a class="nav-link" href="/">Inventario</a></li>
+  <li class="d-md-inline-block"><a class="nav-link" href="/">Recursos</a></li>
+</ul>
+</nav>
+@endif
+</header>

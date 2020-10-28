@@ -61,10 +61,28 @@ body {
 		}
 	}
 }
-
 .page_client {
 	.container-nav {
 		max-width: 1140px;
+	}
+	header {
+		padding-left: 0;
+		padding-right: 0;
+		padding-bottom: 0;
+	}
+	.client-nav {
+		max-width: none;
+		.c-menu-list {
+			max-width: 1140px;
+			margin: 0 auto;
+			width: 100%;
+			li {
+				.nav-link {
+					display: block;
+					padding: 2px 10px;
+				}
+			}
+		}
 	}
 	.main-panel {
 		width: 100%;
@@ -74,6 +92,7 @@ body {
 		> .content {
 			padding: 0 15px;
 			max-width: 1140px;
+			margin-top: 120px;
 		}
 	}
 }

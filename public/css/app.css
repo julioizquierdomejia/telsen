@@ -28959,6 +28959,10 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
 }
 
+img {
+  height: auto;
+}
+
 .row-small {
   margin-left: -5px;
   margin-right: -5px;
@@ -28992,6 +28996,74 @@ readers do not read off random characters that represent icons */
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
   border-color: transparent transparent #fff transparent;
   border-width: 0 8px 7px 7px;
+}
+
+.page .sidebar:after {
+  background-color: #004580;
+}
+
+.page .sidebar-top {
+  position: relative;
+  z-index: 33;
+}
+
+.page .sidebar-wrapper {
+  position: relative;
+  z-index: 32;
+}
+
+.page .sidebar-wrapper {
+  background-color: #121212;
+}
+
+.page .sidebar .logo-image-small {
+  margin-bottom: -35px;
+}
+
+.page .sidebar .logo-image-small .icon {
+  background-color: #121212;
+  border-radius: 50px;
+  display: inline-block;
+  padding: 10px;
+}
+
+.page .sidebar .logo-image-small img {
+  width: 50px;
+}
+
+.page .sidebar .nav li > a {
+  border-radius: 0 20px 20px 0;
+  color: #fff;
+  font-size: 14px;
+  padding: 5px 8px;
+  margin-left: 0;
+  text-transform: none;
+}
+
+.page .sidebar .nav li > a i {
+  color: #fff;
+}
+
+.page .sidebar[data-active-color=danger] .nav li.active > a {
+  background-color: #e96117;
+  color: #fff;
+}
+
+.page .sidebar[data-active-color=danger] .nav li.active > a:after,
+.page .sidebar[data-active-color=danger] .nav li.active > a:before {
+  display: none;
+}
+
+.page .navbar .navbar-wrapper .btn-link {
+  color: #004580 !important;
+}
+
+.page .navbar .fa-phone {
+  transform: rotateZ(90deg);
+}
+
+.page .dropdown-menu .dropdown-item {
+  border-radius: 0;
 }
 
 .page_client .container-nav {

@@ -17,6 +17,8 @@ class OtController extends Controller
      */
     public function index(Request $request)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        
         //Listar OTs
         $ordenes = Ot::all();
 
@@ -25,10 +27,11 @@ class OtController extends Controller
 
     public function list(Request $request)
     {
+        $request->user()->authorizeRoles(['client']);
         //Listar OTs
         $ordenes = Ot::all();
 
-        return view('ordenes.list', compact('ordenes'));
+        return view('procesovirtual.list', compact('ordenes'));
     }
 
     /**
@@ -112,17 +115,21 @@ class OtController extends Controller
      */
     public function show(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['client']);
+        
         $orden = Ot::findOrFail($id);
 
         $ordenes = Ot::where('id', '<>', $id)->get();
 
-        return view('ordenes.show', compact('orden', 'ordenes'));
+        return view('procesovirtual.show', compact('orden', 'ordenes'));
     }
 
-    public function pvirtual()
+    public function pvirtual(Request $request)
     {
+        $request->user()->authorizeRoles(['client']);
+
         $ordenes = Ot::all();
-        return view('ordenes.pvirtual', compact('ordenes'));
+        return view('procesovirtual.index', compact('ordenes'));
     }
 
     /**

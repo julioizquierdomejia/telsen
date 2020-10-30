@@ -21,6 +21,9 @@ body {
 @import "scss/duotone.scss";
 @import "scss/v4-shims.scss";
 
+img {
+	height: auto;
+}
 .row {
 	&-small {
 		margin-left: -5px;
@@ -58,6 +61,84 @@ body {
     				border-width: 0 8px 7px 7px;
 				}
 			}
+		}
+	}
+}
+.page {
+	.sidebar {
+		&:after {
+			background-color: #004580;
+		}
+		&-top {
+			position: relative;
+			z-index: 33;
+		}
+		&-wrapper {
+			position: relative;
+			z-index: 32;
+		}
+		&-wrapper {
+			background-color: #121212;
+		}
+
+		.logo-image-small {
+			margin-bottom: -35px;
+			.icon {
+				background-color: #121212;
+				border-radius: 50px;
+				display: inline-block;
+				padding: 10px;
+			}
+			img {
+				width: 50px;
+			}
+		}
+
+		.nav {
+			li {
+				> a {
+					border-radius: 0 20px 20px 0;
+					color: #fff;
+					font-size: 14px;
+					padding: 5px 8px;
+					margin-left: 0;
+					text-transform: none;
+					i {
+						color: #fff;
+					}
+				}
+			}
+		}
+
+		&[data-active-color="danger"] {
+			.nav {
+				li {
+					&.active {
+						> a {
+							background-color: #e96117;
+							color: #fff;
+							&:after, &:before {
+								display: none;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	.navbar {
+		.navbar-wrapper {
+			.btn-link {
+				color: #004580 !important;
+			}
+		}
+		.fa-phone {
+			transform: rotateZ(90deg);
+		}
+	}
+	.dropdown-menu {
+		.dropdown-item {
+			border-radius: 0;
 		}
 	}
 }

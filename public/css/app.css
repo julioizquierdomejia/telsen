@@ -1,9 +1,5 @@
 @charset "UTF-8";
 
-body {
-  background-color: #fff;
-}
-
 /*!
  * Bootstrap v4.5.3 (https://getbootstrap.com/)
  * Copyright 2011-2020 The Bootstrap Authors
@@ -29217,10 +29213,6 @@ table.dataTable.order-column.hover tbody tr:hover.selected > .sorting_3 {
   background-color: #a5b2cb;
 }
 
-table.dataTable.no-footer {
-  border-bottom: 1px solid #111;
-}
-
 table.dataTable.nowrap th,
 table.dataTable.nowrap td {
   white-space: nowrap;
@@ -29587,6 +29579,11 @@ table.dataTable td {
   }
 }
 
+body {
+  background-color: #f7f7f7;
+  font-weight: 600;
+}
+
 img {
   height: auto;
 }
@@ -29609,7 +29606,98 @@ img {
   padding: 0 10px;
 }
 
+.table.table-separate {
+  border-collapse: separate;
+  border-spacing: 0 6px;
+  font-weight: 700;
+}
+
+.table.table-separate tr > td,
+.table.table-separate tr th {
+  border: 0;
+  padding: 12px 14px;
+}
+
+.table.table-separate thead {
+  background-color: #3d496f;
+  color: #8a9ec3;
+}
+
+.table.table-separate thead th {
+  color: #8a9ec3;
+  font-size: 13px;
+}
+
+.table.table-separate tbody tr td {
+  background-color: #fff;
+  color: #1c2955;
+  font-size: 13px;
+}
+
+.form-card .card-header {
+  background-color: transparent;
+  border: 0;
+  padding-bottom: 0;
+}
+
+.form-card .card-header .card-title {
+  border-bottom: 3px solid #66e7fa;
+  color: #1c2956;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 0;
+  padding: 0.75rem 0;
+  text-transform: uppercase;
+}
+
+.form-card .second-title {
+  border-bottom: 3px solid #66e7fa;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.form-card .col-form-label {
+  background-color: #fff;
+  border-radius: 4px;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 0 5px;
+  margin: 0 0 -20px 5px;
+  position: relative;
+  vertical-align: middle;
+  z-index: 1;
+}
+
+.form-card .form-control {
+  border-width: 2px;
+  font-weight: 600;
+}
+
+.form-card .form-control:focus {
+  border-color: #1c2956;
+  box-shadow: none;
+}
+
+.form-card .btn[type=submit] {
+  font-weight: 700;
+  min-width: 200px;
+  text-transform: uppercase;
+}
+
+.form-card .table.table-separate tr td,
+.form-card .table.table-separate tr th {
+  padding: 12px 24px;
+}
+
+.form-card .table.table-separate tbody td {
+  background-color: #efefef;
+}
+
 .select2-container--default .select2-selection--single {
+  border-color: #ced4da;
+  border-width: 2px;
   height: 35px;
 }
 
@@ -29624,14 +29712,14 @@ img {
 }
 
 .select2-container--default .select2-selection--single .select2-selection__arrow b {
-  border-color: #fff transparent transparent transparent;
+  border-color: #66e7fa transparent transparent transparent;
   border-width: 8px 7px 0 7px;
   margin-left: -6px;
   margin-top: -4px;
 }
 
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
-  border-color: transparent transparent #fff transparent;
+  border-color: transparent transparent #66e7fa transparent;
   border-width: 0 8px 7px 7px;
 }
 
@@ -29748,27 +29836,6 @@ img {
 
 .page_home .card-ot-progress {
   background-color: #1c2955;
-}
-
-.page_home .card-ot-progress .table {
-  border-collapse: separate;
-  border-spacing: 0 6px;
-  font-weight: 700;
-}
-
-.page_home .card-ot-progress .table tr > td {
-  border: 0;
-  padding: 12px 14px;
-}
-
-.page_home .card-ot-progress .table thead {
-  background-color: #3d496f;
-  color: #8a9ec3;
-}
-
-.page_home .card-ot-progress .table tbody tr td {
-  background-color: #fff;
-  color: #1c2955;
 }
 
 .page_home .card-ot-progress .table .step-1 .step-active {

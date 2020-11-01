@@ -182,12 +182,12 @@
           )
         )
         ?>
-        <table class="table">
+        <table class="table table-separate">
           <thead class="text-uppercase">
             <tr>
-              <td>Empresa</td>
-              <td class="text-center">N° O.T.</td>
-              <td class="text-center">Progreso</td>
+              <th>Empresa</th>
+              <th class="text-center">N° O.T.</th>
+              <th class="text-center">Progreso</th>
             </tr>
           </thead>
           <tbody>

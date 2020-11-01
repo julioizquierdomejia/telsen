@@ -5,7 +5,7 @@
 <div class="row">
   
   <div class="col-md-12">
-    <div class="card card-user">
+    <div class="card card-user form-card">
       <div class="card-header">
         <h5 class="card-title">Crear Marca</h5>
       </div>
@@ -15,7 +15,7 @@
           <div class="row">
           	<div class="col-md-12">
               <div class="form-group">
-                <label>Nombre</label>
+                <label class="col-form-label">Nombre</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="" name='name' id="inputname">
               </div>
           			@error('name')
@@ -25,7 +25,7 @@
 
             <div class="col-md-12">
               <div class="form-group">
-                <label>Descripción</label>
+                <label class="col-form-label">Descripción</label>
                 <textarea type="text" class="form-control @error('description') is-invalid @enderror" placeholder="" value="" name="description"></textarea>
               </div>
         				@error('description')

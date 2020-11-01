@@ -5,7 +5,7 @@
 <div class="row">
   
   <div class="col-md-12">
-    <div class="card card-user">
+    <div class="card card-user form-card">
       <div class="card-header">
         <h5 class="card-title">Editar Cliente <strong>{{$cliente->razon_social}}</strong></h5>
       </div>
@@ -15,7 +15,7 @@
           <div class="row">
           	<div class="col-md-3">
               <div class="form-group">
-                <label>RUC del cliente</label>
+                <label class="col-form-label">RUC del cliente</label>
                 <input type="text" class="form-control @error('ruc') is-invalid @enderror" placeholder="" value="{{$cliente->ruc}}" name='ruc' id="inputruc">
               </div>
           			@error('ruc')
@@ -26,7 +26,7 @@
 
             <div class="col-md-8">
               <div class="form-group">
-                <label>Razon social</label>
+                <label class="col-form-label">Razon social</label>
                 <input type="text" class="form-control @error('razon_social') is-invalid @enderror" placeholder="" value="{{$cliente->razon_social}}" name="razon_social">
               </div>
         				@error('razon_social')
@@ -37,19 +37,19 @@
           <div class="row">
           	<div class="col-md-6">
               <div class="form-group">
-                <label>Direccion</label>
+                <label class="col-form-label">Direccion</label>
                 <input type="text" class="form-control @error('direccion') is-invalid @enderror" placeholder="" value="{{$cliente->direccion}}" name="direccion">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label>Telefono de contacto</label>
+                <label class="col-form-label">Telefono de contacto</label>
                 <input type="text" class="form-control @error('telefono') is-invalid @enderror" placeholder="" value="{{$cliente->telefono}}" name="telefono">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label>Celular</label>
+                <label class="col-form-label">Celular</label>
                 <input type="text" class="form-control @error('celular') is-invalid @enderror" placeholder="" value="{{$cliente->celular}}" name="celular">
               </div>
             </div>
@@ -58,19 +58,19 @@
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
-                <label>Persona de Contacto</label>
+                <label class="col-form-label">Persona de Contacto</label>
                 <input type="text" class="form-control @error('contacto') is-invalid @enderror" placeholder="" value="{{$cliente->contacto}}" name="contacto">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label>Teléfono de contacto</label>
+                <label class="col-form-label">Teléfono de contacto</label>
                 <input type="text" class="form-control @error('telefono_contacto') is-invalid @enderror" placeholder="" value="{{$cliente->telefono_contacto}}" name="telefono_contacto">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label>Correo Electrónico</label>
+                <label class="col-form-label">Correo Electrónico</label>
                 <input type="email" class="form-control @error('correo') is-invalid @enderror" placeholder="" value="{{$cliente->correo}}" name="correo">
               </div>
               @error('correo')
@@ -79,7 +79,7 @@
             </div>
             <div class="col-md-3">
               <div class="form-group">
-                <label>Información</label>
+                <label class="col-form-label">Información</label>
                 <input type="text" class="form-control @error('info') is-iinfonvalid @enderror" placeholder="" value="{{$cliente->info}}" name="info">
               </div>
             </div>

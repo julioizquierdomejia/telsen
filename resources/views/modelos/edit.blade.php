@@ -5,7 +5,7 @@
 <div class="row">
   
   <div class="col-md-12">
-    <div class="card card-user">
+    <div class="card card-user form-card">
       <div class="card-header">
         <h5 class="card-title">Editar modelo <strong>{{$modelo->name}}</strong></h5>
       </div>
@@ -15,7 +15,7 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label>Nombre</label>
+                <label class="col-form-label">Nombre</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="{{$modelo->name}}" name="name">
               </div>
                 @error('name')
@@ -25,7 +25,7 @@
 
             <div class="col-md-12">
               <div class="form-group">
-                <label>Descripción</label>
+                <label class="col-form-label">Descripción</label>
                 <!-- <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{$modelo->description}}" name="description"></textarea> -->
                 <input type="text" class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{$modelo->description}}" name="description">
               </div>

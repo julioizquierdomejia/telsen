@@ -9,14 +9,14 @@
 </div>
 <div class="row">
 	<div class="col-md-12">
-    <div class="card">
+    <div class="card form-card">
       <div class="card-header">
         <h4 class="card-title"> Marca de motores</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table" id="tablas">
-            <thead class=" text-primary">
+          <table class="table table-separate" id="tablas">
+            <thead class="text-primary">
               <th>
                 Id
               </th>
@@ -26,7 +26,7 @@
               <th>
                 Descripción
               </th>
-              <th>
+              <th class="text-right">
                 Herramientas
               </th>
             </thead>
@@ -42,8 +42,8 @@
 	                <td>
 	                  {{$marca->description}}
 	                </td>
-	                <td>
-	                	<a href=" {{ route('marcas.edit', $marca) }} " class="btn btn-warning"><i class="fal fa-edit"></i></a>
+	                <td class="text-right">
+	                	<a href="{{ route('marcas.edit', $marca) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>
 	              </tr>

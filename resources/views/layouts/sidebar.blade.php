@@ -1,7 +1,7 @@
-<div class="sidebar" data-color="white" data-active-color="danger">
+<div class="sidebar text-white" data-color="white" data-active-color="danger">
   <div class="sidebar-top">
     <div class="logo d-flex">
-      <a href="#" class="simple-text logo-normal">
+      <a href="/home" class="simple-text logo-normal">
         <div class="logo-image-big">
           <img src="/images/logo-telsen.png">
         </div>
@@ -16,6 +16,7 @@
     </div>
     <div class="sidebar-account text-center pt-3">
       <h4>Bruno Díaz</h4>
+      <p><a class="text-white" href="mailto:{{Auth::user()->email}}">{{Auth::user()->email}}</a></p>
       <div class="logo-image-small">
         <span class="icon"><img src="/assets/img/logo-small.png" width="50" height="50"></span>
       </div>

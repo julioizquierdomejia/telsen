@@ -10,13 +10,13 @@
 </div>
 <div class="row">
 	<div class="col-md-12">
-    <div class="card">
+    <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title"> Simple Table</h4>
+        <h4 class="card-title">Orden de Trabajo</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table">
+          <table class="table table-separate">
             <thead class=" text-primary">
               <th>
                 Id
@@ -27,7 +27,7 @@
               <th>
                 Descripción
               </th>
-              <th class="text-right">
+              <th class="text-center">
                 Marca del motor
               </th>
               <th class="text-center">
@@ -46,7 +46,7 @@
 	                <td>
 	                  {{$orden->descripcion_motor}}
 	                </td>
-	                <td class="text-right">
+	                <td class="text-center">
 	                  {{$orden->marca['name']}}
 	                </td>
 	                <td class="text-center">

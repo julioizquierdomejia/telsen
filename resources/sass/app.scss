@@ -20,6 +20,8 @@ body {
 @import "scss/light.scss";
 @import "scss/duotone.scss";
 @import "scss/v4-shims.scss";
+@import "jquery.dataTables-1.10.2.scss";
+//@import '~paper-dashboard/assets/sass/paper-dashboard.scss';
 
 img {
 	height: auto;
@@ -30,6 +32,13 @@ img {
 		margin-right: -5px;
 		> .item {
 			padding: 0 5px;
+		}
+	}
+	&-medium {
+		margin-left: -10px;
+		margin-right: -10px;
+		> .item {
+			padding: 0 10px;
 		}
 	}
 }
@@ -67,7 +76,7 @@ img {
 .page {
 	.sidebar {
 		&:after {
-			background-color: #004580;
+			background-color: $blue;
 		}
 		&-top {
 			position: relative;
@@ -129,7 +138,7 @@ img {
 	.navbar {
 		.navbar-wrapper {
 			.btn-link {
-				color: #004580 !important;
+				color: $blue !important;
 			}
 		}
 		.fa-phone {
@@ -140,6 +149,129 @@ img {
 		.dropdown-item {
 			border-radius: 0;
 		}
+	}
+}
+.page_home {
+	.welcome {
+		background: $blue;
+	    color: #fff;
+	    border-radius: 4px 4px 0 0;
+	    margin-bottom: -20px;
+	}
+	.card-subtitle {
+		margin-top: 0;
+	}
+	.card-list {
+		.item {
+			.btn {
+				background-color: transparent !important;
+				font-size: 17px;
+    			line-height: 15px;
+				&:hover, &:focus, &:active {
+					color: $blue !important;
+				}
+			}
+		}
+		.created-ot {
+			.card-title {
+				color: #0584ef;
+			}
+		}
+		.pending-ot {
+			.card-title {
+				color: #e76217;
+			}
+		}
+		.atended-ot {
+			.card-title {
+				color: #1ec539;
+			}
+		}
+		.prom-ot {
+			.card-title {
+				color: #b2960f;
+			}
+		}
+		.personal-ot {
+			.card-title {
+				color: #ed1043;
+			}
+		}
+	}
+
+	.card-ot-progress {
+		background-color: #1c2955;
+		.table {
+			border-collapse: separate;
+    		border-spacing: 0 6px;
+    		font-weight: 700;
+    		tr {
+    			> td {
+    				border: 0;
+    				padding: 12px 14px;
+    			}
+    		}
+			thead {
+				background-color: #3d496f;
+				color: #8a9ec3;
+			}
+			tbody {
+				tr {
+					td {
+						background-color: $white;
+						color: #1c2955;
+					}
+				}
+			}
+			.step {
+				&-1 {
+					.step-active {
+						background-color: #773908;
+					}
+				}
+				&-2 {
+					.step-active {
+						background-color: #0b5876;
+					}
+				}
+				&-3 {
+					.step-active {
+						background-color: #029487;
+					}
+				}
+				&-4 {
+					.step-active {
+						background-color: #10d428;
+					}
+				}
+			}
+		}
+
+		.list-steps {
+			border-collapse: separate;
+			border-spacing: 0 0;
+			display: table;
+			table-layout: fixed;
+			width: 130px;
+			margin: 0 auto;
+			.step {
+				background-color: #b6b6b6;
+				border: 1px solid #a5a5a5;
+				display: table-cell;
+				height: 11px;
+				vertical-align: middle;
+				&:first-child {
+					border-radius: 8px 0 0 8px;
+				}
+				&:last-child {
+					border-radius: 0 8px 8px 0;
+				}
+			}
+		}
+	}
+
+	.resumen-card {
+		background-color: #01416f;
 	}
 }
 .page_client {

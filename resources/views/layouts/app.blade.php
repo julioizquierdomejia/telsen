@@ -25,8 +25,7 @@ Coded by www.creative-tim.com
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 
-  <!--     Fonts and icons     -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"> -->
 
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;900&display=swap" rel="stylesheet">
@@ -34,7 +33,7 @@ Coded by www.creative-tim.com
   <link href="{{ asset('assets/css/paper-dashboard.css?v=2.0.1') }}" rel="stylesheet" />
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="{{ asset('assets/demo/demo.css') }}" rel="stylesheet" />
+  <!-- <link href="{{ asset('assets/demo/demo.css') }}" rel="stylesheet" /> -->
 
   @yield('css')
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
@@ -57,7 +56,6 @@ Coded by www.creative-tim.com
     </div>
   </div>
   <!--   Core JS Files   -->
-  
   
   <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
   <!-- <script src="{{ asset('assets/js/core/jquery.min.js') }}"></script> -->

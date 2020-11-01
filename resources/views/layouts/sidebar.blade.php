@@ -3,7 +3,7 @@
     <div class="logo d-flex">
       <a href="/home" class="simple-text logo-normal">
         <div class="logo-image-big">
-          <img src="/images/logo-telsen.png">
+          <img src="/images/logo-white.png">
         </div>
       </a>
       <div class="col">
@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="sidebar-account text-center pt-3">
-      <h4>Bruno Díaz</h4>
+      <h4 class="account-name">Bruno Díaz</h4>
       <p><a class="text-white" href="mailto:{{Auth::user()->email}}">{{Auth::user()->email}}</a></p>
       <div class="logo-image-small">
         <span class="icon"><img src="/assets/img/logo-small.png" width="50" height="50"></span>

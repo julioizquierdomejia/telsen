@@ -29741,6 +29741,10 @@ img {
   background-color: #121212;
 }
 
+.page .sidebar .account-name {
+  font-size: 14px;
+}
+
 .page .sidebar .logo-image-small {
   margin-bottom: -35px;
 }
@@ -29759,8 +29763,8 @@ img {
 .page .sidebar .nav li > a {
   border-radius: 0 20px 20px 0;
   color: #fff;
-  font-size: 14px;
-  padding: 5px 8px;
+  font-size: 15px;
+  padding: 5px 15px;
   margin-left: 0;
   text-transform: none;
 }
@@ -29789,6 +29793,10 @@ img {
 
 .page .dropdown-menu .dropdown-item {
   border-radius: 0;
+}
+
+.page_login {
+  height: 100vh;
 }
 
 .page_home .welcome {

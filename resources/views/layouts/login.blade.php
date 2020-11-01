@@ -19,12 +19,12 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
-    <div id="app">
+<body class="page page_login">
+    <div class="d-flex flex-column h-100" id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="images/Logo-telsenpng.png" width="240">
+                    <img src="/images/logo-telsen.png" width="240">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -76,7 +76,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 w-100 my-auto">
             @yield('content')
         </main>
     </div>

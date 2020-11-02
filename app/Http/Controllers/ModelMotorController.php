@@ -50,7 +50,7 @@ class ModelMotorController extends Controller
         $brand->save();
 
         $modelos = ModelMotor::all();
-        return view('modelos.index', compact('modelos'));
+        return redirect('modelos')->with('modelos');
     }
 
     /**

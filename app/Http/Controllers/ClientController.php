@@ -85,8 +85,8 @@ class ClientController extends Controller
         }
 
 
-        $clientes = Client::all();
-        return view('clientes.index', compact('clientes'));
+        //$clientes = Client::all();
+        return redirect('clientes');
     }
 
     /**

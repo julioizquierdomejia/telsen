@@ -6,6 +6,7 @@ use App\Models\Ot;
 use App\Models\Client;
 use App\Models\BrandMotor;
 use App\Models\ModelMotor;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class OtController extends Controller
@@ -50,7 +51,6 @@ class OtController extends Controller
         $clientes = Client::all();
         $marcas = BrandMotor::all();
         $modelos = ModelMotor::all();
-
 
         return view('ordenes.create', compact('ot_numero', 'clientes', 'marcas', 'modelos'));
     }
@@ -103,6 +103,14 @@ class OtController extends Controller
         $ot->velocidad = $request->input('velocidad');
 
         $ot->save();
+
+        $status = Status::where('id', 1)->first();
+        if ($status) {
+            \DB::table('status_ot')->insert([
+                'status_id' => $status->id,
+                'ot_id' => $ot->id,
+            ]);
+        }
 
         return redirect('ordenes');
     }

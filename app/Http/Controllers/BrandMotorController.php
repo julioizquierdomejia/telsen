@@ -50,7 +50,7 @@ class BrandMotorController extends Controller
         $brand->save();
 
         $marcas = BrandMotor::all();
-        return view('marcas.index', compact('marcas'));
+        return redirect('marcas')->with('marcas');
     }
 
     /**

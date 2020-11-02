@@ -30,6 +30,13 @@
                 <input type="text" class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{$marca->description}}" name="description">
               </div>
             </div>
+            <div class="col-md-3 form-group">
+              <label class="col-form-label">Estado</label>
+              <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
+                <option value="1" {{$marca->enabled == 1 ? 'selected': ''}}>Activo</option>
+                <option value="0" {{$marca->enabled == 0 ? 'selected': ''}}>Inactivo</option>
+              </select>
+            </div>
           </div>
 
           <div class="row">

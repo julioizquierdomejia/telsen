@@ -32,6 +32,13 @@
         					<p class="error-message text-danger">{{ $message }}</p>
         				@enderror
             </div>
+            <div class="col-md-3 form-group">
+              <label class="col-form-label">Estado</label>
+              <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+            </div>
           </div>
 
           <div class="row">

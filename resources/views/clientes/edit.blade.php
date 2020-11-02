@@ -23,8 +23,7 @@
           			@enderror
             </div>
 
-
-            <div class="col-md-8">
+            <div class="col-md-9">
               <div class="form-group">
                 <label class="col-form-label">Razon social</label>
                 <input type="text" class="form-control @error('razon_social') is-invalid @enderror" placeholder="" value="{{$cliente->razon_social}}" name="razon_social">
@@ -82,6 +81,13 @@
                 <label class="col-form-label">Información</label>
                 <input type="text" class="form-control @error('info') is-iinfonvalid @enderror" placeholder="" value="{{$cliente->info}}" name="info">
               </div>
+            </div>
+            <div class="col-md-3 form-group">
+              <label class="col-form-label">Estado</label>
+              <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
+                <option value="1" {{$cliente->enabled == 1 ? 'selected': ''}}>Activo</option>
+                <option value="0" {{$cliente->enabled == 0 ? 'selected': ''}}>Inactivo</option>
+              </select>
             </div>
           </div>
 

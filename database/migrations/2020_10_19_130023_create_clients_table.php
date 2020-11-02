@@ -24,6 +24,7 @@ class CreateClientsTable extends Migration
             $table->string('telefono_contacto')->nullable();
             $table->string('correo')->nullable();
             $table->string('info')->nullable();
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
     }

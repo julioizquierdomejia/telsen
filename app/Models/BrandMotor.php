@@ -11,7 +11,7 @@ class BrandMotor extends Model
 
     protected $fillable = [
         'name',
-        'description'
-
+        'description',
+        'enabled'
     ];
 }

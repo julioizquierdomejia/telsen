@@ -47,6 +47,8 @@ class ClientController extends Controller
         $rules = [
             'ruc' => 'required|min:8|unique:clients',
             'razon_social' => 'required',
+            'enabled' => 'boolean',
+            'correo' => 'required|unique:clients',
         ];
 
         $messages = [
@@ -67,9 +69,9 @@ class ClientController extends Controller
         $cliente->telefono_contacto = $request->input('telefono_contacto');
         $cliente->correo = $request->input('correo');
         $cliente->info = $request->input('info');
+        $cliente->enabled = $request->input('enabled');
 
         $cliente->save();
-
 
         //Agregamos cliente como usuario
         $role_user = Role::where('name', 'client')->first();
@@ -139,6 +141,7 @@ class ClientController extends Controller
         $data['telefono_contacto'] = $request->get('telefono_contacto');
         $data['correo'] = $request->get('correo');
         $data['info'] = $request->get('info');
+        $data['enabled'] = $request->get('enabled');
 
         $client->update($data);
 

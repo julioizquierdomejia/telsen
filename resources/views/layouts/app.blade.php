@@ -73,14 +73,14 @@ Coded by www.creative-tim.com
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{{ asset('assets/js/paper-dashboard.min.js?v=2.0.1') }}" type="text/javascript"></script><!-- Paper Dashboard DEMO methods, don't include it in your project! -->
   <!--script src="../assets/demo/demo.js"></script-->
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 
   <script type="text/javascript">
     $(document).ready(function() {
         $('#tablas').DataTable();
+        $('.dropdown2').select2();
     } );
   </script>
-
   @yield('javascript')
 
 </body>

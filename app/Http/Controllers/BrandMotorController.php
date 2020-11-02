@@ -46,10 +46,11 @@ class BrandMotorController extends Controller
         
         $brand->name = $request->input('name');
         $brand->description = $request->input('description');
+        $brand->enabled = $request->input('enabled');
 
         $brand->save();
 
-        $marcas = BrandMotor::all();
+        $marcas = BrandMotor::where('enabled', 1)->get();
         return redirect('marcas')->with('marcas');
     }
 
@@ -97,6 +98,7 @@ class BrandMotorController extends Controller
         $rules = array(
             'name'       => 'required',
             'description'      => 'required',
+            'enabled'      => 'required',
         );
         $validator = \Validator::make($request->all(), $rules);
 
@@ -109,6 +111,7 @@ class BrandMotorController extends Controller
             $marca = BrandMotor::find($id);
             $marca->name       = $request->get('name');
             $marca->description      = $request->get('description');
+            $marca->enabled      = $request->get('enabled');
             $marca->save();
 
             // redirect

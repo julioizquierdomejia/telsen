@@ -11,7 +11,7 @@ class ModelMotor extends Model
 
     protected $fillable = [
         'name',
-        'description'
-
+        'description',
+        'enabled'
     ];
 }

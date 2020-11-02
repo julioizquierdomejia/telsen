@@ -46,10 +46,11 @@ class ModelMotorController extends Controller
         
         $brand->name = $request->input('name');
         $brand->description = $request->input('description');
+        $brand->enabled = $request->input('enabled');
 
         $brand->save();
 
-        $modelos = ModelMotor::all();
+        $modelos = ModelMotor::where('enabled', 1)->get();
         return redirect('modelos')->with('modelos');
     }
 
@@ -98,6 +99,7 @@ class ModelMotorController extends Controller
         $rules = array(
             'name'       => 'required',
             'description'      => 'required',
+            'enabled'      => 'boolean',
         );
         $validator = \Validator::make($request->all(), $rules);
 
@@ -110,6 +112,7 @@ class ModelMotorController extends Controller
             $marca = ModelMotor::find($id);
             $marca->name       = $request->get('name');
             $marca->description      = $request->get('description');
+            $marca->enabled      = $request->get('enabled');
             $marca->save();
 
             // redirect

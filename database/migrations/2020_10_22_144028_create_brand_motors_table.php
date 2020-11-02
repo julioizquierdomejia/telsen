@@ -17,6 +17,7 @@ class CreateBrandMotorsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
     }

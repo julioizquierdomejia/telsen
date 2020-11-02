@@ -48,9 +48,9 @@ class OtController extends Controller
         $totalOts = Ot::count();
         $ot_numero = $totalOts + 1;
 
-        $clientes = Client::all();
-        $marcas = BrandMotor::all();
-        $modelos = ModelMotor::all();
+        $clientes = Client::where('enabled', 1)->get();
+        $marcas = BrandMotor::where('enabled', 1)->get();
+        $modelos = ModelMotor::where('enabled', 1)->get();
 
         return view('ordenes.create', compact('ot_numero', 'clientes', 'marcas', 'modelos'));
     }
@@ -78,6 +78,7 @@ class OtController extends Controller
             'medida_potencia' => 'required',
             'voltaje' => 'required',
             'velocidad' => 'required',
+            'enabled' => 'boolean',
         ];
 
         $messages = [
@@ -101,6 +102,7 @@ class OtController extends Controller
         $ot->medida_potencia = $request->input('medida_potencia');
         $ot->voltaje = $request->input('voltaje');
         $ot->velocidad = $request->input('velocidad');
+        $ot->enabled = $request->input('enabled');
 
         $ot->save();
 
@@ -150,9 +152,9 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $clientes = Client::all();
-        $marcas = BrandMotor::all();
-        $modelos = ModelMotor::all();
+        $clientes = Client::where('enabled', 1)->get();
+        $marcas = BrandMotor::where('enabled', 1)->get();
+        $modelos = ModelMotor::where('enabled', 1)->get();
         $orden = Ot::findOrFail($id);
 
         return view('ordenes.edit', compact('orden', 'clientes', 'marcas', 'modelos'));
@@ -182,6 +184,7 @@ class OtController extends Controller
             'medida_potencia' => 'required',
             'voltaje' => 'required',
             'velocidad' => 'required',
+            'enabled' => 'boolean',
         );
         $validator = \Validator::make($request->all(), $rules);
 
@@ -204,6 +207,7 @@ class OtController extends Controller
             $ot->medida_potencia = $request->get('medida_potencia');
             $ot->voltaje = $request->get('voltaje');
             $ot->velocidad = $request->get('velocidad');
+            $ot->enabled = $request->get('enabled');
             $ot->save();
 
             // redirect

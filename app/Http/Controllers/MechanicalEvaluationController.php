@@ -17,7 +17,13 @@ class MechanicalEvaluationController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $formatos = MechanicalEvaluation::all();
+        $formatos = Ot::join('status_ot', 'status_ot.ot_id', '=', 'status_ot.ot_id')
+                        ->join('clients', 'clients.id', '=', 'ots.client_id')
+                        ->select('ots.*', 'clients.razon_social')
+                        ->where('ots.enabled', 1)
+                        ->where('clients.enabled', 1)
+                        ->where('status_ot.status_id', 1)
+                        ->get();
         return view('formatos.mechanical.index', compact('formatos'));
     }
 

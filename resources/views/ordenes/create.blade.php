@@ -152,6 +152,13 @@
                 <input type="number" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="" name="velocidad">
               </div>
             </div>
+            <div class="col-md-3 form-group">
+              <label class="col-form-label">Estado</label>
+              <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+            </div>
           </div>
 
           <div class="row">

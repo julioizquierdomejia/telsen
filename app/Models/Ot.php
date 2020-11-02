@@ -23,6 +23,7 @@ class Ot extends Model
         'medida_potencia',
         'voltaje',
         'velocidad',
+        'enabled',
 
     ];
 

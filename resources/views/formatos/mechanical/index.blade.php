@@ -18,13 +18,13 @@
           <table class="table table-separate" id="tablas">
             <thead class="text-primary">
               <th>
-                Id
+                OT Id
               </th>
               <th>
-                Nombre
+                Cliente
               </th>
               <th>
-                Descripción
+                Motor
               </th>
               <th class="text-right">
                 Herramientas
@@ -37,10 +37,10 @@
 	                  {{$formato->id}}
 	                </td>
 	                <td>
-	                  {{$formato->name}}
+	                  {{$formato->razon_social}}
 	                </td>
 	                <td>
-	                  {{$formato->description}}
+	                  {{$formato->descripcion_motor}}
 	                </td>
 	                <td class="text-right">
 	                	<a href="{{ route('formatos.edit', $formato) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>

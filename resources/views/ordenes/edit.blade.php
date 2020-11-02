@@ -1,9 +1,5 @@
 @extends('layouts.app', ['title' => 'Editar "O.T. ' . sprintf('%05d', $orden->id) .' | '. $orden->marca["name"] . '"' ])
 
-@section('css')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
-@endsection
-
 @section('content')
 
 <div class="row">

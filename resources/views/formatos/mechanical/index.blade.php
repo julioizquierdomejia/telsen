@@ -3,11 +3,6 @@
 @section('content')
 
 <div class="row">
-	<div class="col">
-		<a href="{{ route('formatos.mechanical.create') }}" class="btn btn-primary">Crear Evaluación Mecánica</a>
-	</div>
-</div>
-<div class="row">
 	<div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
@@ -31,19 +26,19 @@
               </th>
             </thead>
             <tbody>
-            	@foreach($formatos as $formato)
+            	@foreach($ots as $ot)
 	              <tr>
 	                <td>
-	                  {{$formato->id}}
+	                  {{$ot->id}}
 	                </td>
 	                <td>
-	                  {{$formato->razon_social}}
+	                  {{$ot->razon_social}}
 	                </td>
 	                <td>
-	                  {{$formato->descripcion_motor}}
+	                  {{$ot->descripcion_motor}}
 	                </td>
 	                <td class="text-right">
-	                	<a href="{{ route('formatos.edit', $formato) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
+	                	<a href="{{ route('formatos.mechanical.evaluate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>
 	              </tr>

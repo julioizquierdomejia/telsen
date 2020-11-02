@@ -1,25 +1,20 @@
-@extends('layouts.app', ['title' => 'Crear Evaluación Mecánica'])
+@extends('layouts.app', ['title' => 'Evaluación Mecánica'])
 
 @section('content')
 <div class="row">
   <div class="col-md-12">
     <div class="card card-user form-card">
       <div class="card-header">
-        <h5 class="card-title">Crear Evaluación Mecánica</h5>
+        <h5 class="card-title">Evaluación Mecánica</h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="/formato/mechanical" enctype="multipart/form-data">
+        <form class="form-group" method="POST" action="{{route('formatos.mechanical.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
           	<div class="col-md-6 form-group">
               <label class="col-form-label">OT</label>
-              <select name="ot_id" class="form-control @error('ot_id') is-invalid @enderror dropdown2" id="selectOT">
-                <option value="">Selecciona OT</option>
-                @foreach($ots as $ot)
-                  <option value="{{ $ot->id }}">{{ $ot->name }}</option>
-                @endforeach
-              </select>
-        			@error('client_id')
+              <input type="text" class="form-control" readonly="" name="ot_id" value="{{$ot->id}}">
+        			@error('ot_id')
         			<p class="error-message text-danger">{{ $message }}</p>
         			@enderror
             </div>
@@ -31,6 +26,13 @@
                 <label class="col-form-label">Máquina</label>
                 <input type="text" class="form-control @error('maquina') is-invalid @enderror" placeholder="Máquina" value="" name="maquina">
               @error('maquina')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+            </div>
+            <div class="col-md-3 form-group">
+                <label class="col-form-label">RPM</label>
+                <input type="text" class="form-control @error('rpm') is-invalid @enderror" placeholder="RPM" value="" name="rpm">
+              @error('rpm')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>

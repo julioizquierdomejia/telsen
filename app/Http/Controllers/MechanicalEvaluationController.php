@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MechanicalEvaluation;
 use App\Models\Ot;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class MechanicalEvaluationController extends Controller
@@ -17,15 +18,24 @@ class MechanicalEvaluationController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $formatos = Ot::join('status_ot', 'status_ot.ot_id', '=', 'status_ot.ot_id')
-                        ->join('clients', 'clients.id', '=', 'ots.client_id')
+        //$ots = Ot::join('status_ot', 'status_ot.ot_id', '=', 'status_ot.ot_id')
+        $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                         ->select('ots.*', 'clients.razon_social')
                         ->where('ots.enabled', 1)
                         ->where('clients.enabled', 1)
-                        ->where('status_ot.status_id', 1)
+                        //->where('status_ot.status_id', 1)
                         ->groupBy('ots.id')
                         ->get();
-        return view('formatos.mechanical.index', compact('formatos'));
+
+        $ots = [];
+        foreach ($_ots as $key => $ot) {
+            $ot_status = \DB::table('status_ot')->where('status_ot.ot_id', '=', $ot->id)->get();
+            $last = $ot_status->last();
+            if ($last && $last->status_id == 1) {
+                $ots[] = $ot;
+            }
+        }
+        return view('formatos.mechanical.index', compact('ots'));
     }
 
     /**
@@ -33,13 +43,13 @@ class MechanicalEvaluationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function evaluate(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $ots = Ot::where('enabled', 1)->get();
+        $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
 
-        return view('formatos.mechanical.create', compact('ots'));
+        return view('formatos.mechanical.evaluate', compact('ot'));
     }
 
     /**
@@ -48,13 +58,73 @@ class MechanicalEvaluationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
-
-        $meval = new MechanicalEvaluation();
         
-        $meval->client_id = $request->input('client_id');
+        // validate
+        // read more on validation at http://laravel.com/docs/validation
+        $rules = array(
+            'ot_id' => 'required',
+
+            'rpm' => 'required',
+            'hp_kw' => 'required',
+
+            /*'serie' => 'required',
+            'solped' => 'required',
+            'placa_caract_orig' => 'required',
+            'tapas' => 'required',
+            'ventilador' => 'required',
+            'caja_conexion' => 'required',
+            'ejes' => 'required',
+            'acople' => 'required',
+            'bornera' => 'required',
+            'fundas' => 'required',
+            'chaveta' => 'required',
+            'impro_seal' => 'required',
+            'laberintos' => 'required',
+            'estator' => 'required',
+
+            'slam_muelle_p1' => 'required',
+            'slam_muelle_p2' => 'required',
+            'resortes_contra_tapas' => 'required',
+            'alineamiento_paquete' => 'required',
+
+            'rotor_deplexion_eje' => 'required',
+            'rotor_valor_balanceo' => 'required',
+            'rotor_cod_rodaje_p1' => 'required',
+            'rotor_cod_rodaje_p2' => 'required',
+            'rotor_asiento_rodaje_p1' => 'required',
+            'rotor_asiento_rodaje_p2' => 'required',
+            'rotor_eje_zona_acople_p1' => 'required',
+            'rotor_eje_zona_acople_p2' => 'required',
+            'rotor_medida_chaveta_p1' => 'required',
+            'rotor_medida_chaveta_p2' => 'required',
+
+            'estator_alojamiento_rodaje_tapa_p10' => 'required',
+            'estator_alojamiento_rodaje_tapa_p20' => 'required',
+            'estator_pestana_tapa_p1' => 'required',
+            'estator_pestana_tapa_p2' => 'required',
+
+            'estator_contra_tapa_interna_p1' => 'required',
+            'estator_contra_tapa_interna_p2' => 'required',
+            'estator_contra_tapa_externa_p1' => 'required',
+            'estator_contra_tapa_externa_p2' => 'required',
+            'estator_ventilador_0' => 'required',
+            'estator_alabes' => 'required',
+            'estator_caja_conexion' => 'required',
+            'estator_tapa_conexion' => 'required',
+
+            'observaciones' => 'required',
+
+            'works' => 'required'*/
+        );
+
+        $validator = $this->validate($request, $rules);
+
+        // store
+        $meval = new MechanicalEvaluation();
+
         $meval->ot_id = $request->input('ot_id');
 
         $meval->rpm = $request->input('rpm');
@@ -111,6 +181,16 @@ class MechanicalEvaluationController extends Controller
 
         $meval->save();
 
+        $status = Status::where('id', 2)->first();
+        if ($status) {
+            \DB::table('status_ot')->insert([
+                'status_id' => $status->id,
+                'ot_id' => $meval->id,
+            ]);
+        }
+
+        // redirect
+        \Session::flash('message', 'Successfully updated formato!');
         return redirect('formatos/mechanical');
     }
 
@@ -139,8 +219,8 @@ class MechanicalEvaluationController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $modelo = MechanicalEvaluation::findOrFail($id);
-        return view('formatos.mechanical.edit', compact('modelo'));
+        $formato = MechanicalEvaluation::findOrFail($id);
+        return view('formatos.mechanical.edit', compact('formato'));
     }
 
     /**
@@ -156,14 +236,8 @@ class MechanicalEvaluationController extends Controller
         
         // validate
         // read more on validation at http://laravel.com/docs/validation
-        $rules = array(
-            'name'       => 'required',
-            'description'      => 'required',
-            'enabled'      => 'boolean',
-        );
 
         $rules = array(
-            'client_id' => 'required',
             'ot_id' => 'required',
 
             'rpm' => 'required',
@@ -223,13 +297,12 @@ class MechanicalEvaluationController extends Controller
 
         // process the login
         if ($validator->fails()) {
-            return redirect('formato/mechanical/' . $id . '/editar')
+            return redirect('formatos/mechanical/' . $id . '/editar')
                 ->withErrors($validator);
         } else {
             // store
             $meval = MechanicalEvaluation::find($id);
 
-            $meval->client_id = $request->input('client_id');
             $meval->ot_id = $request->input('ot_id');
 
             $meval->rpm = $request->input('rpm');
@@ -288,7 +361,7 @@ class MechanicalEvaluationController extends Controller
 
             // redirect
             \Session::flash('message', 'Successfully updated formato!');
-            return redirect('formato/mechanical');
+            return redirect('formatos/mechanical');
         }
     }
 

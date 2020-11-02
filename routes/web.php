@@ -62,16 +62,16 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//rutas para eval mechanical
 	Route::get('formatos/mechanical', [App\Http\Controllers\MechanicalEvaluationController::class, 'index'])->name('formatos.mechanical');
-	Route::get('formatos/mechanical/crear', [App\Http\Controllers\MechanicalEvaluationController::class, 'create'])->name('formatos.mechanical.create');
-	Route::post('formatos/mechanical', [App\Http\Controllers\MechanicalEvaluationController::class, 'store'])->name('formatos.mechanical.store');
-	Route::get('formatos/mechanical/{id}/editar', [App\Http\Controllers\MechanicalEvaluationController::class, 'edit'])->name('formatos.edit');
+	Route::get('formatos/mechanical/{id}/evaluar', [App\Http\Controllers\MechanicalEvaluationController::class, 'evaluate'])->name('formatos.mechanical.evaluate');
+	Route::post('formatos/mechanical/{id}/store', [App\Http\Controllers\MechanicalEvaluationController::class, 'store'])->name('formatos.mechanical.store');
+	Route::get('formatos/mechanical/{id}/editar', [App\Http\Controllers\MechanicalEvaluationController::class, 'edit'])->name('formatos.mechanical.edit');
 	Route::post('formatos/mechanical/{id}/editar', [App\Http\Controllers\MechanicalEvaluationController::class, 'update'])->name('formatos.mechanical.update');
 
 	//rutas para eval electrical
 	Route::get('formatos/electrical', [App\Http\Controllers\ElectricalEvaluationController::class, 'index'])->name('formatos.electrical');
 	Route::get('formatos/electrical/crear', [App\Http\Controllers\ElectricalEvaluationController::class, 'create'])->name('formatos.electrical.create');
 	Route::post('formatos/electrical', [App\Http\Controllers\ElectricalEvaluationController::class, 'store'])->name('formatos.electrical.store');
-	Route::get('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'edit'])->name('formatos.edit');
+	Route::get('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'edit'])->name('formatos.electrical.edit');
 	Route::post('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'update'])->name('formatos.electrical.update');
 
 });

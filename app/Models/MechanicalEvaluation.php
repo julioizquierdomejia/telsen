@@ -10,7 +10,7 @@ class MechanicalEvaluation extends Model
     use HasFactory;
 
     protected $fillable = [
-    	'client_id',
+    	//'client_id',
         'ot_id',
 
         'rpm',

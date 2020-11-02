@@ -32,6 +32,27 @@
   </a>
 </li>
 
+<li class="">
+  <a href="#" data-toggle="collapse" data-target="#collapseFormatos" aria-expanded="false">
+    <i class="fal fa-file-check"></i>
+    <p>Formatos</p>
+  </a>
+  <ul class="collapse list-inline pl-3" id="collapseFormatos">
+    <li>
+      <a class="mr-0" href="{{route('formatos.mechanical')}}">
+        <i class="fas fa-car"></i>
+        <p>F. Evaluación Mecánica</p>
+      </a>
+    </li>
+    <li>
+      <a class="mr-0" href="{{route('formatos.electrical')}}">
+        <i class="fas fa-bolt"></i>
+        <p>F. Evaluación Eléctrica</p>
+      </a>
+    </li>
+  </ul>
+</li>
+
 <!--li>
   <a href="./map.html">
     <i class="fal fa-chalkboard-teacher"></i>

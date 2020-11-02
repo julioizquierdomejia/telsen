@@ -25,7 +25,6 @@ class UserSeeder extends Seeder
         $user->email = 'julio.izquierdo.mejia@gmail.com';
         $user->password = bcrypt('M4r14Jul14123456');
         $user->status = 1;
-
         $user->save();
 
         //vamos a relacionar roles con usuarios
@@ -35,7 +34,6 @@ class UserSeeder extends Seeder
         $user->email = 'admin@gmail.com';
         $user->password = bcrypt('admin');
         $user->status = 1;
-
         $user->save();
 
         //vamos a relacionar roles con usuarios
@@ -46,7 +44,6 @@ class UserSeeder extends Seeder
         $user->email = 'arturotoribio@telsen.net';
         $user->password = bcrypt('12345678');
         $user->status = 1;
-
         $user->save();
 
         //vamos a relacionar roles con usuarios
@@ -57,7 +54,33 @@ class UserSeeder extends Seeder
         $user->email = 'ruben.carhuayal@gmail.com';
         $user->password = bcrypt('12345678');
         $user->status = 1;
+        $user->save();
 
+        //vamos a relacionar roles con usuarios
+        $user->roles()->attach($role_superadmin);
+
+        $user = new User();
+        $user->email = 'recepcion@gmail.com';
+        $user->password = bcrypt('recepcion');
+        $user->status = 1;
+        $user->save();
+
+        //vamos a relacionar roles con usuarios
+        $user->roles()->attach($role_superadmin);
+
+        $user = new User();
+        $user->email = 'evaluadorm@gmail.com';
+        $user->password = bcrypt('evaluadorm');
+        $user->status = 1;
+        $user->save();
+
+        //vamos a relacionar roles con usuarios
+        $user->roles()->attach($role_superadmin);
+
+        $user = new User();
+        $user->email = 'evaluadore@gmail.com';
+        $user->password = bcrypt('evaluadore');
+        $user->status = 1;
         $user->save();
 
         //vamos a relacionar roles con usuarios

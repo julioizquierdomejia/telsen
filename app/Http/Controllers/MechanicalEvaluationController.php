@@ -23,6 +23,7 @@ class MechanicalEvaluationController extends Controller
                         ->where('ots.enabled', 1)
                         ->where('clients.enabled', 1)
                         ->where('status_ot.status_id', 1)
+                        ->groupBy('ots.id')
                         ->get();
         return view('formatos.mechanical.index', compact('formatos'));
     }

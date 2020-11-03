@@ -73,54 +73,54 @@ class MechanicalEvaluationController extends Controller
             'rpm' => 'required',
             'hp_kw' => 'required',
 
-            'serie' => 'required',
-            'solped' => 'required',
-            'placa_caract_orig' => 'required',
-            'tapas' => 'required',
-            'ventilador' => 'required',
-            'caja_conexion' => 'required',
-            'ejes' => 'required',
-            'acople' => 'required',
-            'bornera' => 'required',
-            'fundas' => 'required',
-            'chaveta' => 'required',
-            'impro_seal' => 'required',
-            'laberintos' => 'required',
-            'estator' => 'required',
+            'serie' => 'string|nullable',
+            'solped' => 'string|nullable',
+            'placa_caract_orig' => 'string|nullable',
+            'tapas' => 'string|nullable',
+            'ventilador' => 'string|nullable',
+            'caja_conexion' => 'string|nullable',
+            'ejes' => 'string|nullable',
+            'acople' => 'string|nullable',
+            'bornera' => 'string|nullable',
+            'fundas' => 'string|nullable',
+            'chaveta' => 'string|nullable',
+            'impro_seal' => 'string|nullable',
+            'laberintos' => 'string|nullable',
+            'estator' => 'string|nullable',
 
-            'slam_muelle_p1' => 'required',
-            'slam_muelle_p2' => 'required',
-            'resortes_contra_tapas' => 'required',
-            'alineamiento_paquete' => 'required',
+            'slam_muelle_p1' => 'string|nullable',
+            'slam_muelle_p2' => 'string|nullable',
+            'resortes_contra_tapas' => 'string|nullable',
+            'alineamiento_paquete' => 'string|nullable',
 
-            'rotor_deplexion_eje' => 'required',
-            'rotor_valor_balanceo' => 'required',
-            'rotor_cod_rodaje_p1' => 'required',
-            'rotor_cod_rodaje_p2' => 'required',
-            'rotor_asiento_rodaje_p1' => 'required',
-            'rotor_asiento_rodaje_p2' => 'required',
-            'rotor_eje_zona_acople_p1' => 'required',
-            'rotor_eje_zona_acople_p2' => 'required',
-            'rotor_medida_chaveta_p1' => 'required',
-            'rotor_medida_chaveta_p2' => 'required',
+            'rotor_deplexion_eje' => 'string|nullable',
+            'rotor_valor_balanceo' => 'string|nullable',
+            'rotor_cod_rodaje_p1' => 'string|nullable',
+            'rotor_cod_rodaje_p2' => 'string|nullable',
+            'rotor_asiento_rodaje_p1' => 'string|nullable',
+            'rotor_asiento_rodaje_p2' => 'string|nullable',
+            'rotor_eje_zona_acople_p1' => 'string|nullable',
+            'rotor_eje_zona_acople_p2' => 'string|nullable',
+            'rotor_medida_chaveta_p1' => 'string|nullable',
+            'rotor_medida_chaveta_p2' => 'string|nullable',
 
-            'estator_alojamiento_rodaje_tapa_p10' => 'required',
-            'estator_alojamiento_rodaje_tapa_p20' => 'required',
-            'estator_pestana_tapa_p1' => 'required',
-            'estator_pestana_tapa_p2' => 'required',
+            'estator_alojamiento_rodaje_tapa_p10' => 'string|nullable',
+            'estator_alojamiento_rodaje_tapa_p20' => 'string|nullable',
+            'estator_pestana_tapa_p1' => 'string|nullable',
+            'estator_pestana_tapa_p2' => 'string|nullable',
 
-            'estator_contra_tapa_interna_p1' => 'required',
-            'estator_contra_tapa_interna_p2' => 'required',
-            'estator_contra_tapa_externa_p1' => 'required',
-            'estator_contra_tapa_externa_p2' => 'required',
-            'estator_ventilador_0' => 'required',
-            'estator_alabes' => 'required',
-            'estator_caja_conexion' => 'required',
-            'estator_tapa_conexion' => 'required',
+            'estator_contra_tapa_interna_p1' => 'string|nullable',
+            'estator_contra_tapa_interna_p2' => 'string|nullable',
+            'estator_contra_tapa_externa_p1' => 'string|nullable',
+            'estator_contra_tapa_externa_p2' => 'string|nullable',
+            'estator_ventilador_0' => 'string|nullable',
+            'estator_alabes' => 'string|nullable',
+            'estator_caja_conexion' => 'string|nullable',
+            'estator_tapa_conexion' => 'string|nullable',
 
-            'observaciones' => 'required',
+            'observaciones' => 'string|nullable',
 
-            'works' => 'required'
+            'works' => 'string|nullable'
         );
 
         $validator = $this->validate($request, $rules);
@@ -128,7 +128,8 @@ class MechanicalEvaluationController extends Controller
         // store
         $meval = new MechanicalEvaluation();
 
-        $meval->ot_id = $request->input('ot_id');
+        //$meval->ot_id = $request->input('ot_id');
+        $meval->ot_id = $id;
 
         $meval->rpm = $request->input('rpm');
         $meval->hp_kw = $request->input('hp_kw');
@@ -188,7 +189,7 @@ class MechanicalEvaluationController extends Controller
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
-                'ot_id' => $meval->id,
+                'ot_id' => $id,
             ]);
         }
 

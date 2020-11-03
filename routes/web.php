@@ -62,6 +62,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//rutas para eval mechanical
 	Route::get('formatos/mechanical', [App\Http\Controllers\MechanicalEvaluationController::class, 'index'])->name('formatos.mechanical');
+	Route::get('formatos/mechanical/{id}/ver', [App\Http\Controllers\MechanicalEvaluationController::class, 'format_show'])->name('formatos.mechanical.show');
 	Route::get('formatos/mechanical/{id}/evaluar', [App\Http\Controllers\MechanicalEvaluationController::class, 'evaluate'])->name('formatos.mechanical.evaluate');
 	Route::post('formatos/mechanical/{id}/store', [App\Http\Controllers\MechanicalEvaluationController::class, 'store'])->name('formatos.mechanical.store');
 	Route::get('formatos/mechanical/{id}/editar', [App\Http\Controllers\MechanicalEvaluationController::class, 'edit'])->name('formatos.mechanical.edit');
@@ -69,6 +70,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//rutas para eval electrical
 	Route::get('formatos/electrical', [App\Http\Controllers\ElectricalEvaluationController::class, 'index'])->name('formatos.electrical');
+	Route::get('formatos/electrical/{id}/ver', [App\Http\Controllers\ElectricalEvaluationController::class, 'format_show'])->name('formatos.electrical.show');
 	Route::get('formatos/electrical/{id}/evaluar', [App\Http\Controllers\ElectricalEvaluationController::class, 'evaluate'])->name('formatos.electrical.evaluate');
 	Route::post('formatos/electrical/{id}/store', [App\Http\Controllers\ElectricalEvaluationController::class, 'store'])->name('formatos.electrical.store');
 	Route::get('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'edit'])->name('formatos.electrical.edit');

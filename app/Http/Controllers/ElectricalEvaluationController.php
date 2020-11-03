@@ -296,7 +296,16 @@ class ElectricalEvaluationController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $formato = Client::findOrFail($id);
+        $formato = ElectricalEvaluation::findOrFail($id);
+
+        return view('formatos.electrical.show', compact('formato'));
+    }
+
+    public function format_show(Request $request, $ot_id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $formato = ElectricalEvaluation::where('ot_id', $ot_id)->firstOrFail();
 
         return view('formatos.electrical.show', compact('formato'));
     }

@@ -42,6 +42,13 @@ class BrandMotorController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
+        $rules = array(
+            'name'       => 'string|required|unique:brand_motors',
+            'description'      => 'string|nullable',
+            'enabled'      => 'boolean|required',
+        );
+        $validator = \Validator::make($request->all(), $rules);
+
         $brand = new BrandMotor();
         
         $brand->name = $request->input('name');
@@ -96,9 +103,9 @@ class BrandMotorController extends Controller
         // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
-            'name'       => 'required',
-            'description'      => 'required',
-            'enabled'      => 'required',
+            'name'       => 'required|string|unique:brand_motors,name,'.$id,
+            'description'      => 'string|nullable',
+            'enabled'      => 'boolean|required',
         );
         $validator = \Validator::make($request->all(), $rules);
 

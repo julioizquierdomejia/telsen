@@ -16,7 +16,7 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-separate">
+          <table class="table table-separate" id="tablas">
             <thead class=" text-primary">
               <th>
                 Id

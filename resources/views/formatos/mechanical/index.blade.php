@@ -38,8 +38,7 @@
 	                  {{$ot->descripcion_motor}}
 	                </td>
 	                <td class="text-right">
-	                	<a href="{{ route('formatos.mechanical.evaluate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
-	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
+	                	<a href="{{ route('formatos.mechanical.evaluate', $ot) }}" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a>
 	                </td>
 	              </tr>
               @endforeach

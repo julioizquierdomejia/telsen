@@ -40,13 +40,13 @@
   <ul class="collapse list-inline pl-3" id="collapseFormatos">
     <li>
       <a class="mr-0" href="{{route('formatos.mechanical')}}">
-        <i class="fas fa-car"></i>
+        <i class="fas fa-wrench"></i>
         <p>F. Evaluación Mecánica</p>
       </a>
     </li>
     <li>
       <a class="mr-0" href="{{route('formatos.electrical')}}">
-        <i class="fas fa-bolt"></i>
+        <i class="fas fa-charging-station"></i>
         <p>F. Evaluación Eléctrica</p>
       </a>
     </li>

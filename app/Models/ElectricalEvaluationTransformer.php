@@ -9,6 +9,8 @@ class ElectricalEvaluationTransformer extends Model
 {
     use HasFactory;
 
+    protected $table = 'eval_electrical_transformer';
+
     protected $fillable = [
     	'eel_id',
 

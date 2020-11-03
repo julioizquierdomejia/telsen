@@ -30,8 +30,11 @@ class MechanicalEvaluationController extends Controller
         $ots = [];
         foreach ($_ots as $key => $ot) {
             $ot_status = \DB::table('status_ot')->where('status_ot.ot_id', '=', $ot->id)->get();
-            $last = $ot_status->last();
-            if ($last && $last->status_id == 1) {
+            $array = [];
+            foreach ($ot_status as $key => $status) {
+                $array[] = $status->status_id;
+            }
+            if (!in_array(2, $array)) {
                 $ots[] = $ot;
             }
         }

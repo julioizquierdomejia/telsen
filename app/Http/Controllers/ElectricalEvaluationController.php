@@ -25,17 +25,20 @@ class ElectricalEvaluationController extends Controller
         //$ots = Ot::join('status_ot', 'status_ot.ot_id', '=', 'status_ot.ot_id')
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                         ->select('ots.*', 'clients.razon_social')
-                        ->where('ots.enabled', 1)
-                        ->where('clients.enabled', 1)
-                        //->where('status_ot.status_id', 1)
+                        ->where('ots.enabled', '=', 1)
+                        ->where('clients.enabled', '=', 1)
+                        //->where('status_ot.status_id', '=', 1)
                         ->groupBy('ots.id')
                         ->get();
 
         $ots = [];
         foreach ($_ots as $key => $ot) {
             $ot_status = \DB::table('status_ot')->where('status_ot.ot_id', '=', $ot->id)->get();
-            $last = $ot_status->last();
-            if ($last && $last->status_id == 1) {
+            $array = [];
+            foreach ($ot_status as $key => $status) {
+                $array[] = $status->status_id;
+            }
+            if (!in_array(3, $array)) {
                 $ots[] = $ot;
             }
         }
@@ -70,129 +73,213 @@ class ElectricalEvaluationController extends Controller
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'ot_id' => 'required',
-            'potencia' => 'required',
-            'conex' => 'required',
-            'voltaje' => 'required',
+            'eq_potencia' => 'required',
+            'eq_conex' => 'required',
+            'eq_voltaje' => 'required',
+
+            'eq_nro_salida' => 'string|nullable',
+            'eq_tipo' => 'string|nullable',
+            'eq_amperaje' => 'required|string',
+            'eq_rodla' => 'string|nullable',
+            'eq_nro_equipo' => 'string|nullable',
+            'eq_velocidad' => 'required|string',
+            'eq_rodloa' => 'string|nullable',
+            'eq_frame' => 'string|nullable',
+            'eq_frecuencia' => 'required|string',
+            'eq_lub' => 'string|nullable',
+            'eq_fs' => 'string|nullable',
+            'eq_encl' => 'string|nullable',
+            'eq_cos_o' => 'string|nullable',
+            'eq_aisl_clase' => 'string|nullable',
+            'eq_ef' => 'string|nullable',
+            'eq_cod' => 'string|nullable',
+            'eq_diseno_nema' => 'string|nullable',
+
+            'char_marca' => 'string|nullable',
+            'char_potencia' => 'string|nullable',
+            'char_escudos' => 'string|nullable',
+            'char_mod' => 'string|nullable',
+            'char_voltaje' => 'string|nullable',
+            'char_ejes' => 'string|nullable',
+            'char_nro' => 'string|nullable',
+            'char_amperaje' => 'string|nullable',
+            'char_funda' => 'string|nullable',
+            'char_frame' => 'string|nullable',
+            'char_velocidad' => 'string|nullable',
+            'char_acople' => 'string|nullable',
+            'char_fs' => 'string|nullable',
+            'char_encl' => 'string|nullable',
+            'char_peso' => 'string|nullable',
+            'char_frecuencia' => 'string|nullable',
+            'char_otros' => 'string|nullable',
+
+            'rec_placa_caract_orig' => 'string|nullable',
+            'rec_escudos' => 'string|nullable',
+            'rec_ventilador' => 'string|nullable',
+            'rec_caja_conexion' => 'string|nullable',
+            'rec_ejes' => 'string|nullable',
+            'rec_acople' => 'string|nullable',
+            'rec_bornera' => 'string|nullable',
+            'rec_funda' => 'string|nullable',
+            'rec_chaveta' => 'string|nullable',
+            'rec_otros' => 'string|nullable',
+            'rec_detalles' => 'string|nullable',
+
+            'testin_motor_aisl_m' => 'string|nullable',
+            'testin_motor_nro_salidas' => 'string|nullable',
+            'testin_motor_conexion' => 'string|nullable',
+            'testin_motor_volt_v' => 'string|nullable',
+            'testin_motor_amp_a' => 'string|nullable',
+            'testin_motor_rpm' => 'string|nullable',
+            'testin_motor_frec_hz' => 'string|nullable',
+            'testin_er_aisl_m' => 'string|nullable',
+            'testin_er_nro_salidas' => 'string|nullable',
+            'testin_er_conexion' => 'string|nullable',
+            'testin_er_volt_v' => 'string|nullable',
+            'testin_er_amp_a' => 'string|nullable',
+            'testin_er_nro_polos' => 'string|nullable',
+
+            'tran_tap' => 'string|nullable',
+            'tran_aisl_m' => 'string|nullable',
+            'tran_nro_salidas' => 'string|nullable',
+            'tran_conexion' => 'string|nullable',
+            'tran_volt_v' => 'string|nullable',
+            'tran_amp_a' => 'string|nullable',
+            'tran_nro_polos' => 'string|nullable',
+            'tran_aisl_m_at_masa' => 'string|nullable',
+            'tran_st_masa' => 'string|nullable',
+            'tran_et_at' => 'string|nullable',
+            'tran_grupo_conex' => 'string|nullable',
+            'tran_polaridad' => 'string|nullable',
+            'tran_relac_transf' => 'string|nullable',
+            'tran_otp' => 'string|nullable',
+            'tran_tec' => 'string|nullable',
+            'tran_amp' => 'string|nullable',
+            'tran_rig_diel_aceite' => 'string|nullable',
+            'tran_ruv' => 'string|nullable',
+            'tran_rv_w' => 'string|nullable',
+            'tran_rw_u' => 'string|nullable',
+            'tran_ru_v' => 'string|nullable',
+            'tran_rv_u' => 'string|nullable',
+            'tran_ww' => 'string|nullable',
         );
 
         $validator = $this->validate($request, $rules);
 
         // store
         $eleval = new ElectricalEvaluation();
-        $elcheval = new ElectricalEvaluationCharacteristic();
-        $elreceval = new ElectricalEvaluationReception();
-        $eltestineval = new ElectricalEvaluationTestIn();
-        $eltraneval = new ElectricalEvaluationTransformer();
-
-        //$eleval->ot_id = $eleval->input('ot_id');
-        $eleval->solped = $request->input('solped');
-        $eleval->recepcionado_por = $request->input('recepcionado_por');
-        $eleval->marca = //$request->input('marca');
-        $eleval->potencia = $request->input('potencia');
-        $eleval->conex = $request->input('conex');
-        $eleval->mod = $request->input('mod');
-        $eleval->voltaje = $request->input('voltaje');
-        $eleval->nro_salida = $request->input('nro_salida');
-        $eleval->tipo = $request->input('tipo');
-        $eleval->amperaje = $request->input('amperaje');
-        $eleval->rodla = $request->input('rodla');
-        $eleval->nro_equipo = $request->input('nro_equipo');
-        $eleval->velocidad = $request->input('velocidad');
-        $eleval->rodloa = $request->input('rodloa');
-        $eleval->frame = $request->input('frame');
-        $eleval->frecuencia = $request->input('frecuencia');
-        $eleval->lub = $request->input('lub');
-        $eleval->fs = $request->input('fs');
-        $eleval->encl = $request->input('encl');
-        $eleval->cos_o = $request->input('cos_o');
-        $eleval->aisl_clase = $request->input('aisl_clase');
-        $eleval->ef = $request->input('ef');
-        $eleval->cod = $request->input('cod');
-        $eleval->diseno_nema = $request->input('diseno_nema');
+        $eleval->ot_id = $id;//$eleval->input('ot_id');
+        $eleval->solped = $request->input('eq_solped');
+        $eleval->recepcionado_por = $request->input('eq_recepcionado_por');
+        //$eleval->marca = $request->input('eq_marca');
+        $eleval->potencia = $request->input('eq_potencia');
+        $eleval->conex = $request->input('eq_conex');
+        $eleval->mod = $request->input('eq_mod');
+        $eleval->voltaje = $request->input('eq_voltaje');
+        $eleval->nro_salida = $request->input('eq_nro_salida');
+        $eleval->tipo = $request->input('eq_tipo');
+        $eleval->amperaje = $request->input('eq_amperaje');
+        $eleval->rodla = $request->input('eq_rodla');
+        $eleval->nro_equipo = $request->input('eq_nro_equipo');
+        $eleval->velocidad = $request->input('eq_velocidad');
+        $eleval->rodloa = $request->input('eq_rodloa');
+        $eleval->frame = $request->input('eq_frame');
+        $eleval->frecuencia = $request->input('eq_frecuencia');
+        $eleval->lub = $request->input('eq_lub');
+        $eleval->fs = $request->input('eq_fs');
+        $eleval->encl = $request->input('eq_encl');
+        $eleval->cos_o = $request->input('eq_cos_o');
+        $eleval->aisl_clase = $request->input('eq_aisl_clase');
+        $eleval->ef = $request->input('eq_ef');
+        $eleval->cod = $request->input('eq_cod');
+        $eleval->diseno_nema = $request->input('eq_diseno_nema');
         $eleval->save();
 
-        $elcheval->eel_id = $request->input('eel_id');
-        $elcheval->marca = $request->input('marca');
-        $elcheval->potencia = $request->input('potencia');
-        $elcheval->escudos = $request->input('escudos');
-        $elcheval->mod = $request->input('mod');
-        $elcheval->voltaje = $request->input('voltaje');
-        $elcheval->ejes = $request->input('ejes');
-        $elcheval->nro = $request->input('nro');
-        $elcheval->amperaje = $request->input('amperaje');
-        $elcheval->funda = $request->input('funda');
-        $elcheval->frame = $request->input('frame');
-        $elcheval->velocidad = $request->input('velocidad');
-        $elcheval->acople = $request->input('acople');
-        $elcheval->fs = $request->input('fs');
-        $elcheval->encl = $request->input('encl');
-        $elcheval->peso = $request->input('peso');
-        $elcheval->frecuencia = $request->input('frecuencia');
-        $elcheval->otros = $request->input('otros');
+        $elcheval = new ElectricalEvaluationCharacteristic();
+        $elcheval->eel_id = $id;
+        $elcheval->marca = $request->input('char_marca');
+        $elcheval->potencia = $request->input('char_potencia');
+        $elcheval->escudos = $request->input('char_escudos');
+        $elcheval->mod = $request->input('char_mod');
+        $elcheval->voltaje = $request->input('char_voltaje');
+        $elcheval->ejes = $request->input('char_ejes');
+        $elcheval->nro = $request->input('char_nro');
+        $elcheval->amperaje = $request->input('char_amperaje');
+        $elcheval->funda = $request->input('char_funda');
+        $elcheval->frame = $request->input('char_frame');
+        $elcheval->velocidad = $request->input('char_velocidad');
+        $elcheval->acople = $request->input('char_acople');
+        $elcheval->fs = $request->input('char_fs');
+        $elcheval->encl = $request->input('char_encl');
+        $elcheval->peso = $request->input('char_peso');
+        $elcheval->frecuencia = $request->input('char_frecuencia');
+        $elcheval->otros = $request->input('char_otros');
         $elcheval->save();
 
-        $elreceval->eel_id = $request->input('eel_id');
-        $elreceval->placa_caract_orig = $request->input('placa_caract_orig');
-        $elreceval->escudos = $request->input('escudos');
-        $elreceval->ventilador = $request->input('ventilador');
-        $elreceval->caja_conexion = $request->input('caja_conexion');
-        $elreceval->ejes = $request->input('ejes');
-        $elreceval->acople = $request->input('acople');
-        $elreceval->bornera = $request->input('bornera');
-        $elreceval->funda = $request->input('funda');
-        $elreceval->chaveta = $request->input('chaveta');
-        $elreceval->otros = $request->input('otros');
-        $elreceval->detalles = $request->input('detalles');
+        $elreceval = new ElectricalEvaluationReception();
+        $elreceval->eel_id = $id;
+        $elreceval->placa_caract_orig = $request->input('rec_placa_caract_orig');
+        $elreceval->escudos = $request->input('rec_escudos');
+        $elreceval->ventilador = $request->input('rec_ventilador');
+        $elreceval->caja_conexion = $request->input('rec_caja_conexion');
+        $elreceval->ejes = $request->input('rec_ejes');
+        $elreceval->acople = $request->input('rec_acople');
+        $elreceval->bornera = $request->input('rec_bornera');
+        $elreceval->funda = $request->input('rec_funda');
+        $elreceval->chaveta = $request->input('rec_chaveta');
+        $elreceval->otros = $request->input('rec_otros');
+        $elreceval->detalles = $request->input('rec_detalles');
         $elreceval->save();
 
-        $eltestineval->eel_id = $request->input('eel_id');
-        $eltestineval->motor = //$request->input('motor');
-        $eltestineval->motor_aisl_m = $request->input('motor_aisl_m');
-        $eltestineval->motor_nro_salidas = $request->input('motor_nro_salidas');
-        $eltestineval->motor_conexion = $request->input('motor_conexion');
-        $eltestineval->motor_volt_v = $request->input('motor_volt_v');
-        $eltestineval->motor_amp_a = $request->input('motor_amp_a');
-        $eltestineval->motor_rpm = $request->input('motor_rpm');
-        $eltestineval->motor_frec_hz = $request->input('motor_frec_hz');
-        $eltestineval->er_aisl_m = $request->input('er_aisl_m');
-        $eltestineval->er_nro_salidas = $request->input('er_nro_salidas');
-        $eltestineval->er_conexion = $request->input('er_conexion');
-        $eltestineval->er_volt_v = $request->input('er_volt_v');
-        $eltestineval->er_amp_a = $request->input('er_amp_a');
-        $eltestineval->er_nro_polos = $request->input('er_nro_polos');
+        $eltestineval = new ElectricalEvaluationTestIn();
+        $eltestineval->eel_id = $id;
+        $eltestineval->motor_aisl_m = $request->input('testin_motor_aisl_m');
+        $eltestineval->motor_nro_salidas = $request->input('testin_motor_nro_salidas');
+        $eltestineval->motor_conexion = $request->input('testin_motor_conexion');
+        $eltestineval->motor_volt_v = $request->input('testin_motor_volt_v');
+        $eltestineval->motor_amp_a = $request->input('testin_motor_amp_a');
+        $eltestineval->motor_rpm = $request->input('testin_motor_rpm');
+        $eltestineval->motor_frec_hz = $request->input('testin_motor_frec_hz');
+        $eltestineval->er_aisl_m = $request->input('testin_er_aisl_m');
+        $eltestineval->er_nro_salidas = $request->input('testin_er_nro_salidas');
+        $eltestineval->er_conexion = $request->input('testin_er_conexion');
+        $eltestineval->er_volt_v = $request->input('testin_er_volt_v');
+        $eltestineval->er_amp_a = $request->input('testin_er_amp_a');
+        $eltestineval->er_nro_polos = $request->input('testin_er_nro_polos');
         $eltestineval->save();
 
-        $eltraneval->eel_id = $request->input('eel_id');
-        $eltraneval->tap = $request->input('tap');
-        $eltraneval->aisl_m = $request->input('aisl_m');
-        $eltraneval->nro_salidas = $request->input('nro_salidas');
-        $eltraneval->conexion = $request->input('conexion');
-        $eltraneval->volt_v = $request->input('volt_v');
-        $eltraneval->amp_a = $request->input('amp_a');
-        $eltraneval->nro_polos = $request->input('nro_polos');
-        $eltraneval->aisl_m_at_masa = $request->input('aisl_m_at_masa');
-        $eltraneval->st_masa = $request->input('st_masa');
-        $eltraneval->et_at = $request->input('et_at');
-        $eltraneval->grupo_conex = $request->input('grupo_conex');
-        $eltraneval->polaridad = $request->input('polaridad');
-        $eltraneval->relac_transf = $request->input('relac_transf');
-        $eltraneval->otp = $request->input('otp');
-        $eltraneval->tec = $request->input('tec');
-        $eltraneval->amp = $request->input('amp');
-        $eltraneval->rig_diel_aceite = $request->input('rig_diel_aceite');
-        $eltraneval->ruv = $request->input('ruv');
-        $eltraneval->rv_w = $request->input('rv_w');
-        $eltraneval->rw_u = $request->input('rw_u');
-        $eltraneval->ru_v = $request->input('ru_v');
-        $eltraneval->rv_u = $request->input('rv_u');
-        $eltraneval->ww = $request->input('ww');
+        $eltraneval = new ElectricalEvaluationTransformer();
+        $eltraneval->eel_id = $id;
+        $eltraneval->tap = $request->input('tran_tap');
+        $eltraneval->aisl_m = $request->input('tran_aisl_m');
+        $eltraneval->nro_salidas = $request->input('tran_nro_salidas');
+        $eltraneval->conexion = $request->input('tran_conexion');
+        $eltraneval->volt_v = $request->input('tran_volt_v');
+        $eltraneval->amp_a = $request->input('tran_amp_a');
+        $eltraneval->nro_polos = $request->input('tran_nro_polos');
+        $eltraneval->aisl_m_at_masa = $request->input('tran_aisl_m_at_masa');
+        $eltraneval->st_masa = $request->input('tran_st_masa');
+        $eltraneval->et_at = $request->input('tran_et_at');
+        $eltraneval->grupo_conex = $request->input('tran_grupo_conex');
+        $eltraneval->polaridad = $request->input('tran_polaridad');
+        $eltraneval->relac_transf = $request->input('tran_relac_transf');
+        $eltraneval->otp = $request->input('tran_otp');
+        $eltraneval->tec = $request->input('tran_tec');
+        $eltraneval->amp = $request->input('tran_amp');
+        $eltraneval->rig_diel_aceite = $request->input('tran_rig_diel_aceite');
+        $eltraneval->ruv = $request->input('tran_ruv');
+        $eltraneval->rv_w = $request->input('tran_rv_w');
+        $eltraneval->rw_u = $request->input('tran_rw_u');
+        $eltraneval->ru_v = $request->input('tran_ru_v');
+        $eltraneval->rv_u = $request->input('tran_rv_u');
+        $eltraneval->ww = $request->input('tran_ww');
         $eltraneval->save();
 
         $status = Status::where('id', 3)->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
-                'ot_id' => $eleval->id,
+                'ot_id' => $id,
             ]);
         }
 

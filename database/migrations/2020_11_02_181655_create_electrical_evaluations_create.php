@@ -72,7 +72,7 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->timestamps();
         });
 
-        Schema::create('eval_electrical_recepcion', function (Blueprint $table) {
+        Schema::create('eval_electrical_reception', function (Blueprint $table) {
             $table->unsignedBigInteger('eel_id');
             $table->foreign('eel_id')->references('id')->on('electrical_evaluations');
 
@@ -98,7 +98,7 @@ class CreateElectricalEvaluationsCreate extends Migration
             //$table->string('motor')->nullable();
             $table->string('motor_aisl_m')->nullable();
             $table->string('motor_nro_salidas')->nullable();
-            $table->string('motor_conexión')->nullable();
+            $table->string('motor_conexion')->nullable();
             $table->string('motor_volt_v')->nullable();
             $table->string('motor_amp_a')->nullable();
             $table->string('motor_rpm')->nullable();
@@ -113,7 +113,7 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->timestamps();
         });
 
-        Schema::create('eval_electrical_transformador', function (Blueprint $table) {
+        Schema::create('eval_electrical_transformer', function (Blueprint $table) {
             $table->unsignedBigInteger('eel_id');
             $table->foreign('eel_id')->references('id')->on('electrical_evaluations');
 
@@ -152,24 +152,23 @@ class CreateElectricalEvaluationsCreate extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('electrical_evaluations_create');
-
         Schema::table('eval_electrical_characteristics', function (Blueprint $table) {
             $table->dropForeign('eel_id');
         });
-        Schema::table('eval_electrical_recepcion', function (Blueprint $table) {
+        Schema::table('eval_electrical_reception', function (Blueprint $table) {
             $table->dropForeign('eel_id');
         });
         Schema::table('eval_electrical_test_in', function (Blueprint $table) {
             $table->dropForeign('eel_id');
         });
-        Schema::table('eval_electrical_transformador', function (Blueprint $table) {
+        Schema::table('eval_electrical_transformer', function (Blueprint $table) {
             $table->dropForeign('eel_id');
         });
 
         Schema::dropIfExists('eval_electrical_characteristics');
-        Schema::dropIfExists('eval_electrical_recepcion');
+        Schema::dropIfExists('eval_electrical_reception');
         Schema::dropIfExists('eval_electrical_test_in');
-        Schema::dropIfExists('eval_electrical_transformador');
+        Schema::dropIfExists('eval_electrical_transformer');
+        Schema::dropIfExists('electrical_evaluations');
     }
 }

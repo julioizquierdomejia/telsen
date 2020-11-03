@@ -116,7 +116,7 @@
             <div class="col-md-4 ">
               <div class="form-group">
                 <label class="col-form-label">Modelo</label>
-                <!-- <input type="number" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
+                <!-- <input type="number" min="1" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
                 <select name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
                   <option value="">Selecciona el modelo</option>
                   @foreach($modelos as $modelo)
@@ -143,13 +143,13 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label class="col-form-label">Voltaje</label>
-                <input type="number" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="" name="voltaje">
+                <input type="number" min="1" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="" name="voltaje">
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label class="col-form-label">Velocidad</label>
-                <input type="number" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="" name="velocidad">
+                <input type="number" min="1" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="" name="velocidad">
               </div>
             </div>
             <div class="col-md-3 form-group">

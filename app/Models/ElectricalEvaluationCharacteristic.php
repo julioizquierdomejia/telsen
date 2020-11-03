@@ -9,6 +9,8 @@ class ElectricalEvaluationCharacteristic extends Model
 {
     use HasFactory;
 
+    protected $table = 'eval_electrical_characteristics';
+
     protected $fillable = [
     	'eel_id',
         'marca',

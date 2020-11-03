@@ -70,7 +70,6 @@ class ElectricalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         // validate
-        // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'ot_id' => 'required',
             'eq_potencia' => 'required',
@@ -168,10 +167,9 @@ class ElectricalEvaluationController extends Controller
 
         // store
         $eleval = new ElectricalEvaluation();
-        $eleval->ot_id = $id;//$eleval->input('ot_id');
+        $eleval->ot_id = $id;
         $eleval->solped = $request->input('eq_solped');
         $eleval->recepcionado_por = $request->input('eq_recepcionado_por');
-        //$eleval->marca = $request->input('eq_marca');
         $eleval->potencia = $request->input('eq_potencia');
         $eleval->conex = $request->input('eq_conex');
         $eleval->mod = $request->input('eq_mod');

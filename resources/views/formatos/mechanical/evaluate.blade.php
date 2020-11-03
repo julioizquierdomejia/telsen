@@ -333,8 +333,29 @@
               @enderror
             </div>
             <div class="col-md-12 form-group">
-                <label class="col-form-label">Trabajos</label>
-                <input type="text" class="form-control @error('trabajos') is-invalid @enderror" placeholder="Trabajos" value="" name="trabajos">
+                <table class="table table-separate text-center table-numbering mb-0 @error('trabajos') is-invalid @enderror" id="table-tap">
+                    <thead>
+                         <tr>
+                              <th class="text-center py-1" colspan="2">Trabajos</th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                         <tr>
+                              <td class="cell-counter"><span class="number"></span></td>
+                              <td><input type="text" class="form-control" value=""></td>
+                         </tr>
+                    </tbody>
+                    <tfoot class="buttons">
+                         <tr>
+                              <td class="p-0" colspan="2">
+                              <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                              <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
+                              <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
+                              </td>
+                         </tr>
+                    </tfoot>
+               </table>
+               <input type="hidden" class="form-control" value="" name="trabajos">
               @error('trabajos')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -357,4 +378,46 @@
     </div>
   </div>
 </div>
+@endsection
+@section('javascript')
+<script>
+     $(document).ready(function () {
+          function createJSON() {
+               var json = '{';
+               var otArr = [];
+               var tbl2 = $('#table-tap tbody tr').each(function(i) {
+                x = $(this).children();
+                var itArr = [];
+                x.each(function() {
+                    if ($(this).find('.form-control').length) {
+                         itArr.push('"' + $(this).find('.form-control').val() + '"');
+                    }
+               });
+                otArr.push('"' + i + '": [' + itArr.join(',') + ']');
+               })
+               json += otArr.join(",") + '}'
+               $('input[name=trabajos]').val(json);
+               return json;
+          }
+
+          $(document).on('keyup', '#table-tap .form-control', function () {
+               createJSON();
+          })
+          $(document).on('click', '.card .btn-clear', function () {
+               $('#table-tap .form-control').val('');
+          })
+          $('.btn-add-row').click(function () {
+               var row = '<tr><td class="cell-counter"><span class="number"></span></td><td><input type="text" class="form-control" value=""></td></tr>';
+               $('#table-tap tbody').append(row);
+               createJSON();
+          })
+          $('.btn-remove-row').click(function () {
+               var row_index = $('#table-tap tbody tr').length;
+               if (row_index > 1) {
+                    $('#table-tap tbody tr:nth-child('+row_index+')').remove();
+               }
+               createJSON();
+          })
+     })
+</script>
 @endsection

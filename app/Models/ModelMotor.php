@@ -14,4 +14,9 @@ class ModelMotor extends Model
         'description',
         'enabled'
     ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
 }

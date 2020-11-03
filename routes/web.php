@@ -69,8 +69,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//rutas para eval electrical
 	Route::get('formatos/electrical', [App\Http\Controllers\ElectricalEvaluationController::class, 'index'])->name('formatos.electrical');
-	Route::get('formatos/electrical/crear', [App\Http\Controllers\ElectricalEvaluationController::class, 'create'])->name('formatos.electrical.create');
-	Route::post('formatos/electrical', [App\Http\Controllers\ElectricalEvaluationController::class, 'store'])->name('formatos.electrical.store');
+	Route::get('formatos/electrical/{id}/evaluar', [App\Http\Controllers\ElectricalEvaluationController::class, 'evaluate'])->name('formatos.electrical.evaluate');
+	Route::post('formatos/electrical/{id}/store', [App\Http\Controllers\ElectricalEvaluationController::class, 'store'])->name('formatos.electrical.store');
 	Route::get('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'edit'])->name('formatos.electrical.edit');
 	Route::post('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'update'])->name('formatos.electrical.update');
 

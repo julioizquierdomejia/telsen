@@ -73,6 +73,33 @@ img {
 			}
 		}
 	}
+	&.table-numbering {
+		tbody {
+			counter-reset: list-counter;
+			tr {
+				.cell-counter {
+					counter-increment: list-counter;
+					.number {
+						&:before {
+							content: counter(list-counter);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+#table-tap {
+	tbody {
+		td {
+			padding: 5px;
+		}
+	}
+	.form-control {
+	    height: 26px;
+	    padding: 2px 10px;
+	    font-size: 12px;
+	}
 }
 .form-card {
 	.card-header {

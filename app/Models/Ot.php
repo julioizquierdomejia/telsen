@@ -27,6 +27,11 @@ class Ot extends Model
 
     ];
 
+    protected $dates = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function marca()
     {
         return $this->belongsTo('App\Models\BrandMotor', 'marca_id');

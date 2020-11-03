@@ -48,6 +48,8 @@ class CreateElectricalEvaluationsCreate extends Migration
         });
 
         Schema::create('eval_electrical_characteristics', function (Blueprint $table) {
+            $table->id();
+
             $table->unsignedBigInteger('eel_id');
             $table->foreign('eel_id')->references('id')->on('electrical_evaluations');
 
@@ -73,6 +75,8 @@ class CreateElectricalEvaluationsCreate extends Migration
         });
 
         Schema::create('eval_electrical_reception', function (Blueprint $table) {
+            $table->id();
+
             $table->unsignedBigInteger('eel_id');
             $table->foreign('eel_id')->references('id')->on('electrical_evaluations');
 
@@ -92,6 +96,8 @@ class CreateElectricalEvaluationsCreate extends Migration
         });
 
         Schema::create('eval_electrical_test_in', function (Blueprint $table) {
+            $table->id();
+
             $table->unsignedBigInteger('eel_id');
             $table->foreign('eel_id')->references('id')->on('electrical_evaluations');
 
@@ -114,6 +120,8 @@ class CreateElectricalEvaluationsCreate extends Migration
         });
 
         Schema::create('eval_electrical_transformer', function (Blueprint $table) {
+            $table->id();
+            
             $table->unsignedBigInteger('eel_id');
             $table->foreign('eel_id')->references('id')->on('electrical_evaluations');
 

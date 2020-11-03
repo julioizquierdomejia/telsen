@@ -34,4 +34,9 @@ class ElectricalEvaluationTestIn extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function electrical_evaluation_test_in()
+    {
+        return $this->belongsTo('App\Models\ElectricalEvaluation', 'eel_id', 'id');
+    }
 }

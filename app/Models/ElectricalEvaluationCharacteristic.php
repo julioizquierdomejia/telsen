@@ -36,4 +36,9 @@ class ElectricalEvaluationCharacteristic extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function electrical_evaluation_characteristic()
+    {
+        return $this->belongsTo('App\Models\ElectricalEvaluation', 'eel_id', 'id');
+    }
 }

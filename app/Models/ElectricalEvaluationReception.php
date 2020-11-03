@@ -31,4 +31,9 @@ class ElectricalEvaluationReception extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function electrical_evaluation_reception()
+    {
+        return $this->belongsTo('App\Models\ElectricalEvaluation', 'eel_id', 'id');
+    }
 }

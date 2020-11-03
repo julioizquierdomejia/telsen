@@ -168,7 +168,7 @@ class ElectricalEvaluationController extends Controller
 
         // store
         $eleval = new ElectricalEvaluation();
-        //$eleval->ot_id = $id;//$eleval->input('ot_id');
+        $eleval->ot_id = $id;//$eleval->input('ot_id');
         $eleval->solped = $request->input('eq_solped');
         $eleval->recepcionado_por = $request->input('eq_recepcionado_por');
         //$eleval->marca = $request->input('eq_marca');

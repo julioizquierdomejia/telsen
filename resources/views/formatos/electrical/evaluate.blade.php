@@ -472,7 +472,7 @@
                 otArr.push('"' + i + '": [' + itArr.join(',') + ']');
                })
                json += otArr.join(",") + '}'
-               $('input[name=tap]').val(json);
+               $('input[name=tran_tap]').val(json);
                return json;
           }
 

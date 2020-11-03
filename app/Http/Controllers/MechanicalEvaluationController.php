@@ -73,7 +73,7 @@ class MechanicalEvaluationController extends Controller
             'rpm' => 'required',
             'hp_kw' => 'required',
 
-            /*'serie' => 'required',
+            'serie' => 'required',
             'solped' => 'required',
             'placa_caract_orig' => 'required',
             'tapas' => 'required',
@@ -120,7 +120,7 @@ class MechanicalEvaluationController extends Controller
 
             'observaciones' => 'required',
 
-            'works' => 'required'*/
+            'works' => 'required'
         );
 
         $validator = $this->validate($request, $rules);

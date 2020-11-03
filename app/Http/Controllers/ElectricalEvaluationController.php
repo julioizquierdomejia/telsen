@@ -168,7 +168,7 @@ class ElectricalEvaluationController extends Controller
 
         // store
         $eleval = new ElectricalEvaluation();
-        $eleval->ot_id = $id;//$eleval->input('ot_id');
+        //$eleval->ot_id = $id;//$eleval->input('ot_id');
         $eleval->solped = $request->input('eq_solped');
         $eleval->recepcionado_por = $request->input('eq_recepcionado_por');
         //$eleval->marca = $request->input('eq_marca');
@@ -196,7 +196,7 @@ class ElectricalEvaluationController extends Controller
         $eleval->save();
 
         $elcheval = new ElectricalEvaluationCharacteristic();
-        $elcheval->eel_id = $id;
+        $elcheval->eel_id = $eleval['id'];
         $elcheval->marca = $request->input('char_marca');
         $elcheval->potencia = $request->input('char_potencia');
         $elcheval->escudos = $request->input('char_escudos');
@@ -217,7 +217,7 @@ class ElectricalEvaluationController extends Controller
         $elcheval->save();
 
         $elreceval = new ElectricalEvaluationReception();
-        $elreceval->eel_id = $id;
+        $elreceval->eel_id = $eleval['id'];
         $elreceval->placa_caract_orig = $request->input('rec_placa_caract_orig');
         $elreceval->escudos = $request->input('rec_escudos');
         $elreceval->ventilador = $request->input('rec_ventilador');
@@ -232,7 +232,7 @@ class ElectricalEvaluationController extends Controller
         $elreceval->save();
 
         $eltestineval = new ElectricalEvaluationTestIn();
-        $eltestineval->eel_id = $id;
+        $eltestineval->eel_id = $eleval['id'];
         $eltestineval->motor_aisl_m = $request->input('testin_motor_aisl_m');
         $eltestineval->motor_nro_salidas = $request->input('testin_motor_nro_salidas');
         $eltestineval->motor_conexion = $request->input('testin_motor_conexion');
@@ -249,7 +249,7 @@ class ElectricalEvaluationController extends Controller
         $eltestineval->save();
 
         $eltraneval = new ElectricalEvaluationTransformer();
-        $eltraneval->eel_id = $id;
+        $eltraneval->eel_id = $eleval['id'];
         $eltraneval->tap = $request->input('tran_tap');
         $eltraneval->aisl_m = $request->input('tran_aisl_m');
         $eltraneval->nro_salidas = $request->input('tran_nro_salidas');
@@ -449,7 +449,7 @@ class ElectricalEvaluationController extends Controller
 
             $meval->observaciones = $request->input('observaciones');
 
-            $meval->works = $request->input('works');
+            $meval->works = $request->input('trabajos');
 
             $meval->save();
 

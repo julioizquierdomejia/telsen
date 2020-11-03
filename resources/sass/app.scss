@@ -28,6 +28,99 @@ body {
 img {
 	height: auto;
 }
+
+.page {
+	.btn {
+		&-orange {
+			background-color: $orange;
+			border-color: $orange;
+			color: $white;
+			&:hover, &:focus, &:active {
+				background-color: $dark_orange !important;
+				border-color: $dark_orange !important;
+			}
+		}
+	}
+	.sidebar {
+		&:after {
+			background-color: $blue;
+		}
+		&-top {
+			position: relative;
+			z-index: 33;
+		}
+		&-wrapper {
+			position: relative;
+			z-index: 32;
+		}
+		&-wrapper {
+			background-color: #121212;
+		}
+		.account-name {
+			font-size: 14px;
+		}
+
+		.logo-image-small {
+			margin-bottom: -35px;
+			.icon {
+				background-color: #121212;
+				border-radius: 50px;
+				display: inline-block;
+				padding: 10px;
+			}
+			img {
+				width: 50px;
+			}
+		}
+
+		.nav {
+			li {
+				> a {
+					border-radius: 0 20px 20px 0;
+					color: #fff;
+					font-size: 15px;
+					padding: 5px 15px;
+					margin-left: 0;
+					text-transform: none;
+					i {
+						color: #fff;
+					}
+				}
+			}
+		}
+
+		&[data-active-color="danger"] {
+			.nav {
+				li {
+					&.active {
+						> a {
+							background-color: #e96117;
+							color: #fff;
+							&:after, &:before {
+								display: none;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	.navbar {
+		.navbar-wrapper {
+			.btn-link {
+				color: $blue !important;
+			}
+		}
+		.fa-phone {
+			transform: rotateZ(90deg);
+		}
+	}
+	.dropdown-menu {
+		.dropdown-item {
+			border-radius: 0;
+		}
+	}
+}
 .row {
 	&-small {
 		margin-left: -5px;
@@ -199,90 +292,14 @@ img {
 		}
 	}
 }
-.page {
-	.sidebar {
-		&:after {
-			background-color: $blue;
-		}
-		&-top {
-			position: relative;
-			z-index: 33;
-		}
-		&-wrapper {
-			position: relative;
-			z-index: 32;
-		}
-		&-wrapper {
-			background-color: #121212;
-		}
-		.account-name {
-			font-size: 14px;
-		}
 
-		.logo-image-small {
-			margin-bottom: -35px;
-			.icon {
-				background-color: #121212;
-				border-radius: 50px;
-				display: inline-block;
-				padding: 10px;
-			}
-			img {
-				width: 50px;
-			}
-		}
-
-		.nav {
-			li {
-				> a {
-					border-radius: 0 20px 20px 0;
-					color: #fff;
-					font-size: 15px;
-					padding: 5px 15px;
-					margin-left: 0;
-					text-transform: none;
-					i {
-						color: #fff;
-					}
-				}
-			}
-		}
-
-		&[data-active-color="danger"] {
-			.nav {
-				li {
-					&.active {
-						> a {
-							background-color: #e96117;
-							color: #fff;
-							&:after, &:before {
-								display: none;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	.navbar {
-		.navbar-wrapper {
-			.btn-link {
-				color: $blue !important;
-			}
-		}
-		.fa-phone {
-			transform: rotateZ(90deg);
-		}
-	}
-	.dropdown-menu {
-		.dropdown-item {
-			border-radius: 0;
-		}
-	}
+.page_centered {
+	background-color: $blue;
+	height: 100vh;
 }
 
 .page_login {
-	height: 100vh;
+	
 }
 
 .page_home {

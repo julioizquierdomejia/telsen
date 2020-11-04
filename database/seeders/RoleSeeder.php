@@ -15,7 +15,40 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $role = new Role();
+        //\DB::table('roles')->truncate();
+
+        \DB::table('roles')->insert(array (
+            array (
+                'name' => 'superadmin',
+                'description' => 'Super administrador del sistema - config',
+            ),
+            array (
+                'name' => 'admin',
+                'description' => 'Administrador del sistema',
+            ),
+            array(
+                'name' => 'user',
+                'description' => 'Usuario participante',
+            ),
+            array(
+                'name' => 'client',
+                'description' => 'Cliente',
+            ),
+            array(
+                'name' => 'reception',
+                'description' => 'Recepción',
+            ),
+            array(
+                'name' => 'mechanical',
+                'description' => 'Mecánico',
+            ),
+            array(
+                'name' => 'electrical',
+                'description' => 'Eléctrico',
+            )
+        ));
+
+        /*$role = new Role();
         $role->name = 'superadmin';
         $role->description = 'Super administrador del sistema - config';
         $role->save();
@@ -33,6 +66,6 @@ class RoleSeeder extends Seeder
         $role = new Role();
         $role->name = 'client';
         $role->description = 'Cliente';
-        $role->save();
+        $role->save();*/
     }
 }

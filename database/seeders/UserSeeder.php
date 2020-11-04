@@ -20,6 +20,9 @@ class UserSeeder extends Seeder
         $role_superadmin = Role::where('name', 'superadmin')->first();
         $role_admin = Role::where('name', 'admin')->first();
         $role_user = Role::where('name', 'user')->first();
+        $role_reception = Role::where('name', 'reception')->first();
+        $role_evalmec = Role::where('name', 'mechanical')->first();
+        $role_evalele = Role::where('name', 'electrical')->first();
 
         $user = new User();
         $user->email = 'julio.izquierdo.mejia@gmail.com';
@@ -66,7 +69,7 @@ class UserSeeder extends Seeder
         $user->save();
 
         //vamos a relacionar roles con usuarios
-        $user->roles()->attach($role_superadmin);
+        $user->roles()->attach($role_reception);
 
         $user = new User();
         $user->email = 'evaluadorm@gmail.com';
@@ -75,7 +78,7 @@ class UserSeeder extends Seeder
         $user->save();
 
         //vamos a relacionar roles con usuarios
-        $user->roles()->attach($role_superadmin);
+        $user->roles()->attach($role_evalmec);
 
         $user = new User();
         $user->email = 'evaluadore@gmail.com';
@@ -84,6 +87,6 @@ class UserSeeder extends Seeder
         $user->save();
 
         //vamos a relacionar roles con usuarios
-        $user->roles()->attach($role_superadmin);
+        $user->roles()->attach($role_evalele);
     }
 }

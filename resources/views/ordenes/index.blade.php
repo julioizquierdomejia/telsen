@@ -35,7 +35,7 @@
                     $ot_status = \DB::table('status_ot')
                           ->join('status', 'status_ot.status_id', '=', 'status.id')
                           ->where('status_ot.ot_id', '=', $orden->id)
-                          ->select('status.name')
+                          ->select('status.id', 'status.name')
                           ->get()->last();
                     if ($ot_status) {
                       echo $ot_status->name;
@@ -44,18 +44,24 @@
                   </td>
 	                <td>{{$orden->razon_social}}</td>
 	                <td class="text-center">{{$orden->marca['description']}}</td>
-	                <td class="text-center">
+	                <td class="text-center text-nowrap">
 	                	<a href="{{ route('ordenes.edit', $orden) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                     <a href="" class="btn btn-sm btn-danger"><i class="fal fa-minus-circle"></i></a>
+                    @if($ot_status->id == 2 || $ot_status->id == 3)
 	                	<div class="dropdown d-inline-block dropleft">
                       <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluación" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-eye"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @if($ot_status->id == 2)
                         <a class="dropdown-item" href="{{ route('formatos.mechanical.show', $orden) }}">Evaluación mecánica</a>
+                        @endif
+                        @if($ot_status->id == 3)
                         <a class="dropdown-item" href="{{ route('formatos.electrical.show', $orden) }}">Evaluación eléctrica</a>
+                        @endif
                       </div>
                     </div>
+                    @endif
 	                </td>
 	              </tr>
               @endforeach

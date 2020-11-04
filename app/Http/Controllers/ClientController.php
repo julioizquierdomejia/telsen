@@ -48,11 +48,11 @@ class ClientController extends Controller
             'ruc' => 'required|min:8|unique:clients',
             'razon_social' => 'required',
             'enabled' => 'boolean',
-            'correo' => 'required|unique:clients',
+            'correo' => 'required|email|unique:clients',
         ];
 
         $messages = [
-            'ruc.required' => 'Agrega el nombre del estudiante.',
+            'ruc.required' => 'Agrega el número del cliente.',
         ];
 
         $this->validate($request, $rules);

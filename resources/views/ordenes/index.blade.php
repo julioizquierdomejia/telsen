@@ -1,5 +1,4 @@
-<?php $body_class = Auth::user()->roles->first()->name == 'client' ? 'page_client page-ot-list' : '' ?>
-@extends('layouts.app', ['body_class' => $body_class, 'title' => 'OTS'])
+@extends('layouts.app', ['body_class' => 'ots', 'title' => 'OTS'])
 
 @section('content')
 

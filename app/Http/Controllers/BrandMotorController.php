@@ -57,6 +57,8 @@ class BrandMotorController extends Controller
 
         $brand->save();
 
+        activitylog('brands', 'store', null, $brand->toArray());
+
         $marcas = BrandMotor::where('enabled', 1)->get();
         return redirect('marcas')->with('marcas');
     }
@@ -115,11 +117,15 @@ class BrandMotorController extends Controller
                 ->withErrors($validator);
         } else {
             // store
-            $marca = BrandMotor::find($id);
-            $marca->name       = $request->get('name');
-            $marca->description      = $request->get('description');
-            $marca->enabled      = $request->get('enabled');
-            $marca->save();
+            $brand = BrandMotor::find($id);
+            $original_data = $brand->toArray();
+
+            $brand->name       = $request->get('name');
+            $brand->description      = $request->get('description');
+            $brand->enabled      = $request->get('enabled');
+            $brand->save();
+
+            activitylog('brands', 'update', $original_data, $brand->toArray());
 
             // redirect
             \Session::flash('message', 'Successfully updated marca!');

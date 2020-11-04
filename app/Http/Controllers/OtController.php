@@ -115,6 +115,8 @@ class OtController extends Controller
             ]);
         }
 
+        activitylog('ots', 'store', null, $ot->toArray());
+
         return redirect('ordenes');
     }
 
@@ -196,6 +198,7 @@ class OtController extends Controller
         } else {
             // store
             $ot = Ot::find($id);
+            $original_data = $ot->toArray();
             $ot->client_id = $request->get('client_id');
             $ot->fecha_creacion = $request->get('fecha_creacion');
             $ot->guia_cliente = $request->get('guia_cliente');
@@ -210,6 +213,8 @@ class OtController extends Controller
             $ot->velocidad = $request->get('velocidad');
             $ot->enabled = $request->get('enabled');
             $ot->save();
+
+            activitylog('ots', 'update', $original_data, $ot->toArray());
 
             // redirect
             \Session::flash('message', '¡Se actualizó la orden!');

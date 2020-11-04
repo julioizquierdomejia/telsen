@@ -57,6 +57,8 @@ class ModelMotorController extends Controller
 
         $brand->save();
 
+        activitylog('models', 'store', null, $brand->toArray());
+
         $modelos = ModelMotor::where('enabled', 1)->get();
         return redirect('modelos')->with('modelos');
     }
@@ -116,14 +118,17 @@ class ModelMotorController extends Controller
                 ->withErrors($validator);
         } else {
             // store
-            $marca = ModelMotor::find($id);
-            $marca->name       = $request->get('name');
-            $marca->description      = $request->get('description');
-            $marca->enabled      = $request->get('enabled');
-            $marca->save();
+            $model = ModelMotor::find($id);
+            $original_data = $model->toArray();
+            $model->name       = $request->get('name');
+            $model->description      = $request->get('description');
+            $model->enabled      = $request->get('enabled');
+            $model->save();
+
+            activitylog('models', 'update', $original_data, $model->toArray());
 
             // redirect
-            \Session::flash('message', 'Successfully updated marca!');
+            \Session::flash('message', 'Successfully updated model!');
             return redirect('modelos');
         }
     }

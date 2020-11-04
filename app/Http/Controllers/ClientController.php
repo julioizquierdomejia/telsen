@@ -86,6 +86,8 @@ class ClientController extends Controller
             $user->roles()->attach($role_user);
         }
 
+        activitylog('ots', 'store', null, $cliente->toArray());
+
 
         //$clientes = Client::all();
         return redirect('clientes');
@@ -127,25 +129,45 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $data = [];
-        $data['ruc'] = $request->get('ruc');
-        $data['razon_social'] = $request->get('razon_social');
-        $data['direccion'] = $request->get('direccion');
-        $data['telefono'] = $request->get('telefono');
-        $data['celular'] = $request->get('celular');
-        $data['contacto'] = $request->get('contacto');
-        $data['telefono_contacto'] = $request->get('telefono_contacto');
-        $data['correo'] = $request->get('correo');
-        $data['info'] = $request->get('info');
-        $data['enabled'] = $request->get('enabled');
+        $rules = array(
+            'ruc' => 'required|min:8|unique:clients,ruc,'.$id,
+            'razon_social' => 'required',
+            'enabled' => 'boolean',
+            'correo' => 'required|email|unique:clients,correo,'.$id,
+        );
+        $validator = \Validator::make($request->all(), $rules);
 
-        $client->update($data);
+        // process the login
+        if ($validator->fails()) {
+            return redirect('clientes/' . $id . '/editar')
+                ->withErrors($validator);
+        } else {
+            // store
+            $client = Client::find($id);
+            $original_data = $client->toArray();
+        
+            $client->ruc = $request->input('ruc');
+            $client->razon_social = $request->input('razon_social');
+            $client->direccion = $request->input('direccion');
+            $client->telefono = $request->input('telefono');
+            $client->celular = $request->input('celular');
+            $client->contacto = $request->input('contacto');
+            $client->telefono_contacto = $request->input('telefono_contacto');
+            $client->correo = $request->input('correo');
+            $client->info = $request->input('info');
+            $client->enabled = $request->input('enabled');
+            $client->save();
 
-        return redirect('clientes');
+            activitylog('clients', 'update', $original_data, $client->toArray());
+
+            // redirect
+            \Session::flash('message', 'Successfully updated model!');
+            return redirect('clientes');
+        }
     }
 
     /**

@@ -193,6 +193,8 @@ class MechanicalEvaluationController extends Controller
             ]);
         }
 
+        activitylog('eval. mechanical', 'store', json_encode($meval->toArray()));
+
         // redirect
         \Session::flash('message', 'Successfully updated formato!');
         return redirect('formatos/mechanical');

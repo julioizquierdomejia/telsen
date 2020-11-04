@@ -15,7 +15,8 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
-        "laraveles/spanish": "^1.5"
+        "laraveles/spanish": "^1.5",
+        "mobiledetect/mobiledetectlib": "^2.8"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
@@ -39,7 +40,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

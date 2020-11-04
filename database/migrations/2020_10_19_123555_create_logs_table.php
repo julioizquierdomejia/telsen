@@ -22,6 +22,8 @@ class CreateLogsTable extends Migration
             $table->string('section')->nullable();
             $table->string('action')->nullable();
             $table->string('feedback')->nullable();
+            $table->text('data')->nullable();
+            $table->text('original_data')->nullable();
             $table->string('ip')->nullable();
             $table->string('device')->nullable();
             $table->string('system')->nullable();

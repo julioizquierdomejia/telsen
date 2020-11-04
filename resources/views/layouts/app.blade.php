@@ -39,7 +39,6 @@ Coded by www.creative-tim.com
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
 
 </head>
-
 <body class="page {{isset($body_class) ? $body_class : ''}}">
   <div class="wrapper ">
     @include('layouts.sidebar')

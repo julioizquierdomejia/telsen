@@ -14,7 +14,7 @@ class BrandMotorController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
         $marcas = BrandMotor::all();
         return view('marcas.index', compact('marcas'));
@@ -27,7 +27,7 @@ class BrandMotorController extends Controller
      */
     public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         return view('marcas.create');
     }
@@ -40,7 +40,7 @@ class BrandMotorController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $rules = array(
             'name'       => 'string|required|unique:brand_motors',
@@ -83,7 +83,7 @@ class BrandMotorController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $marca = BrandMotor::findOrFail($id);
         return view('marcas.edit', compact('marca'));
@@ -98,7 +98,7 @@ class BrandMotorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation

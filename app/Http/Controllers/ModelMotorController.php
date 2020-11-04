@@ -14,7 +14,7 @@ class ModelMotorController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $modelos = ModelMotor::all();
         return view('modelos.index', compact('modelos'));
@@ -27,7 +27,7 @@ class ModelMotorController extends Controller
      */
     public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         return view('modelos.create');
     }
@@ -40,7 +40,7 @@ class ModelMotorController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $rules = array(
             'name'       => 'string|required|unique:model_motors',
@@ -84,7 +84,7 @@ class ModelMotorController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $modelo = ModelMotor::findOrFail($id);
         return view('modelos.edit', compact('modelo'));
@@ -99,7 +99,7 @@ class ModelMotorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation

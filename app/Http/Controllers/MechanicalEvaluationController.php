@@ -16,7 +16,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
 
         //$ots = Ot::join('status_ot', 'status_ot.ot_id', '=', 'status_ot.ot_id')
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
@@ -48,7 +48,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function evaluate(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
 
         $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
 
@@ -63,7 +63,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation
@@ -206,7 +206,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
 
@@ -215,7 +215,7 @@ class MechanicalEvaluationController extends Controller
     
     public function format_show(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
 
         $formato = MechanicalEvaluation::where('ot_id', $ot_id)->firstOrFail();
 
@@ -230,7 +230,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
         return view('formatos.mechanical.edit', compact('formato'));
@@ -245,7 +245,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation
@@ -386,6 +386,6 @@ class MechanicalEvaluationController extends Controller
      */
     public function destroy(Request $request, MechanicalEvaluation $mechanicalEvaluation)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
     }
 }

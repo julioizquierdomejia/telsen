@@ -4,15 +4,12 @@
       <p>Dashboard</p>
     </a>
   </li>
-
   <li class="{{ request()->routeIs('user') ? 'active' : '' }}">
     <a href="{{ route('user') }}">
       <i class="fal fa-user-md"></i>
       <p>Mi perfil</p>
     </a>
   </li>
-
-
 <li>
   <a href="./icons.html">
     <i class="fal fa-chart-line"></i>

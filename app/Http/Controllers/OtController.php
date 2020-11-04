@@ -18,7 +18,7 @@ class OtController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'mechanical', 'electrical']);
         
         //Listar OTs
         $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
@@ -43,7 +43,7 @@ class OtController extends Controller
      */
     public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         //
         //Revisar el ultimo numero de OT
         $totalOts = Ot::count();
@@ -64,7 +64,7 @@ class OtController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         //
         $rules = [
             'client_id' => 'required|integer',
@@ -151,7 +151,7 @@ class OtController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $clientes = Client::where('enabled', 1)->get();
         $marcas = BrandMotor::where('enabled', 1)->get();
@@ -170,7 +170,7 @@ class OtController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $rules = array(
             'client_id' => 'required|integer',

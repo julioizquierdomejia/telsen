@@ -34,6 +34,15 @@
     @if ( Auth::user()->roles->first()->name == 'user')
       @include('layouts.usersidebar')
     @endif
+    @if ( Auth::user()->roles->first()->name == 'reception')
+      @include('layouts.receptionsidebar')
+    @endif
+    @if ( Auth::user()->roles->first()->name == 'mechanical')
+      @include('layouts.mechanicalsidebar')
+    @endif
+    @if ( Auth::user()->roles->first()->name == 'electrical')
+      @include('layouts.electricalsidebar')
+    @endif
     </ul>
   </div>
 </div>

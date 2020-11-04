@@ -21,7 +21,8 @@ class OtController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         //Listar OTs
-        $ordenes = Ot::all();
+        $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->select('ots.*', 'clients.razon_social')->get();
 
         return view('ordenes.index', compact('ordenes'));
     }

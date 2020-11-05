@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Area;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class AreaController extends Controller
@@ -84,9 +85,10 @@ class AreaController extends Controller
     public function edit(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
-
+        $areas = Area::where('enabled', 1)->get();
+        $services = Service::where('enabled', 1)->where('area_id', $id)->get();
         $area = Area::findOrFail($id);
-        return view('areas.edit', compact('area'));
+        return view('areas.edit', compact('area', 'areas', 'services'));
     }
 
     /**

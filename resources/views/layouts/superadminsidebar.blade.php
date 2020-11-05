@@ -11,31 +11,11 @@
     <p>Ordenes de trabajo</p>
   </a>
 </li>
-<li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">
-  <a href="{{route('clientes.index')}}">
-    <i class="fal fa-handshake"></i>
-    <p>Clientes</p>
-  </a>
-</li>
-
-<li class="{{ request()->segment(1) == 'marcas' ? 'active' : '' }}">
-  <a href="{{route('marcas.index')}}">
-    <i class="fal fa-copyright"></i>
-    <p>Marca de Motores</p>
-  </a>
-</li>
-
-<li class="{{ request()->segment(1) == 'modelos' ? 'active' : '' }}">
-  <a href="{{route('modelos.index')}}">
-    <i class="fas fa-barcode"></i>
-    <p>Modelo de Motores</p>
-  </a>
-</li>
 
 <li class="{{ request()->segment(1) == 'formatos' ? 'active' : '' }}">
   <a href="#" data-toggle="collapse" data-target="#collapseFormatos" aria-expanded="false">
     <i class="fal fa-file-check"></i>
-    <p>Formatos</p>
+    <p>Formatos <i class="fal fa-angle-down float-right"></i></p>
   </a>
   <ul class="collapse list-inline pl-3" id="collapseFormatos">
     <li class="{{ request()->segment(2) == 'mechanical' ? 'active' : '' }}">
@@ -56,7 +36,7 @@
 <li class="{{ request()->segment(1) == 'costos' ? 'active' : '' }}">
   <a href="#" data-toggle="collapse" data-target="#collapseCostos" aria-expanded="false">
     <i class="fal fa-file-check"></i>
-    <p>Tarjeta de Costos</p>
+    <p>Tarjeta de Costos <i class="fal fa-angle-down float-right"></i></p>
   </a>
   <ul class="collapse list-inline pl-3" id="collapseCostos">
     <li class="{{ request()->segment(1) == 'costs' ? 'active' : '' }}">
@@ -78,6 +58,26 @@
       </a>
     </li>
   </ul>
+</li>
+<li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">
+  <a href="{{route('clientes.index')}}">
+    <i class="fal fa-handshake"></i>
+    <p>Clientes</p>
+  </a>
+</li>
+
+<li class="{{ request()->segment(1) == 'marcas' ? 'active' : '' }}">
+  <a href="{{route('marcas.index')}}">
+    <i class="fal fa-copyright"></i>
+    <p>Marca de Motores</p>
+  </a>
+</li>
+
+<li class="{{ request()->segment(1) == 'modelos' ? 'active' : '' }}">
+  <a href="{{route('modelos.index')}}">
+    <i class="fas fa-barcode"></i>
+    <p>Modelo de Motores</p>
+  </a>
 </li>
 
 <!--li>

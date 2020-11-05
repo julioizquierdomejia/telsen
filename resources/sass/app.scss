@@ -77,13 +77,20 @@ img {
 			li {
 				> a {
 					border-radius: 0 20px 20px 0;
-					color: #fff;
+					color: #fff !important;
 					font-size: 15px;
 					padding: 5px 15px;
 					margin-left: 0;
 					text-transform: none;
 					i {
-						color: #fff;
+						color: #fff !important;
+					}
+				}
+
+				ul {
+					background-color: #1d1d1d;
+					a {
+						font-size: 13px;
 					}
 				}
 			}
@@ -95,7 +102,7 @@ img {
 					&.active {
 						> a {
 							background-color: #e96117;
-							color: #fff;
+							color: #fff !important;
 							&:after, &:before {
 								display: none;
 							}
@@ -119,6 +126,17 @@ img {
 		.dropdown-item {
 			border-radius: 0;
 		}
+	}
+
+	.services-list {
+	    background-color: #f2f2f2;
+	    border-radius: 4px;
+	    max-height: 90px;
+	    font-size: 12px;
+	    list-style-position: inside;
+	    overflow-y: auto;
+	    margin: 0;
+	    padding: 10px;
 	}
 }
 .row {

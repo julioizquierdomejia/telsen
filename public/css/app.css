@@ -30279,7 +30279,7 @@ img {
 
 .page .sidebar .nav li > a {
   border-radius: 0 20px 20px 0;
-  color: #fff;
+  color: #fff !important;
   font-size: 15px;
   padding: 5px 15px;
   margin-left: 0;
@@ -30287,12 +30287,20 @@ img {
 }
 
 .page .sidebar .nav li > a i {
-  color: #fff;
+  color: #fff !important;
+}
+
+.page .sidebar .nav li ul {
+  background-color: #1d1d1d;
+}
+
+.page .sidebar .nav li ul a {
+  font-size: 13px;
 }
 
 .page .sidebar[data-active-color=danger] .nav li.active > a {
   background-color: #e96117;
-  color: #fff;
+  color: #fff !important;
 }
 
 .page .sidebar[data-active-color=danger] .nav li.active > a:after,
@@ -30310,6 +30318,17 @@ img {
 
 .page .dropdown-menu .dropdown-item {
   border-radius: 0;
+}
+
+.page .services-list {
+  background-color: #f2f2f2;
+  border-radius: 4px;
+  max-height: 90px;
+  font-size: 12px;
+  list-style-position: inside;
+  overflow-y: auto;
+  margin: 0;
+  padding: 10px;
 }
 
 .row-small {

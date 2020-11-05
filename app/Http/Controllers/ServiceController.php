@@ -60,8 +60,14 @@ class ServiceController extends Controller
 
         $service->save();
 
+        $ajax = $request->input('ajax');
+
         activitylog('services', 'store', null, $service->toArray());
 
+        if ($ajax) {
+            $services = Service::where('enabled', 1)->where('area_id', $service->area_id)->get();
+            return $services;
+        }
         $services = Service::where('enabled', 1)->get();
         return redirect('servicios')->with('services');
     }

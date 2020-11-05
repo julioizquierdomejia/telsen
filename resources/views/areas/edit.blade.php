@@ -27,6 +27,12 @@
                 <option value="1" {{$area->enabled == 1 ? 'selected': ''}}>Activo</option>
                 <option value="0" {{$area->enabled == 0 ? 'selected': ''}}>Inactivo</option>
               </select>
+              @error('enabled')
+                  <p class="error-message text-danger">{{ $message }}</p>
+                @enderror
+            </div>
+            <div class="col-md-9 pt-1">
+              <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#modalServices">Agregar servicios</button>
             </div>
             
           </div>
@@ -40,4 +46,102 @@
     </div>
   </div>
 </div>
+<div class="modal fade" tabindex="-1" id="modalServices">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Servicios</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="form-group modal-body">
+          @csrf
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="col-form-label">Nombre</label>
+                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" required="" value="" name='name' id="inputname">
+              </div>
+              <p class="name_message text-danger"></p>
+            </div>
+
+            <div class="col-md-8">
+              <div class="form-group">
+                <label class="col-form-label" for="sselectArea">Area</label>
+                <select class="form-control dropdown2" name="area_id" id="sselectArea" style="width: 100%">
+                  <option value="">Ingresa Area</option>
+                  @foreach($areas as $area)
+                    <option value="{{ $area->id }}">{{ $area->name }}</option>
+                  @endforeach
+                </select>
+                <p class="area_message text-danger"></p>
+              </div>
+            </div>
+
+            <div class="col-md-4 ml-md-auto form-group">
+              <label class="col-form-label" for="sselectEstado">Estado</label>
+              <select name="enabled" class="form-control dropdown2" id="sselectEstado" style="width: 100%">
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+              <p class="enabled_message text-danger"></p>
+            </div>
+          </div>
+          <h4 class="h6"><strong>Servicios</strong></h4>
+          <ul class="services-list">
+          @foreach($services as $service)
+          <li>{{$service->name}}</li>
+          @endforeach
+          </ul>
+          <div class="row">
+            <div class="update ml-auto mr-auto">
+              <button type="button" id="btnServices" class="btn btn-primary btn-round px-md-5">Enviar</button>
+            </div>
+          </div>
+        </div>  
+    </div>
+  </div>
+</div>
+@endsection
+@section('javascript')
+<script>
+  $("#btnServices").click(function (e) {
+    e.preventDefault();
+    var inputname = $('#inputname').val();
+    var area_id = $('#sselectArea').val();
+    var estado = $('#sselectEstado').val();
+    var token = '{{csrf_token()}}';// ó $("#token").val() si lo tienes en una etiqueta html.
+    var data={name:inputname, area_id: area_id, enabled: estado,_token:token, ajax: true};
+    if (inputname == '') {
+      $('.name_message').text('Ingrese el nombre');
+      return;
+    } else {
+      $('.name_message').text('');
+    }
+    if (area_id == '') {
+      $('.area_message').text('Seleccione el area');
+      return;
+    } else {
+      $('.area_message').text('');
+    }
+    if (estado == '') {
+      $('.enabled_message').text('Seleccione el area');
+      return;
+    } else {
+      $('.enabled_message').text('');
+    }
+    $.ajax({
+        type: "post",
+        url: "{{route('services.store')}}",
+        data: data,
+        success: function (data) {
+          //alert("Se ha realizado el POST con exito "+data);
+          $.each(data, function (id, item) {
+            $('.services-list').append('<li>'+item.name+'</li>');
+          })
+        }
+    });
+});
+</script>
 @endsection

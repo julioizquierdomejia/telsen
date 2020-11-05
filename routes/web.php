@@ -76,4 +76,25 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'edit'])->name('formatos.electrical.edit');
 	Route::post('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'update'])->name('formatos.electrical.update');
 
+	//rutas para Tarjeta Costos
+	Route::get('costos', [App\Http\Controllers\CostController::class, 'index'])->name('costs.index');
+	Route::get('costos/crear', [App\Http\Controllers\CostController::class, 'create'])->name('costs.create');
+	Route::post('costos', [App\Http\Controllers\CostController::class, 'store'])->name('costs.store');
+	Route::get('costos/{cost}/editar', [App\Http\Controllers\CostController::class, 'edit'])->name('costs.edit');
+	Route::post('costos/{cost}/editar', [App\Http\Controllers\CostController::class, 'update'])->name('costs.update');
+
+	//rutas para Areas
+	Route::get('areas', [App\Http\Controllers\AreaController::class, 'index'])->name('areas.index');
+	Route::get('areas/crear', [App\Http\Controllers\AreaController::class, 'create'])->name('areas.create');
+	Route::post('areas', [App\Http\Controllers\AreaController::class, 'store'])->name('areas.store');
+	Route::get('areas/{area}/editar', [App\Http\Controllers\AreaController::class, 'edit'])->name('areas.edit');
+	Route::post('areas/{area}/editar', [App\Http\Controllers\AreaController::class, 'update'])->name('areas.update');
+
+	//rutas para Areas
+	Route::get('servicios', [App\Http\Controllers\ServiceController::class, 'index'])->name('services.index');
+	Route::get('servicios/crear', [App\Http\Controllers\ServiceController::class, 'create'])->name('services.create');
+	Route::post('servicios', [App\Http\Controllers\ServiceController::class, 'store'])->name('services.store');
+	Route::get('servicios/{servicio}/editar', [App\Http\Controllers\ServiceController::class, 'edit'])->name('services.edit');
+	Route::post('servicios/{servicio}/editar', [App\Http\Controllers\ServiceController::class, 'update'])->name('services.update');
+
 });

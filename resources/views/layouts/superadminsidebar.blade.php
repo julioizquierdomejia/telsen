@@ -53,6 +53,33 @@
   </ul>
 </li>
 
+<li class="{{ request()->segment(1) == 'costos' ? 'active' : '' }}">
+  <a href="#" data-toggle="collapse" data-target="#collapseCostos" aria-expanded="false">
+    <i class="fal fa-file-check"></i>
+    <p>Tarjeta de Costos</p>
+  </a>
+  <ul class="collapse list-inline pl-3" id="collapseCostos">
+    <li class="{{ request()->segment(1) == 'costs' ? 'active' : '' }}">
+      <a class="mr-0" href="{{route('costs.index')}}">
+        <i class="fas fa-money-check-alt"></i>
+        <p>Cotizar</p>
+      </a>
+    </li>
+    <li class="{{ request()->segment(1) == 'areas' ? 'active' : '' }}">
+      <a class="mr-0" href="{{route('areas.index')}}">
+        <i class="fas fa-list-alt"></i>
+        <p>Areas</p>
+      </a>
+    </li>
+    <li class="{{ request()->segment(1) == 'servicios' ? 'active' : '' }}">
+      <a class="mr-0" href="{{route('services.index')}}">
+        <i class="fas fa-list-ul"></i>
+        <p>Servicios</p>
+      </a>
+    </li>
+  </ul>
+</li>
+
 <!--li>
   <a href="./map.html">
     <i class="fal fa-chalkboard-teacher"></i>

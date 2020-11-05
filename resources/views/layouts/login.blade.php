@@ -10,7 +10,6 @@
     <title>{{ config('app.name', 'Telsen Ingenieros') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com"> -->
@@ -25,5 +24,7 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{ asset('js/app.js') }}"></script>
+    @yield('javascript')
 </body>
 </html>

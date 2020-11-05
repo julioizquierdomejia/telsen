@@ -30489,8 +30489,26 @@ img {
 }
 
 .page_centered {
-  background-color: #004580;
+  background-color: #12204f;
+  background-image: url(/images/bg_blue.png?f3daa476a30032b7656f1da688098c87);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   height: 100vh;
+}
+
+.page_login .input-content {
+  position: relative;
+}
+
+.page_login .input-content .icon {
+  color: #a1a1a1;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  font-size: 20px;
+  line-height: 18px;
+  margin: -10px 0 0;
 }
 
 .page_home .welcome {

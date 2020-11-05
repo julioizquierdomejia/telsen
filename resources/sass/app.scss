@@ -312,12 +312,27 @@ img {
 }
 
 .page_centered {
-	background-color: $blue;
+	background-color: $dark_blue;
+	background-image: url('../images/bg_blue.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 	height: 100vh;
 }
 
 .page_login {
-	
+	.input-content {
+		position: relative;
+		.icon {
+		    color: #a1a1a1;
+			position: absolute;
+		    right: 12px;
+		    top: 50%;
+		    font-size: 20px;
+		    line-height: 18px;
+		    margin: -10px 0 0;
+		}
+	}
 }
 
 .page_home {

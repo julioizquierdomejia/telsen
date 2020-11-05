@@ -30227,6 +30227,10 @@ img {
   height: auto;
 }
 
+.text-orange {
+  color: #e96115;
+}
+
 .page .btn-orange {
   background-color: #e96115;
   border-color: #e96115;

@@ -50,7 +50,8 @@ class ServiceController extends Controller
             'area_id'      => 'integer|required',
             'enabled'      => 'boolean|required',
         );
-        $validator = \Validator::make($request->all(), $rules);
+        
+        $this->validate($request, $rules);
 
         $service = new Service();
         
@@ -119,7 +120,7 @@ class ServiceController extends Controller
             'area_id'      => 'integer|required',
             'enabled'      => 'boolean|required',
         );
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
         // process the login
         if ($validator->fails()) {

@@ -396,7 +396,7 @@ class ElectricalEvaluationController extends Controller
             'works' => 'required'*/
         );
 
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
         // process the login
         if ($validator->fails()) {

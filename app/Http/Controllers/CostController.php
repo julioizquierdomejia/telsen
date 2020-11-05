@@ -46,7 +46,7 @@ class CostController extends Controller
             'name'       => 'string|required|unique:costos',
             'enabled'      => 'boolean|required',
         );
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
         $cost = new Cost();
         

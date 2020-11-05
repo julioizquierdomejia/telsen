@@ -47,7 +47,7 @@ class BrandMotorController extends Controller
             'description'      => 'string|nullable',
             'enabled'      => 'boolean|required',
         );
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
         $brand = new BrandMotor();
         

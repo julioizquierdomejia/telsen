@@ -139,7 +139,7 @@ class ClientController extends Controller
             'enabled' => 'boolean',
             'correo' => 'required|email|unique:clients,correo,'.$id,
         );
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
         // process the login
         if ($validator->fails()) {

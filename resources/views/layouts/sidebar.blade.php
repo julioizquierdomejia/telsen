@@ -1,18 +1,18 @@
 <div class="sidebar text-white" data-color="white" data-active-color="danger">
   <div class="sidebar-top">
-    <div class="logo d-flex">
+    <div class="logo text-center">
       <a href="/home" class="simple-text logo-normal">
         <div class="logo-image-big">
           <img src="/images/logo-white.png">
         </div>
       </a>
-      <div class="col">
+      <!-- <div class="col">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-bar navbar-kebab"></span>
           <span class="navbar-toggler-bar navbar-kebab"></span>
           <span class="navbar-toggler-bar navbar-kebab"></span>
         </button>
-      </div>
+      </div> -->
     </div>
     <div class="sidebar-account text-center pt-3">
       <h4 class="account-name">Bruno Díaz</h4>

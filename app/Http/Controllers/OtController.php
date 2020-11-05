@@ -189,7 +189,7 @@ class OtController extends Controller
             'velocidad' => 'required',
             'enabled' => 'boolean',
         );
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
         // process the login
         if ($validator->fails()) {

@@ -29,6 +29,12 @@ img {
 	height: auto;
 }
 
+.text {
+	&-orange {
+		color: $orange;
+	}
+}
+
 .page {
 	.btn {
 		&-orange {

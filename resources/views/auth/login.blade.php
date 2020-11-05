@@ -69,6 +69,9 @@
                             </div>
                         </div>
                     </form>
+                    <div class="card-footer bg-white pb-0 text-muted text-center">
+                        ¿No tienes una cuenta? <a class="btn-link text-orange" href="{{ route('register') }}"><u>Regístrate</u></a>
+                    </div>
                 </div>
             </div>
         </div>

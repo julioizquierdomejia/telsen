@@ -55,31 +55,19 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="form-group modal-body">
-          @csrf
+      <div class="modal-body">
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
                 <label class="col-form-label">Nombre</label>
-                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" required="" value="" name='name' id="inputname">
+                <input type="text" class="form-control" placeholder="" required="" value="" name='name' id="inputname">
               </div>
               <p class="name_message text-danger"></p>
             </div>
 
-            <div class="col-md-8">
-              <div class="form-group">
-                <label class="col-form-label" for="sselectArea">Area</label>
-                <select class="form-control dropdown2" name="area_id" id="sselectArea" style="width: 100%">
-                  <option value="">Ingresa Area</option>
-                  @foreach($areas as $area)
-                    <option value="{{ $area->id }}">{{ $area->name }}</option>
-                  @endforeach
-                </select>
-                <p class="area_message text-danger"></p>
-              </div>
-            </div>
+            <input type="text" class="form-control d-none" required="" value="{{$area->id}}" name='area_id' id="sselectArea">
 
-            <div class="col-md-4 ml-md-auto form-group">
+            <div class="col-md-12">
               <label class="col-form-label" for="sselectEstado">Estado</label>
               <select name="enabled" class="form-control dropdown2" id="sselectEstado" style="width: 100%">
                 <option value="1">Activo</option>
@@ -88,6 +76,7 @@
               <p class="enabled_message text-danger"></p>
             </div>
           </div>
+          <p class="area_message text-danger"></p>
           <h4 class="h6"><strong>Servicios</strong></h4>
           <ul class="services-list">
           @foreach($services as $service)
@@ -126,7 +115,7 @@
       $('.area_message').text('');
     }
     if (estado == '') {
-      $('.enabled_message').text('Seleccione el area');
+      $('.enabled_message').text('Seleccione el estado');
       return;
     } else {
       $('.enabled_message').text('');
@@ -137,9 +126,25 @@
         data: data,
         success: function (data) {
           //alert("Se ha realizado el POST con exito "+data);
+          $('.services-list').empty();
           $.each(data, function (id, item) {
             $('.services-list').append('<li>'+item.name+'</li>');
           })
+          $('#inputname').val('').focus();
+        },
+        error: function (request, status, error) {
+          var data = jQuery.parseJSON(request.responseText);
+          if (data.errors) {
+            if (data.errors.name) {
+              $('.name_message').text(data.errors.name);
+            }
+            if (data.errors.enabled) {
+              $('.enabled_message').text(data.errors.enabled);
+            }
+            if (data.errors.area_id) {
+              $('.area_message').text(data.errors.area_id);
+            }
+          }
         }
     });
 });

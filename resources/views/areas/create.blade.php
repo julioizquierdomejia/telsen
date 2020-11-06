@@ -11,11 +11,9 @@
         <form class="form-group" method="POST" action="/areas" enctype="multipart/form-data">
           @csrf
           <div class="row">
-          	<div class="col-md-12">
-              <div class="form-group">
+          	<div class="col-md-12 form-group">
                 <label class="col-form-label">Nombre</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="" name='name' id="inputname">
-              </div>
           			@error('name')
           				<p class="error-message text-danger">{{ $message }}</p>
           			@enderror

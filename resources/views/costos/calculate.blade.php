@@ -8,8 +8,100 @@
         <h5 class="card-title">Crear Tarjeta de Costo</h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="/tarjeta-costo" enctype="multipart/form-data">
+        <form class="form-group" method="POST" action="{{route('card_cost.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
           @csrf
+          <div class="row">
+            <div class="col-md-4 col-xl-3 form-group">
+              <label class="col-form-label" for="selectRuc">Ingrese RUC</label>
+              <select class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
+                <option value="">Ingresa RUC</option>
+                @foreach($clientes as $cliente)
+                <option value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->ruc }}</option>
+                @endforeach
+              </select>
+              @error('client_id')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+            </div>
+            <div class="col-md-6 form-group">
+              <label class="col-form-label">Razon social</label>
+              <input type="text" class="form-control razon_social" disabled="">
+            </div>
+            <div class="col-md-3 col-xl-3 form-group">
+              <label class="col-form-label">Fecha</label>
+              <input type="date" class="form-control" readonly="" value="{{date('Y-m-d')}}">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Código</label>
+              <input type="text" class="form-control" name="codigo" readonly="" value="{{$ot->codigo_motor}}">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Equipo</label>
+              <input type="text" class="form-control telefono_contacto" name="equipo">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Número</label>
+              <input type="text" class="form-control" name="numero">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Hecha por</label>
+              <input type="text" class="form-control @error('hecho_por') is-invalid @enderror" name="hecho_por">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">KW</label>
+              <input type="text" class="form-control" name="kw">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Conexión</label>
+              <input type="text" class="form-control" name="conexion">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Placa</label>
+              <input type="text" class="form-control" name="placa">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Voltios</label>
+              <input type="text" class="form-control" name="voltios" value="{{$ot->voltaje}}" readonly="">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">N° salidas</label>
+              <input type="text" class="form-control" name="nro_salidas">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Modelo</label>
+              <input type="text" class="form-control" name="modelo" readonly="" value="{{$ot->modelo}}">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Amperios</label>
+              <input type="text" class="form-control" name="amperios">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Frecuencia</label>
+              <input type="text" class="form-control" name="frecuencia">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">N° serie</label>
+              <input type="text" class="form-control" name="nro_serie">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">RPM</label>
+              <input type="text" class="form-control" name="rpm">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Tipo</label>
+              <input type="text" class="form-control" name="tipo">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Marca</label>
+              <input type="text" class="form-control" name="marca" readonly="" value="{{$ot->marca}}">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Frame</label>
+              <input type="text" class="form-control" name="frame">
+            </div>
+          </div>
           <div class="row">
           	<div class="col-md-6">
               <div class="form-group">
@@ -46,11 +138,13 @@
                         <th class="py-1">TOTAL</th>
                      </tr>
                 </thead>
-                <tbody>
-                     
-                </tbody>
+                <tbody></tbody>
            </table>
-           <div class="text-danger text-center p-3">
+           <input class="form-control d-none" type="text" name="cost_card_service" value="{{old('cost_card_service')}}" readonly="">
+            @error('cost_card_service')
+              <p class="error-message text-danger">{{ $message }}</p>
+            @enderror
+           <div class="text-danger text-center p-1 bg-light my-2">
              <span>DEFLEXION: 0.04 mm</span>
            </div>
             </div>
@@ -101,9 +195,9 @@
                 </thead>
                 <tbody>
                   <tr>
+                    <td class="px-2 py-1"><input type="date" class="form-control" value="{{date('Y-m-d')}}" readonly="" name=""></td>
                     <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
-                    <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
-                    <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
+                    <td class="px-2 py-1"><input type="date" class="form-control" value="{{date('Y-m-d')}}" readonly="" name=""></td>
                     <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
                     <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
                   </tr>
@@ -138,35 +232,32 @@
           success: function (response) {
             if (response.success) {
               var services = $.parseJSON(response.data), s_length = services.length;
-              $.each(services, function (id, item) {
-                //console.log(id)
-                if (id == 0) {
-                  $('#table-tap tbody').append(
+              $('#table-tap tbody').append(
                   '<tr class="row-area" data-areaid="'+area+'">'+
                         '<td class="bg-info cell-counter"><span class="number"></span></td>'+
                         '<td class="bg-info" width="200">'+option_selected.text()+'</td>'+
-                        '<td class="bg-info"><input type="text" class="form-control" name="personal" value=""></td>'+
-                        '<td class="bg-info"><input type="text" class="form-control" name="ingreso" value=""></td>'+
-                        '<td class="bg-info"><input type="text" class="form-control" name="salida" value=""></td>'+
-                        '<td class="bg-info"><input type="number" placeholder="S/ " class="form-control text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
+                        '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="personal" value=""></td>'+
+                        '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="ingreso" value=""></td>'+
+                        '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="salida" value=""></td>'+
+                        '<td class="bg-info"><input type="number" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
                         '<td class="bg-info" width="50"> </td>'+
                      '</tr>'
                   )
-                } else {
-                  $('#table-tap tbody').append(
-                  '<tr data-areaid="'+area+'">'+
+              $.each(services, function (id, item) {
+                //console.log(id)
+                $('#table-tap tbody').append(
+                  '<tr data-serviceid="'+item.id+'">'+
                         '<td></td>'+
                         '<td width="200">'+item.name+'</td>'+
-                        '<td><input type="text" class="form-control" name="personal" value=""></td>'+
-                        '<td><input type="text" class="form-control" name="ingreso" value=""></td>'+
-                        '<td width="100"><input type="text" class="form-control" name="salida" value=""></td>'+
-                        '<td width="100"><input type="number" placeholder="S/ " class="form-control text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
+                        '<td><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="personal" value=""></td>'+
+                        '<td><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="ingreso" value=""></td>'+
+                        '<td width="100"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="salida" value=""></td>'+
+                        '<td width="100"><input type="number" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
                         '<td width="100">'
-                        +((id == s_length - 1) ? '<input type="number" placeholder="S/ " class="form-control text-right" name="areasubtotal" data-areaid="'+area+'" value="">' : '')+
+                        +((id == s_length - 1) ? '<input type="number" placeholder="S/ " class="form-control frm-sinput text-right" name="areasubtotal" data-areaid="'+area+'" value="">' : '')+
                         '</td>'+
                      '</tr>'
                   );
-                }
               })
 
               if (services.length) {
@@ -183,8 +274,8 @@
     })
 
     function getServicesSum() {
-      $('[name=subtotal]').keyup(function () {
-        var $this = $(this), areaid = $this.attr('data-areaid');
+      $('.frm-sinput').bind('keyup mouseup', function () {
+        var sinput = $(this), areaid = sinput.attr('data-areaid');
         var items = $('[name="subtotal"][data-areaid='+areaid+']');
         var subtotal_items = $('[name="subtotal"]');
         var total = 0;
@@ -201,8 +292,58 @@
         $('[name="cost_m1"]').val(totals + (totals / 2));
         $('[name="cost_m2"]').val(totals + (totals * .75));
         $('[name="cost_m3"]').val(totals * 2);
+
+        var json = '{';
+        var otArr = [];
+        var tbl2 = $('#table-tap tbody tr').each(function(i, tr_item) {
+          x = $(this).children();
+          var itArr = [];
+          var notempty = false;
+          x.each(function(cell_id, cell_item) {
+            var cparent = $(cell_item).parent();
+            var personal = cparent.find('[name="personal"]');
+            var ingreso = cparent.find('[name="ingreso"]');
+            var salida = cparent.find('[name="salida"]');
+            var subtotal = $(cell_item).find('[name="subtotal"]');
+              if (subtotal.length && subtotal.val().length) {
+                notempty = true;
+                itArr.push( 
+                  '"'+personal.val() + '","' +ingreso.val() + '","' + salida.val() + '","' + subtotal.val() + '"');
+              }
+          });
+          if (notempty) {
+            var itemid = $(tr_item).attr('data-areaid') ? 'area-'+$(tr_item).attr('data-areaid') : 'service-'+$(tr_item).attr('data-serviceid');
+            otArr.push('"' + itemid + '": [' + itArr.join(',') + ']');
+          }
+        })
+        json += otArr.join(",") + '}'
+        $('input[name=cost_card_service]').val(json);
+        return json;
       })
     }
+
+    $('#selectRuc').change(function () {
+      var val = $(this).val();
+      if (!val) {
+        $('.razon_social').val("");
+        return;
+      }
+      $.ajax({
+        url: "/clientes/"+val+"/ver",
+        data: {},
+        type: 'GET',
+        beforeSend: function () {
+        },
+        complete: function () {
+        },
+        success: function (response) {
+        $('.razon_social').val(response.razon_social);
+        },
+        error: function (request, status, error) { // if error occured
+        }
+      });
+    })
+
   })
 </script>
 @endsection

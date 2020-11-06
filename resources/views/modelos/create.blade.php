@@ -13,21 +13,17 @@
         <form class="form-group" method="POST" action="/modelos" enctype="multipart/form-data">
           @csrf
           <div class="row">
-          	<div class="col-md-12">
-              <div class="form-group">
+          	<div class="col-md-12 form-group">
                 <label class="col-form-label">Nombre</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="{{old('name')}}" name='name' id="inputname">
-              </div>
           			@error('name')
           				<p class="error-message text-danger">{{ $message }}</p>
           			@enderror
             </div>
 
-            <div class="col-md-12">
-              <div class="form-group">
+            <div class="col-md-12 form-group">
                 <label class="col-form-label">Descripción</label>
                 <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{old('description')}}" name="description"></textarea>
-              </div>
         				@error('description')
         					<p class="error-message text-danger">{{ $message }}</p>
         				@enderror

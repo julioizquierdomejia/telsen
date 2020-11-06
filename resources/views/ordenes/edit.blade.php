@@ -18,7 +18,7 @@
             <div class="col-md-4 form-group">
               <label class="col-form-label">Fecha de creación <span class="text-danger">(*)</span></label>
               <input type="date" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="" name="fecha_creacion" value="{{$orden->fecha_creacion}}" required>
-              <input type="hidden" name="user_id" class="form-control mb-2" value="{{ $user->id }}">
+              <input type="hidden" name="user_id" class="form-control mb-2" value="{{ auth::user()->id }}">
               @error('fecha_creacion')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror

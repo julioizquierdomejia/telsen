@@ -7,6 +7,7 @@ use App\Models\Ot;
 use App\Models\Status;
 use App\Models\Service;
 use App\Models\Area;
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class CostCardController extends Controller
@@ -34,7 +35,7 @@ class CostCardController extends Controller
             foreach ($ot_status as $key => $status) {
                 $array[] = $status->status_id;
             }
-            if (in_array(2, $array) || in_array(3, $array)) {
+            if (in_array(2, $array) && in_array(3, $array)) {
                 $ots[] = $ot;
             }
         }
@@ -56,10 +57,16 @@ class CostCardController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
+        $ot = Ot::join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
+                ->join('model_motors', 'model_motors.id', '=', 'ots.marca_id')
+                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo')
+                ->where('ots.enabled', 1)
+                ->where('ots.id', $id)
+                ->firstOrFail();
         $areas = Area::where('enabled', 1)->get();
+        $clientes = Client::where('enabled', 1)->get();
 
-        return view('costos.calculate', compact('ot', 'areas'));
+        return view('costos.calculate', compact('ot', 'areas', 'clientes'));
     }
 
     public function filterareas(Request $request)
@@ -82,22 +89,47 @@ class CostCardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $rules = array(
-            'name'       => 'string|required|unique:costos',
+            //'ot_id'       => 'integer|required|exists:ots,id',
+            'hecho_por'      => 'string|required',
             'enabled'      => 'boolean|required',
+            'cost'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'cost_m1'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'cost_m2'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'cost_m3'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'cost_card_service'      => 'string|required',
         );
         $this->validate($request, $rules);
 
-        $cost = new CostCard();
-        
-        $cost->name = $request->input('name');
-        $cost->enabled = $request->input('enabled');
+        $services = json_decode($cost_card_service);
+        $services_count = count($services);
 
-        $cost->save();
+        /*$cost = new CostCard();
+        $cost->name = $request->input('hecho_por');
+        $cost_card_service = $request->input('cost_card_service');
+        $cost->name = $request->input('cost');
+        $cost->cost_m1 = $request->input('cost_m1');
+        $cost->cost_m2 = $request->input('cost_m2');
+        $cost->cost_m3 = $request->input('cost_m3');
+        $cost->enabled = $request->input('enabled');
+        $cost->save();*/
+
+        $services_array = [];
+        for ($i=0; $i < $services_count; $i++) { 
+            $services_array[] = [
+                'cost_card_id' => $id,
+                'area_id' => $services[$i],
+                'question_id' => $services[$i]
+                'question_id' => $services[$i]
+                'question_id' => $services[$i]
+            ];
+        }
+        //CostCardService::insert($services_array);
+        //dd($services);
 
         activitylog('costos', 'store', null, $cost->toArray());
 

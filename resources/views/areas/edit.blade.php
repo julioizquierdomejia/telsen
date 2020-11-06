@@ -11,11 +11,9 @@
         <form class="form-group" method="POST" action="{{route('areas.edit', ['area' => $area->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
+            <div class="col-md-12 form-group">
                 <label class="col-form-label">Nombre</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="{{$area->name}}" name="name">
-              </div>
                 @error('name')
                   <p class="error-message text-danger">{{ $message }}</p>
                 @enderror
@@ -31,8 +29,8 @@
                   <p class="error-message text-danger">{{ $message }}</p>
                 @enderror
             </div>
-            <div class="col-md-9 pt-1">
-              <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#modalServices">Agregar servicios</button>
+            <div class="col-md-9">
+              <button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalServices">Agregar servicios</button>
             </div>
             
           </div>

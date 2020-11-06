@@ -11,18 +11,15 @@
         <form class="form-group" method="POST" action="/servicios" enctype="multipart/form-data">
           @csrf
           <div class="row">
-          	<div class="col-md-12">
-              <div class="form-group">
+          	<div class="col-md-12 form-group">
                 <label class="col-form-label">Nombre</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="" name='name' id="inputname">
-              </div>
           			@error('name')
           				<p class="error-message text-danger">{{ $message }}</p>
           			@enderror
             </div>
 
-            <div class="col-md-6">
-              <div class="form-group">
+            <div class="col-md-6 form-group">
                 <label class="col-form-label" for="selectArea">Area</label>
                 <select class="form-control dropdown2 @error('area_id') is-invalid @enderror" name="area_id" id="selectArea">
                   <option value="">Ingresa Area</option>
@@ -33,7 +30,6 @@
                 @error('area_id')
                   <p class="error-message text-danger">{{ $message }}</p>
                 @enderror
-              </div>
             </div>
 
             <div class="col-md-3 ml-md-auto form-group">

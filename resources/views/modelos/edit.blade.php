@@ -13,22 +13,18 @@
         <form class="form-group" method="POST" action="{{route('modelos.edit', ['modelo' => $modelo->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
+            <div class="col-md-12 form-group">
                 <label class="col-form-label">Nombre</label>
                 <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="{{$modelo->name}}" name="name">
-              </div>
                 @error('name')
                   <p class="error-message text-danger">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="col-md-12">
-              <div class="form-group">
+            <div class="col-md-12 form-group">
                 <label class="col-form-label">Descripción</label>
                 <!-- <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{$modelo->description}}" name="description"></textarea> -->
                 <input type="text" class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{$modelo->description}}" name="description">
-              </div>
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Estado</label>

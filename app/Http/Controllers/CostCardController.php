@@ -118,7 +118,7 @@ class CostCardController extends Controller
         $cost->enabled = $request->input('enabled');
         $cost->save();*/
 
-        $services_array = [];
+        /*$services_array = [];
         for ($i=0; $i < $services_count; $i++) { 
             $services_array[] = [
                 'cost_card_id' => $id,
@@ -127,7 +127,7 @@ class CostCardController extends Controller
                 'question_id' => $services[$i]
                 'question_id' => $services[$i]
             ];
-        }
+        }*/
         //CostCardService::insert($services_array);
         //dd($services);
 

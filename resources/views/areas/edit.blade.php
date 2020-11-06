@@ -82,7 +82,7 @@
           @endforeach
           </ul>
           @else
-          <p class="services-list">Esta area aun no cuenta con servicios.</p>
+          <ul class="services-list"><li>Esta area aun no cuenta con servicios.</li></ul>
           @endif
           <div class="row">
             <div class="update ml-auto mr-auto">

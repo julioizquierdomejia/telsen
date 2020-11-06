@@ -30393,6 +30393,21 @@ img {
   content: counter(list-counter);
 }
 
+.table-bordered thead th,
+.table-bordered thead td {
+  border-bottom-width: 1px;
+}
+
+.table.table-costs tr td {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.table.table-costs tr td .form-control {
+  height: 28px;
+  padding: 2px 10px;
+}
+
 #table-tap tbody td {
   padding: 5px;
 }

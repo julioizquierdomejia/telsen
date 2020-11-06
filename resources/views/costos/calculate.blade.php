@@ -43,13 +43,72 @@
                         <th class="py-1">INGRESO</th>
                         <th class="py-1">SALIDA</th>
                         <th class="py-1"> </th>
-                        <th class="py-1"> </th>
+                        <th class="py-1">TOTAL</th>
                      </tr>
                 </thead>
                 <tbody>
                      
                 </tbody>
            </table>
+           <div class="text-danger text-center p-3">
+             <span>DEFLEXION: 0.04 mm</span>
+           </div>
+            </div>
+            <div class="col-md-5 col-xl-4">
+              <table class="table table-costs">
+                <tbody>
+                  <tr>
+                    <td class="px-2 py-1">COSTO:</td>
+                    <td class="px-2 py-1">
+                      <input type="text" class="form-control text-right @error('cost') is-invalid @enderror" placeholder="" value="" readonly="" name="cost">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-2 py-1"></td>
+                    <td class="px-2 py-1">
+                      <input type="text" class="form-control text-right @error('cost_m1') is-invalid @enderror" placeholder="" value="" readonly="" name="cost_m1">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-2 py-1"></td>
+                    <td class="px-2 py-1">
+                      <input type="text" class="form-control text-right @error('cost_m2') is-invalid @enderror" placeholder="" value="" readonly="" name="cost_m2">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="px-2 py-1"></td>
+                    <td class="px-2 py-1">
+                      <input type="text" class="form-control text-right @error('cost_m3') is-invalid @enderror" placeholder="" value="" readonly="" name="cost_m3">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-md-7 col-xl-8">
+              <table class="table table-costs table-bordered">
+                <thead class="text-center">
+                  <tr>
+                    <td class="px-2 py-1" colspan="2">INFORME:</td>
+                    <td class="px-2 py-1" colspan="2">PPTO - COTIZ.</td>
+                    <td class="px-2 py-1" rowspan="2">MONTO</td>
+                  </tr>
+                  <tr>
+                    <td class="px-2 py-1">FECHA:</td>
+                    <td class="px-2 py-1">INFORM</td>
+                    <td class="px-2 py-1">FECHA</td>
+                    <td class="px-2 py-1">COT-PPTO</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
+                    <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
+                    <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
+                    <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
+                    <td class="px-2 py-1"><input type="text" class="form-control" value="" readonly="" name=""></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
 
@@ -78,38 +137,42 @@
           data: {id: area, _token:token},
           success: function (response) {
             if (response.success) {
-              option_selected.attr('disabled', true);
               var services = $.parseJSON(response.data), s_length = services.length;
               $.each(services, function (id, item) {
                 //console.log(id)
                 if (id == 0) {
                   $('#table-tap tbody').append(
-                  '<tr class="row-area">'+
-                        '<td class="cell-counter"><span class="number"></span></td>'+
+                  '<tr class="row-area" data-areaid="'+area+'">'+
+                        '<td class="bg-info cell-counter"><span class="number"></span></td>'+
                         '<td class="bg-info" width="200">'+option_selected.text()+'</td>'+
-                        '<td><input type="text" class="form-control" name="personal" value=""></td>'+
-                        '<td><input type="text" class="form-control" name="ingreso" value=""></td>'+
-                        '<td><input type="text" class="form-control" name="salida" value=""></td>'+
-                        '<td><input type="number" placeholder="S/ " class="form-control" name="subtotal" value=""></td>'+
-                        '<td width="50"> </td>'+
+                        '<td class="bg-info"><input type="text" class="form-control" name="personal" value=""></td>'+
+                        '<td class="bg-info"><input type="text" class="form-control" name="ingreso" value=""></td>'+
+                        '<td class="bg-info"><input type="text" class="form-control" name="salida" value=""></td>'+
+                        '<td class="bg-info"><input type="number" placeholder="S/ " class="form-control text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
+                        '<td class="bg-info" width="50"> </td>'+
                      '</tr>'
                   )
                 } else {
                   $('#table-tap tbody').append(
-                  '<tr>'+
+                  '<tr data-areaid="'+area+'">'+
                         '<td></td>'+
                         '<td width="200">'+item.name+'</td>'+
                         '<td><input type="text" class="form-control" name="personal" value=""></td>'+
                         '<td><input type="text" class="form-control" name="ingreso" value=""></td>'+
                         '<td width="100"><input type="text" class="form-control" name="salida" value=""></td>'+
-                        '<td width="100"><input type="number" placeholder="S/ " class="form-control" name="subtotal" value=""></td>'+
+                        '<td width="100"><input type="number" placeholder="S/ " class="form-control text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
                         '<td width="100">'
-                        +((id == s_length - 1) ? '<input type="number" placeholder="S/ " class="form-control" name="subtotal" value="">' : '')+
+                        +((id == s_length - 1) ? '<input type="number" placeholder="S/ " class="form-control text-right" name="areasubtotal" data-areaid="'+area+'" value="">' : '')+
                         '</td>'+
                      '</tr>'
                   );
                 }
               })
+
+              if (services.length) {
+                option_selected.attr('disabled', true);
+                getServicesSum();
+              }
             }
           },
           error: function (request, status, error) {
@@ -118,6 +181,28 @@
       });
       }
     })
+
+    function getServicesSum() {
+      $('[name=subtotal]').keyup(function () {
+        var $this = $(this), areaid = $this.attr('data-areaid');
+        var items = $('[name="subtotal"][data-areaid='+areaid+']');
+        var subtotal_items = $('[name="subtotal"]');
+        var total = 0;
+        $.each(items, function (id, item) {
+          total += $(item).val() << 0;
+        })
+        $('[name="areasubtotal"][data-areaid='+areaid+']').val(total);
+
+        var totals = 0;
+        $.each(subtotal_items, function (id, item) {
+          totals += $(item).val() << 0;
+        })
+        $('[name="cost"]').val(totals);
+        $('[name="cost_m1"]').val(totals + (totals / 2));
+        $('[name="cost_m2"]').val(totals + (totals * .75));
+        $('[name="cost_m3"]').val(totals * 2);
+      })
+    }
   })
 </script>
 @endsection

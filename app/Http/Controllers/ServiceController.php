@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\Area;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ServiceController extends Controller
 {
@@ -46,7 +47,9 @@ class ServiceController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $rules = array(
-            'name'       => 'string|required|unique:services',
+            'name'       => ['string', 'required', Rule::unique('services')
+                                    ->where('name', $request->input('name'))
+                                    ->where('area_id', $request->input('area_id'))],
             'area_id'      => 'integer|required',
             'enabled'      => 'boolean|required',
         );

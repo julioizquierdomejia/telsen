@@ -160,17 +160,20 @@ class CreateElectricalEvaluationsCreate extends Migration
      */
     public function down()
     {
+        Schema::table('electrical_evaluations', function (Blueprint $table) {
+            $table->dropForeign('electrical_evaluations_ot_id_foreign');
+        });
         Schema::table('eval_electrical_characteristics', function (Blueprint $table) {
-            $table->dropForeign('eel_id');
+            $table->dropForeign('eval_electrical_characteristics_eel_id_foreign');
         });
         Schema::table('eval_electrical_reception', function (Blueprint $table) {
-            $table->dropForeign('eel_id');
+            $table->dropForeign('eval_electrical_reception_eel_id_foreign');
         });
         Schema::table('eval_electrical_test_in', function (Blueprint $table) {
-            $table->dropForeign('eel_id');
+            $table->dropForeign('eval_electrical_test_in_eel_id_foreign');
         });
         Schema::table('eval_electrical_transformer', function (Blueprint $table) {
-            $table->dropForeign('eel_id');
+            $table->dropForeign('eval_electrical_transformer_eel_id_foreign');
         });
 
         Schema::dropIfExists('eval_electrical_characteristics');

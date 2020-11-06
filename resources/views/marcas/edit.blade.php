@@ -26,8 +26,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="col-form-label">Descripción</label>
-                <!-- <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{$marca->description}}" name="description"></textarea> -->
-                <input type="text" class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{$marca->description}}" name="description">
+                <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{$marca->description}}" name="description"></textarea>
               </div>
             </div>
             <div class="col-md-3 form-group">

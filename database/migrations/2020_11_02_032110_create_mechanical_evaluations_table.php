@@ -90,7 +90,7 @@ class CreateMechanicalEvaluationsTable extends Migration
     public function down()
     {
         Schema::table('mechanical_evaluations', function (Blueprint $table) {
-            $table->dropForeign('ot_id');
+            $table->dropForeign('mechanical_evaluations_ot_id_foreign');
         });
         Schema::dropIfExists('mechanical_evaluations');
     }

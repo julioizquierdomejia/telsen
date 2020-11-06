@@ -77,11 +77,12 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'update'])->name('formatos.electrical.update');
 
 	//rutas para Tarjeta Costos
-	Route::get('costos', [App\Http\Controllers\CostController::class, 'index'])->name('costs.index');
-	Route::get('costos/crear', [App\Http\Controllers\CostController::class, 'create'])->name('costs.create');
-	Route::post('costos', [App\Http\Controllers\CostController::class, 'store'])->name('costs.store');
-	Route::get('costos/{cost}/editar', [App\Http\Controllers\CostController::class, 'edit'])->name('costs.edit');
-	Route::post('costos/{cost}/editar', [App\Http\Controllers\CostController::class, 'update'])->name('costs.update');
+	Route::get('tarjeta-costo', [App\Http\Controllers\CostCardController::class, 'index'])->name('card_cost.index');
+	Route::get('tarjeta-costo/{id}/calcular', [App\Http\Controllers\CostCardController::class, 'calculate'])->name('card_cost.calculate');
+	Route::post('tarjeta-costo', [App\Http\Controllers\CostCardController::class, 'store'])->name('card_cost.store');
+	Route::get('tarjeta-costo/{cost}/editar', [App\Http\Controllers\CostCardController::class, 'edit'])->name('card_cost.edit');
+	Route::post('tarjeta-costo/{cost}/editar', [App\Http\Controllers\CostCardController::class, 'update'])->name('card_cost.update');
+	Route::get('tarjeta-costo/filterareas', [App\Http\Controllers\CostCardController::class, 'filterareas']);
 
 	//rutas para Areas
 	Route::get('areas', [App\Http\Controllers\AreaController::class, 'index'])->name('areas.index');

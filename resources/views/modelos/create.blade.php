@@ -16,7 +16,7 @@
           	<div class="col-md-12">
               <div class="form-group">
                 <label class="col-form-label">Nombre</label>
-                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="" name='name' id="inputname">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="{{old('name')}}" name='name' id="inputname">
               </div>
           			@error('name')
           				<p class="error-message text-danger">{{ $message }}</p>
@@ -26,7 +26,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label class="col-form-label">Descripción</label>
-                <textarea type="text" class="form-control @error('description') is-invalid @enderror" placeholder="" value="" name="description"></textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{old('description')}}" name="description"></textarea>
               </div>
         				@error('description')
         					<p class="error-message text-danger">{{ $message }}</p>

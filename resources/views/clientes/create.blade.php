@@ -1,9 +1,6 @@
 @extends('layouts.app', ['title' => 'Registrar Cliente'])
-
 @section('content')
-
 <div class="row">
-  
   <div class="col-md-12">
     <div class="card card-user form-card">
       <div class="card-header">
@@ -13,27 +10,27 @@
         <form class="form-group" method="POST" action="/clientes" enctype="multipart/form-data">
           @csrf
           <div class="row">
-          	<div class="col-md-3">
+            <div class="col-md-3">
               <div class="form-group">
                 <label class="col-form-label">RUC del cliente</label>
                 <input type="text" class="form-control @error('ruc') is-invalid @enderror" placeholder="Ingrese Ruc del cliente" value="{{ old('ruc') }}" name='ruc' id="inputruc">
               </div>
-			@error('ruc')
-				<p class="error-message text-danger">{{ $message }}</p>
-			@enderror
+              @error('ruc')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
             </div>
             <div class="col-md-9">
               <div class="form-group">
                 <label class="col-form-label">Razon social</label>
                 <input type="text" class="form-control @error('razon_social') is-invalid @enderror" placeholder="Ingrese Razon Social" value="{{ old('razon_social') }}" name="razon_social">
               </div>
-				@error('razon_social')
-					<p class="error-message text-danger">{{ $message }}</p>
-				@enderror
+              @error('razon_social')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
             </div>
           </div>
           <div class="row">
-          	<div class="col-md-6">
+            <div class="col-md-6">
               <div class="form-group">
                 <label class="col-form-label">Direccion</label>
                 <input type="text" class="form-control @error('direccion') is-invalid @enderror" placeholder="" value="{{ old('direccion') }}" name="direccion">
@@ -72,8 +69,8 @@
                 <input type="email" class="form-control @error('correo') is-invalid @enderror" placeholder="Ingrese Correo Electrónico" value="{{ old('correo') }}" name="correo">
               </div>
               @error('corre')
-					<p class="error-message text-danger">{{ $message }}</p>
-				@enderror
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
             </div>
             <div class="col-md-3">
               <div class="form-group">
@@ -89,7 +86,6 @@
               </select>
             </div>
           </div>
-
           <div class="row">
             <div class="update ml-auto mr-auto">
               <button type="submit" class="btn btn-primary btn-round">Crear Cliente</button>
@@ -100,5 +96,4 @@
     </div>
   </div>
 </div>
-
 @endsection

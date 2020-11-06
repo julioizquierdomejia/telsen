@@ -281,7 +281,7 @@ class ElectricalEvaluationController extends Controller
             ]);
         }
 
-        activitylog('eval. electrical', 'store', json_encode($eltraneval->toArray()));
+        activitylog('eval. electrical', 'store', null, json_encode($eltraneval->toArray()));
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');

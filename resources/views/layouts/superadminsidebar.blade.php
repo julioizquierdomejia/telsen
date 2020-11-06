@@ -32,13 +32,13 @@
     </li>
   </ul>
 </li>
-
-<li class="{{ request()->segment(1) == 'costs' ? 'active' : '' }}">
-  <a class="mr-0" href="{{route('costs.index')}}">
+<li class="{{ request()->segment(1) == 'card_cost' ? 'active' : '' }}">
+  <a class="mr-0" href="{{route('card_cost.index')}}">
     <i class="fas fa-money-check-alt"></i>
     <p>Tarjeta de Costos</p>
   </a>
 </li>
+<li class="px-3"><hr style="border-top-color: #858585;"></li>
 <li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">
   <a href="{{route('clientes.index')}}">
     <i class="fal fa-handshake"></i>

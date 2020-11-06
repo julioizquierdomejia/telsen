@@ -43,6 +43,10 @@ class CreateOtsTable extends Migration
      */
     public function down()
     {
+        Schema::table('ots', function (Blueprint $table) {
+            $table->dropForeign('ots_client_id_foreign');
+        });
+
         Schema::dropIfExists('ots');
     }
 }

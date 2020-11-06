@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-//use App\Models\Cost;
+use App\Models\CostCard;
+use App\Models\Ot;
+use App\Models\Status;
+use App\Models\Service;
+use App\Models\Area;
 use Illuminate\Http\Request;
 
-class CostController extends Controller
+class CostCardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +20,25 @@ class CostController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
-        $costos = Cost::all();
-        return view('costos.index', compact('costos'));
+        $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+                        ->select('ots.*', 'clients.razon_social')
+                        ->where('ots.enabled', 1)
+                        ->where('clients.enabled', 1)
+                        ->groupBy('ots.id')
+                        ->get();
+
+        $ots = [];
+        foreach ($_ots as $key => $ot) {
+            $ot_status = \DB::table('status_ot')->where('status_ot.ot_id', '=', $ot->id)->get();
+            $array = [];
+            foreach ($ot_status as $key => $status) {
+                $array[] = $status->status_id;
+            }
+            if (in_array(2, $array) || in_array(3, $array)) {
+                $ots[] = $ot;
+            }
+        }
+        return view('costos.index', compact('ots'));
     }
 
     /**
@@ -25,11 +46,34 @@ class CostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    /*public function create(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         return view('costos.create');
+    }*/
+    public function calculate(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+
+        $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
+        $areas = Area::where('enabled', 1)->get();
+
+        return view('costos.calculate', compact('ot', 'areas'));
+    }
+
+    public function filterareas(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+
+        $id = $request->input('id');
+        $areas = Service::where('area_id', $id)->where('enabled', 1)
+                ->select('services.id', 'services.name')
+                ->get();
+        if ($areas) {
+            return response()->json(['data'=>json_encode($areas),'success'=>true]);
+        }
+        return response()->json(['success'=>false]);
     }
 
     /**
@@ -48,7 +92,7 @@ class CostController extends Controller
         );
         $this->validate($request, $rules);
 
-        $cost = new Cost();
+        $cost = new CostCard();
         
         $cost->name = $request->input('name');
         $cost->enabled = $request->input('enabled');
@@ -57,20 +101,20 @@ class CostController extends Controller
 
         activitylog('costos', 'store', null, $cost->toArray());
 
-        $costos = Cost::where('enabled', 1)->get();
+        $costos = CostCard::where('enabled', 1)->get();
         return redirect('costos')->with('costos');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Cost  $cost
+     * @param  \App\Models\CostCard  $cost
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         //
-        $cost = Client::findOrFail($id);
+        $cost = CostCard::findOrFail($id);
 
         return view('costos.show', compact('cost'));
     }
@@ -78,14 +122,14 @@ class CostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Cost  $cost
+     * @param  \App\Models\CostCard  $cost
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $cost = Cost::findOrFail($id);
+        $cost = CostCard::findOrFail($id);
         return view('costos.edit', compact('cost'));
     }
 
@@ -93,7 +137,7 @@ class CostController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cost  $cost
+     * @param  \App\Models\CostCard  $cost
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -114,7 +158,7 @@ class CostController extends Controller
                 ->withErrors($validator);
         } else {
             // store
-            $cost = Cost::find($id);
+            $cost = CostCard::find($id);
             $original_data = $cost->toArray();
 
             $cost->name       = $request->get('name');
@@ -132,10 +176,10 @@ class CostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Cost  $cost
+     * @param  \App\Models\CostCard  $cost
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Cost $cost)
+    public function destroy(Request $request, CostCard $cost)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
     }

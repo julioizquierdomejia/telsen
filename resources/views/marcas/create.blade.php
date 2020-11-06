@@ -1,7 +1,5 @@
 @extends('layouts.app', ['title' => 'Crear marca'])
-
 @section('content')
-
 <div class="row">
   
   <div class="col-md-12">
@@ -13,24 +11,23 @@
         <form class="form-group" method="POST" action="/marcas" enctype="multipart/form-data">
           @csrf
           <div class="row">
-          	<div class="col-md-12">
+            <div class="col-md-12">
               <div class="form-group">
                 <label class="col-form-label">Nombre</label>
-                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="" name='name' id="inputname">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="{{old('name')}}" name='name' id="inputname">
               </div>
-          			@error('name')
-          				<p class="error-message text-danger">{{ $message }}</p>
-          			@enderror
+              @error('name')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
             </div>
-
             <div class="col-md-12">
               <div class="form-group">
                 <label class="col-form-label">Descripción</label>
-                <textarea type="text" class="form-control @error('description') is-invalid @enderror" placeholder="" value="" name="description"></textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{old('description')}}" name="description"></textarea>
               </div>
-        				@error('description')
-        					<p class="error-message text-danger">{{ $message }}</p>
-        				@enderror
+              @error('description')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Estado</label>
@@ -40,7 +37,6 @@
               </select>
             </div>
           </div>
-
           <div class="row">
             <div class="update ml-auto mr-auto">
               <button type="submit" class="btn btn-primary btn-round">Enviar</button>
@@ -51,5 +47,4 @@
     </div>
   </div>
 </div>
-
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CostCard;
+use App\Models\CostCardService;
 use App\Models\Ot;
 use App\Models\Status;
 use App\Models\Service;
@@ -59,14 +60,15 @@ class CostCardController extends Controller
 
         $ot = Ot::join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
                 ->join('model_motors', 'model_motors.id', '=', 'ots.marca_id')
-                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo')
+                ->join('clients', 'clients.id', '=', 'ots.client_id')
+                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo', 'clients.razon_social', 'clients.ruc')
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
         $areas = Area::where('enabled', 1)->get();
-        $clientes = Client::where('enabled', 1)->get();
+        //$clientes = Client::where('enabled', 1)->get();
 
-        return view('costos.calculate', compact('ot', 'areas', 'clientes'));
+        return view('costos.calculate', compact('ot', 'areas'));
     }
 
     public function filterareas(Request $request)
@@ -105,36 +107,37 @@ class CostCardController extends Controller
         );
         $this->validate($request, $rules);
 
-        $services = json_decode($cost_card_service);
+        $cost_card_service = $request->input('cost_card_service');
+        $services = (array)json_decode($cost_card_service);
         $services_count = count($services);
 
-        /*$cost = new CostCard();
-        $cost->name = $request->input('hecho_por');
-        $cost_card_service = $request->input('cost_card_service');
-        $cost->name = $request->input('cost');
+        $cost = new CostCard();
+        $cost->hecho_por = $request->input('hecho_por');
+        $cost->cost = $request->input('cost');
         $cost->cost_m1 = $request->input('cost_m1');
         $cost->cost_m2 = $request->input('cost_m2');
         $cost->cost_m3 = $request->input('cost_m3');
         $cost->enabled = $request->input('enabled');
-        $cost->save();*/
+        $cost->save();
 
-        /*$services_array = [];
+        $services_array = [];
         for ($i=0; $i < $services_count; $i++) { 
             $services_array[] = [
                 'cost_card_id' => $id,
-                'area_id' => $services[$i],
-                'question_id' => $services[$i]
-                'question_id' => $services[$i]
-                'question_id' => $services[$i]
+                'area_id' => isset($services[$i]->area) ? $services[$i]->area : null,
+                'service_id' => isset($services[$i]->service) ? $services[$i]->service : null,
+                'personal' => $services[$i]->personal,
+                'ingreso' => $services[$i]->ingreso,
+                'salida' => $services[$i]->salida,
+                'subtotal' => $services[$i]->subtotal,
             ];
-        }*/
-        //CostCardService::insert($services_array);
-        //dd($services);
+        }
+        CostCardService::insert($services_array);
 
         activitylog('costos', 'store', null, $cost->toArray());
 
         $costos = CostCard::where('enabled', 1)->get();
-        return redirect('costos')->with('costos');
+        return redirect('tarjeta-costo')->with('costos');
     }
 
     /**

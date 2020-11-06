@@ -24,5 +24,5 @@ class CostCardService extends Model
     protected $date = [
     	'created_at',
     	'updated_at'
-    ]
+    ];
 }

@@ -11,21 +11,13 @@
         <form class="form-group" method="POST" action="{{route('card_cost.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
-            <div class="col-md-4 col-xl-3 form-group">
-              <label class="col-form-label" for="selectRuc">Ingrese RUC</label>
-              <select class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
-                <option value="">Ingresa RUC</option>
-                @foreach($clientes as $cliente)
-                <option value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->ruc }}</option>
-                @endforeach
-              </select>
-              @error('client_id')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
+            <div class="col-md-3 form-group">
+              <label class="col-form-label">RUC</label>
+              <input type="text" class="form-control" disabled="" value="{{$ot->ruc}}">
             </div>
             <div class="col-md-6 form-group">
-              <label class="col-form-label">Razon social</label>
-              <input type="text" class="form-control razon_social" disabled="">
+              <label class="col-form-label">Razón social</label>
+              <input type="text" class="form-control" disabled="" value="{{$ot->razon_social}}">
             </div>
             <div class="col-md-3 col-xl-3 form-group">
               <label class="col-form-label">Fecha</label>
@@ -307,42 +299,21 @@
             var subtotal = $(cell_item).find('[name="subtotal"]');
               if (subtotal.length && subtotal.val().length) {
                 notempty = true;
-                itArr.push( 
-                  '"'+personal.val() + '","' +ingreso.val() + '","' + salida.val() + '","' + subtotal.val() + '"');
+                itArr.push(
+                  '"personal": "'+personal.val() + '", "ingreso": "' +ingreso.val() + '", "salida": "' + salida.val() + '", "subtotal": "' + subtotal.val() + '"');
               }
           });
           if (notempty) {
-            var itemid = $(tr_item).attr('data-areaid') ? 'area-'+$(tr_item).attr('data-areaid') : 'service-'+$(tr_item).attr('data-serviceid');
-            otArr.push('"' + itemid + '": [' + itArr.join(',') + ']');
+            var itemid = $(tr_item).attr('data-areaid') ? '"area": "'+$(tr_item).attr('data-areaid') : '"service": "'+$(tr_item).attr('data-serviceid');
+            otArr.push('"' + i + '": {'+ itemid +'", '+ itArr.join(',') + '}');
           }
         })
-        json += otArr.join(",") + '}'
-        $('input[name=cost_card_service]').val(json);
+        json += otArr + '}'
+        parse_json = JSON.stringify(JSON.parse(json), null, '\t');
+        $('input[name=cost_card_service]').val(parse_json);
         return json;
       })
     }
-
-    $('#selectRuc').change(function () {
-      var val = $(this).val();
-      if (!val) {
-        $('.razon_social').val("");
-        return;
-      }
-      $.ajax({
-        url: "/clientes/"+val+"/ver",
-        data: {},
-        type: 'GET',
-        beforeSend: function () {
-        },
-        complete: function () {
-        },
-        success: function (response) {
-        $('.razon_social').val(response.razon_social);
-        },
-        error: function (request, status, error) { // if error occured
-        }
-      });
-    })
 
   })
 </script>

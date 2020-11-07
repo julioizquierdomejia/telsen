@@ -36,8 +36,9 @@
                           ->where('status_ot.ot_id', '=', $orden->id)
                           ->select('status.id', 'status.name')
                           ->get();
-                    if ($ot_status->last()) {
-                      echo $ot_status->last()->name;
+                    $status_last = $ot_status->last();
+                    if ($status_last) {
+                      echo $status_last->name;
                     }
                     ?>
                   </td>
@@ -46,6 +47,7 @@
 	                <td class="text-center text-nowrap">
 	                	<a href="{{ route('ordenes.edit', $orden) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                     <a href="" class="btn btn-sm btn-danger"><i class="fal fa-minus-circle"></i></a>
+                    @if(count($ot_status) > 1)
 	                	<div class="dropdown d-inline-block dropleft">
                       <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluación" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-eye"></i>
@@ -61,6 +63,7 @@
                         @endforeach
                       </div>
                     </div>
+                    @endif
 	                </td>
 	              </tr>
               @endforeach

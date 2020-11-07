@@ -35,9 +35,9 @@
                           ->join('status', 'status_ot.status_id', '=', 'status.id')
                           ->where('status_ot.ot_id', '=', $orden->id)
                           ->select('status.id', 'status.name')
-                          ->get()->last();
-                    if ($ot_status) {
-                      echo $ot_status->name;
+                          ->get();
+                    if ($ot_status->last()) {
+                      echo $ot_status->last()->name;
                     }
                     ?>
                   </td>
@@ -46,21 +46,21 @@
 	                <td class="text-center text-nowrap">
 	                	<a href="{{ route('ordenes.edit', $orden) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                     <a href="" class="btn btn-sm btn-danger"><i class="fal fa-minus-circle"></i></a>
-                    @if($ot_status->id == 2 || $ot_status->id == 3)
 	                	<div class="dropdown d-inline-block dropleft">
                       <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluación" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-eye"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        @if($ot_status->id == 2)
+                        @foreach($ot_status as $ostatus)
+                        @if($ostatus->id == 2)
                         <a class="dropdown-item" href="{{ route('formatos.mechanical.show', $orden) }}">Evaluación mecánica</a>
                         @endif
-                        @if($ot_status->id == 3)
+                        @if($ostatus->id == 3)
                         <a class="dropdown-item" href="{{ route('formatos.electrical.show', $orden) }}">Evaluación eléctrica</a>
                         @endif
+                        @endforeach
                       </div>
                     </div>
-                    @endif
 	                </td>
 	              </tr>
               @endforeach

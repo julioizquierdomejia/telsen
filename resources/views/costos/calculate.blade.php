@@ -31,7 +31,7 @@
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Equipo</label>
-              <input type="text" class="form-control telefono_contacto" name="equipo">
+              <input type="text" class="form-control telefono_contacto" name="equipo" value="{{$ot->nro_equipo}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Número</label>
@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Hecha por</label>
-              <input type="text" class="form-control @error('hecho_por') is-invalid @enderror" name="hecho_por">
+              <input type="text" class="form-control @error('hecho_por') is-invalid @enderror" name="hecho_por" value="{{old('hecho_por')}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">HP/KW</label>
@@ -47,7 +47,7 @@
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Conexión</label>
-              <input type="text" class="form-control" name="conexion">
+              <input type="text" class="form-control" name="conexion" value="{{$ot->conex}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Placa</label>
@@ -59,7 +59,7 @@
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">N° salidas</label>
-              <input type="text" class="form-control" name="nro_salidas">
+              <input type="text" class="form-control" name="nro_salidas" value="">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Modelo</label>
@@ -67,23 +67,23 @@
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Amperios</label>
-              <input type="text" class="form-control" name="amperios">
+              <input type="text" class="form-control" name="amperios" value="{{$ot->amperaje}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Frecuencia</label>
-              <input type="text" class="form-control" name="frecuencia">
+              <input type="text" class="form-control" name="frecuencia" value="{{$ot->frecuencia}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">N° serie</label>
-              <input type="text" class="form-control" name="nro_serie">
+              <input type="text" class="form-control" name="nro_serie" value="{{$ot->serie}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">RPM</label>
-              <input type="text" class="form-control" name="rpm">
+              <input type="text" class="form-control" name="rpm" value="{{$ot->rpm}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Tipo</label>
-              <input type="text" class="form-control" name="tipo">
+              <input type="text" class="form-control" name="tipo" value="">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Marca</label>
@@ -91,7 +91,7 @@
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Frame</label>
-              <input type="text" class="form-control" name="frame">
+              <input type="text" class="form-control" name="frame" value="{{$ot->frame}}">
             </div>
           </div>
           <div class="row">

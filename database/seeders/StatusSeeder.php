@@ -15,7 +15,7 @@ class StatusSeeder extends Seeder
     public function run()
     {
         $status = new Status();
-        $status->name = 'Creación de OT';
+        $status->name = 'OT Creada';
         $status->description = 'Creación de OT';
         $status->enabled = 1;
         $status->save();

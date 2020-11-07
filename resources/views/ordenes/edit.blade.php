@@ -17,11 +17,7 @@
             </div>
             <div class="col-md-4 form-group">
               <label class="col-form-label">Fecha de creación <span class="text-danger">(*)</span></label>
-              <input type="date" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="" name="fecha_creacion" value="{{$orden->fecha_creacion}}" required>
-              <input type="hidden" name="user_id" class="form-control mb-2" value="{{ auth::user()->id }}">
-              @error('fecha_creacion')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
+              <input type="text" class="form-control" value="{{date('d-m-Y', strtotime($orden->created_at))}}" disabled="">
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Vendedor</label>
@@ -79,7 +75,7 @@
               <label class="col-form-label">Marca</label>
               <!-- <input type="text" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="Ingrese Marca" value="" name="marca"> -->
               <select name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca" value="{{$orden->marca_id}}">
-                <option>Selecciona la marca</option>
+                <option value="">Selecciona la marca</option>
                 @foreach($marcas as $marca)
                 <option value="{{ $marca->id }}" @if($orden->marca_id == $marca->id) selected="" @endif>{{ $marca->name }}</option>
                 @endforeach
@@ -91,7 +87,7 @@
               <?php
               ?>
               <select name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
-                <option>Selecciona el modelo</option>
+                <option value="">Selecciona el modelo</option>
                 @foreach($modelos as $modelo)
                 <option value="{{ $modelo->id }}" @if($orden->modelo_id == $modelo->id) selected="" @endif>{{ $modelo->name }}</option>
                 @endforeach

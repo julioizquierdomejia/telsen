@@ -50,13 +50,6 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
-                <label class="col-form-label">Solped</label>
-                <input type="text" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped')}}" name="solped">
-              @error('solped')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
             <div class="col-12">
               <h4>Estado de recepción</h4>
             </div>

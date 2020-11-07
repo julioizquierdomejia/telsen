@@ -74,7 +74,7 @@ class MechanicalEvaluationController extends Controller
             'hp_kw' => 'required',
 
             'serie' => 'string|nullable',
-            'solped' => 'string|nullable',
+            //'solped' => 'string|nullable',
             'placa_caract_orig' => 'string|nullable',
             'tapas' => 'string|nullable',
             'ventilador' => 'string|nullable',
@@ -135,7 +135,7 @@ class MechanicalEvaluationController extends Controller
         $meval->hp_kw = $request->input('hp_kw');
 
         $meval->serie = $request->input('serie');
-        $meval->solped = $request->input('solped');
+        //$meval->solped = $request->input('solped');
         $meval->placa_caract_orig = $request->input('placa_caract_orig');
         $meval->tapas = $request->input('tapas');
         $meval->ventilador = $request->input('ventilador');
@@ -316,7 +316,7 @@ class MechanicalEvaluationController extends Controller
         $meval->rpm = $request->input('rpm');
         $meval->hp_kw = $request->input('hp_kw');
         $meval->serie = $request->input('serie');
-        $meval->solped = $request->input('solped');
+        //$meval->solped = $request->input('solped');
         $meval->placa_caract_orig = $request->input('placa_caract_orig');
         $meval->tapas = $request->input('tapas');
         $meval->ventilador = $request->input('ventilador');

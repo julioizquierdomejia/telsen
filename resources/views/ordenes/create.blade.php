@@ -13,30 +13,28 @@
         <form class="form-group" method="POST" action="/ordenes" enctype="multipart/form-data">
           @csrf
           <div class="row">
-            <div class="col-md-5 form-group">
+            <div class="col-6 col-md-5 form-group">
               <label class="col-form-label">Número de Orden</label>
               <input type="text" class="form-control" disabled="" placeholder="Company" value="0T - {{$ot_numero}}" name="id">
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-6 col-md-4 form-group">
               <label class="col-form-label">Fecha de creación <span class="text-danger">(*)</span></label>
-              <input type="date" class="form-control" placeholder="" value="{{date('Y-m-d')}}">
+              <input type="date" class="form-control" value="{{date('Y-m-d')}}" disabled="">
               <input type="hidden" name="user_id" class="form-control mb-2" value="{{ Auth::user()->id }}">
               @error('fecha_creacion')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-3 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Vendedor</label>
               <input type="text" name="guia_cliente" class="form-control @error('guia_cliente') is-invalid @enderror" placeholder="Ingrese Vendedor" value="{{old('guia_cliente')}}">
               @error('guia_cliente')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-4 form-group">
+            <div class="col-6 col-md-4 form-group">
               <label class="col-form-label" for="selectRuc">Ingrese RUC</label>
-              <select class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
+              <select style="width: 100%" class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
                 <option value="">Ingresa RUC</option>
                 @foreach($clientes as $cliente)
                 <option value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->ruc }}</option>
@@ -56,11 +54,11 @@
               <label class="col-form-label">Direccion</label>
               <input type="text" class="form-control direccion" placeholder="" value="" disabled="" name="address">
             </div>
-            <div class="col-md-3 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Telefono de contacto</label>
               <input type="text" class="form-control telefono_contacto" placeholder="" value="" disabled="" name="phone">
             </div>
-            <div class="col-md-3 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Celular</label>
               <input type="text" class="form-control celular" placeholder="" value="" disabled="" name="celular">
             </div>
@@ -71,24 +69,28 @@
               <label class="col-form-label">Descripción del motor</label>
               <input type="text" class="form-control @error('descripcion_motor') is-invalid @enderror" placeholder="Ingrese descripción" value="{{old('descripcion_motor')}}" name="descripcion_motor">
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Código</label>
               <input type="text" class="form-control @error('codigo_motor') is-invalid @enderror" name="codigo_motor" placeholder="Ingrese código del motor" value="{{old('codigo_motor')}}">
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Marca</label>
               <!-- <input type="text" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="Ingrese Marca" value="" name="marca"> -->
-              <select name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca">
+              <select style="width: 100%" name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca">
                 <option value="">Selecciona la marca</option>
                 @foreach($marcas as $marca)
                 <option value="{{ $marca->id }}" {{old('marca_id') == $marca->id ? 'selected' : ''}}>{{ $marca->name }}</option>
                 @endforeach
               </select>
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-6 col-md-3 form-group">
+              <label class="col-form-label">Solped</label>
+              <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped')}}" name="solped">
+            </div>
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Modelo</label>
               <!-- <input type="number" min="1" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
-              <select name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
+              <select style="width: 100%" name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
                 <option value="">Selecciona el modelo</option>
                 @foreach($modelos as $modelo)
                 <option value="{{ $modelo->id }}" {{old('modelo_id') == $modelo->id ? 'selected' : ''}}>{{ $modelo->name }}</option>
@@ -98,25 +100,25 @@
           </div>
           
           <div class="row">
-            <div class="col-md-3 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Numero de potencia</label>
               <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Número de potencia" value="{{old('numero_potencia')}}" name="numero_potencia">
             </div>
-            <div class="col-md-3 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Medida de potencia</label>
               <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Medida de medida_potencia" value="{{old('medida_potencia')}}" name="medida_potencia">
             </div>
-            <div class="col-md-3 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Voltaje</label>
               <input type="number" min="1" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('voltaje')}}" name="voltaje">
             </div>
-            <div class="col-md-3 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Velocidad</label>
               <input type="number" min="1" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('velocidad')}}" name="velocidad">
             </div>
-            <div class="col-md-3 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Estado</label>
-              <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
+              <select style="width: 100%" name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
                 <option value="1">Activo</option>
                 <option value="0">Inactivo</option>
               </select>

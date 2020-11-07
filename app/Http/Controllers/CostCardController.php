@@ -65,7 +65,7 @@ class CostCardController extends Controller
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
-                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw')
+                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.frecuencia', 'electrical_evaluations.conex', 'electrical_evaluations.frame', 'electrical_evaluations.amperaje', 'mechanical_evaluations.hp_kw', 'mechanical_evaluations.serie', 'mechanical_evaluations.rpm')
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();

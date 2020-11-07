@@ -6,9 +6,63 @@
                @csrf
                <div class="card form-card">
                     <div class="card-header">
-                         <h5 class="card-title">Evaluación Eléctrica</h5>
+                         <h4 class="card-title">Evaluación Eléctrica</h4>
                     </div>
-                    <div class="card-body pb-3">
+                    <div class="card-body pb-3 pt-0">
+                        <h5 class="text-danger mt-4">Datos del Motor</h5>
+                        <div class="row">
+                          <div class="col-md-12 form-group">
+                            <label class="col-form-label">Descripción del motor</label>
+                            <input type="text" class="form-control @error('descripcion_motor') is-invalid @enderror" placeholder="Ingrese descripción" value="{{$ot->descripcion_motor}}" name="descripcion_motor">
+                          </div>
+                          <div class="col-6 col-md-3 form-group">
+                            <label class="col-form-label">Código</label>
+                            <input type="text" class="form-control @error('codigo_motor') is-invalid @enderror" name="codigo_motor" placeholder="Ingrese código del motor" value="{{$ot->codigo_motor}}">
+                          </div>
+                          <div class="col-6 col-md-3 form-group">
+                            <label class="col-form-label">Marca</label>
+                            <!-- <input type="text" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="Ingrese Marca" value="" name="marca"> -->
+                            <select style="width: 100%" name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca">
+                              <option value="">Selecciona la marca</option>
+                              @foreach($marcas as $marca)
+                              <option value="{{ $marca->id }}" {{$ot->marca_id == $marca->id ? 'selected' : ''}}>{{ $marca->name }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="col-6 col-md-3 form-group">
+                            <label class="col-form-label">Solped</label>
+                            <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{$ot->solped}}" name="solped">
+                          </div>
+                          <div class="col-6 col-md-3 form-group">
+                            <label class="col-form-label">Modelo</label>
+                            <!-- <input type="number" min="1" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
+                            <select style="width: 100%" name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
+                              <option value="">Selecciona el modelo</option>
+                              @foreach($modelos as $modelo)
+                              <option value="{{ $modelo->id }}" {{$ot->modelo_id == $modelo->id ? 'selected' : ''}}>{{ $modelo->name }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        
+                        <div class="row">
+                          <div class="col-6 col-md-3 form-group">
+                            <label class="col-form-label">Numero de potencia</label>
+                            <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Número de potencia" value="{{$ot->numero_potencia}}" name="numero_potencia">
+                          </div>
+                          <div class="col-6 col-md-3 form-group">
+                            <label class="col-form-label">Medida de potencia</label>
+                            <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Medida de medida_potencia" value="{{$ot->medida_potencia}}" name="medida_potencia">
+                          </div>
+                          <div class="col-6 col-md-3 form-group">
+                            <label class="col-form-label">Voltaje</label>
+                            <input type="number" min="1" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{$ot->voltaje}}" name="voltaje">
+                          </div>
+                          <div class="col-6 col-md-3 form-group">
+                            <label class="col-form-label">Velocidad</label>
+                            <input type="number" min="1" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{$ot->velocidad}}" name="velocidad">
+                          </div>
+                        </div>
                          <h4 class="second-title text-danger py-2">Características del Equipo</h4>
                          <div class="row pt-3">
                               <div class="col-12 col-sm-6 col-md-3 form-group">
@@ -19,10 +73,10 @@
                                    <label class="col-form-label">Fecha:</label>
                                    <input type="date" class="form-control" disabled="" value="{{date('Y-m-d')}}">
                               </div>
-                              <div class="col-12 col-sm-6 col-md-3 form-group">
+                              <!-- <div class="col-12 col-sm-6 col-md-3 form-group">
                                    <label class="col-form-label">Solped:</label>
                                    <input type="text" class="form-control @error('eq_solped') is-invalid @enderror" placeholder="Solped" value="{{old('eq_solped')}}" name="eq_solped">
-                              </div>
+                              </div> -->
                               <div class="col-12 col-sm-6 col-md-3 form-group">
                                    <label class="col-form-label">Recepcionado por:</label>
                                    <input type="text" class="form-control @error('eq_recepcionado_por') is-invalid @enderror" placeholder="Recepcionado por" value="{{old('eq_recepcionado_por')}}" name="eq_recepcionado_por">

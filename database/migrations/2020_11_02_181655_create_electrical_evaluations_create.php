@@ -19,7 +19,7 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->unsignedBigInteger('ot_id');
             $table->foreign('ot_id')->references('id')->on('ots');
 
-            $table->string('solped')->nullable();
+            //$table->string('solped')->nullable();
             $table->string('recepcionado_por')->nullable();
             //$table->string('marca');
             $table->string('potencia');

@@ -8,6 +8,8 @@ use App\Models\ElectricalEvaluationReception;
 use App\Models\ElectricalEvaluationTestIn;
 use App\Models\ElectricalEvaluationTransformer;
 use App\Models\Ot;
+use App\Models\BrandMotor;
+use App\Models\ModelMotor;
 use App\Models\Status;
 use Illuminate\Http\Request;
 
@@ -55,8 +57,10 @@ class ElectricalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
 
         $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
+        $marcas = BrandMotor::where('enabled', 1)->get();
+        $modelos = ModelMotor::where('enabled', 1)->get();
 
-        return view('formatos.electrical.evaluate', compact('ot'));
+        return view('formatos.electrical.evaluate', compact('ot', 'marcas', 'modelos'));
     }
 
     /**
@@ -75,6 +79,17 @@ class ElectricalEvaluationController extends Controller
             'eq_potencia' => 'required',
             'eq_conex' => 'required',
             'eq_voltaje' => 'required',
+
+            //OT
+            'descripcion_motor' => 'string',
+            'codigo_motor' => 'string',
+            'solped' => 'string',
+            'marca_id' => 'integer',
+            'modelo_id' => 'integer',
+            'numero_potencia' => 'string',
+            'medida_potencia' => 'string',
+            'voltaje' => 'string',
+            'velocidad' => 'string',
 
             'eq_nro_salida' => 'string|nullable',
             'eq_tipo' => 'string|nullable',
@@ -166,9 +181,21 @@ class ElectricalEvaluationController extends Controller
         $validator = $this->validate($request, $rules);
 
         // store
+        $ot = Ot::find($id);
+        $ot->solped = $request->get('solped');
+        $ot->descripcion_motor = $request->get('descripcion_motor');
+        $ot->codigo_motor = $request->get('codigo_motor');
+        $ot->marca_id = $request->get('marca_id');
+        $ot->modelo_id = $request->get('modelo_id');
+        $ot->numero_potencia = $request->get('numero_potencia');
+        $ot->medida_potencia = $request->get('medida_potencia');
+        $ot->voltaje = $request->get('voltaje');
+        $ot->velocidad = $request->get('velocidad');
+        $ot->save();
+
         $eleval = new ElectricalEvaluation();
         $eleval->ot_id = $id;
-        $eleval->solped = $request->input('eq_solped');
+        //$eleval->solped = $request->input('eq_solped');
         $eleval->recepcionado_por = $request->input('eq_recepcionado_por');
         $eleval->potencia = $request->input('eq_potencia');
         $eleval->conex = $request->input('eq_conex');
@@ -346,6 +373,17 @@ class ElectricalEvaluationController extends Controller
             'eq_conex' => 'required',
             'eq_voltaje' => 'required',
 
+            //OT
+            'descripcion_motor' => 'string',
+            'codigo_motor' => 'string',
+            'solped' => 'string',
+            'marca_id' => 'integer',
+            'modelo_id' => 'integer',
+            'numero_potencia' => 'string',
+            'medida_potencia' => 'string',
+            'voltaje' => 'string',
+            'velocidad' => 'string',
+
             'eq_nro_salida' => 'string|nullable',
             'eq_tipo' => 'string|nullable',
             'eq_amperaje' => 'required|string',
@@ -442,7 +480,7 @@ class ElectricalEvaluationController extends Controller
         $meval->rpm = $request->input('rpm');
         $meval->hp_kw = $request->input('hp_kw');
         $meval->serie = $request->input('serie');
-        $meval->solped = $request->input('solped');
+        //$meval->solped = $request->input('solped');
         $meval->placa_caract_orig = $request->input('placa_caract_orig');
         $meval->tapas = $request->input('tapas');
         $meval->ventilador = $request->input('ventilador');

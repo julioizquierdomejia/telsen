@@ -29,7 +29,7 @@ class CreateMechanicalEvaluationsTable extends Migration
             $table->string('hp_kw');
 
             $table->string('serie')->nullable();
-            $table->string('solped')->nullable();
+            //$table->string('solped')->nullable();
             $table->string('placa_caract_orig')->nullable();
             $table->string('tapas')->nullable();
             $table->string('ventilador')->nullable();

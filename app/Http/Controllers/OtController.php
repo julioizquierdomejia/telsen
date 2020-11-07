@@ -69,17 +69,17 @@ class OtController extends Controller
         $rules = [
             'client_id' => 'required|integer',
             //'fecha_creacion' => 'required',
-            'guia_cliente' => 'nullable|string',
-            //'solped' => 'required',
-            'descripcion_motor' => 'nullable|string',
-            'codigo_motor' => 'nullable|string',
-            'marca_id' => 'nullable|string',
-            'modelo_id' => 'nullable|string',
-            'numero_potencia' => 'nullable|string',
-            'medida_potencia' => 'nullable|string',
-            'voltaje' => 'nullable|string',
-            'velocidad' => 'nullable|string',
-            'enabled' => 'boolean',
+            'guia_cliente' => 'string|nullable',
+            'solped' => 'string|nullable',
+            'descripcion_motor' => 'string|nullable',
+            'codigo_motor' => 'string|nullable',
+            'marca_id' => 'integer|nullable',
+            'modelo_id' => 'integer|nullable',
+            'numero_potencia' => 'string|nullable',
+            'medida_potencia' => 'string|nullable',
+            'voltaje' => 'string|nullable',
+            'velocidad' => 'string|nullable',
+            'enabled' => 'required|boolean',
         ];
 
         $messages = [
@@ -94,7 +94,7 @@ class OtController extends Controller
         $ot->client_id = $request->input('client_id');
         //$ot->fecha_creacion = $request->input('fecha_creacion');
         $ot->guia_cliente = $request->input('guia_cliente');
-        //$ot->solped = $request->input('solped');
+        $ot->solped = $request->input('solped');
         $ot->descripcion_motor = $request->input('descripcion_motor');
         $ot->codigo_motor = $request->input('codigo_motor');
         $ot->marca_id = $request->input('marca_id');
@@ -177,17 +177,17 @@ class OtController extends Controller
         $rules = array(
             'client_id' => 'required|integer',
             //'fecha_creacion' => 'required',
-            'guia_cliente' => 'required',
-            //'solped' => 'required',
-            'descripcion_motor' => 'required',
-            'codigo_motor' => 'required',
-            'marca_id' => 'required',
-            'modelo_id' => 'required',
-            'numero_potencia' => 'required',
-            'medida_potencia' => 'required',
-            'voltaje' => 'required',
-            'velocidad' => 'required',
-            'enabled' => 'boolean',
+            'guia_cliente' => 'string|nullable',
+            'solped' => 'string|nullable',
+            'descripcion_motor' => 'string|nullable',
+            'codigo_motor' => 'string|nullable',
+            'marca_id' => 'nullable',
+            'modelo_id' => 'nullable',
+            'numero_potencia' => 'string|nullable',
+            'medida_potencia' => 'string|nullable',
+            'voltaje' => 'string|nullable',
+            'velocidad' => 'string|nullable',
+            'enabled' => 'required|boolean',
         );
         $this->validate($request, $rules);
 
@@ -196,7 +196,7 @@ class OtController extends Controller
         $ot->client_id = $request->get('client_id');
         //$ot->fecha_creacion = $request->get('fecha_creacion');
         $ot->guia_cliente = $request->get('guia_cliente');
-        //$ot->solped = $request->get('solped');
+        $ot->solped = $request->get('solped');
         $ot->descripcion_motor = $request->get('descripcion_motor');
         $ot->codigo_motor = $request->get('codigo_motor');
         $ot->marca_id = $request->get('marca_id');

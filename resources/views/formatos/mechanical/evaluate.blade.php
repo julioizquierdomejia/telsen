@@ -54,8 +54,8 @@
               <h4>Estado de recepción</h4>
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
-                <label class="col-form-label">placa caract orig</label>
-                <input type="text" class="form-control @error('placa_caract_orig') is-invalid @enderror" placeholder="placa caract orig" value="{{old('placa_caract_orig')}}" name="placa_caract_orig">
+                <label class="col-form-label">Placa Caract Orig</label>
+                <input type="text" class="form-control @error('placa_caract_orig') is-invalid @enderror" placeholder="Placa Caract Orig" value="{{old('placa_caract_orig')}}" name="placa_caract_orig">
               @error('placa_caract_orig')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror

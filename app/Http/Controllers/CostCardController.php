@@ -38,7 +38,7 @@ class CostCardController extends Controller
             foreach ($ot_status as $key => $status) {
                 $array[] = $status->status_id;
             }
-            if (in_array(2, $array) && in_array(3, $array)) {
+            if (in_array(2, $array) && in_array(3, $array) && in_array(4, $array)) {
                 $ots[] = $ot;
             }
         }
@@ -65,7 +65,7 @@ class CostCardController extends Controller
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
-                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.frecuencia', 'electrical_evaluations.conex', 'electrical_evaluations.frame', 'electrical_evaluations.amperaje', 'mechanical_evaluations.hp_kw', 'mechanical_evaluations.serie', 'mechanical_evaluations.rpm')
+                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.frecuencia', 'electrical_evaluations.conex', 'electrical_evaluations.frame', 'electrical_evaluations.amperaje', 'mechanical_evaluations.hp_kw', 'mechanical_evaluations.serie', 'mechanical_evaluations.rpm', 'mechanical_evaluations.placa_caract_orig')
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
@@ -137,6 +137,14 @@ class CostCardController extends Controller
             ];
         }
         CostCardService::insert($services_array);
+
+        $status = Status::where('id', 4)->first();
+        if ($status) {
+            \DB::table('status_ot')->insert([
+                'status_id' => $status->id,
+                'ot_id' => $id,
+            ]);
+        }
 
         activitylog('costos', 'store', null, $cost->toArray());
 

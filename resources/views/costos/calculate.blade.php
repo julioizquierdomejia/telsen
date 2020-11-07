@@ -51,7 +51,7 @@
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Placa</label>
-              <input type="text" class="form-control" name="placa">
+              <input type="text" class="form-control" name="placa" value="{{$ot->placa_caract_orig}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Voltios</label>

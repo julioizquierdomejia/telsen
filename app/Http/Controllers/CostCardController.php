@@ -38,7 +38,7 @@ class CostCardController extends Controller
             foreach ($ot_status as $key => $status) {
                 $array[] = $status->status_id;
             }
-            if (in_array(2, $array) && in_array(3, $array) && in_array(4, $array)) {
+            if (in_array(2, $array) && in_array(3, $array) && !in_array(4, $array)) {
                 $ots[] = $ot;
             }
         }

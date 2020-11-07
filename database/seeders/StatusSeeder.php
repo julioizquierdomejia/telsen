@@ -31,5 +31,17 @@ class StatusSeeder extends Seeder
         $status->description = 'Evaluación Eléctrica';
         $status->enabled = 1;
         $status->save();
+
+        $status = new Status();
+        $status->name = 'Tarjeta de Costo';
+        $status->description = 'Tarjeta de Costo';
+        $status->enabled = 1;
+        $status->save();
+
+        $status = new Status();
+        $status->name = 'Generación de fecha de entrega';
+        $status->description = 'Generación de fecha de entrega';
+        $status->enabled = 1;
+        $status->save();
     }
 }

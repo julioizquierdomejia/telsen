@@ -11,13 +11,17 @@
         <form class="form-group" method="POST" action="{{route('card_cost.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
-            <div class="col-md-3 form-group">
-              <label class="col-form-label">RUC</label>
-              <input type="text" class="form-control" disabled="" value="{{$ot->ruc}}">
+            <div class="col-md-2 form-group">
+              <label class="col-form-label">Número de Orden</label>
+              <input type="text" class="form-control" disabled="" value="OT-{{zerosatleft($ot->id, 3)}}">
             </div>
-            <div class="col-md-6 form-group">
+            <div class="col-md-5 form-group">
               <label class="col-form-label">Razón social</label>
               <input type="text" class="form-control" disabled="" value="{{$ot->razon_social}}">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Solped</label>
+              <input type="text" class="form-control" readonly="" value="{{$ot->solped}}">
             </div>
             <div class="col-md-3 col-xl-3 form-group">
               <label class="col-form-label">Fecha</label>
@@ -26,20 +30,20 @@
           </div>
           <div class="row">
             <div class="col-md-3 col-xl-2 form-group">
-              <label class="col-form-label">Código</label>
-              <input type="text" class="form-control" name="codigo" readonly="" value="{{$ot->codigo_motor}}">
-            </div>
-            <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Equipo</label>
               <input type="text" class="form-control telefono_contacto" name="equipo" value="{{$ot->nro_equipo}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
-              <label class="col-form-label">Número</label>
-              <input type="text" class="form-control" name="numero">
+              <label class="col-form-label">Código</label>
+              <input type="text" class="form-control" name="codigo" readonly="" value="{{$ot->codigo_motor}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Hecha por</label>
               <input type="text" class="form-control @error('hecho_por') is-invalid @enderror" name="hecho_por" value="{{old('hecho_por')}}">
+            </div>
+            <div class="col-md-3 col-xl-2 form-group">
+              <label class="col-form-label">Número</label>
+              <input type="text" class="form-control" name="numero">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">HP/KW</label>

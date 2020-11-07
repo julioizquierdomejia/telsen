@@ -22,7 +22,9 @@ class OtController extends Controller
         
         //Listar OTs
         $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->select('ots.*', 'clients.razon_social')->get();
+                    ->select('ots.*', 'clients.razon_social')
+                    //->where('enabled', 1)
+                    ->get();
 
         return view('ordenes.index', compact('ordenes'));
     }
@@ -31,7 +33,9 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['client']);
         //Listar OTs
-        $ordenes = Ot::all();
+        $ordenes = Ot::join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
+                    ->select('ots.*', 'brand_motors.name as marca')
+                    ->where('enabled', 1)->get();
 
         return view('procesovirtual.list', compact('ordenes'));
     }
@@ -130,9 +134,16 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['client']);
         
-        $orden = Ot::findOrFail($id);
+        $orden = Ot::join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
+                    ->select('ots.*', 'brand_motors.name as marca')
+                    ->where('enabled', 1)
+                    ->findOrFail($id);
 
-        $ordenes = Ot::where('id', '<>', $id)->get();
+        $ordenes = Ot::where('id', '<>', $id)
+                    ->join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
+                    ->select('ots.*', 'brand_motors.name as marca')
+                    ->where('enabled', 1)
+                    ->get();
 
         return view('procesovirtual.show', compact('orden', 'ordenes'));
     }
@@ -141,7 +152,7 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['client']);
 
-        $ordenes = Ot::all();
+        $ordenes = Ot::where('enabled', 1)->get();
         return view('procesovirtual.index', compact('ordenes'));
     }
 
@@ -158,7 +169,7 @@ class OtController extends Controller
         $clientes = Client::where('enabled', 1)->get();
         $marcas = BrandMotor::where('enabled', 1)->get();
         $modelos = ModelMotor::where('enabled', 1)->get();
-        $orden = Ot::findOrFail($id);
+        $orden = Ot::where('enabled', 1)->findOrFail($id);
 
         return view('ordenes.edit', compact('orden', 'clientes', 'marcas', 'modelos'));
     }

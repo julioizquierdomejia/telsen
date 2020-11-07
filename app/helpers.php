@@ -8,6 +8,13 @@ if (! function_exists('current_user')) {
     }
 }
 
+if (! function_exists('zerosatleft')) {
+    function zerosatleft($value, $qty = 1)
+    {
+        return str_pad($value, $qty, '0', STR_PAD_LEFT);
+    }
+}
+
 if (! function_exists('activitylog')) {
     function activitylog($section, $action, $original_data, $data)
     {

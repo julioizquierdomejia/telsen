@@ -22,12 +22,12 @@
           <select class="form-control select-ot dropdown2" id="select-orden" onchange="window.location=this.value">
             <option value="">Selecciona un O.T.</option>
             @foreach($ordenes as $item)
-            <option value="/ordenes/{{$item->id}}/ver">{{ sprintf('%05d', $item->id) }} | {{ $item->marca['name'] }}</option>
+            <option value="/ordenes/{{$item->id}}/ver">{{ sprintf('%05d', $item->id) }} | {{ $item->marca }}</option>
             @endforeach
           </select>
         </div>
         @endif
-        <h5 class="card-title ot-main-title">O.T. {{ sprintf('%05d', $orden->id) }} | {{ $orden->marca['name'] }}</h5>
+        <h5 class="card-title ot-main-title">O.T. {{ zerosatleft($orden->id, 3) }} | {{ $orden->marca }}</h5>
       </div>
       <div class="card-body">
         <ul class="list-inline steps row row-small">

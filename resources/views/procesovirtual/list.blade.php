@@ -29,10 +29,10 @@
               </th>
             </thead> -->
             <tbody>
-              @foreach($ordenes as $orden)
+              @foreach($ordenes as $ot)
                 <tr>
                   <td>
-                    O.T. {{ sprintf('%05d', $orden->id) }} | {{ $orden->marca['name'] }}
+                    O.T. {{ zerosatleft($ot->id, 3) }} | {{ $ot->marca }}
                   </td>
                   <td>
                     <ul class="list-inline d-flex steps mb-0">
@@ -43,7 +43,7 @@
                     </ul>
                   </td>
                   <td class="text-center">
-                    <a href="{{ route('ordenes.show', $orden) }}" class="btn btn-default"><i class="fal fa-eye"></i></a>
+                    <a href="{{ route('ordenes.show', $ot) }}" class="btn btn-default"><i class="fal fa-eye"></i></a>
                   </td>
                 </tr>
               @endforeach

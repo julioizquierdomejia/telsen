@@ -25,15 +25,15 @@
               <th class="text-center">Herramientas</th>
             </thead>
             <tbody>
-            	@foreach($ordenes as $orden)
+            	@foreach($ordenes as $ot)
 	              <tr>
-	                <td class="text-nowrap">{{date("d-m-Y", strtotime($orden->created_at))}}</td>
-                  <td>{{$orden->id}}</td>
+	                <td class="text-nowrap">{{date("d-m-Y", strtotime($ot->created_at))}}</td>
+                  <td>OT-{{zerosatleft($ot->id, 3)}}</td>
                   <td>
                     <?php
                     $ot_status = \DB::table('status_ot')
                           ->join('status', 'status_ot.status_id', '=', 'status.id')
-                          ->where('status_ot.ot_id', '=', $orden->id)
+                          ->where('status_ot.ot_id', '=', $ot->id)
                           ->select('status.id', 'status.name')
                           ->get();
                     $status_last = $ot_status->last();
@@ -42,10 +42,10 @@
                     }
                     ?>
                   </td>
-	                <td>{{$orden->razon_social}}</td>
-	                <td class="text-center">{{$orden->descripcion_motor}}</td>
+	                <td>{{$ot->razon_social}}</td>
+	                <td class="text-center">{{$ot->descripcion_motor}}</td>
 	                <td class="text-center text-nowrap">
-	                	<a href="{{ route('ordenes.edit', $orden) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
+	                	<a href="{{ route('ordenes.edit', $ot) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                     <a href="" class="btn btn-sm btn-danger"><i class="fal fa-minus-circle"></i></a>
                     @if(count($ot_status) > 1)
 	                	<div class="dropdown d-inline-block dropleft">
@@ -55,10 +55,10 @@
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         @foreach($ot_status as $ostatus)
                         @if($ostatus->id == 2)
-                        <a class="dropdown-item" href="{{ route('formatos.mechanical.show', $orden) }}">Evaluación mecánica</a>
+                        <a class="dropdown-item" href="{{ route('formatos.mechanical.show', $ot) }}">Evaluación mecánica</a>
                         @endif
                         @if($ostatus->id == 3)
-                        <a class="dropdown-item" href="{{ route('formatos.electrical.show', $orden) }}">Evaluación eléctrica</a>
+                        <a class="dropdown-item" href="{{ route('formatos.electrical.show', $ot) }}">Evaluación eléctrica</a>
                         @endif
                         @endforeach
                       </div>

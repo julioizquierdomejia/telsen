@@ -8,8 +8,8 @@ use App\Models\ElectricalEvaluationReception;
 use App\Models\ElectricalEvaluationTestIn;
 use App\Models\ElectricalEvaluationTransformer;
 use App\Models\Ot;
-use App\Models\BrandMotor;
-use App\Models\ModelMotor;
+use App\Models\MotorBrand;
+use App\Models\MotorModel;
 use App\Models\Status;
 use Illuminate\Http\Request;
 
@@ -57,8 +57,8 @@ class ElectricalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
 
         $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
-        $marcas = BrandMotor::where('enabled', 1)->get();
-        $modelos = ModelMotor::where('enabled', 1)->get();
+        $marcas = MotorBrand::where('enabled', 1)->get();
+        $modelos = MotorModel::where('enabled', 1)->get();
 
         return view('formatos.electrical.evaluate', compact('ot', 'marcas', 'modelos'));
     }

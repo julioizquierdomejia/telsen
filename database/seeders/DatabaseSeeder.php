@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(LogSeeder::class);
         $this->call(StatusSeeder::class);
-        $this->call(ModelMotorSeeder::class);
-        $this->call(BrandMotorSeeder::class);
+        $this->call(MotorModelSeeder::class);
+        $this->call(MotorBrandSeeder::class);
         $this->call(ClientSeeder::class);
         $this->call(AreaServicesSeeder::class);
     }

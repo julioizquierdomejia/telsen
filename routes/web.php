@@ -47,18 +47,18 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 
 	//rutas para Marcas
-	Route::get('marcas', [App\Http\Controllers\BrandMotorController::class, 'index'])->name('marcas.index');
-	Route::get('marcas/crear', [App\Http\Controllers\BrandMotorController::class, 'create'])->name('marcas.create');
-	Route::post('marcas', [App\Http\Controllers\BrandMotorController::class, 'store'])->name('marcas.store');
-	Route::get('marcas/{marca}/editar', [App\Http\Controllers\BrandMotorController::class, 'edit'])->name('marcas.edit');
-	Route::post('marcas/{marca}/editar', [App\Http\Controllers\BrandMotorController::class, 'update'])->name('marcas.update');
+	Route::get('marcas', [App\Http\Controllers\MotorBrandController::class, 'index'])->name('marcas.index');
+	Route::get('marcas/crear', [App\Http\Controllers\MotorBrandController::class, 'create'])->name('marcas.create');
+	Route::post('marcas', [App\Http\Controllers\MotorBrandController::class, 'store'])->name('marcas.store');
+	Route::get('marcas/{marca}/editar', [App\Http\Controllers\MotorBrandController::class, 'edit'])->name('marcas.edit');
+	Route::post('marcas/{marca}/editar', [App\Http\Controllers\MotorBrandController::class, 'update'])->name('marcas.update');
 
 	//modelos
-	Route::get('modelos', [App\Http\Controllers\ModelMotorController::class, 'index'])->name('modelos.index');
-	Route::get('modelos/crear', [App\Http\Controllers\ModelMotorController::class, 'create'])->name('modelos.create');
-	Route::post('modelos', [App\Http\Controllers\ModelMotorController::class, 'store'])->name('modelos.store');
-	Route::get('modelos/{modelo}/editar', [App\Http\Controllers\ModelMotorController::class, 'edit'])->name('modelos.edit');
-	Route::post('modelos/{modelo}/editar', [App\Http\Controllers\ModelMotorController::class, 'update'])->name('modelos.update');
+	Route::get('modelos', [App\Http\Controllers\MotorModelController::class, 'index'])->name('modelos.index');
+	Route::get('modelos/crear', [App\Http\Controllers\MotorModelController::class, 'create'])->name('modelos.create');
+	Route::post('modelos', [App\Http\Controllers\MotorModelController::class, 'store'])->name('modelos.store');
+	Route::get('modelos/{modelo}/editar', [App\Http\Controllers\MotorModelController::class, 'edit'])->name('modelos.edit');
+	Route::post('modelos/{modelo}/editar', [App\Http\Controllers\MotorModelController::class, 'update'])->name('modelos.update');
 
 	//rutas para eval mechanical
 	Route::get('formatos/mechanical', [App\Http\Controllers\MechanicalEvaluationController::class, 'index'])->name('formatos.mechanical');

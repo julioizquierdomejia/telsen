@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Ot;
 use App\Models\Client;
-use App\Models\BrandMotor;
-use App\Models\ModelMotor;
+use App\Models\MotorBrand;
+use App\Models\MotorModel;
 use App\Models\Status;
 use Illuminate\Http\Request;
 
@@ -33,8 +33,8 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['client']);
         //Listar OTs
-        $ordenes = Ot::join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
-                    ->select('ots.*', 'brand_motors.name as marca')
+        $ordenes = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                    ->select('ots.*', 'motor_brands.name as marca')
                     ->where('enabled', 1)->get();
 
         return view('procesovirtual.list', compact('ordenes'));
@@ -54,8 +54,8 @@ class OtController extends Controller
         $ot_numero = $totalOts + 1;
 
         $clientes = Client::where('enabled', 1)->get();
-        $marcas = BrandMotor::where('enabled', 1)->get();
-        $modelos = ModelMotor::where('enabled', 1)->get();
+        $marcas = MotorBrand::where('enabled', 1)->get();
+        $modelos = MotorModel::where('enabled', 1)->get();
 
         return view('ordenes.create', compact('ot_numero', 'clientes', 'marcas', 'modelos'));
     }
@@ -134,14 +134,14 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['client']);
         
-        $orden = Ot::join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
-                    ->select('ots.*', 'brand_motors.name as marca')
+        $orden = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                    ->select('ots.*', 'motor_brands.name as marca')
                     ->where('enabled', 1)
                     ->findOrFail($id);
 
         $ordenes = Ot::where('id', '<>', $id)
-                    ->join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
-                    ->select('ots.*', 'brand_motors.name as marca')
+                    ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                    ->select('ots.*', 'motor_brands.name as marca')
                     ->where('enabled', 1)
                     ->get();
 
@@ -167,8 +167,8 @@ class OtController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $clientes = Client::where('enabled', 1)->get();
-        $marcas = BrandMotor::where('enabled', 1)->get();
-        $modelos = ModelMotor::where('enabled', 1)->get();
+        $marcas = MotorBrand::where('enabled', 1)->get();
+        $modelos = MotorModel::where('enabled', 1)->get();
         $orden = Ot::where('enabled', 1)->findOrFail($id);
 
         return view('ordenes.edit', compact('orden', 'clientes', 'marcas', 'modelos'));

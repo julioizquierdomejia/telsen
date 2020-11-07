@@ -18,16 +18,16 @@
     <p>Evaluaciones <i class="fal fa-angle-down float-right"></i></p>
   </a>
   <ul class="collapse list-inline pl-3" id="collapseFormatos">
-    <li class="{{ request()->segment(2) == 'mechanical' ? 'active' : '' }}">
-      <a class="mr-0" href="{{route('formatos.mechanical')}}">
-        <i class="fas fa-wrench"></i>
-        <p>F. Evaluación Mecánica</p>
-      </a>
-    </li>
     <li class="{{ request()->segment(2) == 'electrical' ? 'active' : '' }}">
       <a class="mr-0" href="{{route('formatos.electrical')}}">
         <i class="fas fa-charging-station"></i>
         <p>F. Evaluación Eléctrica</p>
+      </a>
+    </li>
+    <li class="{{ request()->segment(2) == 'mechanical' ? 'active' : '' }}">
+      <a class="mr-0" href="{{route('formatos.mechanical')}}">
+        <i class="fas fa-wrench"></i>
+        <p>F. Evaluación Mecánica</p>
       </a>
     </li>
   </ul>

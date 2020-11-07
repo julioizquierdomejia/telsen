@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\BrandMotor;
+use App\Models\MotorBrand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class BrandMotorFactory extends Factory
+class MotorBrandFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = BrandMotor::class;
+    protected $model = MotorBrand::class;
 
     /**
      * Define the model's default state.

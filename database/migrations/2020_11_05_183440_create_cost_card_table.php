@@ -13,7 +13,7 @@ class CreateCostCardTable extends Migration
      */
     public function up()
     {
-        Schema::create('cost_card', function (Blueprint $table) {
+        Schema::create('cost_cards', function (Blueprint $table) {
             $table->id();
             
             $table->unsignedBigInteger('ot_id');
@@ -35,11 +35,11 @@ class CreateCostCardTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('cost_card_service', function (Blueprint $table) {
+        Schema::create('cost_card_services', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('cost_card_id');
-            $table->foreign('cost_card_id')->references('id')->on('cost_card');
+            $table->foreign('cost_card_id')->references('id')->on('cost_cards');
 
             $table->bigInteger('area_id')->nullable()->unsigned();
             $table->index('area_id')->nullable();
@@ -59,11 +59,11 @@ class CreateCostCardTable extends Migration
             $table->timestamps();
         });
 
-        /*Schema::create('service_cost_card_details', function (Blueprint $table) {
+        /*Schema::create('cost_card_service_details', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('cost_card_service_id');
-            $table->foreign('cost_card_service_id')->references('id')->on('service_cost_card');
+            $table->unsignedBigInteger('cost_card_services_id');
+            $table->foreign('cost_card_services_id')->references('id')->on('service_cost_card');
 
             $table->string('personal');
             $table->string('ingreso');
@@ -81,19 +81,19 @@ class CreateCostCardTable extends Migration
      */
     public function down()
     {
-        Schema::table('cost_card', function (Blueprint $table) {
-            $table->dropForeign('cost_card_ot_id_foreign');
+        Schema::table('cost_cards', function (Blueprint $table) {
+            $table->dropForeign('cost_cards_ot_id_foreign');
         });
-        Schema::table('cost_card_service', function (Blueprint $table) {
-            $table->dropForeign('cost_card_service_cost_card_id_foreign');
-            $table->dropForeign('cost_card_service_area_id_foreign');
-            $table->dropForeign('cost_card_service_service_id_foreign');
+        Schema::table('cost_card_services', function (Blueprint $table) {
+            $table->dropForeign('cost_card_services_cost_card_id_foreign');
+            $table->dropForeign('cost_card_services_area_id_foreign');
+            $table->dropForeign('cost_card_services_service_id_foreign');
         });
-        /*Schema::table('cost_card_service_details', function (Blueprint $table) {
-            $table->dropForeign('cost_card_service_cost_card_service_id_foreign');
+        /*Schema::table('cost_card_services_details', function (Blueprint $table) {
+            $table->dropForeign('cost_card_services_cost_card_services_id_foreign');
         });*/
-        Schema::dropIfExists('cost_card');
-        Schema::dropIfExists('cost_card_service');
+        Schema::dropIfExists('cost_cards');
+        Schema::dropIfExists('cost_card_services');
         //Schema::dropIfExists('cost_card_service_details');
     }
 }

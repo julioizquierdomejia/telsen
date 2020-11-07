@@ -140,8 +140,8 @@
                   </tr>
                 </tbody>
            </table>
-           <input class="form-control d-none" type="text" name="cost_card_service" value="{{old('cost_card_service')}}" readonly="">
-            @error('cost_card_service')
+           <input class="form-control d-none" type="text" name="cost_card_services" value="{{old('cost_card_services')}}" readonly="">
+            @error('cost_card_services')
               <p class="error-message text-danger">{{ $message }}</p>
             @enderror
            <div class="text-danger text-center p-1 bg-light my-2">
@@ -319,7 +319,7 @@
         })
         json += otArr + '}'
         parse_json = JSON.stringify(JSON.parse(json), null, '\t');
-        $('input[name=cost_card_service]').val(parse_json);
+        $('input[name=cost_card_services]').val(parse_json);
         return json;
       })
     }

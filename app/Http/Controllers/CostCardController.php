@@ -60,12 +60,12 @@ class CostCardController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $ot = Ot::join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
-                ->join('model_motors', 'model_motors.id', '=', 'ots.modelo_id')
+        $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
-                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.frecuencia', 'electrical_evaluations.conex', 'electrical_evaluations.frame', 'electrical_evaluations.amperaje', 'mechanical_evaluations.hp_kw', 'mechanical_evaluations.serie', 'mechanical_evaluations.rpm', 'mechanical_evaluations.placa_caract_orig')
+                ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.frecuencia', 'electrical_evaluations.conex', 'electrical_evaluations.frame', 'electrical_evaluations.amperaje', 'mechanical_evaluations.hp_kw', 'mechanical_evaluations.serie', 'mechanical_evaluations.rpm', 'mechanical_evaluations.placa_caract_orig')
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
@@ -107,12 +107,12 @@ class CostCardController extends Controller
             'cost_m1'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'cost_m2'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'cost_m3'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
-            'cost_card_service'      => 'string|required',
+            'cost_card_services'      => 'string|required',
         );
         $this->validate($request, $rules);
 
-        $cost_card_service = $request->input('cost_card_service');
-        $services = (array)json_decode($cost_card_service);
+        $cost_card_services = $request->input('cost_card_services');
+        $services = (array)json_decode($cost_card_services);
         $services_count = count($services);
 
         $cost = new CostCard();

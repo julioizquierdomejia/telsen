@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BrandMotor;
+use App\Models\MotorBrand;
 use Illuminate\Http\Request;
 
-class BrandMotorController extends Controller
+class MotorBrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class BrandMotorController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
-        $marcas = BrandMotor::all();
+        $marcas = MotorBrand::where('enabled', 1)->get();
         return view('marcas.index', compact('marcas'));
     }
 
@@ -43,13 +43,13 @@ class BrandMotorController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $rules = array(
-            'name'       => 'string|required|unique:brand_motors',
+            'name'       => 'string|required|unique:motor_brands',
             'description'      => 'string|nullable',
             'enabled'      => 'boolean|required',
         );
         $this->validate($request, $rules);
 
-        $brand = new BrandMotor();
+        $brand = new MotorBrand();
         
         $brand->name = $request->input('name');
         $brand->description = $request->input('description');
@@ -59,14 +59,14 @@ class BrandMotorController extends Controller
 
         activitylog('brands', 'store', null, $brand->toArray());
 
-        $marcas = BrandMotor::where('enabled', 1)->get();
+        $marcas = MotorBrand::where('enabled', 1)->get();
         return redirect('marcas')->with('marcas');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\BrandMotor  $brandMotor
+     * @param  \App\Models\MotorBrand  $brandMotor
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -80,14 +80,14 @@ class BrandMotorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\BrandMotor  $brandMotor
+     * @param  \App\Models\MotorBrand  $brandMotor
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $marca = BrandMotor::findOrFail($id);
+        $marca = MotorBrand::findOrFail($id);
         return view('marcas.edit', compact('marca'));
     }
 
@@ -95,7 +95,7 @@ class BrandMotorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\BrandMotor  $brandMotor
+     * @param  \App\Models\MotorBrand  $brandMotor
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -105,14 +105,14 @@ class BrandMotorController extends Controller
         // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
-            'name'       => 'required|string|unique:brand_motors,name,'.$id,
+            'name'       => 'required|string|unique:motor_brands,name,'.$id,
             'description'      => 'string|nullable',
             'enabled'      => 'boolean|required',
         );
         $this->validate($request, $rules);
 
         // update
-        $brand = BrandMotor::findOrFail($id);
+        $brand = MotorBrand::findOrFail($id);
         $original_data = $brand->toArray();
 
         $brand->name       = $request->get('name');
@@ -130,10 +130,10 @@ class BrandMotorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\BrandMotor  $brandMotor
+     * @param  \App\Models\MotorBrand  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, BrandMotor $brandMotor)
+    public function destroy(Request $request, MotorBrand $brandMotor)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
     }

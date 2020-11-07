@@ -34,11 +34,11 @@ class Ot extends Model
 
     public function marca()
     {
-        return $this->belongsTo('App\Models\BrandMotor', 'marca_id');
+        return $this->belongsTo('App\Models\MotorBrand', 'marca_id');
     }
     public function modelo()
     {
-        return $this->belongsTo('App\Models\ModelMotor', 'modelo_id');
+        return $this->belongsTo('App\Models\MotorModel', 'modelo_id');
     }
 
     public function clientes(){

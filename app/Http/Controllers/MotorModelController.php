@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ModelMotor;
+use App\Models\MotorModel;
 use Illuminate\Http\Request;
 
-class ModelMotorController extends Controller
+class MotorModelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class ModelMotorController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $modelos = ModelMotor::all();
+        $modelos = MotorModel::where('enabled', 1)->get();
         return view('modelos.index', compact('modelos'));
     }
 
@@ -43,13 +43,13 @@ class ModelMotorController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $rules = array(
-            'name'       => 'string|required|unique:model_motors',
+            'name'       => 'string|required|unique:motor_models',
             'description'      => 'string|nullable',
             'enabled'      => 'boolean|required',
         );
         $this->validate($request, $rules);
 
-        $brand = new ModelMotor();
+        $brand = new MotorModel();
         
         $brand->name = $request->input('name');
         $brand->description = $request->input('description');
@@ -59,14 +59,14 @@ class ModelMotorController extends Controller
 
         activitylog('models', 'store', null, $brand->toArray());
 
-        $modelos = ModelMotor::where('enabled', 1)->get();
+        $modelos = MotorModel::where('enabled', 1)->get();
         return redirect('modelos')->with('modelos');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ModelMotor  $brandMotor
+     * @param  \App\Models\MotorModel  $brandMotor
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -81,14 +81,14 @@ class ModelMotorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ModelMotor  $brandMotor
+     * @param  \App\Models\MotorModel  $brandMotor
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $modelo = ModelMotor::findOrFail($id);
+        $modelo = MotorModel::findOrFail($id);
         return view('modelos.edit', compact('modelo'));
     }
 
@@ -96,7 +96,7 @@ class ModelMotorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ModelMotor  $brandMotor
+     * @param  \App\Models\MotorModel  $brandMotor
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -106,13 +106,13 @@ class ModelMotorController extends Controller
         // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
-            'name'       => 'string|required|unique:model_motors,name,'.$id,
+            'name'       => 'string|required|unique:motor_models,name,'.$id,
             'description'      => 'string|nullable',
             'enabled'      => 'boolean|required',
         );
         $this->validate($request, $rules);
 
-        $model = ModelMotor::findOrFail($id);
+        $model = MotorModel::findOrFail($id);
         $original_data = $model->toArray();
         $model->name       = $request->get('name');
         $model->description  = $request->get('description');
@@ -129,10 +129,10 @@ class ModelMotorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ModelMotor  $brandMotor
+     * @param  \App\Models\MotorModel  $brandMotor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, ModelMotor $brandMotor)
+    public function destroy(Request $request, MotorModel $brandMotor)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
     }

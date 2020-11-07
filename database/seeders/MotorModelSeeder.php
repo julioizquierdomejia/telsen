@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\ModelMotor;
+use App\Models\MotorModel;
 
-class ModelMotorSeeder extends Seeder
+class MotorModelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,12 +14,12 @@ class ModelMotorSeeder extends Seeder
      */
     public function run()
     {
-        $model = new ModelMotor();
+        $model = new MotorModel();
         $model->name = 'Ford Mustang Ecoboost';
         $model->enabled = 1;
         $model->save();
 
-        $model = new ModelMotor();
+        $model = new MotorModel();
         $model->name = 'Alfa Romeo Giulia/Stelvio';
         $model->enabled = 1;
         $model->save();

@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\BrandMotor;
+use App\Models\MotorBrand;
 
-class BrandMotorSeeder extends Seeder
+class MotorBrandSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,17 +14,17 @@ class BrandMotorSeeder extends Seeder
      */
     public function run()
     {
-        $brand = new BrandMotor();
+        $brand = new MotorBrand();
         $brand->name = 'Toyota';
         $brand->enabled = 1;
         $brand->save();
 
-        $brand = new BrandMotor();
+        $brand = new MotorBrand();
         $brand->name = 'Hyundai';
         $brand->enabled = 1;
         $brand->save();
 
-        $brand = new BrandMotor();
+        $brand = new MotorBrand();
         $brand->name = 'Ford';
         $brand->enabled = 1;
         $brand->save();

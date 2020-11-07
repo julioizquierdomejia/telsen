@@ -9,8 +9,6 @@ class CostCard extends Model
 {
     use HasFactory;
 
-    protected $table = 'cost_card';
-
     protected $fillable = [
         'ot_id',
         'enabled',

@@ -61,7 +61,7 @@ class CostCardController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $ot = Ot::join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
-                ->join('model_motors', 'model_motors.id', '=', 'ots.marca_id')
+                ->join('model_motors', 'model_motors.id', '=', 'ots.model_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')

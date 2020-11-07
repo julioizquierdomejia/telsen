@@ -12,7 +12,7 @@ class Ot extends Model
 
     protected $fillable = [
         'client_id',
-        'fecha_creacion',
+        //'fecha_creacion',
         'guia_cliente',
         //'solped',
         'descripcion_motor',

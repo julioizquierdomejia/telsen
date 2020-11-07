@@ -25,6 +25,7 @@ class ClientSeeder extends Seeder
         $client->correo = "metro@gmail.com"; 
         $client->info = "info"; 
         $client->enabled = 1;
+        $client->save();
 
         $client = new Client();
         $client->ruc = "20100128056"; 
@@ -37,5 +38,6 @@ class ClientSeeder extends Seeder
         $client->correo = "sfalabella@gmail.com"; 
         $client->info = "info"; 
         $client->enabled = 1;
+        $client->save();
     }
 }

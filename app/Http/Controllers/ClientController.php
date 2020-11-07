@@ -141,33 +141,27 @@ class ClientController extends Controller
         );
         $this->validate($request, $rules);
 
-        // process the login
-        if ($validator->fails()) {
-            return redirect('clientes/' . $id . '/editar')
-                ->withErrors($validator);
-        } else {
-            // store
-            $client = Client::find($id);
-            $original_data = $client->toArray();
-        
-            $client->ruc = $request->input('ruc');
-            $client->razon_social = $request->input('razon_social');
-            $client->direccion = $request->input('direccion');
-            $client->telefono = $request->input('telefono');
-            $client->celular = $request->input('celular');
-            $client->contacto = $request->input('contacto');
-            $client->telefono_contacto = $request->input('telefono_contacto');
-            $client->correo = $request->input('correo');
-            $client->info = $request->input('info');
-            $client->enabled = $request->input('enabled');
-            $client->save();
+        // update
+        $client = Client::find($id);
+        $original_data = $client->toArray();
+    
+        $client->ruc = $request->input('ruc');
+        $client->razon_social = $request->input('razon_social');
+        $client->direccion = $request->input('direccion');
+        $client->telefono = $request->input('telefono');
+        $client->celular = $request->input('celular');
+        $client->contacto = $request->input('contacto');
+        $client->telefono_contacto = $request->input('telefono_contacto');
+        $client->correo = $request->input('correo');
+        $client->info = $request->input('info');
+        $client->enabled = $request->input('enabled');
+        $client->save();
 
-            activitylog('clients', 'update', $original_data, $client->toArray());
+        activitylog('clients', 'update', $original_data, $client->toArray());
 
-            // redirect
-            \Session::flash('message', 'Successfully updated model!');
-            return redirect('clientes');
-        }
+        // redirect
+        \Session::flash('message', 'Successfully updated model!');
+        return redirect('clientes');
     }
 
     /**

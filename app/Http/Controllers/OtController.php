@@ -68,17 +68,17 @@ class OtController extends Controller
         //
         $rules = [
             'client_id' => 'required|integer',
-            'fecha_creacion' => 'required',
-            'guia_cliente' => 'required',
+            //'fecha_creacion' => 'required',
+            'guia_cliente' => 'nullable|string',
             //'solped' => 'required',
-            'descripcion_motor' => 'required',
-            'codigo_motor' => 'required',
-            'marca_id' => 'required',
-            'modelo_id' => 'required',
-            'numero_potencia' => 'required',
-            'medida_potencia' => 'required',
-            'voltaje' => 'required',
-            'velocidad' => 'required',
+            'descripcion_motor' => 'nullable|string',
+            'codigo_motor' => 'nullable|string',
+            'marca_id' => 'nullable|string',
+            'modelo_id' => 'nullable|string',
+            'numero_potencia' => 'nullable|string',
+            'medida_potencia' => 'nullable|string',
+            'voltaje' => 'nullable|string',
+            'velocidad' => 'nullable|string',
             'enabled' => 'boolean',
         ];
 
@@ -92,7 +92,7 @@ class OtController extends Controller
         $ot = new Ot();
         
         $ot->client_id = $request->input('client_id');
-        $ot->fecha_creacion = $request->input('fecha_creacion');
+        //$ot->fecha_creacion = $request->input('fecha_creacion');
         $ot->guia_cliente = $request->input('guia_cliente');
         //$ot->solped = $request->input('solped');
         $ot->descripcion_motor = $request->input('descripcion_motor');
@@ -176,7 +176,7 @@ class OtController extends Controller
 
         $rules = array(
             'client_id' => 'required|integer',
-            'fecha_creacion' => 'required',
+            //'fecha_creacion' => 'required',
             'guia_cliente' => 'required',
             //'solped' => 'required',
             'descripcion_motor' => 'required',
@@ -191,35 +191,28 @@ class OtController extends Controller
         );
         $this->validate($request, $rules);
 
-        // process the login
-        if ($validator->fails()) {
-            return redirect('ordenes/' . $id . '/editar')
-                ->withErrors($validator);
-        } else {
-            // store
-            $ot = Ot::find($id);
-            $original_data = $ot->toArray();
-            $ot->client_id = $request->get('client_id');
-            $ot->fecha_creacion = $request->get('fecha_creacion');
-            $ot->guia_cliente = $request->get('guia_cliente');
-            //$ot->solped = $request->get('solped');
-            $ot->descripcion_motor = $request->get('descripcion_motor');
-            $ot->codigo_motor = $request->get('codigo_motor');
-            $ot->marca_id = $request->get('marca_id');
-            $ot->modelo_id = $request->get('modelo_id');
-            $ot->numero_potencia = $request->get('numero_potencia');
-            $ot->medida_potencia = $request->get('medida_potencia');
-            $ot->voltaje = $request->get('voltaje');
-            $ot->velocidad = $request->get('velocidad');
-            $ot->enabled = $request->get('enabled');
-            $ot->save();
+        $ot = Ot::find($id);
+        $original_data = $ot->toArray();
+        $ot->client_id = $request->get('client_id');
+        //$ot->fecha_creacion = $request->get('fecha_creacion');
+        $ot->guia_cliente = $request->get('guia_cliente');
+        //$ot->solped = $request->get('solped');
+        $ot->descripcion_motor = $request->get('descripcion_motor');
+        $ot->codigo_motor = $request->get('codigo_motor');
+        $ot->marca_id = $request->get('marca_id');
+        $ot->modelo_id = $request->get('modelo_id');
+        $ot->numero_potencia = $request->get('numero_potencia');
+        $ot->medida_potencia = $request->get('medida_potencia');
+        $ot->voltaje = $request->get('voltaje');
+        $ot->velocidad = $request->get('velocidad');
+        $ot->enabled = $request->get('enabled');
+        $ot->save();
 
-            activitylog('ots', 'update', $original_data, $ot->toArray());
+        activitylog('ots', 'update', $original_data, $ot->toArray());
 
-            // redirect
-            \Session::flash('message', '¡Se actualizó la orden!');
-            return redirect('ordenes');
-        }
+        // redirect
+        \Session::flash('message', '¡Se actualizó la orden!');
+        return redirect('ordenes');
     }
 
     /**

@@ -125,26 +125,19 @@ class ServiceController extends Controller
         );
         $this->validate($request, $rules);
 
-        // process the login
-        if ($validator->fails()) {
-            return redirect('servicios/' . $id . '/editar')
-                ->withErrors($validator);
-        } else {
-            // store
-            $service = Service::find($id);
-            $original_data = $service->toArray();
+        $service = Service::findOrFail($id);
+        $original_data = $service->toArray();
 
-            $service->name       = $request->get('name');
-            $service->area_id       = $request->get('area_id');
-            $service->enabled      = $request->get('enabled');
-            $service->save();
+        $service->name    = $request->get('name');
+        $service->area_id = $request->get('area_id');
+        $service->enabled = $request->get('enabled');
+        $service->save();
 
-            activitylog('services', 'update', $original_data, $service->toArray());
+        activitylog('services', 'update', $original_data, $service->toArray());
 
-            // redirect
-            \Session::flash('message', 'Successfully updated service!');
-            return redirect('servicios');
-        }
+        // redirect
+        \Session::flash('message', 'Successfully updated service!');
+        return redirect('servicios');
     }
 
     /**

@@ -23,7 +23,9 @@ class CostCardController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
-                        ->select('ots.*', 'clients.razon_social')
+                ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
+                ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
+                        ->select('ots.*', 'clients.razon_social', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw')
                         ->where('ots.enabled', 1)
                         ->where('clients.enabled', 1)
                         ->groupBy('ots.id')
@@ -61,7 +63,9 @@ class CostCardController extends Controller
         $ot = Ot::join('brand_motors', 'brand_motors.id', '=', 'ots.marca_id')
                 ->join('model_motors', 'model_motors.id', '=', 'ots.marca_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
-                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo', 'clients.razon_social', 'clients.ruc')
+                ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
+                ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
+                ->select('ots.*', 'brand_motors.name as marca', 'model_motors.name as modelo', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw')
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
@@ -99,10 +103,10 @@ class CostCardController extends Controller
             //'ot_id'       => 'integer|required|exists:ots,id',
             'hecho_por'      => 'string|required',
             'enabled'      => 'boolean|required',
-            'cost'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'cost_m1'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'cost_m2'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'cost_m3'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'cost'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
+            'cost_m1'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
+            'cost_m2'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
+            'cost_m3'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'cost_card_service'      => 'string|required',
         );
         $this->validate($request, $rules);
@@ -185,27 +189,21 @@ class CostCardController extends Controller
             'name'       => 'required|string|unique:costos,name,'.$id,
             'enabled'      => 'boolean|required',
         );
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
-        // process the login
-        if ($validator->fails()) {
-            return redirect('costos/' . $id . '/editar')
-                ->withErrors($validator);
-        } else {
-            // store
-            $cost = CostCard::find($id);
-            $original_data = $cost->toArray();
+        // update
+        $cost = CostCard::findOrFail($id);
+        $original_data = $cost->toArray();
 
-            $cost->name       = $request->get('name');
-            $cost->enabled      = $request->get('enabled');
-            $cost->save();
+        $cost->name       = $request->get('name');
+        $cost->enabled    = $request->get('enabled');
+        $cost->save();
 
-            activitylog('costos', 'update', $original_data, $cost->toArray());
+        activitylog('costos', 'update', $original_data, $cost->toArray());
 
-            // redirect
-            \Session::flash('message', 'Successfully updated cost!');
-            return redirect('costos');
-        }
+        // redirect
+        \Session::flash('message', 'Successfully updated cost!');
+        return redirect('costos');
     }
 
     /**

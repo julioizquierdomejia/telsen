@@ -27,7 +27,7 @@
             <tbody>
             	@foreach($ordenes as $orden)
 	              <tr>
-	                <td class="text-nowrap">{{$orden->fecha_creacion}}</td>
+	                <td class="text-nowrap">{{date("d-m-Y", strtotime($orden->created_at))}}</td>
                   <td>{{$orden->id}}</td>
                   <td>
                     <?php
@@ -42,7 +42,7 @@
                     ?>
                   </td>
 	                <td>{{$orden->razon_social}}</td>
-	                <td class="text-center">{{$orden->marca['description']}}</td>
+	                <td class="text-center">{{$orden->descripcion_motor}}</td>
 	                <td class="text-center text-nowrap">
 	                	<a href="{{ route('ordenes.edit', $orden) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                     <a href="" class="btn btn-sm btn-danger"><i class="fal fa-minus-circle"></i></a>

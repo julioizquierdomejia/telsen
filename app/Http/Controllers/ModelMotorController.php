@@ -110,27 +110,20 @@ class ModelMotorController extends Controller
             'description'      => 'string|nullable',
             'enabled'      => 'boolean|required',
         );
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
-        // process the login
-        if ($validator->fails()) {
-            return redirect('modelos/' . $id . '/editar')
-                ->withErrors($validator);
-        } else {
-            // store
-            $model = ModelMotor::find($id);
-            $original_data = $model->toArray();
-            $model->name       = $request->get('name');
-            $model->description      = $request->get('description');
-            $model->enabled      = $request->get('enabled');
-            $model->save();
+        $model = ModelMotor::findOrFail($id);
+        $original_data = $model->toArray();
+        $model->name       = $request->get('name');
+        $model->description  = $request->get('description');
+        $model->enabled      = $request->get('enabled');
+        $model->save();
 
-            activitylog('models', 'update', $original_data, $model->toArray());
+        activitylog('models', 'update', $original_data, $model->toArray());
 
-            // redirect
-            \Session::flash('message', 'Successfully updated model!');
-            return redirect('modelos');
-        }
+        // redirect
+        \Session::flash('message', 'Successfully updated model!');
+        return redirect('modelos');
     }
 
     /**

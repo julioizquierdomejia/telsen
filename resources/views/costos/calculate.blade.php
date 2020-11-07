@@ -42,8 +42,8 @@
               <input type="text" class="form-control @error('hecho_por') is-invalid @enderror" name="hecho_por">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
-              <label class="col-form-label">KW</label>
-              <input type="text" class="form-control" name="kw">
+              <label class="col-form-label">HP/KW</label>
+              <input type="text" class="form-control" value="{{$ot->hp_kw}}" name="kw">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Conexión</label>
@@ -118,10 +118,10 @@
             </div>
 
             <div class="col-md-12">
-              <table class="table table-separate table-bordered text-center table-numbering mb-0" id="table-tap">
-                <thead>
+              <table class="table table-separate table-bordered table-numbering mb-0" id="table-tap">
+                <thead class="text-center">
                      <tr>
-                        <th class="py-1">ITEM</th>
+                        <th class="py-1 px-2" width="50">ITEM</th>
                         <th class="py-1"> </th>
                         <th class="py-1">PERSONAL</th>
                         <th class="py-1">INGRESO</th>
@@ -130,7 +130,11 @@
                         <th class="py-1">TOTAL</th>
                      </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                  <tr class="empty-services text-center">
+                    <td colspan="7">Seleccione un area</td>
+                  </tr>
+                </tbody>
            </table>
            <input class="form-control d-none" type="text" name="cost_card_service" value="{{old('cost_card_service')}}" readonly="">
             @error('cost_card_service')
@@ -146,25 +150,25 @@
                   <tr>
                     <td class="px-2 py-1">COSTO:</td>
                     <td class="px-2 py-1">
-                      <input type="text" class="form-control text-right @error('cost') is-invalid @enderror" placeholder="" value="" readonly="" name="cost">
+                      <input type="text" class="form-control text-right @error('cost') is-invalid @enderror" placeholder="" value="0" readonly="" name="cost">
                     </td>
                   </tr>
                   <tr>
                     <td class="px-2 py-1"></td>
                     <td class="px-2 py-1">
-                      <input type="text" class="form-control text-right @error('cost_m1') is-invalid @enderror" placeholder="" value="" readonly="" name="cost_m1">
+                      <input type="text" class="form-control text-right @error('cost_m1') is-invalid @enderror" placeholder="" value="0" readonly="" name="cost_m1">
                     </td>
                   </tr>
                   <tr>
                     <td class="px-2 py-1"></td>
                     <td class="px-2 py-1">
-                      <input type="text" class="form-control text-right @error('cost_m2') is-invalid @enderror" placeholder="" value="" readonly="" name="cost_m2">
+                      <input type="text" class="form-control text-right @error('cost_m2') is-invalid @enderror" placeholder="" value="0" readonly="" name="cost_m2">
                     </td>
                   </tr>
                   <tr>
                     <td class="px-2 py-1"></td>
                     <td class="px-2 py-1">
-                      <input type="text" class="form-control text-right @error('cost_m3') is-invalid @enderror" placeholder="" value="" readonly="" name="cost_m3">
+                      <input type="text" class="form-control text-right @error('cost_m3') is-invalid @enderror" placeholder="" value="0" readonly="" name="cost_m3">
                     </td>
                   </tr>
                 </tbody>
@@ -224,9 +228,10 @@
           success: function (response) {
             if (response.success) {
               var services = $.parseJSON(response.data), s_length = services.length;
+              $('.empty-services').remove();
               $('#table-tap tbody').append(
                   '<tr class="row-area" data-areaid="'+area+'">'+
-                        '<td class="bg-info cell-counter"><span class="number"></span></td>'+
+                        '<td class="bg-info cell-counter text-center" width="50"><span class="number"></span></td>'+
                         '<td class="bg-info" width="200">'+option_selected.text()+'</td>'+
                         '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="personal" value=""></td>'+
                         '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="ingreso" value=""></td>'+
@@ -239,7 +244,7 @@
                 //console.log(id)
                 $('#table-tap tbody').append(
                   '<tr data-serviceid="'+item.id+'">'+
-                        '<td></td>'+
+                        '<td width="50"></td>'+
                         '<td width="200">'+item.name+'</td>'+
                         '<td><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="personal" value=""></td>'+
                         '<td><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="ingreso" value=""></td>'+

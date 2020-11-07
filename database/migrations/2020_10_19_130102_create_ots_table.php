@@ -19,7 +19,7 @@ class CreateOtsTable extends Migration
             $table->bigInteger('client_id')->unsigned();
             $table->foreign('client_id')->references('id')->on('clients');
 
-            $table->date('fecha_creacion');
+            //$table->date('fecha_creacion');
             $table->string('guia_cliente')->nullable();
             $table->string('solped')->nullable();
             $table->string('descripcion_motor')->nullable();

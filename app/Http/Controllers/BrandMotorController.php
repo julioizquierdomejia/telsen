@@ -109,28 +109,22 @@ class BrandMotorController extends Controller
             'description'      => 'string|nullable',
             'enabled'      => 'boolean|required',
         );
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
-        // process the login
-        if ($validator->fails()) {
-            return redirect('marcas/' . $id . '/editar')
-                ->withErrors($validator);
-        } else {
-            // store
-            $brand = BrandMotor::find($id);
-            $original_data = $brand->toArray();
+        // update
+        $brand = BrandMotor::findOrFail($id);
+        $original_data = $brand->toArray();
 
-            $brand->name       = $request->get('name');
-            $brand->description      = $request->get('description');
-            $brand->enabled      = $request->get('enabled');
-            $brand->save();
+        $brand->name       = $request->get('name');
+        $brand->description      = $request->get('description');
+        $brand->enabled      = $request->get('enabled');
+        $brand->save();
 
-            activitylog('brands', 'update', $original_data, $brand->toArray());
+        activitylog('brands', 'update', $original_data, $brand->toArray());
 
-            // redirect
-            \Session::flash('message', 'Successfully updated marca!');
-            return redirect('marcas');
-        }
+        // redirect
+        \Session::flash('message', 'Successfully updated marca!');
+        return redirect('marcas');
     }
 
     /**

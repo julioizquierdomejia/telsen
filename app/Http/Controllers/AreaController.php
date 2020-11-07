@@ -108,27 +108,21 @@ class AreaController extends Controller
             'name'       => 'required|string|unique:areas,name,'.$id,
             'enabled'      => 'boolean|required',
         );
-        $validator = \Validator::make($request->all(), $rules);
+        $this->validate($request, $rules);
 
-        // process the login
-        if ($validator->fails()) {
-            return redirect('areas/' . $id . '/editar')
-                ->withErrors($validator);
-        } else {
-            // store
-            $area = Area::find($id);
-            $original_data = $area->toArray();
+        // update
+        $area = Area::findOrFail($id);
+        $original_data = $area->toArray();
 
-            $area->name       = $request->get('name');
-            $area->enabled      = $request->get('enabled');
-            $area->save();
+        $area->name       = $request->get('name');
+        $area->enabled    = $request->get('enabled');
+        $area->save();
 
-            activitylog('areas', 'update', $original_data, $area->toArray());
+        activitylog('areas', 'update', $original_data, $area->toArray());
 
-            // redirect
-            \Session::flash('message', 'Successfully updated area!');
-            return redirect('areas');
-        }
+        // redirect
+        \Session::flash('message', 'Successfully updated area!');
+        return redirect('areas');
     }
 
     /**

@@ -331,6 +331,7 @@
       var otArr = [];
       var totals = 0;
       var services_array = {}, dataareaid;
+      var counter = -1;
       var tbl2 = $('#table-tap tbody tr').each(function(i, tr_item) {
         x = $(this).children();
         var itArr = [];
@@ -345,6 +346,7 @@
           totals += subtotal.val() << 0;
             if (subtotal.length && subtotal.val().length && parseFloat(subtotal.val()) > 0) {
               notempty = true;
+              counter++;
               itArr.push(
                 '"area_id": "' + $(tr_item).attr('data-areaid') +
                 '", "service": "' + ($(tr_item).attr('data-serviceid') ? $(tr_item).attr('data-serviceid') : '') +
@@ -357,7 +359,7 @@
             }
         });
         if (notempty) {
-          otArr.push('"' + i + '": {'+ itArr.join(',') + '}');
+          otArr.push('"' + counter + '": {'+ itArr.join(',') + '}');
         }
       })
 

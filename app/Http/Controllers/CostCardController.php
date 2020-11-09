@@ -129,7 +129,7 @@ class CostCardController extends Controller
             $services_array[] = [
                 'cost_card_id' => $id,
                 'area_id' => $services[$i]['area_id'],
-                'service_id' => $services[$i]['service'],
+                'service_id' => $services[$i]['service'] ? $services[$i]['service'] : null,
                 'personal' => $services[$i]['personal'],
                 'ingreso' => $services[$i]['ingreso'],
                 'salida' => $services[$i]['salida'],

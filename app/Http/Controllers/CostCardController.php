@@ -116,6 +116,7 @@ class CostCardController extends Controller
         $services_count = count($services);
 
         $cost = new CostCard();
+        $cost->ot_id = $id;
         $cost->hecho_por = $request->input('hecho_por');
         $cost->cost = $request->input('cost');
         $cost->cost_m1 = $request->input('cost_m1');

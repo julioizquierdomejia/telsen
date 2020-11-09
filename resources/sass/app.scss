@@ -236,6 +236,18 @@ img {
 	    padding: 2px 10px;
 	    font-size: 12px;
 	}
+	textarea {
+		&.frm-sinput {
+		    background: transparent !important;
+		    color: $black;
+			height: auto;
+		    line-height: 15px;
+		    padding: 0;
+		    font-size: 13px;
+		    overflow: hidden;
+		    cursor: text;
+		}
+	}
 }
 .form-card {
 	.card-header {
@@ -366,7 +378,7 @@ img {
 .page_home {
 	.welcome {
 		background: $blue;
-	    color: #fff;
+	    color: $white;
 	    border-radius: 4px 4px 0 0;
 	    margin-bottom: -20px;
 	}
@@ -557,7 +569,7 @@ img {
 		.s-item {
 		    background: #dedede;
 		    clip-path: polygon(80% 0, 100% 50%, 80% 100%, 0% 100%, 15% 50%, 0% 0%);
-		    color: #fff;
+		    color: $white;
 	    	font-size: 12px;
 	    	font-weight: 700;
 		    //margin: 0 3px;
@@ -687,7 +699,7 @@ img {
 			    position: relative;
 			    z-index: 2;
 				.card-title {
-					color: #fff;
+					color: $white;
 					font-size: 15px;
 				    font-weight: 700;
 				    text-transform: uppercase;

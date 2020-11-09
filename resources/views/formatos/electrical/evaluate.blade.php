@@ -204,7 +204,7 @@
                               </div>
                               <div class="col-12 col-sm-6 col-md-3 form-group">
                                    <label class="col-form-label">Funda:</label>
-                                   <input type="text" class="form-control @error('char_funda') is-invalid @enderror" placeholder="Máquina" value="{{old('char_funda')}}" name="char_funda">
+                                   <input type="text" class="form-control @error('char_funda') is-invalid @enderror" placeholder="Funda" value="{{old('char_funda')}}" name="char_funda">
                               </div>
                               <div class="col-12 col-sm-6 col-md-3 form-group">
                                    <label class="col-form-label">Frame:</label>

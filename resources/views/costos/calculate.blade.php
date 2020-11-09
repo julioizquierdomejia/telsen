@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-3 col-xl-2 form-group">
+            <div class="col-md-3 col-xl-4 form-group">
               <label class="col-form-label">Equipo</label>
               <input type="text" class="form-control telefono_contacto" name="equipo" value="{{$ot->nro_equipo}}">
             </div>
@@ -135,9 +135,58 @@
                      </tr>
                 </thead>
                 <tbody>
+                  @if (old('cost_card_services'))
+                    <?php
+                    $services = json_decode(old('cost_card_services'), true);
+                    $services_count = count($services);
+                    $previousGroup = false;
+                    $row_total = 0;
+                    ?>
+                    @foreach($services as $key => $item)
+                      @php
+                      $lastItem = false;
+                      $row_total += $item['subtotal'];
+                      @endphp
+                      @if($previousGroup !== false && isset($item['service']) && $previousGroup !== $item['service'])
+                        @php
+                        $lastItem = true;
+                        @endphp
+                      @endif
+                      @if($item['service'] == '')
+                      @php $row_total = $item['subtotal']; @endphp
+                      <tr class="row-area" data-areaid="{{$item['area_id']}}">
+                          <td class="bg-info cell-counter text-center" width="50"><span class="number"></span></td>
+                          <td class="bg-info" width="200"><textarea class="form-control frm-sinput border-0 bg-white" name="area" disabled="">{{$item['area']}}</textarea></td>
+                          <td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
+                          <td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
+                          <td class="bg-info" width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
+                          <td class="bg-info" width="100"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="{{$item['area_id']}}" value="{{$item['subtotal']}}"></td>
+                          <td class="bg-info" width="50"></td>
+                       </tr>
+                       @else
+                       <tr data-areaid="{{$item['area_id']}}" data-serviceid="{{$item['service']}}">
+                          <td width="50"></td>
+                          <td width="200"><textarea class="form-control frm-sinput border-0 bg-white" name="area" disabled="">{{$item['area']}}</textarea></td>
+                          <td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
+                          <td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
+                          <td width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
+                          <td width="100"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="{{$item['area_id']}}" value="{{$item['subtotal']}}"></td>
+                          <td width="50">
+                            @if($lastItem)
+                          <input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="areasubtotal" data-areaid="{{$item['area_id']}}" value="{{$row_total}}">
+                          @endif
+                          </td>
+                       </tr>
+                       @endif
+                      @php
+                      $previousGroup = $item['area_id'];
+                      @endphp
+                    @endforeach
+                  @else
                   <tr class="empty-services text-center">
                     <td colspan="7">Seleccione un area</td>
                   </tr>
+                  @endif
                 </tbody>
            </table>
            <input class="form-control d-none" type="text" name="cost_card_services" value="{{old('cost_card_services')}}" readonly="">
@@ -236,26 +285,26 @@
               $('#table-tap tbody').append(
                   '<tr class="row-area" data-areaid="'+area+'">'+
                         '<td class="bg-info cell-counter text-center" width="50"><span class="number"></span></td>'+
-                        '<td class="bg-info" width="200">'+option_selected.text()+'</td>'+
+                        '<td class="bg-info" width="200"><textarea class="form-control frm-sinput border-0 bg-white" name="area" disabled="">'+option_selected.text()+'</textarea></td>'+
                         '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="personal" value=""></td>'+
                         '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="ingreso" value=""></td>'+
                         '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="salida" value=""></td>'+
-                        '<td class="bg-info"><input type="number" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
+                        '<td class="bg-info"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
                         '<td class="bg-info" width="50"> </td>'+
                      '</tr>'
                   )
               $.each(services, function (id, item) {
                 //console.log(id)
                 $('#table-tap tbody').append(
-                  '<tr data-serviceid="'+item.id+'">'+
+                  '<tr data-areaid="'+area+'" data-serviceid="'+item.id+'">'+
                         '<td width="50"></td>'+
-                        '<td width="200">'+item.name+'</td>'+
+                        '<td width="200"><textarea class="form-control frm-sinput border-0 bg-white" name="area" disabled="">'+option_selected.text()+'</textarea></td>'+
                         '<td><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="personal" value=""></td>'+
                         '<td><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="ingreso" value=""></td>'+
                         '<td width="100"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="salida" value=""></td>'+
-                        '<td width="100"><input type="number" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
+                        '<td width="100"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="'+area+'" value=""></td>'+
                         '<td width="100">'
-                        +((id == s_length - 1) ? '<input type="number" placeholder="S/ " class="form-control frm-sinput text-right" name="areasubtotal" data-areaid="'+area+'" value="">' : '')+
+                        +((id == s_length - 1) ? '<input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="areasubtotal" data-areaid="'+area+'" value="">' : '')+
                         '</td>'+
                      '</tr>'
                   );
@@ -263,7 +312,7 @@
 
               if (services.length) {
                 option_selected.attr('disabled', true);
-                getServicesSum();
+                getServicesSum(false);
               }
             }
           },
@@ -273,56 +322,68 @@
       });
       }
     })
+    $(document).on('keyup mouseup', '.frm-sinput', function (e) {
+      getServicesSum();
+    })
 
     function getServicesSum() {
-      $('.frm-sinput').bind('keyup mouseup', function () {
-        var sinput = $(this), areaid = sinput.attr('data-areaid');
-        var items = $('[name="subtotal"][data-areaid='+areaid+']');
-        var subtotal_items = $('[name="subtotal"]');
-        var total = 0;
-        $.each(items, function (id, item) {
-          total += $(item).val() << 0;
-        })
-        $('[name="areasubtotal"][data-areaid='+areaid+']').val(total);
-
-        var totals = 0;
-        $.each(subtotal_items, function (id, item) {
-          totals += $(item).val() << 0;
-        })
-        $('[name="cost"]').val(totals);
-        $('[name="cost_m1"]').val(totals + (totals / 2));
-        $('[name="cost_m2"]').val(totals + (totals * .75));
-        $('[name="cost_m3"]').val(totals * 2);
-
-        var json = '{';
-        var otArr = [];
-        var tbl2 = $('#table-tap tbody tr').each(function(i, tr_item) {
-          x = $(this).children();
-          var itArr = [];
-          var notempty = false;
-          x.each(function(cell_id, cell_item) {
-            var cparent = $(cell_item).parent();
-            var personal = cparent.find('[name="personal"]');
-            var ingreso = cparent.find('[name="ingreso"]');
-            var salida = cparent.find('[name="salida"]');
-            var subtotal = $(cell_item).find('[name="subtotal"]');
-              if (subtotal.length && subtotal.val().length) {
-                notempty = true;
-                itArr.push(
-                  '"personal": "'+personal.val() + '", "ingreso": "' +ingreso.val() + '", "salida": "' + salida.val() + '", "subtotal": "' + subtotal.val() + '"');
-              }
-          });
-          if (notempty) {
-            var itemid = $(tr_item).attr('data-areaid') ? '"area": "'+$(tr_item).attr('data-areaid') : '"service": "'+$(tr_item).attr('data-serviceid');
-            otArr.push('"' + i + '": {'+ itemid +'", '+ itArr.join(',') + '}');
-          }
-        })
-        json += otArr + '}'
-        parse_json = JSON.stringify(JSON.parse(json), null, '\t');
-        $('input[name=cost_card_services]').val(parse_json);
-        return json;
+      var json = '{';
+      var otArr = [];
+      var totals = 0;
+      var services_array = {}, dataareaid;
+      var tbl2 = $('#table-tap tbody tr').each(function(i, tr_item) {
+        x = $(this).children();
+        var itArr = [];
+        var notempty = false;
+        x.each(function(cell_id, cell_item) {
+          var cparent = $(cell_item).parent();
+          var area = cparent.find('[name="area"]');
+          var personal = cparent.find('[name="personal"]');
+          var ingreso = cparent.find('[name="ingreso"]');
+          var salida = cparent.find('[name="salida"]');
+          var subtotal = $(cell_item).find('[name="subtotal"]');
+          totals += subtotal.val() << 0;
+            if (subtotal.length && subtotal.val().length && parseFloat(subtotal.val()) > 0) {
+              notempty = true;
+              itArr.push(
+                '"area_id": "' + $(tr_item).attr('data-areaid') +
+                '", "service": "' + ($(tr_item).attr('data-serviceid') ? $(tr_item).attr('data-serviceid') : '') +
+                '", "area": "' + area.val() +
+                '", "personal": "' + personal.val() +
+                '", "ingreso": "' + ingreso.val() +
+                '", "salida": "' + salida.val() +
+                '", "subtotal": "' + subtotal.val() + '"'
+              );
+            }
+        });
+        if (notempty) {
+          otArr.push('"' + i + '": {'+ itArr.join(',') + '}');
+        }
       })
+
+      $('[name="subtotal"]').each(function(i, el){
+          dataareaid = $(el).data('areaid');
+          if($(el).val().length > 0) {
+            if (services_array.hasOwnProperty(dataareaid)) {
+              services_array[dataareaid] += parseFloat($(el).val());
+            } else {
+              services_array[dataareaid] = parseFloat($(el).val());
+            }
+            $('[name="areasubtotal"][data-areaid="'+dataareaid+'"]').val(services_array[dataareaid]);
+          }
+      });
+
+      $('[name="cost"]').val(totals);
+      $('[name="cost_m1"]').val(totals + (totals / 2));
+      $('[name="cost_m2"]').val(totals + (totals * .75));
+      $('[name="cost_m3"]').val(totals * 2);
+      json += otArr + '}'
+      parse_json = JSON.stringify(JSON.parse(json), null, '\t');
+      $('input[name=cost_card_services]').val(parse_json);
+      return json;
     }
+
+    getServicesSum();
 
   })
 </script>

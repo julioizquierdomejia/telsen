@@ -112,28 +112,28 @@ class CostCardController extends Controller
         $this->validate($request, $rules);
 
         $cost_card_services = $request->input('cost_card_services');
-        $services = (array)json_decode($cost_card_services);
+        $services = json_decode($cost_card_services, true);
         $services_count = count($services);
 
-        $cost = new CostCard();
+        /*$cost = new CostCard();
         $cost->hecho_por = $request->input('hecho_por');
         $cost->cost = $request->input('cost');
         $cost->cost_m1 = $request->input('cost_m1');
         $cost->cost_m2 = $request->input('cost_m2');
         $cost->cost_m3 = $request->input('cost_m3');
         $cost->enabled = $request->input('enabled');
-        $cost->save();
+        $cost->save();*/
 
         $services_array = [];
         for ($i=0; $i < $services_count; $i++) { 
             $services_array[] = [
                 'cost_card_id' => $id,
-                'area_id' => isset($services[$i]->area) ? $services[$i]->area : null,
-                'service_id' => isset($services[$i]->service) ? $services[$i]->service : null,
-                'personal' => $services[$i]->personal,
-                'ingreso' => $services[$i]->ingreso,
-                'salida' => $services[$i]->salida,
-                'subtotal' => $services[$i]->subtotal,
+                'area_id' => $services[$i]['area_id'],
+                'service_id' => $services[$i]['service'],
+                'personal' => $services[$i]['personal'],
+                'ingreso' => $services[$i]['ingreso'],
+                'salida' => $services[$i]['salida'],
+                'subtotal' => $services[$i]['subtotal'],
             ];
         }
         CostCardService::insert($services_array);

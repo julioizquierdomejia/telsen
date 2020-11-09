@@ -346,11 +346,21 @@
         </div>
         <div class="card-body pb-3 pt-0">
           <hr>
+          @if ($formato->tap)
+          	@php
+          	var_dump(json_decode(htmlspecialchars($formato->tap), true));
+          	$tap_html = '';
+          	$tap = json_decode(htmlspecialchars($formato->tap), true);
+          	/*$tap_count = count((array)$tap);
+          	for ($i=0; $i < $tap_count; $i++) { 
+	            var_dump($tap[$i]);
+	        }*/
+          	@endphp
+          @endif
           @php
-          	$tap = $formato->tap ? json_decode(htmlspecialchars($formato->tap)) : '';
-          	var_dump($tap);
+          	
           @endphp
-          <p class="mb-1">{{ $tap }}</p>
+          <p class="mb-1">{{ $tap_html }}</p>
           <hr class="mt-0">
           <div class="row">
             <div class="col-12 col-sm-6 col-md-3 mb-2">

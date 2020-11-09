@@ -115,20 +115,6 @@ class CostCardController extends Controller
         $services = json_decode($cost_card_services, true);
         $services_count = count($services);
 
-        $services_array = [];
-        for ($i=0; $i < $services_count; $i++) { 
-            $services_array[] = [
-                'cost_card_id' => $id,
-                'area_id' => $services[$i]['area_id'] ? $services[$i]['area_id'] : null,
-                'service_id' => $services[$i]['service'] ? $services[$i]['service'] : null,
-                'personal' => $services[$i]['personal'],
-                'ingreso' => $services[$i]['ingreso'],
-                'salida' => $services[$i]['salida'],
-                'subtotal' => $services[$i]['subtotal'],
-            ];
-        }
-        CostCardService::insert($services_array);
-
         $cost = new CostCard();
         $cost->ot_id = $id;
         $cost->hecho_por = $request->input('hecho_por');
@@ -138,6 +124,20 @@ class CostCardController extends Controller
         $cost->cost_m3 = $request->input('cost_m3');
         $cost->enabled = $request->input('enabled');
         $cost->save();
+
+        $services_array = [];
+        for ($i=0; $i < $services_count; $i++) { 
+            $services_array[] = [
+                'cost_card_id' => $cost->id,
+                'area_id' => $services[$i]['area_id'] ? $services[$i]['area_id'] : null,
+                'service_id' => $services[$i]['service'] ? $services[$i]['service'] : null,
+                'personal' => $services[$i]['personal'],
+                'ingreso' => $services[$i]['ingreso'],
+                'salida' => $services[$i]['salida'],
+                'subtotal' => $services[$i]['subtotal'],
+            ];
+        }
+        CostCardService::insert($services_array);
 
         $status = Status::where('id', 4)->first();
         if ($status) {

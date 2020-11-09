@@ -136,16 +136,30 @@ class OtController extends Controller
         
         $orden = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                     ->select('ots.*', 'motor_brands.name as marca')
-                    ->where('enabled', 1)
+                    ->where('ots.enabled', 1)
                     ->findOrFail($id);
 
-        $ordenes = Ot::where('id', '<>', $id)
+        $ordenes = Ot::where('ots.id', '<>', $id)
                     ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                     ->select('ots.*', 'motor_brands.name as marca')
-                    ->where('enabled', 1)
+                    ->where('ots.enabled', 1)
                     ->get();
 
         return view('procesovirtual.show', compact('orden', 'ordenes'));
+    }
+
+    public function ot_show(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        
+        $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
+                ->join('clients', 'clients.id', '=', 'ots.client_id')
+                    ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social')
+                    ->where('ots.enabled', 1)
+                    ->findOrFail($id);
+
+        return view('ordenes.show', compact('ot'));
     }
 
     public function pvirtual(Request $request)

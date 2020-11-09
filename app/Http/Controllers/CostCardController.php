@@ -161,10 +161,19 @@ class CostCardController extends Controller
      */
     public function show($id)
     {
-        //
-        $cost = CostCard::findOrFail($id);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        return view('costos.show', compact('cost'));
+        $ccost = CostCard::findOrFail($id);
+
+        return view('costos.show', compact('ccost'));
+    }
+    public function cc_show(Request $request, $ot_id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $ccost = CostCard::where('ot_id', $ot_id)->firstOrFail();
+
+        return view('costos.show', compact('ccost'));
     }
 
     /**

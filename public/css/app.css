@@ -30322,6 +30322,9 @@ img {
 
 .page .dropdown-menu .dropdown-item {
   border-radius: 0;
+  font-size: 12px;
+  line-height: 13px;
+  padding: 8px 45px 8px 15px;
 }
 
 .page .services-list {
@@ -30443,6 +30446,13 @@ img {
   margin-bottom: 0;
   padding: 0.75rem 0;
   text-transform: uppercase;
+}
+
+.form-card .card-title-buttons .btn {
+  font-size: 12px;
+  line-height: 12px;
+  padding: 3px 10px;
+  margin: 1px 0;
 }
 
 .form-card .second-title {

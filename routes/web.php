@@ -31,7 +31,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('ordenes', [App\Http\Controllers\OtController::class, 'store'])->name('ordenes.store');
 	Route::get('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'edit'])->name('ordenes.edit');
 	Route::get('ordenes/procesovirtual', [App\Http\Controllers\OtController::class, 'pvirtual'])->name('ordenes.pvirtual');
-	Route::get('ordenes/{orden}/ver', [App\Http\Controllers\OtController::class, 'show'])->name('ordenes.show');
+	Route::get('ordenes/{orden}/ver', [App\Http\Controllers\OtController::class, 'ot_show'])->name('ordenes.ot_show');
+	Route::get('ordenes/client/{orden}/ver', [App\Http\Controllers\OtController::class, 'show'])->name('ordenes.show');
 	Route::post('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'update'])->name('ordenes.update');
 
 	Route::get('ordenes/lista', [App\Http\Controllers\OtController::class, 'list'])->name('ordenes.list');
@@ -78,6 +79,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//rutas para Tarjeta Costos
 	Route::get('tarjeta-costo', [App\Http\Controllers\CostCardController::class, 'index'])->name('card_cost.index');
+	Route::get('tarjeta-costo/{id}/ver', [App\Http\Controllers\ElectricalEvaluationController::class, 'format_show'])->name('card_cost.cc_show');
 	Route::get('tarjeta-costo/{id}/calcular', [App\Http\Controllers\CostCardController::class, 'calculate'])->name('card_cost.calculate');
 	Route::post('tarjeta-costo/{id}/store', [App\Http\Controllers\CostCardController::class, 'store'])->name('card_cost.store');
 	Route::get('tarjeta-costo/{cost}/editar', [App\Http\Controllers\CostCardController::class, 'edit'])->name('card_cost.edit');

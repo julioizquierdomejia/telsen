@@ -334,7 +334,14 @@ class ElectricalEvaluationController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
 
-        $formato = ElectricalEvaluation::where('ot_id', $ot_id)->firstOrFail();
+        $formato = ElectricalEvaluation::
+                    join('ots', 'ots.id', '=', 'electrical_evaluations.ot_id')
+                    ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                    ->join('motor_models', 'motor_models.id', '=', 'ots.marca_id')
+                    ->join('electrical_evaluations as ev', 'ev.ot_id', '=', 'ots.id')
+                    ->join('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'ev.id')
+                    ->select('electrical_evaluations.*', 'ots.descripcion_motor', 'ots.codigo_motor', 'ots.numero_potencia', 'ots.medida_potencia', 'ots.voltaje', 'ots.velocidad', 'ots.solped', 'motor_brands.name as marca', 'motor_models.name as modelo', 'eet.tap')
+                    ->where('ev.ot_id', $ot_id)->firstOrFail();
 
         return view('formatos.electrical.show', compact('formato'));
     }

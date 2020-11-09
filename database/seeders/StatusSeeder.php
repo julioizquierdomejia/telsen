@@ -39,6 +39,18 @@ class StatusSeeder extends Seeder
         $status->save();
 
         $status = new Status();
+        $status->name = 'Cotización por aprobar';
+        $status->description = 'Cotización por aprobar';
+        $status->enabled = 1;
+        $status->save();
+
+        $status = new Status();
+        $status->name = 'Cotización aprobada';
+        $status->description = 'Cotización aprobada';
+        $status->enabled = 1;
+        $status->save();
+
+        $status = new Status();
         $status->name = 'Generación de fecha de entrega';
         $status->description = 'Generación de fecha de entrega';
         $status->enabled = 1;

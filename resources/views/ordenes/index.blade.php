@@ -29,7 +29,7 @@
 	              <tr>
 	                <td class="text-nowrap">{{date("d-m-Y", strtotime($ot->created_at))}}</td>
                   <td>OT-{{zerosatleft($ot->id, 3)}}</td>
-                  <td>
+                  <td class="text-center">
                     <?php
                     $ot_status = \DB::table('status_ot')
                           ->join('status', 'status_ot.status_id', '=', 'status.id')
@@ -37,28 +37,36 @@
                           ->select('status.id', 'status.name')
                           ->get();
                     $status_last = $ot_status->last();
-                    if ($status_last) {
-                      echo $status_last->name;
-                    }
                     ?>
+                    @if ($status_last)
+                      @if($status_last->id == 4)
+                      <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @else
+                      <span class="badge badge-secondary px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @endif
+                    @endif
                   </td>
 	                <td>{{$ot->razon_social}}</td>
 	                <td class="text-center">{{$ot->descripcion_motor}}</td>
-	                <td class="text-center text-nowrap">
+	                <td class="text-left text-nowrap">
+                    <a href="{{ route('ordenes.ot_show', $ot) }}" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
 	                	<a href="{{ route('ordenes.edit', $ot) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                     <a href="" class="btn btn-sm btn-danger"><i class="fal fa-minus-circle"></i></a>
                     @if(count($ot_status) > 1)
 	                	<div class="dropdown d-inline-block dropleft">
-                      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluación" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-eye"></i>
+                      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-file-check"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         @foreach($ot_status as $ostatus)
                         @if($ostatus->id == 2)
-                        <a class="dropdown-item" href="{{ route('formatos.mechanical.show', $ot) }}">Evaluación mecánica</a>
+                        <a class="dropdown-item" href="{{ route('formatos.mechanical.show', $ot) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
                         @endif
                         @if($ostatus->id == 3)
-                        <a class="dropdown-item" href="{{ route('formatos.electrical.show', $ot) }}">Evaluación eléctrica</a>
+                        <a class="dropdown-item" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+                        @endif
+                        @if($ostatus->id == 4)
+                        <a class="dropdown-item" href="{{ route('card_cost.cc_show', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>
                         @endif
                         @endforeach
                       </div>

@@ -115,14 +115,14 @@ class CostCardController extends Controller
         $services = json_decode($cost_card_services, true);
         $services_count = count($services);
 
-        /*$cost = new CostCard();
+        $cost = new CostCard();
         $cost->hecho_por = $request->input('hecho_por');
         $cost->cost = $request->input('cost');
         $cost->cost_m1 = $request->input('cost_m1');
         $cost->cost_m2 = $request->input('cost_m2');
         $cost->cost_m3 = $request->input('cost_m3');
         $cost->enabled = $request->input('enabled');
-        $cost->save();*/
+        $cost->save();
 
         $services_array = [];
         for ($i=0; $i < $services_count; $i++) { 

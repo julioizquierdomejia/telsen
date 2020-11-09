@@ -9,8 +9,6 @@ class CostCardService extends Model
 {
     use HasFactory;
 
-    protected $table = 'cost_card_service';
-
     protected $fillable = [
         'cost_card_id',
         'area_id',

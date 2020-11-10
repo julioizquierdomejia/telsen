@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\ClientType;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -30,8 +31,9 @@ class ClientController extends Controller
     public function create(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $client_types = ClientType::where('enabled', 1)->get();
 
-        return view('clientes.create');
+        return view('clientes.create', compact('client_types'));
     }
 
     /**
@@ -48,6 +50,7 @@ class ClientController extends Controller
             'ruc' => 'required|min:8|unique:clients',
             'razon_social' => 'required',
             'enabled' => 'boolean',
+            'client_type_id' => 'integer|required',
             'correo' => 'required|email|unique:clients',
         ];
 
@@ -58,26 +61,27 @@ class ClientController extends Controller
         $this->validate($request, $rules);
 
         //creamos una variable que es un objeto de nuesta instancia de nuestro modelo
-        $cliente = new Client();
+        $client = new Client();
         
-        $cliente->ruc = $request->input('ruc');
-        $cliente->razon_social = $request->input('razon_social');
-        $cliente->direccion = $request->input('direccion');
-        $cliente->telefono = $request->input('telefono');
-        $cliente->celular = $request->input('celular');
-        $cliente->contacto = $request->input('contacto');
-        $cliente->telefono_contacto = $request->input('telefono_contacto');
-        $cliente->correo = $request->input('correo');
-        $cliente->info = $request->input('info');
-        $cliente->enabled = $request->input('enabled');
+        $client->ruc = $request->input('ruc');
+        $client->razon_social = $request->input('razon_social');
+        $client->direccion = $request->input('direccion');
+        $client->telefono = $request->input('telefono');
+        $client->celular = $request->input('celular');
+        $client->contacto = $request->input('contacto');
+        $client->telefono_contacto = $request->input('telefono_contacto');
+        $client->correo = $request->input('correo');
+        $client->info = $request->input('info');
+        $client->client_type_id = $request->input('client_type_id');
+        $client->enabled = $request->input('enabled');
 
-        $cliente->save();
+        $client->save();
 
-        //Agregamos cliente como usuario
+        //Agregamos client como usuario
         $role_user = Role::where('name', 'client')->first();
         if ($role_user) {
             $user = new User();
-            $user->email = $cliente->correo;
+            $user->email = $client->correo;
             $user->password = bcrypt('123456');
             $user->status = 1;
             $user->save();
@@ -86,7 +90,7 @@ class ClientController extends Controller
             $user->roles()->attach($role_user);
         }
 
-        activitylog('ots', 'store', null, $cliente->toArray());
+        activitylog('ots', 'store', null, $client->toArray());
 
 
         //$clientes = Client::all();
@@ -118,8 +122,9 @@ class ClientController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
+        $client_types = ClientType::where('enabled', 1)->get();
         $cliente = Client::findOrFail($id);
-        return view('clientes.edit', compact('cliente'));
+        return view('clientes.edit', compact('cliente', 'client_types'));
     }
 
     /**
@@ -136,6 +141,7 @@ class ClientController extends Controller
         $rules = array(
             'ruc' => 'required|min:8|unique:clients,ruc,'.$id,
             'razon_social' => 'required',
+            'client_type_id' => 'integer|required',
             'enabled' => 'boolean',
             'correo' => 'required|email|unique:clients,correo,'.$id,
         );
@@ -154,6 +160,7 @@ class ClientController extends Controller
         $client->telefono_contacto = $request->input('telefono_contacto');
         $client->correo = $request->input('correo');
         $client->info = $request->input('info');
+        $client->client_type_id = $request->input('client_type_id');
         $client->enabled = $request->input('enabled');
         $client->save();
 

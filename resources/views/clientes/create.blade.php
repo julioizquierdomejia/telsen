@@ -28,7 +28,7 @@
           <div class="row">
             <div class="col-md-6 form-group">
                 <label class="col-form-label">Direccion</label>
-                <input type="text" class="form-control @error('direccion') is-invalid @enderror" placeholder="" value="{{ old('direccion') }}" name="direccion">
+                <input type="text" class="form-control @error('direccion') is-invalid @enderror" placeholder="Ingrese la dirección" value="{{ old('direccion') }}" name="direccion">
             </div>
             <div class="col-md-3 form-group">
                 <label class="col-form-label">Telefono de contacto</label>
@@ -61,6 +61,18 @@
             <div class="col-md-3 form-group">
                 <label class="col-form-label">Información</label>
                 <input type="text" class="form-control @error('info') is-iinfonvalid @enderror" placeholder="Ingrese informacion" value="{{ old('info') }}" name="info">
+            </div>
+            <div class="col-6 col-md-3 form-group">
+              <label class="col-form-label" for="selectTCliente">Ingrese Tipo Cliente</label>
+              <select style="width: 100%" class="form-control dropdown2 @error('client_type_id') is-invalid @enderror" name="client_type_id" id="selectTCliente">
+                <option value="">Ingresa Tipo Cliente</option>
+                @foreach($client_types as $c_type)
+                <option value="{{ $c_type->id }}" {{old('client_type_id') == $c_type->id ? 'selected' : ''}}>{{ $c_type->name }}</option>
+                @endforeach
+              </select>
+              @error('client_type_id')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Estado</label>

@@ -24,6 +24,10 @@ class CreateClientsTable extends Migration
             $table->string('telefono_contacto')->nullable();
             $table->string('correo')->nullable();
             $table->string('info')->nullable();
+
+            $table->unsignedBigInteger('client_type_id');
+            $table->foreign('client_type_id')->references('id')->on('client_types');
+
             $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
@@ -36,6 +40,9 @@ class CreateClientsTable extends Migration
      */
     public function down()
     {
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropForeign('client_types_client_type_id_foreign');
+        });
         Schema::dropIfExists('clients');
     }
 }

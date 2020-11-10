@@ -290,14 +290,22 @@
 @endsection
 @section('javascript')
 <script>
-  $('[data-toggle="tooltip"]').tooltip();
+  $(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
 
-  $('.service_input').on('keyup mouseup', function (event) {
-    var total = 0;
-    $.each($('.service_input'), function (id, item) {
-      total += $(this).val() << 0;
+    function servicesTotal() {
+      var total = 0;
+      $.each($('.service_input'), function (id, item) {
+        total += $(this).val() << 0;
+      })
+      $('[name=cost]').val(total);
+    }
+
+    servicesTotal();
+
+    $('.service_input').on('keyup mouseup', function (event) {
+      servicesTotal();
     })
-    $('[name=cost]').val(total);
   })
 </script>
 @endsection

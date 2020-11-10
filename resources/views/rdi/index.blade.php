@@ -40,7 +40,7 @@
                     {{$rdi->equipo}}
                   </td>
 	                <td class="text-right">
-	                	<a href="{{ route('card_cost.calculate', $rdi) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
+	                	<a href="{{ route('rdi.edit', $rdi) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>
 	              </tr>

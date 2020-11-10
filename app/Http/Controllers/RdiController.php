@@ -227,8 +227,15 @@ class RdiController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $rdi = Rdi::findOrFail($id);
-        return view('rdi.edit', compact('rdi'));
+        $rdi = Rdi::join('clients', 'clients.id', '=', 'rdi.client_id')
+                ->select('rdi.*', 'clients.razon_social')
+                ->where('rdi.enabled', 1)->firstOrFail();
+        $clientes = Client::where('enabled', 1)->where('client_type_id', 1)->get();
+        $marcas = MotorBrand::where('enabled', 1)->get();
+        $maintenancetype = RdiMaintenanceType::where('enabled', 1)->get();
+        $criticalitytype = RdiCriticalityType::where('enabled', 1)->get();
+        $services = RdiService::where('enabled', 1)->get();
+        return view('rdi.edit', compact('rdi', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype'));
     }
 
     /**

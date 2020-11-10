@@ -51,6 +51,31 @@ class StatusSeeder extends Seeder
         $status->save();
 
         $status = new Status();
+        $status->name = 'Cotización desaprobada';
+        $status->description = 'Cotización desaprobada';
+        $status->enabled = 1;
+        $status->save();
+
+        //RDI
+        $status = new Status();
+        $status->name = 'RDI por aprobar';
+        $status->description = 'RDI por aprobar';
+        $status->enabled = 1;
+        $status->save();
+
+        $status = new Status();
+        $status->name = 'RDI aprobada';
+        $status->description = 'RDI aprobada';
+        $status->enabled = 1;
+        $status->save();
+
+        $status = new Status();
+        $status->name = 'RDI desaprobada';
+        $status->description = 'RDI desaprobada';
+        $status->enabled = 1;
+        $status->save();
+
+        $status = new Status();
         $status->name = 'Generación de fecha de entrega';
         $status->description = 'Generación de fecha de entrega';
         $status->enabled = 1;

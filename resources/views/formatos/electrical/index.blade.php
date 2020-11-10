@@ -6,7 +6,7 @@
 	<div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title"> Evaluación Eléctrica</h4>
+        <h4 class="card-title">Evaluaciones Eléctricas</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">

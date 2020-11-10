@@ -26,7 +26,7 @@ $status_last = $ot_status->last();
                     </span>
 				</span>
 				<span class="card-title-buttons">
-					<a class="btn btn-primary btn-round" href="{{ route('ordenes.edit', $ot) }}">Editar</a>
+					<a class="btn btn-primary btn-round" href="{{ route('ordenes.edit', $ot) }}"><i class="fa fa-edit"></i> Editar</a>
 					@if(count($ot_status) > 1)
 					<div class="dropdown d-inline-block dropleft">
 						<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -44,6 +44,16 @@ $status_last = $ot_status->last();
 							<a class="dropdown-item" href="{{ route('card_cost.cc_show', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>
 							@endif
 							@endforeach
+						</div>
+					</div>
+					@else
+					<div class="dropdown d-inline-block dropleft">
+						<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Evaluar" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-file-check"></i> Evaluar
+						</button>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<a class="dropdown-item" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
+							<a class="dropdown-item" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
 						</div>
 					</div>
 					@endif

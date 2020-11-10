@@ -6,7 +6,7 @@
 	<div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title"> Evaluación Mecánica</h4>
+        <h4 class="card-title">Evaluaciones Mecánicas</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">

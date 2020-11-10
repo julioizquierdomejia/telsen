@@ -25,11 +25,13 @@ class CreateOtsTable extends Migration
             $table->string('descripcion_motor')->nullable();
             $table->string('codigo_motor')->nullable();
             
-            $table->unsignedInteger('marca_id')->nullable();
+            $table->unsignedInteger('marca_id')->nullable()->constrained();
             //$table->index('marca_id')->nullable();
+            $table->foreign('marca_id')->references('id')->on('motor_brands');
 
-            $table->unsignedInteger('modelo_id')->nullable();
+            $table->unsignedInteger('modelo_id')->nullable()->constrained();
             //$table->index('modelo_id')->nullable();
+            $table->foreign('modelo_id')->references('id')->on('motor_models');
 
             $table->string('numero_potencia')->nullable();
             $table->string('medida_potencia')->nullable();
@@ -38,11 +40,6 @@ class CreateOtsTable extends Migration
             $table->boolean('enabled')->default(1);
 
             $table->timestamps();
-        });
-
-        Schema::table('ots', function($table) {
-            $table->foreign('marca_id')->references('id')->on('motor_brands');
-            $table->foreign('modelo_id')->references('id')->on('motor_models');
         });
     }
 

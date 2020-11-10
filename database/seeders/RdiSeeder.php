@@ -47,5 +47,22 @@ class RdiSeeder extends Seeder
         $rdimtype->name = 'GARANTIA';
         $rdimtype->enabled = 1;
         $rdimtype->save();
+
+        \DB::table('rdi_services')->insert(array (
+            array ('name' => 'MANTENIMIENTO DE ESTATOR'),
+            array ('name' => 'MANTENIMIENTO DE FRENO ELÉCTRICO'),
+            array ('name' => 'SUMINISTRO DE 02 PRENSA ESTOPA'),
+            array ('name' => 'CAMBIO DE 02 RODAJES',),
+            array ('name' => 'CAMBIO DE EJE (Ø18 * 171 mm) - ACERO 1045',),
+            array ('name' => 'EMBOCINADO DE TAPA, ALOJAMIENTO DE RODAJE, PTO. 1 Y 2',),
+            array ('name' => 'CAMBIO DE RETÉN (7*16*7)'),
+            array ('name' => 'BALANCEO DINÁMICO'),
+            array ('name' => 'PRUEBAS BAKER'),
+            array ('name' => 'PINTURA'),
+            //array ('name' => 'ADICIONALES'),
+            array ('name' => 'CAMBIO DE GEBE DE ACOPLAMIENTO-PIÑON (Ø53.5 * 5.5 mm)'),
+            array ('name' => 'FABRICACION DE MACHINA PARA EXTRACCION DE PIÑON DE ACOPLE'),
+        ));
+
     }
 }

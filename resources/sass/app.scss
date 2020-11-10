@@ -289,17 +289,17 @@ img {
 	    font-size: 13px;
 	    font-weight: 700;
 	    line-height: 16px;
-		padding: 0 5px;
-		left: 20px;
-		top: -7px;
-	    margin: 0;
-	    position: absolute;
+	    padding: 0 5px;
+	    margin: 0 0 0 10px;
+	    position: relative;
 	    vertical-align: middle;
 	    z-index: 1;
 	}
 	.form-control {
 		border-width: 2px;
 		font-weight: 600;
+		line-height: 17px;
+		margin-top: -12px;
 		&:focus {
 			border-color: #1c2956;
 			box-shadow: none;

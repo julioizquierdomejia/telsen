@@ -38,7 +38,7 @@
               <input type="text" class="form-control" name="codigo" readonly="" value="{{$ot->codigo_motor}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
-              <label class="col-form-label">Hecha por</label>
+              <label class="col-form-label">Hecho por</label>
               <input type="text" class="form-control @error('hecho_por') is-invalid @enderror" name="hecho_por" value="{{old('hecho_por')}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">

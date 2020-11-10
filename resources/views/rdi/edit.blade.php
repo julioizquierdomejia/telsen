@@ -8,7 +8,7 @@
         <h5 class="card-title">Editar RDI <strong>{{$rdi->name}}</strong></h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="{{route('areas.edit', ['area' => $rdi->id])}}" enctype="multipart/form-data">
+        <form class="form-group" method="POST" action="{{route('rdi.edit', ['rdi' => $rdi->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
             <div class="col-md-12">

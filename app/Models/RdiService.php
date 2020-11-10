@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RdiServices extends Model
+class RdiService extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'rdi_id',
         'name',
-        'subtotal',
         'enabled',
     ];
 

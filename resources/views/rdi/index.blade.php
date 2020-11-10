@@ -21,7 +21,7 @@
                 Cliente
               </th>
               <th>
-                Motor
+                Equipo
               </th>
               <th class="text-right">
                 Herramientas
@@ -37,7 +37,7 @@
                     {{$rdi->razon_social}}
                   </td>
                   <td>
-                    {{$rdi->descripcion_motor}}
+                    {{$rdi->equipo}}
                   </td>
 	                <td class="text-right">
 	                	<a href="{{ route('card_cost.calculate', $rdi) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>

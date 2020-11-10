@@ -69,7 +69,7 @@
               <select style="width: 100%" class="form-control dropdown2 @error('client_type_id') is-invalid @enderror" name="client_type_id" id="selectTCliente">
                 <option value="">Ingresa Tipo Cliente</option>
                 @foreach($client_types as $c_type)
-                <option value="{{ $c_type->id }}" {{old('client_type_id') == $c_type->id ? 'selected' : ''}}>{{ $c_type->name }}</option>
+                <option value="{{ $c_type->id }}" {{old('client_type_id', $cliente->client_type_id) == $c_type->id ? 'selected' : ''}}>{{ $c_type->name }}</option>
                 @endforeach
               </select>
               @error('client_type_id')

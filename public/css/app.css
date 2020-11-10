@@ -29582,7 +29582,7 @@ table.dataTable td {
 .select2-container {
   box-sizing: border-box;
   display: inline-block;
-  margin: 0;
+  margin: -12px 0 0 0;
   position: relative;
   vertical-align: middle;
 }
@@ -30470,10 +30470,8 @@ img {
   font-weight: 700;
   line-height: 16px;
   padding: 0 5px;
-  left: 20px;
-  top: -7px;
-  margin: 0;
-  position: absolute;
+  margin: 0 0 0 10px;
+  position: relative;
   vertical-align: middle;
   z-index: 1;
 }
@@ -30481,6 +30479,8 @@ img {
 .form-card .form-control {
   border-width: 2px;
   font-weight: 600;
+  line-height: 17px;
+  margin-top: -12px;
 }
 
 .form-card .form-control:focus {

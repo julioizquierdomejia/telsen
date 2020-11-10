@@ -25,10 +25,10 @@ class CreateOtsTable extends Migration
             $table->string('descripcion_motor')->nullable();
             $table->string('codigo_motor')->nullable();
             
-            $table->bigInteger('marca_id')->unsigned();
+            $table->bigInteger('marca_id')->nullable()->unsigned();
             $table->foreign('marca_id')->references('id')->on('motor_brands');
 
-            $table->bigInteger('modelo_id')->unsigned();
+            $table->bigInteger('modelo_id')->nullable()->unsigned();
             $table->foreign('modelo_id')->references('id')->on('motor_models');
 
             $table->string('numero_potencia')->nullable();

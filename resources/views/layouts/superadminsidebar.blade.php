@@ -11,6 +11,12 @@
     <p>Ordenes de trabajo</p>
   </a>
 </li>
+<li class="{{ request()->segment(1) == 'rdi' ? 'active' : '' }}">
+  <a href="/rdi">
+    <i class="fal fa-network-wired"></i>
+    <p>RDI</p>
+  </a>
+</li>
 
 <li class="{{ request()->segment(1) == 'formatos' ? 'active' : '' }}">
   <a href="#" data-toggle="collapse" data-target="#collapseFormatos" aria-expanded="false">

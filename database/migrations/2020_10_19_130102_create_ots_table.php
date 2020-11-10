@@ -24,8 +24,13 @@ class CreateOtsTable extends Migration
             $table->string('solped')->nullable();
             $table->string('descripcion_motor')->nullable();
             $table->string('codigo_motor')->nullable();
-            $table->string('marca_id')->nullable();
-            $table->string('modelo_id')->nullable();
+            
+            $table->bigInteger('marca_id')->unsigned();
+            $table->foreign('marca_id')->references('id')->on('motor_brands');
+
+            $table->bigInteger('modelo_id')->unsigned();
+            $table->foreign('modelo_id')->references('id')->on('motor_models');
+
             $table->string('numero_potencia')->nullable();
             $table->string('medida_potencia')->nullable();
             $table->string('voltaje')->nullable();
@@ -45,6 +50,8 @@ class CreateOtsTable extends Migration
     {
         Schema::table('ots', function (Blueprint $table) {
             $table->dropForeign('ots_client_id_foreign');
+            $table->dropForeign('ots_marca_id_foreign');
+            $table->dropForeign('ots_modelo_id_foreign');
         });
 
         Schema::dropIfExists('ots');

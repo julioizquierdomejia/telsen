@@ -19,7 +19,9 @@ class ClientController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
         
-        $clientes = Client::all();
+        $clientes = Client::join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('clients.*', 'client_types.id as client_type_id', 'client_types.name as client_type')
+                ->get();
         return view('clientes.index', compact('clientes'));
     }
 

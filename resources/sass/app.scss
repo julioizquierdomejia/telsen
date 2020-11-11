@@ -131,9 +131,9 @@ img {
 	.dropdown-menu {
 		.dropdown-item {
 			border-radius: 0;
-			font-size: 12px;
-		    line-height: 13px;
-		    padding: 8px 45px 8px 15px;
+			font-size: 11px;
+		    line-height: 15px;
+		    padding: 0.25rem 1rem;
 		}
 	}
 
@@ -222,6 +222,7 @@ img {
 				font-weight: 700;
 				.form-control {
 					height: 28px;
+					margin: 0;
 					padding: 2px 10px;
 				}
 			}
@@ -238,17 +239,19 @@ img {
 	    height: 26px;
 	    padding: 2px 10px;
 	    font-size: 12px;
+	    margin: 0;
 	}
 	textarea {
 		&.frm-sinput {
 		    background: transparent !important;
 		    color: $black;
+		    cursor: text;
+		    font-size: 13px;
 			height: auto;
 		    line-height: 15px;
-		    padding: 0;
-		    font-size: 13px;
+		    margin: 0;
 		    overflow: hidden;
-		    cursor: text;
+		    padding: 0;
 		}
 	}
 }

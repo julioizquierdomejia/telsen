@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'RDI | '. $rdi->name])
+@extends('layouts.app', ['title' => 'RDI | '. $rdi->rdi_codigo])
 
 @section('content')
 <div class="row">

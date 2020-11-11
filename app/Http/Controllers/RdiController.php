@@ -36,10 +36,11 @@ class RdiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
+        $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
         $counter = RDI::count() + 1;
         $clientes = Client::where('enabled', 1)->where('client_type_id', 1)->get();
         $marcas = MotorBrand::where('enabled', 1)->get();
@@ -47,7 +48,7 @@ class RdiController extends Controller
         $criticalitytype = RdiCriticalityType::where('enabled', 1)->get();
         $services = RdiService::where('enabled', 1)->get();
 
-        return view('rdi.create', compact('counter', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype'));
+        return view('rdi.create', compact('ot', 'counter', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype'));
     }
 
     /**
@@ -56,7 +57,7 @@ class RdiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 

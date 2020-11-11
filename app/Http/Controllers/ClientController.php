@@ -107,8 +107,11 @@ class ClientController extends Controller
      */
     public function show(Request $request, $id)
     {
-        //$cliente = Client::findOrFail($id);
-        return Client::findOrFail($id);
+        $cliente = Client::join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('clients.*', 'client_types.name')
+                    ->where('clients.enabled', 1)
+                    ->findOrFail($id);
+        return $cliente;
 
         //return view('clientes.show', compact('cliente'));
         

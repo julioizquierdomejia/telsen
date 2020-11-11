@@ -53,7 +53,11 @@ class OtController extends Controller
         $totalOts = Ot::count();
         $ot_numero = $totalOts + 1;
 
-        $clientes = Client::where('enabled', 1)->where('client_type_id', 2)->get();
+        $clientes = Client::where('clients.enabled', 1)
+                    /*->where('client_type_id', 2)*/
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('clients.*', 'client_types.id as client_type_id', 'client_types.name as client_type')
+                    ->get();
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();
 
@@ -152,10 +156,11 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
-        $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
+        $ot = Ot::leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
-                    ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente')
                     ->where('ots.enabled', 1)
                     ->findOrFail($id);
 

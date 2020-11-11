@@ -102,10 +102,10 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//rutas para RDI
 	Route::get('rdi', [App\Http\Controllers\RdiController::class, 'index'])->name('rdi.index');
-	Route::get('rdi/{id}/ver', [App\Http\Controllers\RdiController::class, 'show'])->name('rdi.show');
-	Route::get('rdi/crear', [App\Http\Controllers\RdiController::class, 'create'])->name('rdi.create');
+	Route::get('rdi/{ot}/ver', [App\Http\Controllers\RdiController::class, 'show'])->name('rdi.show');
+	Route::get('rdi/{ot}/crear', [App\Http\Controllers\RdiController::class, 'create'])->name('rdi.create');
 	Route::post('rdi', [App\Http\Controllers\RdiController::class, 'store'])->name('rdi.store');
-	Route::get('rdi/{rdi}/editar', [App\Http\Controllers\RdiController::class, 'edit'])->name('rdi.edit');
-	Route::post('rdi/{rdi}/editar', [App\Http\Controllers\RdiController::class, 'update'])->name('rdi.update');
+	Route::get('rdi/{ot}/editar', [App\Http\Controllers\RdiController::class, 'edit'])->name('rdi.edit');
+	Route::post('rdi/{ot}/editar', [App\Http\Controllers\RdiController::class, 'update'])->name('rdi.update');
 
 });

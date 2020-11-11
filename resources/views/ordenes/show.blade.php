@@ -27,36 +27,47 @@ $status_last = $ot_status->last();
 				</span>
 				<span class="card-title-buttons">
 					<a class="btn btn-primary btn-round" href="{{ route('ordenes.edit', $ot) }}"><i class="fa fa-edit"></i> Editar</a>
-					@if(count($ot_status) > 1)
 					<div class="dropdown d-inline-block dropleft">
 						<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fa fa-file-check"></i>
+						<i class="fa fa-file-check"></i> Evaluaciones
 						</button>
 						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							@foreach($ot_status as $ostatus)
-							@if($ostatus->id == 2)
+						@if(count($ot_status) == 1)
+							<a class="dropdown-item" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
+							<a class="dropdown-item" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
+						@elseif(count($ot_status) == 2)
+							@if($status_last->id == 2)
+							<!-- Tiene mecanica: muestra electrica -->
+							<a class="dropdown-item" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
+							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{{ route('formatos.mechanical.show', $ot) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
-							@endif
-							@if($ostatus->id == 3)
+							@else
+							<!-- Tiene electrica: muestra mecanica -->
+							<a class="dropdown-item" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
+							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
 							@endif
-							@if($ostatus->id == 4)
-							<a class="dropdown-item" href="{{ route('card_cost.cc_show', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>
+						@elseif(count($ot_status) == 3)
+							<a class="dropdown-item" href="{{ route('formatos.mechanical.show', $ot) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+							<a class="dropdown-item" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+							<div class="dropdown-divider"></div>
+							@if($ot->tipo_cliente_id == 1)
+							<a class="dropdown-item" href="{{ route('rdi.create', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
+							@elseif($ot->tipo_cliente_id == 2)
+							<a class="dropdown-item" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
 							@endif
-							@endforeach
+						@elseif(count($ot_status) == 4)
+							<a class="dropdown-item" href="{{ route('formatos.mechanical.show', $ot) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+							<a class="dropdown-item" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+							<div class="dropdown-divider"></div>
+							@if($ot->tipo_cliente_id == 1)
+							<a class="dropdown-item" href="{{ route('rdi.show', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
+							@elseif($ot->tipo_cliente_id == 2)
+							<a class="dropdown-item" href="{{ route('card_cost.show', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Ver Tarjeta de Costo</a>
+							@endif
+						@endif
 						</div>
 					</div>
-					@else
-					<div class="dropdown d-inline-block dropleft">
-						<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Evaluar" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fa fa-file-check"></i> Evaluar
-						</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
-							<a class="dropdown-item" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
-						</div>
-					</div>
-					@endif
 				</span>
 				</h5>
 			</div>
@@ -66,13 +77,17 @@ $status_last = $ot_status->last();
 						<label class="c-label">Fecha de creación <span class="text-danger">(*)</span></label>
 						<p class="mb-1">{{date('d-m-Y', strtotime($ot->created_at))}}</p>
 					</div>
-					<div class="col-md-3 mb-2">
+					<div class="col-md-2 mb-2">
 						<label class="c-label">Vendedor</label>
 						<p class="mb-1">{{$ot->guia_cliente}}</p>
 					</div>
-					<div class="col-md-6 mb-2">
+					<div class="col-md-5 mb-2">
 						<label class="c-label" for="selectRuc">Razón social:</label>
 						<p class="mb-1">{{ $ot->razon_social }}</p>
+					</div>
+					<div class="col-md-2 mb-2">
+						<label class="c-label" for="selectRuc">Tipo cliente:</label>
+						<p class="mb-1"><span class="badge badge-primary px-3">{{ $ot->tipo_cliente }}</span></p>
 					</div>
 				</div>
 				<h5 class="second-title text-danger py-2">Datos del Motor</h5>

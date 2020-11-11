@@ -37,21 +37,25 @@
               <select style="width: 100%" class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
                 <option value="">Ingresa RUC</option>
                 @foreach($clientes as $cliente)
-                <option value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->ruc }}</option>
+                <option data-rs="{{ $cliente->razon_social }}" data-dir="{{ $cliente->direccion }}" data-contacto="{{$cliente->telefono_contacto}}" data-celular="{{$cliente->celular}}" data-type="{{$cliente->client_type}}" value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->ruc }}</option>
                 @endforeach
               </select>
               @error('client_id')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-8 form-group">
+            <div class="col-md-6 form-group">
               <label class="col-form-label">Razon social</label>
               <input type="text" class="form-control razon_social" placeholder="" value="" disabled="" name="name">
+            </div>
+            <div class="col-md-2 form-group">
+              <label class="col-form-label">Tipo Cliente</label>
+              <input type="text" class="form-control tipocliente" placeholder="" value="" disabled="" name="address">
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 form-group">
-              <label class="col-form-label">Direccion</label>
+              <label class="col-form-label">Dirección</label>
               <input type="text" class="form-control direccion" placeholder="" value="" disabled="" name="address">
             </div>
             <div class="col-6 col-md-3 form-group">
@@ -66,15 +70,15 @@
           <h5 class="text-danger mt-4">Datos del Motor</h5>
           <div class="row">
             <div class="col-md-12 form-group">
-              <label class="col-form-label">Descripción del motor</label>
-              <input type="text" class="form-control @error('descripcion_motor') is-invalid @enderror" placeholder="Ingrese descripción" value="{{old('descripcion_motor')}}" name="descripcion_motor">
+              <label class="col-form-label" for="descripcion_motor">Descripción del motor</label>
+              <input type="text" class="form-control @error('descripcion_motor') is-invalid @enderror" id="descripcion_motor" placeholder="Ingrese descripción" value="{{old('descripcion_motor')}}" name="descripcion_motor">
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Código</label>
-              <input type="text" class="form-control @error('codigo_motor') is-invalid @enderror" name="codigo_motor" placeholder="Ingrese código del motor" value="{{old('codigo_motor')}}">
+              <label class="col-form-label" for="codigo_motor">Código</label>
+              <input type="text" class="form-control @error('codigo_motor') is-invalid @enderror" id="codigo_motor" name="codigo_motor" placeholder="Ingrese código del motor" value="{{old('codigo_motor')}}">
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Marca</label>
+              <label class="col-form-label" for="selectMarca">Marca</label>
               <!-- <input type="text" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="Ingrese Marca" value="" name="marca"> -->
               <select style="width: 100%" name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca">
                 <option value="">Selecciona la marca</option>
@@ -84,11 +88,11 @@
               </select>
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Solped</label>
-              <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped')}}" name="solped">
+              <label class="col-form-label" for="solped">Solped</label>
+              <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped')}}" id="solped" name="solped">
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Modelo</label>
+              <label class="col-form-label" for="selectModelo">Modelo</label>
               <!-- <input type="number" min="1" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
               <select style="width: 100%" name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
                 <option value="">Selecciona el modelo</option>
@@ -101,23 +105,23 @@
           
           <div class="row">
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Numero de potencia</label>
-              <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Número de potencia" value="{{old('numero_potencia')}}" name="numero_potencia">
+              <label class="col-form-label" for="numero_potencia">Numero de potencia</label>
+              <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Número de potencia" value="{{old('numero_potencia')}}" id="numero_potencia" name="numero_potencia">
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Medida de potencia</label>
-              <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Medida de medida_potencia" value="{{old('medida_potencia')}}" name="medida_potencia">
+              <label class="col-form-label" for="medida_potencia">Medida de potencia</label>
+              <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Medida de medida_potencia" value="{{old('medida_potencia')}}" id="medida_potencia" name="medida_potencia">
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Voltaje</label>
-              <input type="number" min="1" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('voltaje')}}" name="voltaje">
+              <label class="col-form-label" for="voltaje">Voltaje</label>
+              <input type="number" min="1" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('voltaje')}}" id="voltaje" name="voltaje">
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Velocidad</label>
-              <input type="number" min="1" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('velocidad')}}" name="velocidad">
+              <label class="col-form-label" for="velocidad">Velocidad</label>
+              <input type="number" min="1" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('velocidad')}}" id="velocidad" name="velocidad">
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Estado</label>
+              <label class="col-form-label" for="selectEstado">Estado</label>
               <select style="width: 100%" name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
                 <option value="1">Activo</option>
                 <option value="0">Inactivo</option>
@@ -139,16 +143,23 @@
 <script type="text/javascript">
 $(document).ready(function(){
 $('#selectRuc').change(function () {
-var val = $(this).val();
+var $this = $(this), val = $this.val(), selected = $this.find('option:selected');
 if (!val) {
 $('.razon_social').val("");
 $('.direccion').val("");
 $('.telefono').val("");
 $('.celular').val("");
+$('.tipocliente').val("");
 $('.telefono_contacto').val("");
 return;
 }
-$.ajax({
+$('.razon_social').val(selected.data('rs'));
+$('.direccion').val(selected.data('dir'));
+$('.telefono').val(selected.data('tel'));
+$('.celular').val(selected.data('celular'));
+$('.telefono_contacto').val(selected.data('contacto'));
+$('.tipocliente').val(selected.data('type'));
+/*$.ajax({
 url: "/clientes/"+val+"/ver",
 data: {},
 type: 'GET',
@@ -165,7 +176,7 @@ $('.telefono_contacto').val(response.telefono_contacto);
 },
 error: function (request, status, error) { // if error occured
 }
-});
+});*/
 })
 })
 </script>

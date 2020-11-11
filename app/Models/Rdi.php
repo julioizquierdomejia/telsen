@@ -13,14 +13,13 @@ class Rdi extends Model
     protected $table = 'rdi';
 
     protected $fillable = [
-        'client_id',
         'rdi_codigo',
         'version',
         'contact',
         'area',
         'equipo',
         'codigo',
-        'ot',
+        'ot_id',
         'marca_id',
 
         'nro_serie',

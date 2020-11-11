@@ -37,16 +37,19 @@ class CreateRdiTable extends Migration
             $table->string('rdi_codigo');
             $table->string('version');
 
-            $table->bigInteger('client_id')->unsigned();
-            $table->foreign('client_id')->references('id')->on('clients');
+            //$table->bigInteger('client_id')->unsigned();
+            //$table->foreign('client_id')->references('id')->on('clients');
 
             $table->string('contact')->nullable();
             $table->string('area')->nullable();
             $table->string('equipo')->nullable();
             $table->string('codigo')->nullable();
-            $table->string('ot')->nullable();
+
+            $table->bigInteger('ot_id')->unsigned();
+            $table->foreign('ot_id')->references('id')->on('ots');
+
             $table->date('fecha_ingreso');
-            $table->date('tiempo_entrega');
+            $table->string('tiempo_entrega');
             $table->string('orden_servicio')->nullable();
 
             $table->bigInteger('marca_id')->unsigned();
@@ -128,7 +131,8 @@ class CreateRdiTable extends Migration
     public function down()
     {
         Schema::table('rdi', function (Blueprint $table) {
-            $table->dropForeign('rdi_client_id_foreign');
+            //$table->dropForeign('rdi_client_id_foreign');
+            $table->dropForeign('rdi_ot_id_foreign');
             $table->dropForeign('rdi_marca_id_foreign');
             $table->dropForeign('rdi_rdi_maintenance_type_id_foreign');
             $table->dropForeign('rdi_rdi_criticality_type_id_foreign');

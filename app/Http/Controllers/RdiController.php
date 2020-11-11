@@ -11,6 +11,7 @@ use App\Models\RdiCriticalityType;
 use App\Models\Status;
 use App\Models\Client;
 use App\Models\MotorBrand;
+use App\Models\Ot;
 use Illuminate\Http\Request;
 
 class RdiController extends Controller
@@ -40,7 +41,11 @@ class RdiController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
+        $ot = Ot::where('ots.enabled', 1)
+                ->join('clients', 'clients.id', '=', 'ots.client_id')
+                ->select('ots.*', 'clients.razon_social')
+                ->where('ots.id', $id)
+                ->firstOrFail();
         $counter = RDI::count() + 1;
         $clientes = Client::where('enabled', 1)->where('client_type_id', 1)->get();
         $marcas = MotorBrand::where('enabled', 1)->get();
@@ -57,19 +62,19 @@ class RdiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $rules = array(
             'rdi_codigo' => 'required|string',
             'version' => 'required|string',
-            'client_id' => 'required|integer',
+            //'client_id' => 'required|integer',
             'contact' => 'string|nullable',
             'area' => 'string|nullable',
             'equipo' => 'string|nullable',
             'codigo' => 'string|nullable',
-            'ot' => 'string|nullable',
+            'ot_id' => 'integer|exists:ots,id',
             'fecha_ingreso' => 'required|date_format:Y-m-d',
             'tiempo_entrega' => 'integer|required',
             'orden_servicio' => 'string|nullable',
@@ -100,8 +105,8 @@ class RdiController extends Controller
             'diagnostico_actual' => 'string|required',
             'aislamiento_masa_ingreso' => 'string|required',
 
-            'rdi_maintenance_type_id' => 'integer|exists:rdi_services,id',
-            'rdi_criticality_type_id' => 'integer|exists:rdi_criticality_types,id',
+            'rdi_maintenance_type_id' => 'required|integer|exists:rdi_services,id',
+            'rdi_criticality_type_id' => 'required|integer|exists:rdi_criticality_types,id',
             'hecho_por' => 'string|nullable',
             'cost' => 'required||regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'enabled' => 'boolean|required',
@@ -111,12 +116,12 @@ class RdiController extends Controller
         $rdi = new Rdi();
         $rdi->rdi_codigo = $request->input('rdi_codigo');
         $rdi->version = $request->input('version');
-        $rdi->client_id = $request->input('client_id');
+        //$rdi->client_id = $request->input('client_id');
         $rdi->contact = $request->input('contact');
         $rdi->area = $request->input('area');
         $rdi->equipo = $request->input('equipo');
         $rdi->codigo = $request->input('codigo');
-        $rdi->ot = $request->input('ot');
+        $rdi->ot_id = $request->input('ot_id');
         $rdi->fecha_ingreso = $request->input('fecha_ingreso');
         $rdi->tiempo_entrega = $request->input('tiempo_entrega');
         $rdi->orden_servicio = $request->input('orden_servicio');
@@ -167,28 +172,27 @@ class RdiController extends Controller
         //Actividades por realizar
         $services = $request->input('services');
         if ($services) {
-            $services_count = count($services);
+            //$services_count = count($services);
 
-            $services_array = [];
             foreach ($services as $key => $service) {
-                if (isset($service[$key + 1])) {
+                if (isset($service)) {
                     $services_array[] = [
                         'rdi_id' => $rdi->id,
-                        'rdi_service_id' => $key + 1,
-                        'subtotal' => $service[$key + 1],
+                        'rdi_service_id' => $key,
+                        'subtotal' => $service,
                     ];   
                 }
             }
             RdiServiceCost::insert($services_array);
         }
 
-        /*$status = Status::where('id', 4)->first();
+        $status = Status::where('id', 8)->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
-                'ot_id' => $id,
+                'ot_id' => $rdi->ot_id,
             ]);
-        }*/
+        }
 
         activitylog('rdis', 'store', null, $rdi->toArray());
 

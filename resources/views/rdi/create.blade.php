@@ -10,8 +10,9 @@
       <div class="card-body">
         <form class="form-group" method="POST" action="/rdi" enctype="multipart/form-data">
           @csrf
+          <input type="text" class="form-control d-none @error('ot_id') is-invalid @enderror" placeholder="" value="{{$ot->id}}" name='ot_id' id="ot_id" readonly="">
           <div class="row">
-            <div class="col-6 col-md-3 col-xl-2 form-group">
+            <div class="col-6 col-md-3 col-xl-3 form-group">
                 <label class="col-form-label" for="rdi_codigo">RDI Código</label>
                 <input type="text" class="form-control @error('rdi_codigo') is-invalid @enderror" placeholder="" value="{{old('rdi_codigo', 'RDI-TL-'.$counter)}}" name='rdi_codigo' id="rdi_codigo" readonly="">
               @error('rdi_codigo')
@@ -29,18 +30,6 @@
                 <label class="col-form-label">Fecha</label>
                 <input type="text" class="form-control" disabled="" value="{{date('d-m-Y')}}">
             </div>
-            <div class="col-6 col-md-5 form-group">
-              <label class="col-form-label" for="selectRuc">Seleccione Cliente</label>
-              <select style="width: 100%" class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
-                <option value="">Ingresa Cliente</option>
-                @foreach($clientes as $cliente)
-                <option value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->razon_social }}</option>
-                @endforeach
-              </select>
-              @error('client_id')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
             <div class="col-md-4 form-group">
                 <label class="col-form-label" for="contact">Contacto</label>
                 <input type="text" class="form-control @error('contact') is-invalid @enderror" placeholder="" value="{{old('contact')}}" name='contact' id="contact">
@@ -48,14 +37,14 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-md-3 form-group">
                 <label class="col-form-label" for="area">Area</label>
                 <input type="text" class="form-control @error('area') is-invalid @enderror" placeholder="" value="{{old('area')}}" name='area' id="area">
               @error('area')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-md-2 form-group">
                 <label class="col-form-label" for="equipo">Equipo</label>
                 <input type="text" class="form-control @error('equipo') is-invalid @enderror" placeholder="" value="{{old('equipo')}}" name='equipo' id="equipo">
               @error('equipo')
@@ -69,10 +58,10 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-3 form-group">
-                <label class="col-form-label" for="ot">Ot</label>
-                <input type="text" class="form-control @error('ot') is-invalid @enderror" placeholder="" value="{{old('ot')}}" name='ot' id="ot">
-              @error('ot')
+            <div class="col-md-4 form-group">
+                <label class="col-form-label" for="razon_social">Razón social</label>
+                <input type="text" readonly="" class="form-control @error('razon_social') is-invalid @enderror" placeholder="" value="{{old('razon_social', $ot->razon_social)}}" id="razon_social">
+              @error('razon_social')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
@@ -97,7 +86,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-3 col-xl-2 form-group">
+            <div class="col-md-3 col-xl-3 form-group">
               <label class="col-form-label">Hecho por</label>
               <input type="text" class="form-control @error('hecho_por') is-invalid @enderror" name="hecho_por" value="{{old('hecho_por')}}">
             </div>
@@ -221,12 +210,12 @@
                     @foreach($services as $service)
                     <li class="row my-1 align-items-center">
                       <label class="form-label col-10 mb-0" for="service_{{$service->id}}"><span class="align-middle">{{$service->name}}</span></label>
-                      <span class="col-2 d-inline-block"><input type="text" class="form-control service_input" value="" style="margin-top: 0" id="service_{{$service->id}}" name="services[][{{$service->id}}]"></span>
+                      <span class="col-2 d-inline-block"><input type="text" class="form-control service_input" value="{{old('services')[$service->id]}}" style="margin-top: 0" id="service_{{$service->id}}" name="services[{{$service->id}}]"></span>
                     </li>
                     @endforeach
                   </ul>
                   <label class="col-form-label">Total</label>
-                  <input class="form-control" type="text" readonly="" name="cost" value="0">
+                  <input class="form-control text-right @error('cost') is-invalid @enderror" type="text" readonly="" name="cost" value="0">
                 </div>
               </div>
               <div class="col-12 col-md-6 mb-4">
@@ -241,12 +230,12 @@
             </div>
             <div class="col-12">
               <label class="col-form-label">TIPO DE MANTENIMIENTO (Seleccione según corresponda)</label>
-              <div class="form-control mb-4" style="height: auto">
+              <div class="form-control mb-4 @error('rdi_maintenance_type_id') is-invalid @enderror" style="height: auto">
               <ul class="form-check-list list-inline mb-0">
                 @foreach($maintenancetype as $mtitem)
                 <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="radio" class="form-check-input align-middle" value="{{$mtitem->id}}" name="rdi_maintenance_type_id"><span class="align-middle">{{$mtitem->name}}</span>
+                  <input type="radio" class="form-check-input align-middle" {{old('rdi_maintenance_type_id') == $mtitem->id ? 'checked' : ''}} value="{{$mtitem->id}}" name="rdi_maintenance_type_id"><span class="align-middle">{{$mtitem->name}}</span>
                 </label>
                 </li>
                 @endforeach
@@ -255,12 +244,12 @@
             </div>
             <div class="col-12">
               <label class="col-form-label">CRITICIDAD (Seleccione según corresponda)</label>
-              <div class="form-control mb-4" style="height: auto">
+              <div class="form-control mb-4 @error('rdi_criticality_type_id') is-invalid @enderror" style="height: auto">
               <ul class="form-check-list list-inline mb-0">
                 @foreach($criticalitytype as $citem)
                 <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="radio" class="form-check-input align-middle" value="{{$citem->id}}" name="rdi_criticality_type_id"><span class="align-middle">{{$citem->name}}</span>
+                  <input type="radio" class="form-check-input align-middle" {{old('rdi_criticality_type_id') == $citem->id ? 'checked' : ''}} value="{{$citem->id}}" name="rdi_criticality_type_id"><span class="align-middle">{{$citem->name}}</span>
                 </label>
                 </li>
                 @endforeach

@@ -27,6 +27,9 @@ $status_last = $ot_status->last();
 				</span>
 				<span class="card-title-buttons">
 					<a class="btn btn-primary btn-round" href="{{ route('ordenes.edit', $ot) }}"><i class="fa fa-edit"></i> Editar</a>
+                    @if ($ot->cotizacion)
+                    	<a class="btn btn-primary btn-round" target="_new" href="/uploads/cotizacion/{{$ot->cotizacion}}"><i class="fa fa-eye"></i> Ver Cotización</a>
+                    @endif
 				</span>
 				</h5>
 			</div>

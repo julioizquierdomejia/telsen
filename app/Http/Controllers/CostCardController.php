@@ -94,6 +94,30 @@ class CostCardController extends Controller
         return response()->json(['success'=>false]);
     }
 
+    public function upload(Request $request, $id)
+    {
+        if ($request->hasFile('upload_file')) {
+            $rules = array(
+                'upload_file' => 'required|mimes:pdf|max:5000',
+            );
+            $this->validate($request, $rules);
+
+            $file = $request->file('upload_file');
+            $ext = $file->getClientOriginalExtension();
+            $uniqueFileName = uniqid() . preg_replace('/\s+/', "-", $file->getClientOriginalName()) . '.' . $ext;
+
+            $cost_card = CostCard::findOrFail($id);
+            $cost_card->cotizacion = $uniqueFileName;
+            $cost_card->save();
+
+            $file->move(public_path('uploads/cotizacion'), $uniqueFileName);
+            if (isset($cost_card->id)) {
+                return response()->json(['data'=>json_encode($cost_card->id),'success'=>true]);
+            }
+        }
+        return response()->json(['success'=>false]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

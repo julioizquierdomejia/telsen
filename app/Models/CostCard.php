@@ -11,6 +11,16 @@ class CostCard extends Model
 
     protected $fillable = [
         'ot_id',
+        'hecho_por',
+        'cost',
+        'cost_m1',
+        'cost_m2',
+        'cost_m3',
         'enabled',
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
     ];
 }

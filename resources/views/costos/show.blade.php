@@ -8,7 +8,11 @@
 				<h5 class="card-title d-flex justify-content-between align-items-center">
 				<span>Tarjeta de Costo</span>
 				<span class="card-title-buttons">
+					@if ($ccost->cotizacion)
+					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalCotizar"><i class="fa fa-eye"></i> Ver Cotización</button>
+					@else
 					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalCotizar">Cotizar</button>
+					@endif
 				</span>
 				</h5>
 			</div>
@@ -250,7 +254,7 @@
 	</div>
 </div>
 <div class="modal fade" tabindex="-1" id="modalCotizar">
-	<div class="modal-dialog">
+	<div class="modal-dialog @if($ccost->cotizacion) modal-lg @endif">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Cotización de Tarjeta de Costo</h5>
@@ -258,26 +262,84 @@
 				<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
+			@if ($ccost->cotizacion == null)
+			<form enctype="multipart/form-data" action="{{route('card_cost.upload', $ccost->id)}}" method="POST" id="uploadForm">
+				@csrf
 			<div class="modal-body">
-				<div class="row confirmar_ots">
-					<p class="text-center col-12">Subir cotización</p>
-					<div class="input-group col-12">
-						<div class="input-group-prepend">
-							<span class="input-group-text" id="inputGroupFile"><i class="fal fa-file"></i></span>
-						</div>
-						<div class="custom-file">
-							<input type="file" class="custom-file-input" id="inputGroupFile"
-							aria-describedby="inputGroupFile">
-							<label class="custom-file-label" for="inputGroupFile">Elegir</label>
-						</div>
+				<p class="text-center">Subir cotización</p>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text"><i class="fal fa-file"></i></span>
 					</div>
-					<div class="update ml-auto mr-auto">
-						<button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>
+					<div class="custom-file">
+						<input type="file" accept="application/pdf" class="custom-file-input" id="inputGroupFile"
+						aria-describedby="inputGroupFile" name="upload_file">
+						<label class="custom-file-label" for="inputGroupFile">Elegir</label>
 					</div>
-					<p class="c-ots message text-danger"></p>
 				</div>
+				<p class="c-ots message text-danger"></p>
 			</div>
+			<div class="modal-footer justify-content-center">
+				<button id="btnUpload" type="submit" class="btn btn-primary btn-sm px-md-5">Enviar</button>
+			</div>
+			</form>
+			@else
+			<embed class="w-100" src="/uploads/cotizacion/{{$ccost->cotizacion}}" width="500" height="375" style="height: calc(100vh - 120px)" type="application/pdf">
+			@endif
 		</div>
 	</div>
 </div>
+@endsection
+@section('javascript')
+<script>
+	$('#inputGroupFile').change(function (event) {
+		if($(this).val()) {
+			$('.custom-file-label').text($(this).val().split('\\').pop());
+		} else {
+			$('.custom-file-label').text('Elegir');
+		}
+	})
+	$('#uploadForm').submit(function (event) {
+		event.preventDefault();
+		var formData = new FormData(this);
+    	var upload_file = $('#inputGroupFile').val();
+    	if(upload_file.length == 0) {
+    		$('#upload_file').addClass('is-invalid');
+    		$('.c-ots').html('Ingrese archivo');
+    		return;
+    	}
+
+    	//ajax
+    	$.ajax({
+	        type: "post",
+	        url: "{{route('card_cost.upload', $ccost->id)}}",
+	        data: formData,
+	        dataType: "JSON",
+	        processData: false,
+        	contentType: false,
+	        beforeSend: function (data) {
+	        	$('#inputGroupFile').removeClass('is-invalid');
+	        	$('.c-ots').empty();
+	        },
+	        success: function (response) {
+	        	if(response.success) {
+	        		if(response.data) {
+	        			$('#modalCotizar').modal('hide');
+	        			$('#inputGroupFile').val();
+		        		$('.c-ots').empty();
+		        		setTimeout(function () {
+		        			location.reload();
+		        		}, 200)
+		        	}
+	        	}
+	        },
+	        error: function (request, status, error) {
+	        	var data = jQuery.parseJSON(request.responseText);
+	          	if(data.errors) {
+	          		$('.c-ots').html(data.errors.upload_file[0].replace('upload file', ' '));
+	        	}
+	        }
+	    });
+    })
+</script>
 @endsection

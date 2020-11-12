@@ -155,14 +155,20 @@ class OtController extends Controller
     public function ot_show(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
-        
-        $ot = Ot::leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+
+        /*$validate_ot = Ot::where('ots.enabled', 1)->where('ots.id', $id)
+                    ->join('clients', 'clients.id', '=', 'ots.client_id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('client_types.id')->firstOrFail();
+                    dd($validate_ot);*/
+            $ot = Ot::leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                 ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
+                ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente')
+                    ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente', 'cost_cards.cotizacion')
                     ->where('ots.enabled', 1)
-                    ->findOrFail($id);
+                    ->findOrFail($id); 
 
         return view('ordenes.show', compact('ot'));
     }

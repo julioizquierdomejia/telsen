@@ -26,6 +26,7 @@ class CreateCostCardTable extends Migration
             $table->string('hp_kw');
             $table->string('placa');*/
             $table->string('hecho_por');
+            $table->string('cotizacion')->nullable();
             $table->float('cost');
             $table->float('cost_m1');
             $table->float('cost_m2');

@@ -1,5 +1,4 @@
 @extends('layouts.app', ['title' => 'Crear Reporte de Ingreso'])
-
 @section('content')
 <div class="row">
   <div class="col-md-12">
@@ -13,75 +12,75 @@
           <input type="text" class="form-control d-none @error('ot_id') is-invalid @enderror" placeholder="" value="{{$ot->id}}" name='ot_id' id="ot_id" readonly="">
           <div class="row">
             <div class="col-6 col-md-3 col-xl-3 form-group">
-                <label class="col-form-label" for="rdi_codigo">RDI Código</label>
-                <input type="text" class="form-control @error('rdi_codigo') is-invalid @enderror" placeholder="" value="{{old('rdi_codigo', 'RDI-TL-'.$counter)}}" name='rdi_codigo' id="rdi_codigo" readonly="">
+              <label class="col-form-label" for="rdi_codigo">RDI Código</label>
+              <input type="text" class="form-control @error('rdi_codigo') is-invalid @enderror" placeholder="" value="{{old('rdi_codigo', 'RDI-TL-'.$counter)}}" name='rdi_codigo' id="rdi_codigo" readonly="">
               @error('rdi_codigo')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-3 col-xl-2 form-group">
-                <label class="col-form-label" for="version">Versión</label>
-                <input type="text" class="form-control @error('version') is-invalid @enderror" placeholder="" value="{{old('version', 3)}}" readonly="" name='version' id="version">
+              <label class="col-form-label" for="version">Versión</label>
+              <input type="text" class="form-control @error('version') is-invalid @enderror" placeholder="" value="{{old('version', 3)}}" readonly="" name='version' id="version">
               @error('version')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-3 col-xl-3 form-group">
-                <label class="col-form-label">Fecha</label>
-                <input type="text" class="form-control" disabled="" value="{{date('d-m-Y')}}">
+              <label class="col-form-label">Fecha</label>
+              <input type="text" class="form-control" disabled="" value="{{date('d-m-Y')}}">
             </div>
             <div class="col-md-4 form-group">
-                <label class="col-form-label" for="contact">Contacto</label>
-                <input type="text" class="form-control @error('contact') is-invalid @enderror" placeholder="" value="{{old('contact')}}" name='contact' id="contact">
+              <label class="col-form-label" for="contact">Contacto</label>
+              <input type="text" class="form-control @error('contact') is-invalid @enderror" placeholder="" value="{{old('contact')}}" name='contact' id="contact">
               @error('contact')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-md-3 form-group">
-                <label class="col-form-label" for="area">Area</label>
-                <input type="text" class="form-control @error('area') is-invalid @enderror" placeholder="" value="{{old('area')}}" name='area' id="area">
+              <label class="col-form-label" for="area">Area</label>
+              <input type="text" class="form-control @error('area') is-invalid @enderror" placeholder="" value="{{old('area')}}" name='area' id="area">
               @error('area')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-2 form-group">
-                <label class="col-form-label" for="equipo">Equipo</label>
-                <input type="text" class="form-control @error('equipo') is-invalid @enderror" placeholder="" value="{{old('equipo')}}" name='equipo' id="equipo">
+            <div class="col-md-3 form-group">
+              <label class="col-form-label" for="equipo">Equipo</label>
+              <input type="text" class="form-control @error('equipo') is-invalid @enderror" placeholder="" value="{{old('equipo')}}" name='equipo' id="equipo">
               @error('equipo')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-3 form-group">
-                <label class="col-form-label" for="codigo">Código</label>
-                <input type="text" class="form-control @error('codigo') is-invalid @enderror" placeholder="" value="{{old('codigo')}}" name='codigo' id="codigo">
+            <div class="col-md-2 form-group">
+              <label class="col-form-label" for="codigo">Código</label>
+              <input type="text" class="form-control @error('codigo') is-invalid @enderror" placeholder="" value="{{old('codigo')}}" name='codigo' id="codigo">
               @error('codigo')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-md-4 form-group">
-                <label class="col-form-label" for="razon_social">Razón social</label>
-                <input type="text" readonly="" class="form-control @error('razon_social') is-invalid @enderror" placeholder="" value="{{old('razon_social', $ot->razon_social)}}" id="razon_social">
+              <label class="col-form-label" for="razon_social">Razón social</label>
+              <input type="text" readonly="" class="form-control @error('razon_social') is-invalid @enderror" placeholder="" value="{{old('razon_social', $ot->razon_social)}}" id="razon_social">
               @error('razon_social')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-md-3 form-group">
-                <label class="col-form-label" for="fecha_ingreso">Fecha de ingreso</label>
-                <input type="date" max="{{date('Y-m-d')}}" class="form-control @error('fecha_ingreso') is-invalid @enderror" placeholder="" value="{{old('fecha_ingreso', date('Y-m-d'))}}" name='fecha_ingreso' id="fecha_ingreso">
+              <label class="col-form-label" for="fecha_ingreso">Fecha de ingreso</label>
+              <input type="date" max="{{date('Y-m-d')}}" class="form-control @error('fecha_ingreso') is-invalid @enderror" placeholder="" value="{{old('fecha_ingreso', date('Y-m-d'))}}" name='fecha_ingreso' id="fecha_ingreso">
               @error('fecha_ingreso')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-md-3 form-group">
-                <label class="col-form-label" for="tiempo_entrega">Tiempo de entrega</label>
-                <input type="number" class="form-control @error('tiempo_entrega') is-invalid @enderror" min="1" placeholder="Días de entrega" value="{{old('tiempo_entrega', 1)}}" title="Días de entrega" data-toggle="tooltip" name='tiempo_entrega' id="tiempo_entrega">
+              <label class="col-form-label" for="tiempo_entrega">Tiempo de entrega</label>
+              <input type="number" class="form-control @error('tiempo_entrega') is-invalid @enderror" min="1" placeholder="Días de entrega" value="{{old('tiempo_entrega', 1)}}" title="Días de entrega" data-toggle="tooltip" name='tiempo_entrega' id="tiempo_entrega">
               @error('tiempo_entrega')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-md-3 form-group">
-                <label class="col-form-label" for="orden_servicio">Orden de servicio</label>
-                <input type="text" class="form-control @error('orden_servicio') is-invalid @enderror" placeholder="" value="{{old('orden_servicio')}}" name='orden_servicio' id="orden_servicio">
+              <label class="col-form-label" for="orden_servicio">Orden de servicio</label>
+              <input type="text" class="form-control @error('orden_servicio') is-invalid @enderror" placeholder="" value="{{old('orden_servicio')}}" name='orden_servicio' id="orden_servicio">
               @error('orden_servicio')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -143,8 +142,8 @@
               <input type="text" class="form-control @error('rodaje_posterior') is-invalid @enderror" placeholder="Ingrese Rodaje posterior" value="{{old('rodaje_posterior')}}" name="rodaje_posterior">
             </div>
             <div class="col-md-12 form-group">
-                <label class="col-form-label">ANTECEDENTES</label>
-                <textarea class="form-control @error('antecedentes') is-invalid @enderror" placeholder="(Indique motivo de salida del componente de las instalaciones del cliente)" value="{{old('antecedentes')}}" name="antecedentes"></textarea>
+              <label class="col-form-label">ANTECEDENTES</label>
+              <textarea class="form-control @error('antecedentes') is-invalid @enderror" placeholder="(Indique motivo de salida del componente de las instalaciones del cliente)" value="{{old('antecedentes')}}" name="antecedentes"></textarea>
               @error('antecedentes')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -152,78 +151,78 @@
             <div class="col-md-12">
               <label class="col-form-label">Ingresó con:</label>
               <div class="form-control mb-4" style="height: auto">
-              <ul class="form-check-list list-inline m-0">
-              <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="placa_caracteristicas"><span class="align-middle">Placa caracteristicas</span>
-                </label>
-              </li>
-              <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="caja_conexion"><span class="align-middle">Caja conexión</span>
-                </label>
-              </li>
-              <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="bornera"><span class="align-middle">Bornera</span>
-                </label>
-              </li>
-              <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="escudos"><span class="align-middle">Escudos</span>
-                </label>
-              </li>
-              <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="ejes"><span class="align-middle">Ejes</span>
-                </label>
-              </li>
-              <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="funda"><span class="align-middle">Funda</span>
-                </label>
-              </li>
-              <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="ventilador"><span class="align-middle">Ventilador</span>
-                </label>
-              </li>
-              <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="acople"><span class="align-middle">Acople</span>
-                </label>
-              </li>
-              <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="chaveta"><span class="align-middle">Chaveta</span>
-                </label>
-              </li>
-              </ul>
+                <ul class="form-check-list list-inline m-0">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('placa_caracteristicas') ? 'checked' : ''}} name="placa_caracteristicas"><span class="align-middle">Placa caracteristicas</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('caja_conexion') ? 'checked' : ''}} name="caja_conexion"><span class="align-middle">Caja conexión</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('bornera') ? 'checked' : ''}} name="bornera"><span class="align-middle">Bornera</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('escudos') ? 'checked' : ''}} name="escudos"><span class="align-middle">Escudos</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('ejes') ? 'checked' : ''}} name="ejes"><span class="align-middle">Ejes</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('funda') ? 'checked' : ''}} name="funda"><span class="align-middle">Funda</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('ventilador') ? 'checked' : ''}} name="ventilador"><span class="align-middle">Ventilador</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('acople') ? 'checked' : ''}} name="acople"><span class="align-middle">Acople</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('chaveta') ? 'checked' : ''}} name="chaveta"><span class="align-middle">Chaveta</span>
+                    </label>
+                  </li>
+                </ul>
               </div>
             </div>
-            </div>
-            <div class="row">
-              <div class="col-12 col-md-6 mb-4">
-                <label class="col-form-label">ACTIVIDADES POR REALIZAR</label>
-                <div class="form-control h-100">
-                  <ul class="form-check-list list-inline m-0">
-                    @foreach($services as $service)
-                    <li class="row my-1 align-items-center">
-                      <label class="form-label col-10 mb-0" for="service_{{$service->id}}"><span class="align-middle">{{$service->name}}</span></label>
-                      <span class="col-2 d-inline-block"><input type="text" class="form-control service_input" value="{{old('services')[$service->id]}}" style="margin-top: 0" id="service_{{$service->id}}" name="services[{{$service->id}}]"></span>
-                    </li>
-                    @endforeach
-                  </ul>
-                  <label class="col-form-label">Total</label>
-                  <input class="form-control text-right @error('cost') is-invalid @enderror" type="text" readonly="" name="cost" value="0">
-                </div>
-              </div>
-              <div class="col-12 col-md-6 mb-4">
-                <label class="col-form-label" for="diagnostico_actual">DIAGNOSTICO ACTUAL</label>
-                <textarea class="form-control h-100 @error('diagnostico_actual') is-invalid @enderror" placeholder="(Indique causa raiz y recomendaciones)" value="{{old('diagnostico_actual')}}" name="diagnostico_actual" id="diagnostico_actual"></textarea>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-6 mb-4">
+              <label class="col-form-label">ACTIVIDADES POR REALIZAR</label>
+              <div class="form-control h-100">
+                <ul class="form-check-list list-inline m-0">
+                  @foreach($services as $service)
+                  <li class="row my-1 align-items-center">
+                    <label class="form-label col-10 mb-0" for="service_{{$service->id}}"><span class="align-middle">{{$service->name}}</span></label>
+                    <span class="col-2 d-inline-block"><input type="text" class="form-control service_input" value="{{old('services')[$service->id]}}" style="margin-top: 0" id="service_{{$service->id}}" name="services[{{$service->id}}]"></span>
+                  </li>
+                  @endforeach
+                </ul>
+                <label class="col-form-label">Total</label>
+                <input class="form-control text-right @error('cost') is-invalid @enderror" type="text" readonly="" name="cost" value="0">
               </div>
             </div>
-            <div class="row">
+            <div class="col-12 col-md-6 mb-4">
+              <label class="col-form-label" for="diagnostico_actual">DIAGNOSTICO ACTUAL</label>
+              <textarea class="form-control h-100 @error('diagnostico_actual') is-invalid @enderror" placeholder="(Indique causa raiz y recomendaciones)" value="{{old('diagnostico_actual')}}" name="diagnostico_actual" id="diagnostico_actual"></textarea>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-12 form-group">
               <label class="col-form-label">Aislamiento a Masa (Ingreso)</label>
               <input type="text" class="form-control @error('aislamiento_masa_ingreso') is-invalid @enderror" placeholder="MΩ" value="{{old('aislamiento_masa_ingreso')}}" name="aislamiento_masa_ingreso">
@@ -231,29 +230,29 @@
             <div class="col-12">
               <label class="col-form-label">TIPO DE MANTENIMIENTO (Seleccione según corresponda)</label>
               <div class="form-control mb-4 @error('rdi_maintenance_type_id') is-invalid @enderror" style="height: auto">
-              <ul class="form-check-list list-inline mb-0">
-                @foreach($maintenancetype as $mtitem)
-                <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="radio" class="form-check-input align-middle" {{old('rdi_maintenance_type_id') == $mtitem->id ? 'checked' : ''}} value="{{$mtitem->id}}" name="rdi_maintenance_type_id"><span class="align-middle">{{$mtitem->name}}</span>
-                </label>
-                </li>
-                @endforeach
-              </ul>
-            </div>
+                <ul class="form-check-list list-inline mb-0">
+                  @foreach($maintenancetype as $mtitem)
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" {{old('rdi_maintenance_type_id') == $mtitem->id ? 'checked' : ''}} value="{{$mtitem->id}}" name="rdi_maintenance_type_id"><span class="align-middle">{{$mtitem->name}}</span>
+                    </label>
+                  </li>
+                  @endforeach
+                </ul>
+              </div>
             </div>
             <div class="col-12">
               <label class="col-form-label">CRITICIDAD (Seleccione según corresponda)</label>
               <div class="form-control mb-4 @error('rdi_criticality_type_id') is-invalid @enderror" style="height: auto">
-              <ul class="form-check-list list-inline mb-0">
-                @foreach($criticalitytype as $citem)
-                <li class="form-check-inline">
-                <label class="form-check-label">
-                  <input type="radio" class="form-check-input align-middle" {{old('rdi_criticality_type_id') == $citem->id ? 'checked' : ''}} value="{{$citem->id}}" name="rdi_criticality_type_id"><span class="align-middle">{{$citem->name}}</span>
-                </label>
-                </li>
-                @endforeach
-              </ul>
+                <ul class="form-check-list list-inline mb-0">
+                  @foreach($criticalitytype as $citem)
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" {{old('rdi_criticality_type_id') == $citem->id ? 'checked' : ''}} value="{{$citem->id}}" name="rdi_criticality_type_id"><span class="align-middle">{{$citem->name}}</span>
+                    </label>
+                  </li>
+                  @endforeach
+                </ul>
               </div>
             </div>
           </div>

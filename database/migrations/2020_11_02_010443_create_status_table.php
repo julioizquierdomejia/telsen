@@ -22,6 +22,7 @@ class CreateStatusTable extends Migration
         });
 
         Schema::create('status_ot', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('ot_id');
             $table->foreign('ot_id')->references('id')->on('ots');
 

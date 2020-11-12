@@ -35,6 +35,21 @@ img {
 	}
 }
 
+.modal {
+	&-open {
+		.modal {
+			&.show {
+				display: flex !important;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+	}
+	&-dialog {
+		width: 100%;
+	}
+}
+
 .page {
 	.btn {
 		&-orange {
@@ -241,18 +256,17 @@ img {
 	    font-size: 12px;
 	    margin: 0;
 	}
-	textarea {
-		&.frm-sinput {
-		    background: transparent !important;
-		    color: $black;
-		    cursor: text;
-		    font-size: 13px;
-			height: auto;
-		    line-height: 15px;
-		    margin: 0;
-		    overflow: hidden;
-		    padding: 0;
-		}
+	.input-expandable {
+	    background: transparent !important;
+	    color: $black;
+	    cursor: text;
+	    font-size: 13px;
+		height: auto;
+	    line-height: 15px;
+	    margin: 0;
+	    overflow: hidden;
+	    padding: 0;
+	    resize: none;
 	}
 }
 .form-card {
@@ -300,6 +314,7 @@ img {
 	}
 	.form-control {
 		border-width: 2px;
+		font-size: 0.75rem;
 		font-weight: 600;
 		line-height: 17px;
 		margin-top: -12px;
@@ -313,6 +328,11 @@ img {
 					border-color: $red;
 				}
 			}
+		}
+	}
+	p {
+		&.form-control {
+			height: auto;
 		}
 	}
 	.btn {
@@ -335,6 +355,12 @@ img {
 					background-color: #efefef;
 				}
 			}
+		}
+	}
+
+	.card-footer {
+		.btn {
+			text-transform: none;
 		}
 	}
 }

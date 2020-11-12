@@ -23,12 +23,17 @@ class CostCardController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+                //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
-                        ->select('ots.*', 'clients.razon_social', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw')
+                        ->select('ots.*', 'clients.razon_social', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw', 
+                            //'cost_cards.id as cost_card'
+                        )
                         ->where('ots.enabled', 1)
+                        ->where('clients.client_type_id', 2)
                         ->where('clients.enabled', 1)
-                        ->groupBy('ots.id')
+                        //->groupBy('ots.id')
                         ->get();
 
         $ots = [];

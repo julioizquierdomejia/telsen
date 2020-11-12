@@ -25,7 +25,8 @@ class RdiController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
-        $rdis = Rdi::join('clients', 'clients.id', '=', 'rdi.client_id')
+        $rdis = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
+                ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->select('rdi.*', 'clients.razon_social')
                 ->where('rdi.enabled', 1)->get();
 
@@ -142,6 +143,7 @@ class RdiController extends Controller
         $rdi->rdi_maintenance_type_id = $request->input('rdi_maintenance_type_id');
         $rdi->rdi_criticality_type_id = $request->input('rdi_criticality_type_id');
         $rdi->hecho_por = $request->input('hecho_por');
+        $rdi->cost = $request->input('cost');
         $rdi->enabled = $request->input('enabled');
         $rdi->save();
 
@@ -199,27 +201,92 @@ class RdiController extends Controller
         return redirect('rdi');
     }
 
+    public function generateOTDate(Request $request, $id)
+    {
+        $ots = Ot::findOrFail($id);
+        if ($ots->fecha_entrega != null) {
+            return response()->json(['data'=>'Ya se generó la fecha de entrega: ' . $ots->fecha_entrega,'success'=>false]);
+        }
+
+        $ots->fecha_entrega = $request->input('fecha_entrega');
+        $original_data = $ots->toArray();
+        $ots->save();
+
+        activitylog('ots', 'update', $original_data, $ots->toArray());
+
+        return response()->json(['data'=>json_encode($ots),'success'=>true]);
+    }
+
+    public function aproveRDI(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+
+        $action = $request->input('action');
+
+        $exist_status = \DB::table('status_ot')
+                        ->where('ot_id', $id)
+                        ->where('status_id', 9)->orWhere('status_id', 10)
+                        ->first();
+        if ($exist_status) {
+            return response()->json(['data'=>'RDI ya cambió de estado' . $exist_status->id,'success'=>false]);
+        } else {
+            if ($action == 1) {
+                $status = Status::where('id', 9)->first();
+                if ($status) {
+                    $data = \DB::table('status_ot')->insert([
+                        'status_id' => $status->id,
+                        'ot_id' => $id,
+                    ]);
+                }
+            } else /*if($action == 2)*/ {
+                $status = Status::where('id', 10)->first();
+                if ($status) {
+                    $data = \DB::table('status_ot')->insert([
+                        'status_id' => $status->id,
+                        'ot_id' => $id,
+                    ]);
+                }
+            }
+            return response()->json(['data'=>json_encode($data),'success'=>true]);
+        }
+        return response()->json(['success'=>false]);
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Rdi  $rdi
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $crdi = Rdi::findOrFail($id);
+        $rdi = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
+                ->join('clients', 'clients.id', '=', 'ots.client_id')
+                ->join('motor_brands', 'motor_brands.id', '=', 'rdi.marca_id')
+                ->join('rdi_maintenance_types', 'rdi_maintenance_types.id', '=', 'rdi.rdi_maintenance_type_id')
+                ->join('rdi_criticality_types', 'rdi_criticality_types.id', '=', 'rdi.rdi_criticality_type_id')
+                ->select('rdi.*', 'clients.razon_social', 'motor_brands.name as marca', 'rdi_maintenance_types.name as maintenancetype', 'rdi_criticality_types.name as criticalitytype', 'ots.fecha_entrega')
+                ->where('rdi.id', $id)
+                ->firstOrFail();
 
-        return view('rdi.show', compact('crdi'));
+        $ingresos = RdiIngreso::where('rdi_id', $id)->first();
+
+        $services = RdiServiceCost::where('rdi_id', $id)
+                    ->join('rdi_services', 'rdi_services.id', '=', 'rdi_service_costs.rdi_service_id')
+                    ->select('rdi_services.id', 'rdi_services.name', 'rdi_service_costs.subtotal')
+                    ->get();
+
+        return view('rdi.show', compact('rdi', 'services', 'ingresos'));
     }
     public function cc_show(Request $request, $ot_id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $crdi = Rdi::where('ot_id', $ot_id)->firstOrFail();
+        $rdi = Rdi::where('ot_id', $ot_id)->firstOrFail();
 
-        return view('rdi.show', compact('crdi'));
+        return view('rdi.show', compact('rdi'));
     }
 
     /**
@@ -232,14 +299,34 @@ class RdiController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $rdi = Rdi::join('clients', 'clients.id', '=', 'rdi.client_id')
-                ->select('rdi.*', 'clients.razon_social')
-                ->where('rdi.enabled', 1)->firstOrFail();
+        $rdi = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
+                ->join('clients', 'clients.id', '=', 'ots.client_id')
+                ->join('motor_brands', 'motor_brands.id', '=', 'rdi.marca_id')
+                ->join('rdi_maintenance_types', 'rdi_maintenance_types.id', '=', 'rdi.rdi_maintenance_type_id')
+                ->join('rdi_criticality_types', 'rdi_criticality_types.id', '=', 'rdi.rdi_criticality_type_id')
+                ->join('rdi_ingresos', 'rdi_ingresos.rdi_id', '=', 'rdi.id')
+                ->select('rdi.*', 'clients.razon_social', 'motor_brands.name as marca', 'rdi_maintenance_types.id as maintenancetype', 'rdi_criticality_types.id as criticalitytype', 'ots.fecha_entrega',
+                    'rdi_ingresos.placa_caracteristicas',
+                    'rdi_ingresos.caja_conexion',
+                    'rdi_ingresos.bornera',
+                    'rdi_ingresos.escudos',
+                    'rdi_ingresos.ejes',
+                    'rdi_ingresos.funda',
+                    'rdi_ingresos.ventilador',
+                    'rdi_ingresos.acople',
+                    'rdi_ingresos.chaveta',
+            )
+                ->where('rdi.id', $id)
+                ->firstOrFail();
         $clientes = Client::where('enabled', 1)->where('client_type_id', 1)->get();
         $marcas = MotorBrand::where('enabled', 1)->get();
         $maintenancetype = RdiMaintenanceType::where('enabled', 1)->get();
         $criticalitytype = RdiCriticalityType::where('enabled', 1)->get();
-        $services = RdiService::where('enabled', 1)->get();
+        $services = RdiServiceCost::where('rdi_id', $id)
+                    ->join('rdi_services', 'rdi_services.id', '=', 'rdi_service_costs.rdi_service_id')
+                    ->select('rdi_services.id', 'rdi_services.name', 'rdi_service_costs.subtotal')
+                    ->where('rdi_services.enabled', 1)
+                    ->get();
         return view('rdi.edit', compact('rdi', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype'));
     }
 
@@ -257,8 +344,49 @@ class RdiController extends Controller
         // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
-            'name'       => 'required|string|unique:rdis,name,'.$id,
-            'enabled'      => 'boolean|required',
+            'rdi_codigo' => 'required|string',
+            'version' => 'required|string',
+            //'client_id' => 'required|integer',
+            'contact' => 'string|nullable',
+            'area' => 'string|nullable',
+            'equipo' => 'string|nullable',
+            'codigo' => 'string|nullable',
+            //'ot_id' => 'integer|exists:ots,id',
+            'fecha_ingreso' => 'required|date_format:Y-m-d',
+            'tiempo_entrega' => 'integer|required',
+            'orden_servicio' => 'string|nullable',
+            'marca_id' => 'integer|required',
+            'nro_serie' => 'string|nullable',
+            'frame' => 'string|nullable',
+            'potencia' => 'string|nullable',
+            'tension' => 'string|nullable',
+            'corriente' => 'string|nullable',
+            'velocidad' => 'string|nullable',
+            'conexion' => 'string|nullable',
+            'deflexion_eje' => 'string|nullable',
+            'rodaje_delantero' => 'string|nullable',
+            'rodaje_posterior' => 'string|nullable',
+            'antecedentes' => 'string|nullable',
+
+            'placa_caracteristicas' => 'boolean|nullable',
+            'caja_conexion' => 'boolean|nullable',
+            'bornera' => 'boolean|nullable',
+            'escudos' => 'boolean|nullable',
+            'ejes' => 'boolean|nullable',
+            'funda' => 'boolean|nullable',
+            'ventilador' => 'boolean|nullable',
+            'acople' => 'boolean|nullable',
+            'chaveta' => 'boolean|nullable',
+
+            'services' => 'array|required',
+            'diagnostico_actual' => 'string|required',
+            'aislamiento_masa_ingreso' => 'string|required',
+
+            'rdi_maintenance_type_id' => 'required|integer|exists:rdi_services,id',
+            'rdi_criticality_type_id' => 'required|integer|exists:rdi_criticality_types,id',
+            'hecho_por' => 'string|nullable',
+            'cost' => 'required||regex:/^\d+(\.\d{1,2})?$/|gt:0',
+            'enabled' => 'boolean|required',
         );
         $this->validate($request, $rules);
 

@@ -152,11 +152,14 @@
                         $lastItem = true;
                         @endphp
                       @endif
+                      @if ($key > 1)
+                        <tr><td colspan="7" height="20"></td></tr>
+                      @endif
                       @if($item['service'] == '')
                       @php $row_total = $item['subtotal']; @endphp
                       <tr class="row-area" data-areaid="{{$item['area_id']}}">
                           <td class="bg-info cell-counter text-center" width="50"><span class="number"></span></td>
-                          <td class="bg-info" width="200"><textarea class="form-control frm-sinput border-0 bg-white" name="area" disabled="">{{$item['area']}}</textarea></td>
+                          <td class="bg-info" width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['area']}}</span></td>
                           <td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
                           <td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
                           <td class="bg-info" width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
@@ -166,7 +169,7 @@
                        @else
                        <tr data-areaid="{{$item['area_id']}}" data-serviceid="{{$item['service']}}">
                           <td width="50"></td>
-                          <td width="200"><textarea class="form-control frm-sinput border-0 bg-white" name="area" disabled="">{{$item['area']}}</textarea></td>
+                          <td width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['area']}}</span></td>
                           <td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
                           <td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
                           <td width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
@@ -282,10 +285,13 @@
             if (response.success) {
               var services = $.parseJSON(response.data), s_length = services.length;
               $('.empty-services').remove();
+              if($('#table-tap tbody tr').length > 0) {
+                $('#table-tap tbody').append('<tr><td class="bg-white" colspan="7" height="20"></td></tr>');
+              }
               $('#table-tap tbody').append(
                   '<tr class="row-area" data-areaid="'+area+'">'+
                         '<td class="bg-info cell-counter text-center" width="50"><span class="number"></span></td>'+
-                        '<td class="bg-info" width="200"><textarea class="form-control frm-sinput border-0 bg-white" name="area" disabled="">'+option_selected.text()+'</textarea></td>'+
+                        '<td class="bg-info" width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area" disabled="">'+option_selected.text()+'</span></td>'+
                         '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="personal" value=""></td>'+
                         '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="ingreso" value=""></td>'+
                         '<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="salida" value=""></td>'+
@@ -298,7 +304,7 @@
                 $('#table-tap tbody').append(
                   '<tr data-areaid="'+area+'" data-serviceid="'+item.id+'">'+
                         '<td width="50"></td>'+
-                        '<td width="200"><textarea class="form-control frm-sinput border-0 bg-white" name="area" disabled="">'+option_selected.text()+'</textarea></td>'+
+                        '<td width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area" disabled="">'+item.name+'</span></td>'+
                         '<td><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="personal" value=""></td>'+
                         '<td><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="ingreso" value=""></td>'+
                         '<td width="100"><input type="text" class="form-control frm-sinput" data-areaid="'+area+'" name="salida" value=""></td>'+
@@ -338,7 +344,7 @@
         var notempty = false;
         x.each(function(cell_id, cell_item) {
           var cparent = $(cell_item).parent();
-          var area = cparent.find('[name="area"]');
+          var area = cparent.find('[name="area"]').text();
           var personal = cparent.find('[name="personal"]');
           var ingreso = cparent.find('[name="ingreso"]');
           var salida = cparent.find('[name="salida"]');
@@ -350,7 +356,7 @@
               itArr.push(
                 '"area_id": "' + $(tr_item).attr('data-areaid') +
                 '", "service": "' + ($(tr_item).attr('data-serviceid') ? $(tr_item).attr('data-serviceid') : '') +
-                '", "area": "' + area.val() +
+                '", "area": "' + area +
                 '", "personal": "' + personal.val() +
                 '", "ingreso": "' + ingreso.val() +
                 '", "salida": "' + salida.val() +

@@ -1089,18 +1089,18 @@ fieldset[disabled]
 
 .form-group .form-control,
 .input-group .form-control {
-  padding: 10px 10px 10px 10px; }
+  padding: 8px 10px 5px 10px; }
   .form-group .form-control + .input-group-prepend .input-group-text,
   .form-group .form-control + .input-group-append .input-group-text,
   .input-group .form-control + .input-group-prepend .input-group-text,
   .input-group .form-control + .input-group-append .input-group-text {
-    padding: 10px 10px 10px 0; }
+    padding: 8px 10px 5px 0; }
 
 .form-group .input-group-prepend .input-group-text,
 .form-group .input-group-append .input-group-text,
 .input-group .input-group-prepend .input-group-text,
 .input-group .input-group-append .input-group-text {
-  padding: 10px 0 10px 10px; }
+  padding: 8px 0 10px 10px; }
   .form-group .input-group-prepend .input-group-text + .form-control,
   .form-group .input-group-prepend .input-group-text ~ .form-control,
   .form-group .input-group-append .input-group-text + .form-control,
@@ -1109,7 +1109,7 @@ fieldset[disabled]
   .input-group .input-group-prepend .input-group-text ~ .form-control,
   .input-group .input-group-append .input-group-text + .form-control,
   .input-group .input-group-append .input-group-text ~ .form-control {
-    padding: 10px 11px 11px 8px; }
+    padding: 8px 10px 10px 8px; }
 
 .input-group.has-success .input-group-prepend .input-group-text,
 .input-group.has-success .input-group-append .input-group-text {
@@ -1296,16 +1296,6 @@ fieldset[disabled]
 
 .input-group-btn:last-child > .btn {
   margin-left: 0; }
-
-textarea.form-control {
-  max-width: 100%;
-  max-height: 80px;
-  padding: 10px 10px 0 0;
-  resize: none;
-  border: none;
-  border: 1px solid #E3E3E3;
-  border-radius: 4px;
-  line-height: 2; }
 
 .has-success.form-group .form-control,
 .has-success.form-group.no-border .form-control,
@@ -1642,7 +1632,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 .card-user form .form-group {
   margin-bottom: 20px; }
 
-.from-check,
+/*.from-check,
 .form-check-radio {
   margin-bottom: 12px;
   position: relative; }
@@ -1747,7 +1737,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 
 .form-check-radio input[type="radio"]:disabled + .form-check-sign::before,
 .form-check-radio input[type="radio"]:disabled + .form-check-sign::after {
-  color: #9A9A9A; }
+  color: #9A9A9A; }*/
 
 .navbar {
   padding-top: 0.625rem;
@@ -3569,7 +3559,6 @@ License - nucleoapp.com/license/
     font-weight: 500;
     padding-bottom: 15px; }
   .card label {
-    font-size: 0.8571em;
     margin-bottom: 5px;
     color: #9A9A9A; }
   .card .card-footer {

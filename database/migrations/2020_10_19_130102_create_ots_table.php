@@ -37,6 +37,7 @@ class CreateOtsTable extends Migration
             $table->string('medida_potencia')->nullable();
             $table->string('voltaje')->nullable();
             $table->string('velocidad')->nullable();
+            $table->date('fecha_entrega')->nullable();
             $table->boolean('enabled')->default(1);
 
             $table->timestamps();

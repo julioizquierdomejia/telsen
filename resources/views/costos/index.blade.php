@@ -37,7 +37,10 @@
                     {{$ot->descripcion_motor}}
                   </td>
 	                <td class="text-right">
-	                	<a href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
+                    {{-- @if($ot->cost_card)
+                    <a href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                    @endif --}}
+	                	<a href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning" title="Calcular"><i class="fas fa-money-check-alt"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>
 	              </tr>

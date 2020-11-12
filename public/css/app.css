@@ -30231,6 +30231,16 @@ img {
   color: #e96115;
 }
 
+.modal-open .modal.show {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-dialog {
+  width: 100%;
+}
+
 .page .btn-orange {
   background-color: #e96115;
   border-color: #e96115;
@@ -30423,7 +30433,7 @@ img {
   margin: 0;
 }
 
-#table-tap textarea.frm-sinput {
+#table-tap .input-expandable {
   background: transparent !important;
   color: #000;
   cursor: text;
@@ -30433,6 +30443,7 @@ img {
   margin: 0;
   overflow: hidden;
   padding: 0;
+  resize: none;
 }
 
 .form-card .card-header {
@@ -30481,6 +30492,7 @@ img {
 
 .form-card .form-control {
   border-width: 2px;
+  font-size: 0.75rem;
   font-weight: 600;
   line-height: 17px;
   margin-top: -12px;
@@ -30493,6 +30505,10 @@ img {
 
 .form-card .form-control.is-invalid + .select2 .select2-selection {
   border-color: #e3342f;
+}
+
+.form-card p.form-control {
+  height: auto;
 }
 
 .form-card .btn[type=submit] {
@@ -30508,6 +30524,10 @@ img {
 
 .form-card .table.table-separate tbody td {
   background-color: #efefef;
+}
+
+.form-card .card-footer .btn {
+  text-transform: none;
 }
 
 .select2-container--default .select2-selection--single {

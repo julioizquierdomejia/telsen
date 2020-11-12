@@ -69,13 +69,13 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-3 form-group">
-                <label class="col-form-label" for="ot">Ot</label>
-                <input type="text" class="form-control @error('ot') is-invalid @enderror" placeholder="" value="{{old('ot', $rdi->ot)}}" name='ot' id="ot">
-              @error('ot')
+            {{-- <div class="col-md-3 form-group">
+                <label class="col-form-label" for="ot_id">Ot</label>
+                <input type="text" class="form-control @error('ot_id') is-invalid @enderror" placeholder="" value="{{old('ot_id', $rdi->ot_id)}}" name='ot_id' id="ot_id">
+              @error('ot_id')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
-            </div>
+            </div> --}}
             <div class="col-md-3 form-group">
                 <label class="col-form-label" for="fecha_ingreso">Fecha de ingreso</label>
                 <input type="date" max="{{date('Y-m-d')}}" class="form-control @error('fecha_ingreso') is-invalid @enderror" placeholder="" value="{{old('fecha_ingreso', date('Y-m-d', strtotime($rdi->fecha_ingreso)))}}" name='fecha_ingreso' id="fecha_ingreso">
@@ -155,7 +155,7 @@
             </div>
             <div class="col-md-12 form-group">
                 <label class="col-form-label">ANTECEDENTES</label>
-                <textarea class="form-control @error('antecedentes') is-invalid @enderror" placeholder="(Indique motivo de salida del componente de las instalaciones del cliente)" value="{{old('antecedentes', $rdi->antecedentes)}}" name="antecedentes"></textarea>
+                <textarea class="form-control @error('antecedentes') is-invalid @enderror" placeholder="(Indique motivo de salida del componente de las instalaciones del cliente)" name="antecedentes">{{old('antecedentes', $rdi->antecedentes)}}</textarea>
               @error('antecedentes')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -166,47 +166,47 @@
               <ul class="form-check-list list-inline m-0">
               <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="placa_caracteristicas"><span class="align-middle">Placa caracteristicas</span>
+                  <input type="checkbox" class="form-check-input align-middle" {{old('placa_caracteristicas', $rdi->placa_caracteristicas) ? 'checked' : ''}} value="1" name="placa_caracteristicas"><span class="align-middle">Placa caracteristicas</span>
                 </label>
               </li>
               <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="caja_conexion"><span class="align-middle">Caja conexión</span>
+                  <input type="checkbox" class="form-check-input align-middle" {{old('caja_conexion', $rdi->caja_conexion) ? 'checked' : ''}} value="1" name="caja_conexion"><span class="align-middle">Caja conexión</span>
                 </label>
               </li>
               <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="bornera"><span class="align-middle">Bornera</span>
+                  <input type="checkbox" class="form-check-input align-middle" {{old('bornera', $rdi->bornera) ? 'checked' : ''}} value="1" name="bornera"><span class="align-middle">Bornera</span>
                 </label>
               </li>
               <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="escudos"><span class="align-middle">Escudos</span>
+                  <input type="checkbox" class="form-check-input align-middle" {{old('escudos', $rdi->escudos) ? 'checked' : ''}} value="1" name="escudos"><span class="align-middle">Escudos</span>
                 </label>
               </li>
               <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="ejes"><span class="align-middle">Ejes</span>
+                  <input type="checkbox" class="form-check-input align-middle" {{old('ejes', $rdi->ejes) ? 'checked' : ''}} value="1" name="ejes"><span class="align-middle">Ejes</span>
                 </label>
               </li>
               <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="funda"><span class="align-middle">Funda</span>
+                  <input type="checkbox" class="form-check-input align-middle" {{old('funda', $rdi->funda) ? 'checked' : ''}} value="1" name="funda"><span class="align-middle">Funda</span>
                 </label>
               </li>
               <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="ventilador"><span class="align-middle">Ventilador</span>
+                  <input type="checkbox" class="form-check-input align-middle" {{old('ventilador', $rdi->ventilador) ? 'checked' : ''}} value="1" name="ventilador"><span class="align-middle">Ventilador</span>
                 </label>
               </li>
               <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="acople"><span class="align-middle">Acople</span>
+                  <input type="checkbox" class="form-check-input align-middle" {{old('acople', $rdi->acople) ? 'checked' : ''}} value="1" name="acople"><span class="align-middle">Acople</span>
                 </label>
               </li>
               <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="checkbox" class="form-check-input align-middle" value="1" name="chaveta"><span class="align-middle">Chaveta</span>
+                  <input type="checkbox" class="form-check-input align-middle" {{old('chaveta', $rdi->chaveta) ? 'checked' : ''}} value="1" name="chaveta"><span class="align-middle">Chaveta</span>
                 </label>
               </li>
               </ul>
@@ -221,7 +221,7 @@
                     @foreach($services as $service)
                     <li class="row my-1 align-items-center">
                       <label class="form-label col-10 mb-0" for="service_{{$service->id}}"><span class="align-middle">{{$service->name}}</span></label>
-                      <span class="col-2 d-inline-block"><input type="text" class="form-control service_input" value="" style="margin-top: 0" id="service_{{$service->id}}" name="services[][{{$service->id}}]"></span>
+                      <span class="col-2 d-inline-block"><input type="text" class="form-control service_input" value="{{$service->subtotal}}" style="margin-top: 0" id="service_{{$service->id}}" name="services[][{{$service->id}}]"></span>
                     </li>
                     @endforeach
                   </ul>
@@ -231,7 +231,7 @@
               </div>
               <div class="col-12 col-md-6 mb-4">
                 <label class="col-form-label" for="diagnostico_actual">DIAGNOSTICO ACTUAL</label>
-                <textarea class="form-control h-100 @error('diagnostico_actual') is-invalid @enderror" placeholder="(Indique causa raiz y recomendaciones)" value="{{old('diagnostico_actual', $rdi->diagnostico_actual)}}" name="diagnostico_actual" id="diagnostico_actual"></textarea>
+                <textarea class="form-control h-100 @error('diagnostico_actual') is-invalid @enderror" placeholder="(Indique causa raiz y recomendaciones)" name="diagnostico_actual" id="diagnostico_actual">{{old('diagnostico_actual', $rdi->diagnostico_actual)}}</textarea>
               </div>
             </div>
             <div class="row">
@@ -246,7 +246,7 @@
                 @foreach($maintenancetype as $mtitem)
                 <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="radio" class="form-check-input align-middle" value="{{$mtitem->id}}" name="rdi_maintenance_type_id"><span class="align-middle">{{$mtitem->name}}</span>
+                  <input type="radio" class="form-check-input align-middle" {{old('rdi_maintenance_type_id', $rdi->maintenancetype) == $mtitem->id ? 'checked' : ''}} value="{{$mtitem->id}}" name="rdi_maintenance_type_id"><span class="align-middle">{{$mtitem->name}}</span>
                 </label>
                 </li>
                 @endforeach
@@ -260,7 +260,7 @@
                 @foreach($criticalitytype as $citem)
                 <li class="form-check-inline">
                 <label class="form-check-label">
-                  <input type="radio" class="form-check-input align-middle" value="{{$citem->id}}" name="rdi_criticality_type_id"><span class="align-middle">{{$citem->name}}</span>
+                  <input type="radio" class="form-check-input align-middle" {{old('rdi_criticality_type_id', $rdi->criticalitytype) == $citem->id ? 'checked' : ''}} value="{{$citem->id}}" name="rdi_criticality_type_id"><span class="align-middle">{{$citem->name}}</span>
                 </label>
                 </li>
                 @endforeach

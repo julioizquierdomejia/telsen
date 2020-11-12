@@ -39,7 +39,7 @@
                     $status_last = $ot_status->last();
                     ?>
                     @if ($status_last)
-                      @if($status_last->id == 4)
+                      @if($status_last->id == 4 || $status_last->id == 9)
                       <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->name }}</span>
                       @else
                       <span class="badge badge-secondary px-2 py-1 w-100">{{ $status_last->name }}</span>

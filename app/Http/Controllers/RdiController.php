@@ -203,21 +203,21 @@ class RdiController extends Controller
 
     public function generateOTDate(Request $request, $id)
     {
-        $ots = Ot::findOrFail($id);
-        if ($ots->fecha_entrega != null) {
-            return response()->json(['data'=>'Ya se generó la fecha de entrega: ' . $ots->fecha_entrega,'success'=>false]);
+        $ot = Ot::findOrFail($id);
+        if ($ot->fecha_entrega != null) {
+            return response()->json(['data'=>'Ya se generó la fecha de entrega: ' . $ot->fecha_entrega,'success'=>false]);
         }
 
-        $ots->fecha_entrega = $request->input('fecha_entrega');
-        $original_data = $ots->toArray();
-        $ots->save();
+        $ot->fecha_entrega = $request->input('fecha_entrega');
+        $original_data = $ot->toArray();
+        $ot->save();
 
-        activitylog('ots', 'update', $original_data, $ots->toArray());
+        activitylog('ots', 'update', $original_data, $ot->toArray());
 
-        return response()->json(['data'=>json_encode($ots),'success'=>true]);
+        return response()->json(['data'=>json_encode($ot),'success'=>true]);
     }
 
-    public function aproveRDI(Request $request, $id)
+    public function approveRDI(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 

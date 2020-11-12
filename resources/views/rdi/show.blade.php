@@ -7,7 +7,8 @@ $ot_status = \DB::table('status_ot')
       ->select('status.id', 'status.name')
       ->get();
 $status_last = $ot_status->last();
-$rdi_approved = $status_last->id == 9 && $rdi->fecha_entrega != null;
+$rdi_approved = ($status_last->id == 9 && $rdi->fecha_entrega != null);
+$rdi_disapproved = $status_last->id == 10;
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -18,6 +19,8 @@ $rdi_approved = $status_last->id == 9 && $rdi->fecha_entrega != null;
 					<span class="card-title-buttons">
 						@if($rdi_approved)
 						<span class="badge badge-success px-3 py-1">Aprobada</span>
+						@elseif($rdi_disapproved)
+						<span class="badge badge-secondary px-3 py-1">Desaprobada</span>
 						@else
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
 						@endif
@@ -84,47 +87,47 @@ $rdi_approved = $status_last->id == 9 && $rdi->fecha_entrega != null;
 					</div>
 					<div class="col-md-2 form-group">
 						<label class="col-form-label">N° Serie</label>
-						<p class="form-control mb-0">{{$rdi->nro_serie}}</p>
+						<p class="form-control mb-0">{{$rdi->nro_serie ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-2 form-group">
 						<label class="col-form-label">Frame</label>
-						<p class="form-control mb-0">{{$rdi->frame}}</p>
+						<p class="form-control mb-0">{{$rdi->frame ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-2 form-group">
 						<label class="col-form-label">Potencia</label>
-						<p class="form-control mb-0">{{$rdi->potencia}}</p>
+						<p class="form-control mb-0">{{$rdi->potencia ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-2 form-group">
 						<label class="col-form-label">Tensión</label>
-						<p class="form-control mb-0">{{$rdi->tension}}</p>
+						<p class="form-control mb-0">{{$rdi->tension ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="col-form-label">Corriente</label>
-						<p class="form-control mb-0">{{$rdi->corriente}}</p>
+						<p class="form-control mb-0">{{$rdi->corriente ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="col-form-label">Velocidad</label>
-						<p class="form-control mb-0">{{$rdi->velocidad}}</p>
+						<p class="form-control mb-0">{{$rdi->velocidad ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="col-form-label">Conexión</label>
-						<p class="form-control mb-0">{{$rdi->conexion}}</p>
+						<p class="form-control mb-0">{{$rdi->conexion ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="col-form-label">Deflexión del Eje</label>
-						<p class="form-control mb-0">{{$rdi->deflexion_eje}}</p>
+						<p class="form-control mb-0">{{$rdi->deflexion_eje ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="col-form-label">Rodaje delantero</label>
-						<p class="form-control mb-0">{{$rdi->rodaje_delantero}}</p>
+						<p class="form-control mb-0">{{$rdi->rodaje_delantero ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="col-form-label">Rodaje posterior</label>
-						<p class="form-control mb-0">{{$rdi->rodaje_posterior}}</p>
+						<p class="form-control mb-0">{{$rdi->rodaje_posterior ?? '-'}}</p>
 					</div>
 					<div class="col-md-12 form-group">
 						<label class="col-form-label">ANTECEDENTES</label>
-						<p class="form-control mb-0">{{$rdi->antecedentes}}</p>
+						<p class="form-control mb-0">{{$rdi->antecedentes ?? '-'}}</p>
 					</div>
 					<div class="col-md-12">
 						<label class="col-form-label">Ingresó con:</label>
@@ -234,7 +237,7 @@ $rdi_approved = $status_last->id == 9 && $rdi->fecha_entrega != null;
 		</div>
 	</div>
 </div>
-@if(!$rdi_approved)
+@if(!$rdi_approved && !$rdi_disapproved)
 <div class="modal fade" tabindex="-1" id="modalAprobar">
   	<div class="modal-dialog">
     	<div class="modal-content">
@@ -257,7 +260,8 @@ $rdi_approved = $status_last->id == 9 && $rdi->fecha_entrega != null;
             	<p class="c-ots message text-danger"></p>
         	</div>
         	@endif
-        	<div class="row fecha_entrega text-center" @if($rdi->fecha_entrega != null)style="display: none;" @endif>
+        	@if($rdi->fecha_entrega == null)
+        	<div class="row fecha_entrega text-center" @if($status_last->id != 9)style="display: none;"@endif>
 	          	<div class="col-12">
 	          		<p><label class="col-form-label" for="fecha_entrega">Fecha de entrega</label></p>
 	          		<input class="form-control" min="{{date('Y-m-d')}}" type="date" id="fecha_entrega" name="fecha_entrega">
@@ -265,6 +269,7 @@ $rdi_approved = $status_last->id == 9 && $rdi->fecha_entrega != null;
 	          		<button type="button" class="btn btn-primary btn-sm px-md-5" id="btngenerateOTDate">Confirmar</button>
 	          	</div>
         	</div>
+        	@endif
         </div>  
     </div>
   </div>
@@ -289,13 +294,14 @@ $rdi_approved = $status_last->id == 9 && $rdi->fecha_entrega != null;
     $('.service_input').on('keyup mouseup', function (event) {
       servicesTotal();
     })
-    @if(!$rdi_approved)
-    $('#modalAprobar .update .btn').click(function () {
+    @if(!$rdi_approved && !$rdi_disapproved)
+    $('.confirmar_ots .btn').click(function () {
     	var action = $(this).data('action');
     	$.ajax({
-	        type: "get",
-	        url: "{{route('ordenes.generateotdate', $rdi->ot_id)}}",
+	        type: "post",
+	        url: "{{route('rdi.approve', $rdi->ot_id)}}",
 	        data: {
+	        	_token: '{{csrf_token()}}',
 	        	action: action
 	        },
 	        beforeSend: function (data) {
@@ -303,7 +309,12 @@ $rdi_approved = $status_last->id == 9 && $rdi->fecha_entrega != null;
 	        },
 	        success: function (response) {
 	        	if(response.success) {
-	        		if(response.data) {
+	        		if(action == 2) {
+	        			$('#modalAprobar').modal('hide');
+			        	setTimeout(function () {
+		        			location.reload();
+		        		}, 200)
+	        		} else if(response.data) {
 		        		$('.fecha_entrega').show();
 		        		$('.confirmar_ots').hide();
 		        	}
@@ -322,7 +333,7 @@ $rdi_approved = $status_last->id == 9 && $rdi->fecha_entrega != null;
     })
     @endif
     @if($rdi->fecha_entrega == null)
-    $('#btngenerateOTDate').click(function () {
+    $('.fecha_entrega #btngenerateOTDate').click(function () {
     	var fentrega = $('#fecha_entrega').val();
     	if(fentrega.length == 0) {
     		$('#fecha_entrega').addClass('is-invalid');

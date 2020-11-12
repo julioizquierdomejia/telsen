@@ -118,7 +118,7 @@ $status_last = $ot_status->last();
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
 						<div class="dropdown-divider"></div>
 					@endif
-					@if($status_last->id == 9 && $ot->tipo_cliente_id == 1)
+					@if($status_last->id == 8 || $status_last->id == 9 && $ot->tipo_cliente_id == 1)
 					<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
 					@endif
 					@if($status_last->id == 4 && $ot->tipo_cliente_id == 2)

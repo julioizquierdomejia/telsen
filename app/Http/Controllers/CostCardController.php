@@ -99,16 +99,26 @@ class CostCardController extends Controller
         if ($request->hasFile('upload_file')) {
             $rules = array(
                 'upload_file' => 'required|mimes:pdf|max:5000',
+                'cost_id' => 'required|exists:ots,id',
             );
             $this->validate($request, $rules);
 
             $file = $request->file('upload_file');
+            $cost_id = $request->get('cost_id');
             $ext = $file->getClientOriginalExtension();
             $uniqueFileName = uniqid() . preg_replace('/\s+/', "-", $file->getClientOriginalName()) . '.' . $ext;
 
             $cost_card = CostCard::findOrFail($id);
             $cost_card->cotizacion = $uniqueFileName;
             $cost_card->save();
+
+            $status = Status::where('id', 5)->first();
+            if ($status) {
+                \DB::table('status_ot')->insert([
+                    'status_id' => $status->id,
+                    'ot_id' => $cost_id,
+                ]);
+            }
 
             $file->move(public_path('uploads/cotizacion'), $uniqueFileName);
             if (isset($cost_card->id)) {
@@ -207,8 +217,48 @@ class CostCardController extends Controller
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->select('cost_cards.*', 'ots.id as ot_id', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo')
                 ->firstOrFail();
+        $services = CostCardService::where('cost_card_id', $ccost->id)
+                    ->leftJoin('services', 'services.id', '=', 'cost_card_services.service_id')
+                    ->leftJoin('areas', 'areas.id', '=', 'cost_card_services.area_id')
+                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_services.personal', 'cost_card_services.ingreso', 'cost_card_services.salida', 'cost_card_services.subtotal')
+                    ->get();
 
-        return view('costos.show', compact('ccost'));
+        return view('costos.show', compact('ccost', 'services'));
+    }
+
+    public function approveTC(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+
+        $action = $request->input('action');
+
+        $exist_status = \DB::table('status_ot')
+                        ->where('ot_id', $id)
+                        ->where('status_id', 6)->orWhere('status_id', 7)
+                        ->first();
+        if ($exist_status) {
+            return response()->json(['data'=>'Tarjeta de costo ya cambió de estado' . $exist_status->id,'success'=>false]);
+        } else {
+            if ($action == 1) {
+                $status = Status::where('id', 6)->first();
+                if ($status) {
+                    $data = \DB::table('status_ot')->insert([
+                        'status_id' => $status->id,
+                        'ot_id' => $id,
+                    ]);
+                }
+            } else /*if($action == 2)*/ {
+                $status = Status::where('id', 7)->first();
+                if ($status) {
+                    $data = \DB::table('status_ot')->insert([
+                        'status_id' => $status->id,
+                        'ot_id' => $id,
+                    ]);
+                }
+            }
+            return response()->json(['data'=>json_encode($data),'success'=>true]);
+        }
+        return response()->json(['success'=>false]);
     }
 
     /**

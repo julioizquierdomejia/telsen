@@ -4,11 +4,11 @@
 $ot_status = \DB::table('status_ot')
       ->join('status', 'status_ot.status_id', '=', 'status.id')
       ->where('status_ot.ot_id', '=', $rdi->ot_id)
-      ->select('status.id', 'status.name')
+      ->select('status_ot.status_id', 'status.id', 'status.name')
       ->get();
 $status_last = $ot_status->last();
-$rdi_approved = ($status_last->id == 9 && $rdi->fecha_entrega != null);
-$rdi_disapproved = $status_last->id == 10;
+$rdi_approved = ($status_last->status_id == 9 && $rdi->fecha_entrega != null);
+$rdi_disapproved = $status_last->status_id == 10;
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -248,7 +248,7 @@ $rdi_disapproved = $status_last->id == 10;
 		        </button>
 	      	</div>
       	<div class="modal-body">
-      		@if($status_last->id != 9)
+      		@if($status_last->status_id != 9)
         	<div class="row confirmar_ots">
       			<p class="text-center col-12">¿Confirma aprobación de {{$rdi->rdi_codigo}}?</p>
             	<div class="update ml-auto mr-auto">
@@ -261,7 +261,7 @@ $rdi_disapproved = $status_last->id == 10;
         	</div>
         	@endif
         	@if($rdi->fecha_entrega == null)
-        	<div class="row fecha_entrega text-center" @if($status_last->id != 9)style="display: none;"@endif>
+        	<div class="row fecha_entrega text-center" @if($status_last->status_id != 9)style="display: none;"@endif>
 	          	<div class="col-12">
 	          		<p><label class="col-form-label" for="fecha_entrega">Fecha de entrega</label></p>
 	          		<input class="form-control" min="{{date('Y-m-d')}}" type="date" id="fecha_entrega" name="fecha_entrega">

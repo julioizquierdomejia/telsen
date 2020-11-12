@@ -1,6 +1,14 @@
 @extends('layouts.app', ['title' => 'Ver Tarjeta Costo'])
 @section('content')
-@php $data = $ccost->toArray() @endphp
+@php
+$ot_status = \DB::table('status_ot')
+      ->join('status', 'status_ot.status_id', '=', 'status.id')
+      ->where('status_ot.ot_id', '=', $ccost->ot_id)
+      ->select('status_ot.status_id', 'status.id', 'status.name')
+      ->get();
+$status_last = $ot_status->last();
+$cc_approved = $status_last->status_id == 6 || $status_last->status_id == 7;
+@endphp
 <div class="row">
 	<div class="col-md-12">
 		<div class="card card-user form-card">
@@ -20,97 +28,97 @@
 				<div class="row">
 					<div class="col-md-2 form-group">
 						<label class="col-form-label">Número de Orden</label>
-						<input type="text" class="form-control" disabled="" value="OT-{{zerosatleft($ccost->ot_id, 3)}}">
+						<p class="form-control mb-0">OT-{{zerosatleft($ccost->ot_id, 3)}}</p>
 					</div>
 					<div class="col-md-5 form-group">
 						<label class="col-form-label">Razón social</label>
-						<input type="text" class="form-control" disabled="" value="{{$ccost->razon_social}}">
+						<p class="form-control mb-0">{{$ccost->razon_social}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Solped</label>
-						<input type="text" class="form-control" readonly="" value="{{$ccost->solped}}">
+						<p class="form-control mb-0">{{$ccost->solped ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-3 form-group">
 						<label class="col-form-label">Fecha</label>
-						<input type="date" class="form-control" readonly="" value="{{date('Y-m-d', strtotime($ccost->created_at))}}">
+						<p class="form-control mb-0">{{date('Y-m-d', strtotime($ccost->created_at))}}</p>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-3 col-xl-4 form-group">
 						<label class="col-form-label">Equipo</label>
-						<input type="text" class="form-control telefono_contacto" name="equipo" value="{{$ccost->nro_equipo}}">
+						<p class="form-control telefono_contacto mb-0">{{$ccost->nro_equipo ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Código</label>
-						<input type="text" class="form-control" name="codigo" readonly="" value="{{$ccost->codigo_motor}}">
+						<p class="form-control mb-0">{{$ccost->codigo_motor ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Hecho por</label>
-						<input type="text" class="form-control @error('hecho_por') is-invalid @enderror" name="hecho_por" value="{{old('hecho_por')}}">
+						<p class="form-control mb-0">{{$ccost->hecho_por ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Número</label>
-						<input type="text" class="form-control" name="numero">
+						<p class="form-control mb-0">{{$ccost->numero ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">HP/KW</label>
-						<input type="text" class="form-control" value="{{$ccost->hp_kw}}" name="kw">
+						<p class="form-control mb-0">{{$ccost->hp_kw ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Conexión</label>
-						<input type="text" class="form-control" name="conexion" value="{{$ccost->conex}}">
+						<p class="form-control mb-0">{{$ccost->conex ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Placa</label>
-						<input type="text" class="form-control" name="placa" value="{{$ccost->placa_caract_orig}}">
+						<p class="form-control mb-0">{{$ccost->placa_caract_orig ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Voltios</label>
-						<input type="text" class="form-control" name="voltios" value="{{$ccost->voltaje}}" readonly="">
+						<p class="form-control mb-0">{{$ccost->voltaje ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">N° salidas</label>
-						<input type="text" class="form-control" name="nro_salidas" value="">
+						<p class="form-control mb-0">{{$ccost->nro_salidas ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Modelo</label>
-						<input type="text" class="form-control" name="modelo" readonly="" value="{{$ccost->modelo}}">
+						<p class="form-control mb-0">{{$ccost->modelo ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Amperios</label>
-						<input type="text" class="form-control" name="amperios" value="{{$ccost->amperaje}}">
+						<p class="form-control mb-0">{{$ccost->amperaje ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Frecuencia</label>
-						<input type="text" class="form-control" name="frecuencia" value="{{$ccost->frecuencia}}">
+						<p class="form-control mb-0">{{$ccost->frecuencia ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">N° serie</label>
-						<input type="text" class="form-control" name="nro_serie" value="{{$ccost->serie}}">
+						<p class="form-control mb-0">{{$ccost->serie ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">RPM</label>
-						<input type="text" class="form-control" name="rpm" value="{{$ccost->rpm}}">
+						<p class="form-control mb-0">{{$ccost->rpm ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Tipo</label>
-						<input type="text" class="form-control" name="tipo" value="">
+						<p class="form-control mb-0">{{$ccost->tipo ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Marca</label>
-						<input type="text" class="form-control" name="marca" readonly="" value="{{$ccost->marca}}">
+						<p class="form-control mb-0">{{$ccost->marca ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Frame</label>
-						<input type="text" class="form-control" name="frame" value="{{$ccost->frame}}">
+						<p class="form-control mb-0">{{$ccost->frame ?? '-'}}</p>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-3 ml-md-auto form-group">
 						<label class="col-form-label">Estado</label>
-						<select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
-							<option value="1">Activo</option>
-							<option value="0">Inactivo</option>
+						<select name="enabled" disabled="" class="form-control dropdown2" id="selectEstado">
+							<option value="1" {{$ccost->enabled == 1 ? 'selected' : ''}}>Activo</option>
+							<option value="0" {{$ccost->enabled == 0 ? 'selected' : ''}}>Inactivo</option>
 						</select>
 					</div>
 					<div class="col-md-12">
@@ -127,9 +135,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								@if (old('cost_card_services'))
+								@if ($services)
 								<?php
-								$services = json_decode(old('cost_card_services'), true);
 								$services_count = count($services);
 								$previousGroup = false;
 								$row_total = 0;
@@ -144,10 +151,10 @@
 								$lastItem = true;
 								@endphp
 								@endif
+								@if($item['service'] == '')
 								@if ($key > 1)
 								<tr><td colspan="7" height="20"></td></tr>
 								@endif
-								@if($item['service'] == '')
 								@php $row_total = $item['subtotal']; @endphp
 								<tr class="row-area" data-areaid="{{$item['area_id']}}">
 									<td class="bg-info cell-counter text-center" width="50"><span class="number"></span></td>
@@ -161,7 +168,7 @@
 								@else
 								<tr data-areaid="{{$item['area_id']}}" data-serviceid="{{$item['service']}}">
 									<td width="50"></td>
-									<td width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['area']}}</span></td>
+									<td width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['service']}}</span></td>
 									<td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
 									<td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
 									<td width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
@@ -184,10 +191,6 @@
 								@endif
 							</tbody>
 						</table>
-						<input class="form-control d-none" type="text" name="cost_card_services" value="{{old('cost_card_services')}}" readonly="">
-						@error('cost_card_services')
-						<p class="error-message text-danger">{{ $message }}</p>
-						@enderror
 						<div class="text-danger text-center p-1 bg-light my-2">
 							<span>DEFLEXION: 0.04 mm</span>
 						</div>
@@ -198,25 +201,25 @@
 								<tr>
 									<td class="px-2 py-1">COSTO:</td>
 									<td class="px-2 py-1">
-										<input type="text" class="form-control text-right @error('cost') is-invalid @enderror" placeholder="" value="0" readonly="" name="cost">
+										<input type="text" class="form-control text-right" placeholder="" value="{{$ccost->cost}}" readonly="" name="cost">
 									</td>
 								</tr>
 								<tr>
 									<td class="px-2 py-1"></td>
 									<td class="px-2 py-1">
-										<input type="text" class="form-control text-right @error('cost_m1') is-invalid @enderror" placeholder="" value="0" readonly="" name="cost_m1">
+										<input type="text" class="form-control text-right" placeholder="" value="{{$ccost->cost_m1}}" readonly="" name="cost_m1">
 									</td>
 								</tr>
 								<tr>
 									<td class="px-2 py-1"></td>
 									<td class="px-2 py-1">
-										<input type="text" class="form-control text-right @error('cost_m2') is-invalid @enderror" placeholder="" value="0" readonly="" name="cost_m2">
+										<input type="text" class="form-control text-right" placeholder="" value="{{$ccost->cost_m2}}" readonly="" name="cost_m2">
 									</td>
 								</tr>
 								<tr>
 									<td class="px-2 py-1"></td>
 									<td class="px-2 py-1">
-										<input type="text" class="form-control text-right @error('cost_m3') is-invalid @enderror" placeholder="" value="0" readonly="" name="cost_m3">
+										<input type="text" class="form-control text-right" placeholder="" value="{{$ccost->cost_m3}}" readonly="" name="cost_m3">
 									</td>
 								</tr>
 							</tbody>
@@ -265,6 +268,7 @@
 			@if ($ccost->cotizacion == null)
 			<form enctype="multipart/form-data" action="{{route('card_cost.upload', $ccost->id)}}" method="POST" id="uploadForm">
 				@csrf
+				<input class="form-control d-none" type="text" name="cost_id" value="{{$ccost->ot_id}}">
 			<div class="modal-body">
 				<p class="text-center">Subir cotización</p>
 				<div class="input-group">
@@ -284,7 +288,25 @@
 			</div>
 			</form>
 			@else
-			<embed class="w-100" src="/uploads/cotizacion/{{$ccost->cotizacion}}" width="500" height="375" style="height: calc(100vh - 120px)" type="application/pdf">
+			@if(!$cc_approved)
+			<div class="row approve_tc">
+				<div class="update ml-auto mr-auto">
+            		<button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>
+            	</div>
+            	<div class="update ml-auto mr-auto">
+              		<button type="button" class="btn btn-secondary btn-sm px-md-5" data-action="2">No Aprobar</button>
+            	</div>
+			</div>
+			@else
+			<div class="text-center py-3">
+				@if($status_last->status_id == 6)
+				<span class="badge badge-success px-3 py-2">Cotización Aprobada</span>
+				@elseif($status_last->status_id == 7)
+				<span class="badge badge-secondary px-3 py-2">Cotización Desaprobada</span>
+				@endif
+			</div>
+			@endif
+			<embed class="w-100" src="/uploads/cotizacion/{{$ccost->cotizacion}}" width="500" height="375" style="height: calc(100vh - 140px)" type="application/pdf">
 			@endif
 		</div>
 	</div>
@@ -292,54 +314,39 @@
 @endsection
 @section('javascript')
 <script>
-	$('#inputGroupFile').change(function (event) {
-		if($(this).val()) {
-			$('.custom-file-label').text($(this).val().split('\\').pop());
-		} else {
-			$('.custom-file-label').text('Elegir');
-		}
-	})
-	$('#uploadForm').submit(function (event) {
-		event.preventDefault();
-		var formData = new FormData(this);
-    	var upload_file = $('#inputGroupFile').val();
-    	if(upload_file.length == 0) {
-    		$('#upload_file').addClass('is-invalid');
-    		$('.c-ots').html('Ingrese archivo');
-    		return;
-    	}
-
-    	//ajax
+  $(document).ready(function () {
+    @if(!$cc_approved)
+    $('.approve_tc .btn').click(function () {
+    	var action = $(this).data('action');
     	$.ajax({
 	        type: "post",
-	        url: "{{route('card_cost.upload', $ccost->id)}}",
-	        data: formData,
-	        dataType: "JSON",
-	        processData: false,
-        	contentType: false,
+	        url: "{{route('card_cost.approve', $ccost->ot_id)}}",
+	        data: {
+	        	_token: '{{csrf_token()}}',
+	        	action: action
+	        },
 	        beforeSend: function (data) {
-	        	$('#inputGroupFile').removeClass('is-invalid');
 	        	$('.c-ots').empty();
 	        },
 	        success: function (response) {
 	        	if(response.success) {
-	        		if(response.data) {
-	        			$('#modalCotizar').modal('hide');
-	        			$('#inputGroupFile').val();
-		        		$('.c-ots').empty();
-		        		setTimeout(function () {
-		        			location.reload();
-		        		}, 200)
-		        	}
+	        		setTimeout(function () {
+	        			location.reload();
+	        		}, 200)
+	        	} else if(response.data) {
+	        		$('.confirmar_ots .btn').attr('disabled', true);
+	        		$('.c-ots').html(response.data);
+	        	} else {
+	        		$('.c-ots').empty();
 	        	}
 	        },
 	        error: function (request, status, error) {
-	        	var data = jQuery.parseJSON(request.responseText);
-	          	if(data.errors) {
-	          		$('.c-ots').html(data.errors.upload_file[0].replace('upload file', ' '));
-	        	}
+	          var data = jQuery.parseJSON(request.responseText);
+	          console.log(data);
 	        }
 	    });
     })
+    @endif
+  })
 </script>
 @endsection

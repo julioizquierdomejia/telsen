@@ -87,6 +87,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('tarjeta-costo/{cost}/editar', [App\Http\Controllers\CostCardController::class, 'update'])->name('card_cost.update');
 	Route::post('tarjeta-costo/{id}/cotizacion', [App\Http\Controllers\CostCardController::class, 'upload'])->name('card_cost.upload');
 	Route::get('tarjeta-costo/filterareas', [App\Http\Controllers\CostCardController::class, 'filterareas']);
+	Route::post('tarjeta-costo/{cost}/aprobar', [App\Http\Controllers\CostCardController::class, 'approveTC'])->name('card_cost.approve');
 
 	//rutas para Areas
 	Route::get('areas', [App\Http\Controllers\AreaController::class, 'index'])->name('areas.index');

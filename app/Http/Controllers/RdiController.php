@@ -212,6 +212,14 @@ class RdiController extends Controller
         $original_data = $ot->toArray();
         $ot->save();
 
+        $status = Status::where('id', 10)->first();
+        if ($status) {
+            \DB::table('status_ot')->insert([
+                'status_id' => $status->id,
+                'ot_id' => $ot->ot_id,
+            ]);
+        }
+
         activitylog('ots', 'update', $original_data, $ot->toArray());
 
         return response()->json(['data'=>json_encode($ot),'success'=>true]);

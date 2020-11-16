@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UserData;
 
 class UserSeeder extends Seeder
 {
@@ -30,6 +31,13 @@ class UserSeeder extends Seeder
         $user->status = 1;
         $user->save();
 
+        $user_data = new UserData();
+        $user_data->user_id = $user->id;
+        $user_data->name = 'julio';
+        $user_data->last_name = 'izquierdo';
+        $user_data->mother_last_name = 'mejia';
+        $user_data->save();
+
         //vamos a relacionar roles con usuarios
         $user->roles()->attach($role_superadmin);
 
@@ -38,6 +46,13 @@ class UserSeeder extends Seeder
         $user->password = bcrypt('admin');
         $user->status = 1;
         $user->save();
+
+        $user_data = new UserData();
+        $user_data->user_id = $user->id;
+        $user_data->name = 'admin';
+        $user_data->last_name = 'admin';
+        $user_data->mother_last_name = 'admin';
+        $user_data->save();
 
         //vamos a relacionar roles con usuarios
         $user->roles()->attach($role_superadmin);
@@ -49,6 +64,13 @@ class UserSeeder extends Seeder
         $user->status = 1;
         $user->save();
 
+        $user_data = new UserData();
+        $user_data->user_id = $user->id;
+        $user_data->name = 'arturo';
+        $user_data->last_name = 'toribio';
+        $user_data->mother_last_name = 'toribio';
+        $user_data->save();
+
         //vamos a relacionar roles con usuarios
         $user->roles()->attach($role_superadmin);
 
@@ -59,6 +81,13 @@ class UserSeeder extends Seeder
         $user->status = 1;
         $user->save();
 
+        $user_data = new UserData();
+        $user_data->user_id = $user->id;
+        $user_data->name = 'ruben';
+        $user_data->last_name = 'carhuayal';
+        $user_data->mother_last_name = 'carhuayal';
+        $user_data->save();
+
         //vamos a relacionar roles con usuarios
         $user->roles()->attach($role_superadmin);
 
@@ -67,6 +96,13 @@ class UserSeeder extends Seeder
         $user->password = bcrypt('recepcion');
         $user->status = 1;
         $user->save();
+
+        $user_data = new UserData();
+        $user_data->user_id = $user->id;
+        $user_data->name = 'recepcion';
+        $user_data->last_name = 'recepcion';
+        $user_data->mother_last_name = 'recepcion';
+        $user_data->save();
 
         //vamos a relacionar roles con usuarios
         $user->roles()->attach($role_reception);
@@ -77,6 +113,13 @@ class UserSeeder extends Seeder
         $user->status = 1;
         $user->save();
 
+        $user_data = new UserData();
+        $user_data->user_id = $user->id;
+        $user_data->name = 'evaluadorm';
+        $user_data->last_name = 'evaluadorm';
+        $user_data->mother_last_name = 'evaluadorm';
+        $user_data->save();
+
         //vamos a relacionar roles con usuarios
         $user->roles()->attach($role_evalmec);
 
@@ -85,6 +128,13 @@ class UserSeeder extends Seeder
         $user->password = bcrypt('evaluadore');
         $user->status = 1;
         $user->save();
+
+        $user_data = new UserData();
+        $user_data->user_id = $user->id;
+        $user_data->name = 'evaluadore';
+        $user_data->last_name = 'evaluadore';
+        $user_data->mother_last_name = 'evaluadore';
+        $user_data->save();
 
         //vamos a relacionar roles con usuarios
         $user->roles()->attach($role_evalele);

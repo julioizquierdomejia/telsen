@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\ClientType;
 use App\Models\User;
+use App\Models\UserData;
+use App\Models\UserArea;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -86,6 +88,17 @@ class ClientController extends Controller
             $user->email = $client->correo;
             $user->password = bcrypt('123456');
             $user->status = 1;
+            $user->save();
+
+            $user_data = new UserData();
+            $user_data->name = $client->razon_social;
+            $user_data->last_name = $client->razon_social;
+            $user_data->mother_last_name = $client->razon_social;
+            $user->save();
+
+            $user_area = new UserArea();
+            $user_area->user_id = $user->id;
+            $user_area->area_id = 1;
             $user->save();
 
             //vamos a relacionar roles con usuarios

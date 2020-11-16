@@ -1,10 +1,24 @@
 <?php
 require_once (__DIR__.'/../vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php');
 
+use App\Models\UserData;
+
 if (! function_exists('current_user')) {
     function current_user()
     {
         return auth()->user();
+    }
+}
+
+if (! function_exists('user_data')) {
+    function user_data()
+    {
+    	$user_id = auth()->user()->id;
+    	if (isset($user_id)) {
+    		$user_data = UserData::where('user_id', $user_id)->firstOrFail();
+        	return $user_data;
+    	}
+    	return null;
     }
 }
 

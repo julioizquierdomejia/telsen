@@ -74,7 +74,7 @@ class CostCardController extends Controller
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
-        $areas = Area::where('enabled', 1)->get();
+        $areas = Area::where('enabled', 1)->where('id', '<>', 1)->get();
         //$clientes = Client::where('enabled', 1)->get();
 
         return view('costos.calculate', compact('ot', 'areas'));
@@ -85,7 +85,8 @@ class CostCardController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $id = $request->input('id');
-        $areas = Service::where('area_id', $id)->where('enabled', 1)
+        $areas = Service::where('area_id', $id)
+                ->where('enabled', 1)
                 ->select('services.id', 'services.name')
                 ->get();
         if ($areas) {

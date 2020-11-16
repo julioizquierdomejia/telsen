@@ -19,4 +19,9 @@ class Service extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function area()
+    {
+        return $this->belongsTo('App\Models\Area');
+    }
 }

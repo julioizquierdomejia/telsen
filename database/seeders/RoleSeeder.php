@@ -39,13 +39,9 @@ class RoleSeeder extends Seeder
                 'description' => 'Recepción',
             ),
             array(
-                'name' => 'mechanical',
-                'description' => 'Mecánico',
+                'name' => 'worker',
+                'description' => 'Trabajador',
             ),
-            array(
-                'name' => 'electrical',
-                'description' => 'Eléctrico',
-            )
         ));
 
         /*$role = new Role();

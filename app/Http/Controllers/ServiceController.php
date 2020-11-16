@@ -69,7 +69,9 @@ class ServiceController extends Controller
         activitylog('services', 'store', null, $service->toArray());
 
         if ($ajax) {
-            $services = Service::where('enabled', 1)->where('area_id', $service->area_id)->get();
+            $services = Service::where('enabled', 1)
+                        ->where('area_id', $service->area_id)
+                        ->get();
             return $services;
         }
         $services = Service::where('enabled', 1)->get();
@@ -101,7 +103,8 @@ class ServiceController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $areas = Area::where('enabled', 1)->get();
-        $service = Service::findOrFail($id);
+        $service = Service::where('area_id', '<>', 1) // No area cliente
+                    ->findOrFail($id);
         return view('servicios.edit', compact('service', 'areas'));
     }
 
@@ -125,7 +128,8 @@ class ServiceController extends Controller
         );
         $this->validate($request, $rules);
 
-        $service = Service::findOrFail($id);
+        $service = Service::where('area_id', '<>', 1) // No area cliente
+                    ->findOrFail($id);
         $original_data = $service->toArray();
 
         $service->name    = $request->get('name');

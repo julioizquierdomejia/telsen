@@ -86,7 +86,9 @@ class AreaController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         $areas = Area::where('enabled', 1)->get();
-        $services = Service::where('enabled', 1)->where('area_id', $id)->get();
+        $services = Service::where('enabled', 1)
+                ->where('area_id', $id)
+                ->get();
         $area = Area::findOrFail($id);
         return view('areas.edit', compact('area', 'areas', 'services'));
     }

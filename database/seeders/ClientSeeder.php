@@ -25,44 +25,84 @@ class ClientSeeder extends Seeder
         $client_type->enabled = 1;
         $client_type->save();
 
+
         $client = new Client();
-        $client->ruc = "20556487431";
-        $client->razon_social = "BEYOND STUDIOS MULTIMEDIA S.A.C."; 
-        $client->direccion = "Cal. Lima 123"; 
-        $client->telefono = "912345678"; 
-        $client->celular = "912345678";
-        $client->contacto = "BEYOND STUDIOS";
-        $client->telefono_contacto = "912345678";
-        $client->correo = "bstudios@gmail.com"; 
-        $client->info = "info";
-        $client->client_type_id = 1;
+        $client->ruc = "20261677955"; 
+        $client->razon_social = "NEXA RESOURCES - CJM"; 
+        $client->direccion = "Car. Car. Central Nro. 9.5 Cajamarquilla (Carr.Central Km.9.5 Desvio a Huachipa)"; 
+        $client->correo = "nexa@gmail.com"; 
+        $client->client_type_id = 1; 
         $client->enabled = 1;
         $client->save();
 
         $client = new Client();
-        $client->ruc = "20109072177";
-        $client->razon_social = "CENCOSUD RETAIL PERU S.A."; 
-        $client->direccion = "Cal. Augusto Angulo Nro. 130"; 
-        $client->telefono = "912345678"; 
-        $client->celular = "912345678";
-        $client->contacto = "CENCOSUD S A";
-        $client->telefono_contacto = "912345678";
-        $client->correo = "metro@gmail.com"; 
-        $client->info = "info"; 
-        $client->client_type_id = 1;
+        $client->ruc = "20259829594"; 
+        $client->razon_social = "REFINERIA LA PAMPILLA"; 
+        $client->direccion = "Ventanilla KM25 - Ventanilla - Callao - Callao"; 
+        $client->correo = "pampilla@gmail.com"; 
+        $client->client_type_id = 1; 
         $client->enabled = 1;
         $client->save();
 
         $client = new Client();
-        $client->ruc = "20100128056"; 
-        $client->razon_social = "SAGA FALABELLA S A"; 
-        $client->direccion = "Cal. Augusto Angulo Nro. 130"; 
-        $client->telefono = "912345678"; 
-        $client->celular = "912345678"; 
-        $client->contacto = "Saga Falabella";
-        $client->telefono_contacto = "912345678";
-        $client->correo = "sfalabella@gmail.com"; 
-        $client->info = "info";
+        $client->ruc = "20602042201"; 
+        $client->razon_social = "ZITRON"; 
+        $client->direccion = "Cal. las Orquideas Nro. 2750 - Lince"; 
+        $client->correo = "zitron@gmail.com"; 
+        $client->client_type_id = 2; 
+        $client->enabled = 1;
+        $client->save();
+
+        $client = new Client();
+        $client->ruc = "20100056802"; 
+        $client->razon_social = "COMPAÑÍA MINERA CONDESTABLE"; 
+        $client->direccion = "Av. Manuel Olguin Nro. 501 Int. 803 - Santiago de Surco"; 
+        $client->correo = "condestable@gmail.com"; 
+        $client->client_type_id = 2; 
+        $client->enabled = 1;
+        $client->save();
+
+        $client = new Client();
+        $client->ruc = "20424964990"; 
+        $client->razon_social = "CARTONES VILLA MARINA S.A.- CARVIMSA"; 
+        $client->direccion = "Car. Panamericana Sur Km.19 Nro. Mz-F Int. Lt.2 Fnd. Asoc. la Concordia (Margen Izquierda) - Villa el Salvador"; 
+        $client->correo = "carvimsa@gmail.com"; 
+        $client->client_type_id = 2; 
+        $client->enabled = 1;
+        $client->save();
+
+        $client = new Client();
+        $client->ruc = "20101026001";
+        $client->razon_social = "CERAMICA LIMA S A - CELIMA"; 
+        $client->direccion = "Av. el Polo Nro. 405 - Santiago de Surco"; 
+        $client->correo = "celima@gmail.com"; 
+        $client->client_type_id = 2; 
+        $client->enabled = 1;
+        $client->save();
+
+        $client = new Client();
+        $client->ruc = "20107290177";
+        $client->razon_social = "MINERA COLQUISIRI S.A."; 
+        $client->direccion = "Av. del Parque Norte Nro. 724 - San Isidro"; 
+        $client->correo = "colquisiri@gmail.com"; 
+        $client->client_type_id = 2; 
+        $client->enabled = 1;
+        $client->save();
+
+        $client = new Client();
+        $client->ruc = "20513462388";
+        $client->razon_social = "DP WORLD CALLAO S.R.L."; 
+        $client->direccion = "Av. Manco Capac Nro. 113 - Callao"; 
+        $client->correo = "dp@gmail.com"; 
+        $client->client_type_id = 2; 
+        $client->enabled = 1;
+        $client->save();
+
+        $client = new Client();
+        $client->ruc = "20100971772";
+        $client->razon_social = "TASA"; 
+        $client->direccion = " Jr. Vittore Scarpazza Carpacc Nro. 250 - San Borja"; 
+        $client->correo = "tasa@gmail.com"; 
         $client->client_type_id = 2; 
         $client->enabled = 1;
         $client->save();

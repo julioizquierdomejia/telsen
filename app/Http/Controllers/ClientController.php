@@ -55,7 +55,7 @@ class ClientController extends Controller
             'razon_social' => 'required',
             'enabled' => 'boolean',
             'client_type_id' => 'integer|required',
-            'correo' => 'required|email|unique:clients',
+            'email' => 'required|email|unique:clients|unique:users',
         ];
 
         $messages = [
@@ -74,7 +74,7 @@ class ClientController extends Controller
         $client->celular = $request->input('celular');
         $client->contacto = $request->input('contacto');
         $client->telefono_contacto = $request->input('telefono_contacto');
-        $client->correo = $request->input('correo');
+        $client->email = $request->input('email');
         $client->info = $request->input('info');
         $client->client_type_id = $request->input('client_type_id');
         $client->enabled = $request->input('enabled');
@@ -85,21 +85,23 @@ class ClientController extends Controller
         $role_user = Role::where('name', 'client')->first();
         if ($role_user) {
             $user = new User();
-            $user->email = $client->correo;
+            $user->email = $client->email;
             $user->password = bcrypt('123456');
             $user->status = 1;
             $user->save();
 
             $user_data = new UserData();
+            $user_data->user_id = $user->id;
             $user_data->name = $client->razon_social;
             $user_data->last_name = $client->razon_social;
             $user_data->mother_last_name = $client->razon_social;
-            $user->save();
+            $user_data->user_phone = $client->celular;
+            $user_data->save();
 
             $user_area = new UserArea();
             $user_area->user_id = $user->id;
             $user_area->area_id = 1;
-            $user->save();
+            $user_area->save();
 
             //vamos a relacionar roles con usuarios
             $user->roles()->attach($role_user);

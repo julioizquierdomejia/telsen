@@ -22,7 +22,7 @@ class CreateClientsTable extends Migration
             $table->string('celular')->nullable();
             $table->string('contacto')->nullable();
             $table->string('telefono_contacto')->nullable();
-            $table->string('correo')->nullable();
+            $table->string('email')->unique()->nullable();
             $table->string('info')->nullable();
 
             $table->unsignedBigInteger('client_type_id');

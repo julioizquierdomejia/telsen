@@ -53,8 +53,8 @@
             </div>
             <div class="col-md-3 form-group">
                 <label class="col-form-label">Correo Electrónico</label>
-                <input type="email" class="form-control @error('correo') is-invalid @enderror" placeholder="Ingrese Correo Electrónico" value="{{ old('correo') }}" name="correo">
-              @error('corre')
+                <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Ingrese Correo Electrónico" value="{{ old('email') }}" name="email">
+              @error('email')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>

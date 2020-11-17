@@ -100,6 +100,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('servicios', [App\Http\Controllers\ServiceController::class, 'index'])->name('services.index');
 	Route::get('servicios/crear', [App\Http\Controllers\ServiceController::class, 'create'])->name('services.create');
 	Route::post('servicios', [App\Http\Controllers\ServiceController::class, 'store'])->name('services.store');
+	Route::post('servicios/{servicio}/eliminar', [App\Http\Controllers\ServiceController::class, 'store'])->name('services.destroy');
 	Route::get('servicios/{servicio}/editar', [App\Http\Controllers\ServiceController::class, 'edit'])->name('services.edit');
 	Route::post('servicios/{servicio}/editar', [App\Http\Controllers\ServiceController::class, 'update'])->name('services.update');
 

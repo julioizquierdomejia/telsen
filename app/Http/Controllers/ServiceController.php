@@ -150,8 +150,12 @@ class ServiceController extends Controller
      * @param  \App\Models\Service  $service
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Service $service)
+    public function destroy(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $service = Service::findOrFail($id);
+        $service->enabled = 0;
+        $service->save();
     }
 }

@@ -75,7 +75,7 @@ class ElectricalEvaluationController extends Controller
         
         // validate
         $rules = array(
-            'ot_id' => 'required',
+            //'ot_id' => 'required',
             'eq_potencia' => 'required',
             'eq_conex' => 'required',
             'eq_voltaje' => 'required',

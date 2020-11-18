@@ -13,10 +13,7 @@
           <div class="row">
           	<div class="col-6 col-md-3 form-group">
               <label class="col-form-label">OT</label>
-              <input type="text" class="form-control" readonly="" value="{{$ot->id}}" name="ot_id">
-        			@error('ot_id')
-        			<p class="error-message text-danger">{{ $message }}</p>
-        			@enderror
+              <input type="text" class="form-control" readonly="" value="OT-{{zerosatleft($ot->id, 3)}}">
             </div>
             <div class="col-6 col-md-3 form-group">
                 <label class="col-form-label">Fecha de creación</label>
@@ -326,7 +323,7 @@
               @enderror
             </div>
             <div class="col-md-12 form-group">
-                <table class="table table-separate text-center table-numbering mb-0 @error('trabajos') is-invalid @enderror" id="table-tap">
+                <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
                     <thead>
                          <tr>
                               <th class="text-center py-1" colspan="2">Trabajos</th>
@@ -348,8 +345,8 @@
                          </tr>
                     </tfoot>
                </table>
-               <input type="hidden" class="form-control" value="{{old('trabajos')}}" name="trabajos">
-              @error('trabajos')
+               <input type="hidden" class="form-control" value="{{old('works')}}" name="works">
+              @error('works')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
@@ -389,7 +386,7 @@
                 otArr.push('"' + i + '": [' + itArr.join(',') + ']');
                })
                json += otArr.join(",") + '}'
-               $('input[name=trabajos]').val(json);
+               $('input[name=works]').val(json);
                return json;
           }
 

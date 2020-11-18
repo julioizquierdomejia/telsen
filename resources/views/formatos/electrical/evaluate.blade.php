@@ -67,7 +67,7 @@
           <div class="row pt-3">
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">OT:</label>
-              <input type="text" readonly="" class="form-control @error('ot_id') is-invalid @enderror" placeholder="OT" value="{{$ot->id}}" name="ot_id">
+              <input type="text" readonly="" class="form-control" value="OT-{{zerosatleft($ot->id, 3)}}">
             </div>
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">Fecha:</label>

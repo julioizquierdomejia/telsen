@@ -68,7 +68,7 @@ class MechanicalEvaluationController extends Controller
         // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
-            'ot_id' => 'required',
+            //'ot_id' => 'required',
 
             'rpm' => 'required',
             'hp_kw' => 'required',

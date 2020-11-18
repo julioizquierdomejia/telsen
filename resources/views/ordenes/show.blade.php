@@ -16,7 +16,7 @@ $status_last = $ot_status->last();
 				<span>
 					Orden de Trabajo {{zerosatleft($ot->id, 3)}}
                     <span class="d-block">
-                    	@if ($status_last)
+                    @if ($status_last)
                       @if($status_last->status_id == 4)
                       <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->name }}</span>
                       @elseif($status_last->status_id == 5)

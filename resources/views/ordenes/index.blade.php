@@ -34,13 +34,17 @@
                     $ot_status = \DB::table('status_ot')
                           ->join('status', 'status_ot.status_id', '=', 'status.id')
                           ->where('status_ot.ot_id', '=', $ot->id)
-                          ->select('status.id', 'status.name')
+                          ->select('status.id', 'status.name', 'status_ot.status_id')
                           ->get();
                     $status_last = $ot_status->last();
                     ?>
                     @if ($status_last)
-                      @if($status_last->id == 4 || $status_last->id == 9)
+                      @if($status_last->status_id == 4)
                       <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @elseif($status_last->status_id == 5)
+                      <span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @elseif($status_last->status_id == 6)
+                      <span class="badge badge-success px-2 py-1 w-100">{{ $status_last->name }}</span>
                       @else
                       <span class="badge badge-secondary px-2 py-1 w-100">{{ $status_last->name }}</span>
                       @endif

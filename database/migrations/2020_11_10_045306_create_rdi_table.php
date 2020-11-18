@@ -115,8 +115,12 @@ class CreateRdiTable extends Migration
             $table->bigInteger('rdi_id')->unsigned();
             $table->foreign('rdi_id')->references('id')->on('rdi');
 
-            $table->unsignedBigInteger('rdi_service_id');
-            $table->foreign('rdi_service_id')->references('id')->on('rdi_services');
+            //$table->unsignedBigInteger('rdi_service_id');
+            //$table->foreign('rdi_service_id')->references('id')->on('rdi_services');
+
+            $table->unsignedBigInteger('service_id');
+            $table->foreign('service_id')->references('id')->on('services');
+
             $table->float('subtotal');
 
             $table->timestamps();
@@ -142,7 +146,8 @@ class CreateRdiTable extends Migration
         });
         Schema::table('rdi_service_costs', function (Blueprint $table) {
             $table->dropForeign('rdi_service_costs_rdi_id_foreign');
-            $table->dropForeign('rdi_service_costs_rdi_service_id_foreign');
+            //$table->dropForeign('rdi_service_costs_rdi_service_id_foreign');
+            $table->dropForeign('rdi_service_costs_service_id_foreign');
         });
         Schema::dropIfExists('rdi_maintenance_types');
         Schema::dropIfExists('rdi_criticality_types');

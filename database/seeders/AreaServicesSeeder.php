@@ -21,6 +21,22 @@ class AreaServicesSeeder extends Seeder
         $area->name = 'CLIENTES';
         $area->enabled = 1;
         $area->save();
+        //Servicios
+        \DB::table('services')->insert(array (
+            array ('area_id' => $area->id,'name' => 'MANTENIMIENTO DE ESTATOR'),
+            array ('area_id' => $area->id,'name' => 'MANTENIMIENTO DE FRENO ELÉCTRICO'),
+            array ('area_id' => $area->id,'name' => 'SUMINISTRO DE 02 PRENSA ESTOPA'),
+            array ('area_id' => $area->id,'name' => 'CAMBIO DE 02 RODAJES',),
+            array ('area_id' => $area->id,'name' => 'CAMBIO DE EJE (Ø18 * 171 mm) - ACERO 1045'),
+            array ('area_id' => $area->id,'name' => 'EMBOCINADO DE TAPA, ALOJAMIENTO DE RODAJE, PTO. 1 Y 2'),
+            array ('area_id' => $area->id,'name' => 'CAMBIO DE RETÉN (7*16*7)'),
+            array ('area_id' => $area->id,'name' => 'BALANCEO DINÁMICO'),
+            array ('area_id' => $area->id,'name' => 'PRUEBAS BAKER'),
+            array ('area_id' => $area->id,'name' => 'PINTURA'),
+            //array ('area_id' => $area->id,'name' => 'ADICIONALES'),
+            array ('area_id' => $area->id,'name' => 'CAMBIO DE GEBE DE ACOPLAMIENTO-PIÑON (Ø53.5 * 5.5 mm)'),
+            array ('area_id' => $area->id,'name' => 'FABRICACION DE MACHINA PARA EXTRACCION DE PIÑON DE ACOPLE'),
+        ));
 
         $area = new Area();
         $area->name = 'PRUEBAS';

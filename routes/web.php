@@ -34,7 +34,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('ordenes/{orden}/ver', [App\Http\Controllers\OtController::class, 'ot_show'])->name('ordenes.ot_show');
 	Route::get('ordenes/client/{orden}/ver', [App\Http\Controllers\OtController::class, 'show'])->name('ordenes.show');
 	Route::post('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'update'])->name('ordenes.update');
-	Route::post('ordenes/{orden}/fechaentrega', [App\Http\Controllers\RdiController::class, 'generateOTDate'])->name('ordenes.generateotdate');
+	Route::post('ordenes/{orden}/fechaentrega', [App\Http\Controllers\OtController::class, 'generateOTDate'])->name('ordenes.generateotdate');
 
 	Route::get('ordenes/lista', [App\Http\Controllers\OtController::class, 'list'])->name('ordenes.list');
 
@@ -107,7 +107,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	//rutas para RDI
 	Route::get('rdi', [App\Http\Controllers\RdiController::class, 'index'])->name('rdi.index');
 	Route::get('rdi/{ot}/ver', [App\Http\Controllers\RdiController::class, 'show'])->name('rdi.show');
-	Route::get('rdi/{ot}/crear', [App\Http\Controllers\RdiController::class, 'create'])->name('rdi.create');
+	Route::get('rdi/{ot}/calcular', [App\Http\Controllers\RdiController::class, 'calculate'])->name('rdi.calculate');
 	Route::post('rdi', [App\Http\Controllers\RdiController::class, 'store'])->name('rdi.store');
 	Route::get('rdi/{ot}/editar', [App\Http\Controllers\RdiController::class, 'edit'])->name('rdi.edit');
 	Route::post('rdi/{ot}/editar', [App\Http\Controllers\RdiController::class, 'update'])->name('rdi.update');

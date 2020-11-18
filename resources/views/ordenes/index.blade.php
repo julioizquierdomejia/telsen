@@ -14,8 +14,14 @@
         <h4 class="card-title">Orden de Trabajo</h4>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-separate" id="tablas">
+        <div class="nav nav-tabs ml-auto" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-enabledots-tab" data-toggle="tab" href="#nav-enabledots" role="tab" aria-controls="nav-enabledots" aria-selected="true">Ordenes activas</a>
+            <a class="nav-item nav-link" id="nav-disenabledots-tab" data-toggle="tab" href="#nav-disenabledots" role="tab" aria-controls="nav-disenabledots" aria-selected="false">Ordenes desactivas</a>
+        </div>
+        <div class="tab-content card-body" id="nav-tabContent">
+          <div class="tab-pane fade show active" id="nav-enabledots" role="tabpanel" aria-labelledby="nav-enabledots-tab">
+            <div class="table-responsive">
+          <table class="table table-separate data-table">
             <thead class=" text-primary">
               <th class="text-nowrap">Fecha OT</th>
               <th>N° de OT</th>
@@ -25,9 +31,10 @@
               <th class="text-center">Herramientas</th>
             </thead>
             <tbody>
-            	@foreach($ordenes as $ot)
-	              <tr>
-	                <td class="text-nowrap">{{date("d-m-Y", strtotime($ot->created_at))}}</td>
+              @if($ordenes->count())
+              @foreach($ordenes as $ot)
+                <tr>
+                  <td class="text-nowrap">{{date("d-m-Y", strtotime($ot->created_at))}}</td>
                   <td>OT-{{zerosatleft($ot->id, 3)}}</td>
                   <td class="text-center">
                     <?php
@@ -50,20 +57,20 @@
                       @endif
                     @endif
                   </td>
-	                <td>{{$ot->razon_social}} 
+                  <td>{{$ot->razon_social}} 
                     @if($ot->client_type_id == 1)
                     <span class="badge badge-primary">{{$ot->client_type}}</span>
                     @else
                     <span class="badge badge-secondary">{{$ot->client_type}}</span>
                     @endif
                   </td>
-	                <td class="text-center">{{$ot->descripcion_motor}}</td>
-	                <td class="text-left text-nowrap">
+                  <td class="text-center">{{$ot->descripcion_motor}}</td>
+                  <td class="text-left text-nowrap">
                     <a href="{{ route('ordenes.ot_show', $ot) }}" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-	                	<a href="{{ route('ordenes.edit', $ot) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
+                    <a href="{{ route('ordenes.edit', $ot) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                     <a href="" class="btn btn-sm btn-danger"><i class="fal fa-minus-circle"></i></a>
                     @if(count($ot_status) > 1)
-	                	<div class="dropdown d-inline-block dropleft">
+                    <div class="dropdown d-inline-block dropleft">
                       <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-file-check"></i>
                       </button>
@@ -82,11 +89,100 @@
                       </div>
                     </div>
                     @endif
-	                </td>
-	              </tr>
+                  </td>
+                </tr>
               @endforeach
+              @else
+              <tr>
+                <td class="text-center" colspan="6">No hay órdenes de trabajo</td>
+              </tr>
+              @endif
             </tbody>
           </table>
+        </div>
+          </div>
+          <div class="tab-pane fade" id="nav-disenabledots" role="tabpanel" aria-labelledby="nav-disenabledots-tab">
+<div class="table-responsive">
+          <table class="table table-separate data-table">
+            <thead class=" text-primary">
+              <th class="text-nowrap">Fecha OT</th>
+              <th>N° de OT</th>
+              <th>Estado de OT</th>
+              <th>Cliente</th>
+              <th class="text-center">Descripción del motor</th>
+              <th class="text-center">Herramientas</th>
+            </thead>
+            <tbody>
+              @if($disabled_ordenes->count())
+              @foreach($disabled_ordenes as $ot)
+                <tr>
+                  <td class="text-nowrap">{{date("d-m-Y", strtotime($ot->created_at))}}</td>
+                  <td>OT-{{zerosatleft($ot->id, 3)}}</td>
+                  <td class="text-center">
+                    <?php
+                    $ot_status = \DB::table('status_ot')
+                          ->join('status', 'status_ot.status_id', '=', 'status.id')
+                          ->where('status_ot.ot_id', '=', $ot->id)
+                          ->select('status.id', 'status.name', 'status_ot.status_id')
+                          ->get();
+                    $status_last = $ot_status->last();
+                    ?>
+                    @if ($status_last)
+                      @if($status_last->status_id == 4)
+                      <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @elseif($status_last->status_id == 5)
+                      <span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @elseif($status_last->status_id == 6)
+                      <span class="badge badge-success px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @else
+                      <span class="badge badge-secondary px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @endif
+                    @endif
+                  </td>
+                  <td>{{$ot->razon_social}} 
+                    @if($ot->client_type_id == 1)
+                    <span class="badge badge-primary">{{$ot->client_type}}</span>
+                    @else
+                    <span class="badge badge-secondary">{{$ot->client_type}}</span>
+                    @endif
+                  </td>
+                  <td class="text-center">{{$ot->descripcion_motor}}</td>
+                  <td class="text-left text-nowrap">
+                    <a href="{{ route('ordenes.ot_show', $ot) }}" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                    <a href="{{ route('ordenes.edit', $ot) }}" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
+                    <a href="" class="btn btn-sm btn-danger"><i class="fal fa-minus-circle"></i></a>
+                    @if(count($ot_status) > 1)
+                    <div class="dropdown d-inline-block dropleft">
+                      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-file-check"></i>
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @foreach($ot_status as $ostatus)
+                        @if($ostatus->id == 2)
+                        <a class="dropdown-item" href="{{ route('formatos.mechanical.show', $ot) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+                        @endif
+                        @if($ostatus->id == 3)
+                        <a class="dropdown-item" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+                        @endif
+                        @if($ostatus->id == 4)
+                        <a class="dropdown-item" href="{{ route('card_cost.cc_show', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>
+                        @endif
+                        @endforeach
+                      </div>
+                    </div>
+                    @endif
+                  </td>
+                </tr>
+              @endforeach
+              @else
+              <tr>
+                <td class="text-center" colspan="6">No hay órdenes de trabajo desactivadas</td>
+              </tr>
+              @endif
+            </tbody>
+          </table>
+        </div>
+          </div>
         </div>
       </div>
     </div>

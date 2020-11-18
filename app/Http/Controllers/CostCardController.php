@@ -85,12 +85,12 @@ class CostCardController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $id = $request->input('id');
-        $areas = Service::where('area_id', $id)
+        $services = Service::where('area_id', $id)
                 ->where('enabled', 1)
                 ->select('services.id', 'services.name')
                 ->get();
-        if ($areas) {
-            return response()->json(['data'=>json_encode($areas),'success'=>true]);
+        if ($services) {
+            return response()->json(['data'=>json_encode($services),'success'=>true]);
         }
         return response()->json(['success'=>false]);
     }

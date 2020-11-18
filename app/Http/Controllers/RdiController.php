@@ -9,6 +9,7 @@ use App\Models\RdiServiceCost;
 use App\Models\RdiMaintenanceType;
 use App\Models\RdiCriticalityType;
 use App\Models\Status;
+use App\Models\Service;
 use App\Models\Client;
 use App\Models\MotorBrand;
 use App\Models\Ot;
@@ -25,10 +26,33 @@ class RdiController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
-        $rdis = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
+        /*$rdis = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->select('rdi.*', 'clients.razon_social')
-                ->where('rdi.enabled', 1)->get();
+                ->where('rdi.enabled', 1)->get();*/
+        $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+                //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
+                ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
+                ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
+                        ->select('ots.*', 'clients.razon_social', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw'
+                        )
+                        ->where('ots.enabled', 1)
+                        ->where('clients.client_type_id', 1)
+                        ->where('clients.enabled', 1)
+                        ->get();
+
+        $rdis = [];
+        foreach ($_ots as $key => $ot) {
+            $ot_status = \DB::table('status_ot')->where('status_ot.ot_id', '=', $ot->id)->get();
+            $array = [];
+            foreach ($ot_status as $key => $status) {
+                $array[] = $status->status_id;
+            }
+            if (in_array(2, $array) && in_array(3, $array) && !in_array(4, $array) && !in_array(8, $array)) {
+                $rdis[] = $ot;
+            }
+        }
 
         return view('rdi.index', compact('rdis'));
     }
@@ -38,7 +62,7 @@ class RdiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request, $id)
+    public function calculate(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
@@ -52,9 +76,13 @@ class RdiController extends Controller
         $marcas = MotorBrand::where('enabled', 1)->get();
         $maintenancetype = RdiMaintenanceType::where('enabled', 1)->get();
         $criticalitytype = RdiCriticalityType::where('enabled', 1)->get();
-        $services = RdiService::where('enabled', 1)->get();
+        //$services = RdiService::where('enabled', 1)->get();
+        $services = Service::where('area_id', 1) //Servicios de area cliente
+                ->where('enabled', 1)
+                ->select('services.id', 'services.name')
+                ->get();
 
-        return view('rdi.create', compact('ot', 'counter', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype'));
+        return view('rdi.calcular', compact('ot', 'counter', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype'));
     }
 
     /**
@@ -106,7 +134,7 @@ class RdiController extends Controller
             'diagnostico_actual' => 'string|required',
             'aislamiento_masa_ingreso' => 'string|required',
 
-            'rdi_maintenance_type_id' => 'required|integer|exists:rdi_services,id',
+            'rdi_maintenance_type_id' => 'required|integer|exists:rdi_maintenance_types,id',
             'rdi_criticality_type_id' => 'required|integer|exists:rdi_criticality_types,id',
             'hecho_por' => 'string|nullable',
             'cost' => 'required||regex:/^\d+(\.\d{1,2})?$/|gt:0',
@@ -180,7 +208,7 @@ class RdiController extends Controller
                 if (isset($service)) {
                     $services_array[] = [
                         'rdi_id' => $rdi->id,
-                        'rdi_service_id' => $key,
+                        'service_id' => $key,
                         'subtotal' => $service,
                     ];   
                 }
@@ -199,30 +227,6 @@ class RdiController extends Controller
         activitylog('rdis', 'store', null, $rdi->toArray());
 
         return redirect('rdi');
-    }
-
-    public function generateOTDate(Request $request, $id)
-    {
-        $ot = Ot::findOrFail($id);
-        if ($ot->fecha_entrega != null) {
-            return response()->json(['data'=>'Ya se generó la fecha de entrega: ' . $ot->fecha_entrega,'success'=>false]);
-        }
-
-        $ot->fecha_entrega = $request->input('fecha_entrega');
-        $original_data = $ot->toArray();
-        $ot->save();
-
-        $status = Status::where('id', 10)->first();
-        if ($status) {
-            \DB::table('status_ot')->insert([
-                'status_id' => $status->id,
-                'ot_id' => $ot->ot_id,
-            ]);
-        }
-
-        activitylog('ots', 'update', $original_data, $ot->toArray());
-
-        return response()->json(['data'=>json_encode($ot),'success'=>true]);
     }
 
     public function approveRDI(Request $request, $id)
@@ -282,7 +286,7 @@ class RdiController extends Controller
         $ingresos = RdiIngreso::where('rdi_id', $id)->first();
 
         $services = RdiServiceCost::where('rdi_id', $id)
-                    ->join('rdi_services', 'rdi_services.id', '=', 'rdi_service_costs.rdi_service_id')
+                    ->join('rdi_services', 'rdi_services.id', '=', 'rdi_service_costs.service_id')
                     ->select('rdi_services.id', 'rdi_services.name', 'rdi_service_costs.subtotal')
                     ->get();
 
@@ -331,7 +335,7 @@ class RdiController extends Controller
         $maintenancetype = RdiMaintenanceType::where('enabled', 1)->get();
         $criticalitytype = RdiCriticalityType::where('enabled', 1)->get();
         $services = RdiServiceCost::where('rdi_id', $id)
-                    ->join('rdi_services', 'rdi_services.id', '=', 'rdi_service_costs.rdi_service_id')
+                    ->join('rdi_services', 'rdi_services.id', '=', 'rdi_service_costs.service_id')
                     ->select('rdi_services.id', 'rdi_services.name', 'rdi_service_costs.subtotal')
                     ->where('rdi_services.enabled', 1)
                     ->get();
@@ -390,7 +394,7 @@ class RdiController extends Controller
             'diagnostico_actual' => 'string|required',
             'aislamiento_masa_ingreso' => 'string|required',
 
-            'rdi_maintenance_type_id' => 'required|integer|exists:rdi_services,id',
+            'rdi_maintenance_type_id' => 'required|integer|exists:rdi_maintenance_types,id',
             'rdi_criticality_type_id' => 'required|integer|exists:rdi_criticality_types,id',
             'hecho_por' => 'string|nullable',
             'cost' => 'required||regex:/^\d+(\.\d{1,2})?$/|gt:0',

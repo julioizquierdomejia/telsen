@@ -7,7 +7,8 @@ $ot_status = \DB::table('status_ot')
       ->select('status_ot.status_id', 'status.id', 'status.name')
       ->get();
 $status_last = $ot_status->last();
-$cc_approved = $status_last->status_id == 6 || $status_last->status_id == 7;
+$cc_approved = $status_last->status_id == 6 && $ccost->fecha_entrega != null;
+$cc_disapproved = $status_last->status_id == 7;
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -347,6 +348,36 @@ $cc_approved = $status_last->status_id == 6 || $status_last->status_id == 7;
 	    });
     })
     @endif
+
+    $('#uploadForm').submit(function (event) {
+    	event.preventDefault();
+    	var form = $(this);
+    	var url = form.attr('action');
+    	$.ajax({
+	        type: "post",
+	        url: url,
+	        data: form.serialize(),
+	        beforeSend: function (data) {
+	        	$('.c-ots').empty();
+	        },
+	        success: function (response) {
+	        	if(response.success) {
+	        		setTimeout(function () {
+	        			location.reload();
+	        		}, 200)
+	        	} else if(response.data) {
+	        		$('.confirmar_ots .btn').attr('disabled', true);
+	        		$('.c-ots').html(response.data);
+	        	} else {
+	        		$('.c-ots').empty();
+	        	}
+	        },
+	        error: function (request, status, error) {
+	          var data = jQuery.parseJSON(request.responseText);
+	          console.log(data);
+	        }
+	    });
+    })
   })
 </script>
 @endsection

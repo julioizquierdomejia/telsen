@@ -116,7 +116,7 @@ $status_last = $ot_status->last();
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
 						<div class="dropdown-divider"></div>
 						@if($ot->tipo_cliente_id == 1)
-						<a class="btn btn-sm btn-primary" href="{{ route('rdi.create', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
+						<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
 						@elseif($ot->tipo_cliente_id == 2)
 						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
 						@endif

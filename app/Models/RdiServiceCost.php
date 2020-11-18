@@ -11,7 +11,8 @@ class RdiServiceCost extends Model
 
     protected $fillable = [
         'rdi_id',
-        'rdi_service_id',
+        //'rdi_service_id',
+        'service_id',
         'subtotal',
         'enabled',
     ];

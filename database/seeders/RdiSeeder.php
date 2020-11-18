@@ -48,7 +48,7 @@ class RdiSeeder extends Seeder
         $rdimtype->enabled = 1;
         $rdimtype->save();
 
-        \DB::table('rdi_services')->insert(array (
+        /*\DB::table('rdi_services')->insert(array (
             array ('name' => 'MANTENIMIENTO DE ESTATOR'),
             array ('name' => 'MANTENIMIENTO DE FRENO ELÉCTRICO'),
             array ('name' => 'SUMINISTRO DE 02 PRENSA ESTOPA'),
@@ -62,7 +62,7 @@ class RdiSeeder extends Seeder
             //array ('name' => 'ADICIONALES'),
             array ('name' => 'CAMBIO DE GEBE DE ACOPLAMIENTO-PIÑON (Ø53.5 * 5.5 mm)'),
             array ('name' => 'FABRICACION DE MACHINA PARA EXTRACCION DE PIÑON DE ACOPLE'),
-        ));
+        ));*/
 
     }
 }

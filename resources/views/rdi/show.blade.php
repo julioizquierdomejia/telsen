@@ -7,8 +7,9 @@ $ot_status = \DB::table('status_ot')
       ->select('status_ot.status_id', 'status.id', 'status.name')
       ->get();
 $status_last = $ot_status->last();
-$rdi_approved = ($status_last->status_id == 9 && $rdi->fecha_entrega != null);
+$rdi_approved = ($status_last->status_id == 9);
 $rdi_disapproved = $status_last->status_id == 10;
+$rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -16,13 +17,20 @@ $rdi_disapproved = $status_last->status_id == 10;
 			<div class="card-header">
 				<h5 class="card-title d-flex justify-content-between align-items-center">
 					<span>Ver Reporte de Ingreso (R.D.I.)</span>
-					<span class="card-title-buttons">
+					<span class="card-title-buttons text-right">
+						@if ($rdi_fecha)
+						<p class="mb-0 mt-2">Fecha de entrega <span class="badge badge-success px-3 py-1">{{date('d-m-Y', strtotime($rdi->fecha_entrega))}}</span></p>
+						@else
+						@if($rdi->fecha_entrega == null)
+						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Generar fecha de entrega</button>
+						@endif
 						@if($rdi_approved)
 						<span class="badge badge-success px-3 py-1">Aprobada</span>
 						@elseif($rdi_disapproved)
 						<span class="badge badge-secondary px-3 py-1">Desaprobada</span>
 						@else
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
+						@endif
 						@endif
 					</span>
 				</h5>
@@ -76,7 +84,7 @@ $rdi_disapproved = $status_last->status_id == 10;
 					</div>
 					<div class="col-md-3 col-xl-3 form-group">
 						<label class="col-form-label">Hecho por</label>
-						<p class="form-control mb-0">{{$rdi->hecho_por}}</p>
+						<p class="form-control mb-0">{{$rdi->hecho_por ?? '-'}}</p>
 					</div>
 				</div>
 				<h5 class="text-danger mt-4">Características del Motor</h5>
@@ -193,7 +201,7 @@ $rdi_disapproved = $status_last->status_id == 10;
 								@php
 								@endphp
 								<li class="row my-1 align-items-center">
-									<label class="form-label col-9 col-md-10 mb-0" for="service_{{$service->rdi_service_id}}"><span class="align-middle">{{$service->name}}</span></label>
+									<label class="form-label col-9 col-md-10 mb-0" for="service_{{$service->service_id}}"><span class="align-middle">{{$service->name}}</span></label>
 									<span class="col-3 col-sm-2 d-inline-block"><span class="form-control service_input text-nowrap px-0 text-center"style="margin-top: 0">{{$service->subtotal}}</span></span>
 								</li>
 								@endforeach
@@ -237,7 +245,6 @@ $rdi_disapproved = $status_last->status_id == 10;
 		</div>
 	</div>
 </div>
-@if(!$rdi_approved && !$rdi_disapproved)
 <div class="modal fade" tabindex="-1" id="modalAprobar">
   	<div class="modal-dialog">
     	<div class="modal-content">
@@ -248,6 +255,7 @@ $rdi_disapproved = $status_last->status_id == 10;
 		        </button>
 	      	</div>
       	<div class="modal-body">
+      		@if(!$rdi_approved && !$rdi_disapproved)
       		@if($status_last->status_id != 9)
         	<div class="row confirmar_ots">
       			<p class="text-center col-12">¿Confirma aprobación de {{$rdi->rdi_codigo}}?</p>
@@ -260,8 +268,9 @@ $rdi_disapproved = $status_last->status_id == 10;
             	<p class="c-ots message text-danger"></p>
         	</div>
         	@endif
-        	@if($rdi->fecha_entrega == null)
-        	<div class="row fecha_entrega text-center" @if($status_last->status_id != 9)style="display: none;"@endif>
+        	@endif
+        	@if(!$rdi_fecha)
+        	<div class="row fecha_entrega text-center" @if(!$status_last->status_id == 9)style="display: none;"@endif>
 	          	<div class="col-12">
 	          		<p><label class="col-form-label" for="fecha_entrega">Fecha de entrega</label></p>
 	          		<input class="form-control" min="{{date('Y-m-d')}}" type="date" id="fecha_entrega" name="fecha_entrega">
@@ -274,7 +283,6 @@ $rdi_disapproved = $status_last->status_id == 10;
     </div>
   </div>
 </div>
-@endif
 @endsection
 @section('javascript')
 <script>
@@ -294,7 +302,6 @@ $rdi_disapproved = $status_last->status_id == 10;
     $('.service_input').on('keyup mouseup', function (event) {
       servicesTotal();
     })
-    @if(!$rdi_approved && !$rdi_disapproved)
     $('.confirmar_ots .btn').click(function () {
     	var action = $(this).data('action');
     	$.ajax({
@@ -331,8 +338,7 @@ $rdi_disapproved = $status_last->status_id == 10;
 	        }
 	    });
     })
-    @endif
-    @if($rdi->fecha_entrega == null)
+    @if(!$rdi_fecha)
     $('.fecha_entrega #btngenerateOTDate').click(function () {
     	var fentrega = $('#fecha_entrega').val();
     	if(fentrega.length == 0) {
@@ -361,6 +367,10 @@ $rdi_disapproved = $status_last->status_id == 10;
 		        			location.reload();
 		        		}, 200)
 		        	}
+	        	} else {
+	        		setTimeout(function () {
+	        			location.reload();
+	        		}, 200)
 	        	}
 	        },
 	        error: function (request, status, error) {

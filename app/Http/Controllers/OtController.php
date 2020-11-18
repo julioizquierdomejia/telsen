@@ -21,13 +21,13 @@ class OtController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'mechanical', 'electrical']);
         
         //Listar OTs
-        $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+        $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-                    //->where('enabled', 1)
-                    ->get();
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type');
+        $ordenes = $ots->where('ots.enabled', 1)->get();
+        $disabled_ordenes = $ots->where('ots.enabled', 0)->get();
 
-        return view('ordenes.index', compact('ordenes'));
+        return view('ordenes.index', compact('ordenes', 'disabled_ordenes'));
     }
 
     public function list(Request $request)
@@ -180,6 +180,30 @@ class OtController extends Controller
 
         $ordenes = Ot::where('enabled', 1)->get();
         return view('procesovirtual.index', compact('ordenes'));
+    }
+
+    public function generateOTDate(Request $request, $id)
+    {
+        $ot = Ot::findOrFail($id);
+        if ($ot->fecha_entrega != null) {
+            return response()->json(['data'=>'Ya se generó la fecha de entrega: ' . $ot->fecha_entrega,'success'=>false]);
+        }
+
+        $status = Status::where('id', 11)->first();
+        if ($status) {
+            \DB::table('status_ot')->insert([
+                'status_id' => $status->id,
+                'ot_id' => $id,
+            ]);
+
+            $ot->fecha_entrega = $request->input('fecha_entrega');
+            $original_data = $ot->toArray();
+            $ot->save();
+        }
+
+        activitylog('ots', 'update', $original_data, $ot->toArray());
+
+        return response()->json(['data'=>json_encode($ot),'success'=>true]);
     }
 
     /**

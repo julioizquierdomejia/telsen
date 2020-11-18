@@ -322,7 +322,7 @@ class RdiController extends Controller
                     'rdi_ingresos.funda',
                     'rdi_ingresos.ventilador',
                     'rdi_ingresos.acople',
-                    'rdi_ingresos.chaveta',
+                    'rdi_ingresos.chaveta'
             )
                 ->where('rdi.id', $id)
                 ->firstOrFail();

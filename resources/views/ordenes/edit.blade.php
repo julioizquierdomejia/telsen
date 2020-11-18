@@ -33,7 +33,7 @@
               <select class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
                 <option>Ingresa RUC</option>
                 @foreach($clientes as $cliente)
-                <option value="{{$cliente->id}}" @if($orden->client_id == $cliente->id) selected="" @endif>{{ $cliente->ruc }}</option>
+                <option value="{{$cliente->id}}" @if(old('client_id', $orden->client_id) == $cliente->id) selected="" @endif>{{ $cliente->ruc }}</option>
                 @endforeach
               </select>
               @error('client_id')

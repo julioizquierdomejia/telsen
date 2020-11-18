@@ -64,7 +64,7 @@ $status_last = $ot_status->last();
 					</div>
 					<div class="col-md-4 mb-2">
 						<label class="col-form-label">Marca</label>
-						<p class="form-control mb-1">{{$ot->marca}}</p>
+						<p class="form-control mb-1">{{$ot->marca ?? '-'}}</p>
 					</div>
 					<div class="col-md-4  mb-2">
 						<label class="col-form-label">Modelo</label>

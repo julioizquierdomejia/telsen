@@ -191,7 +191,7 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $clientes = Client::where('enabled', 1)->where('client_type_id', 2)->get();
+        $clientes = Client::where('enabled', 1)/*->where('client_type_id', 2)*/->get();
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();
         $orden = Ot::where('enabled', 1)->findOrFail($id);

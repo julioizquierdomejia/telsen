@@ -46,7 +46,13 @@
                       @endif
                     @endif
                   </td>
-	                <td>{{$ot->razon_social}}</td>
+	                <td>{{$ot->razon_social}} 
+                    @if($ot->client_type_id == 1)
+                    <span class="badge badge-primary">{{$ot->client_type}}</span>
+                    @else
+                    <span class="badge badge-secondary">{{$ot->client_type}}</span>
+                    @endif
+                  </td>
 	                <td class="text-center">{{$ot->descripcion_motor}}</td>
 	                <td class="text-left text-nowrap">
                     <a href="{{ route('ordenes.ot_show', $ot) }}" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>

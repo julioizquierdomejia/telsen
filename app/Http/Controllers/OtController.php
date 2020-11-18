@@ -22,7 +22,8 @@ class OtController extends Controller
         
         //Listar OTs
         $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->select('ots.*', 'clients.razon_social')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
                     //->where('enabled', 1)
                     ->get();
 

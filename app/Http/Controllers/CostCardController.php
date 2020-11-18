@@ -107,7 +107,7 @@ class CostCardController extends Controller
             $file = $request->file('upload_file');
             $cost_id = $request->get('cost_id');
             $ext = $file->getClientOriginalExtension();
-            $uniqueFileName = uniqid() . preg_replace('/\s+/', "-", $file->getClientOriginalName()) . '.' . $ext;
+            $uniqueFileName = preg_replace('/\s+/', "-", $file->getClientOriginalName()) . '_' . uniqid();
 
             $cost_card = CostCard::findOrFail($id);
             $cost_card->cotizacion = $uniqueFileName;

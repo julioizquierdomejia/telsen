@@ -19,6 +19,10 @@ $status_last = $ot_status->last();
                     	@if ($status_last)
                       @if($status_last->status_id == 4)
                       <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @elseif($status_last->status_id == 5)
+                      <span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->name }}</span>
+                      @elseif($status_last->status_id == 6)
+                      <span class="badge badge-success px-2 py-1 w-100">{{ $status_last->name }}</span>
                       @else
                       <span class="badge badge-secondary px-2 py-1 w-100">{{ $status_last->name }}</span>
                       @endif

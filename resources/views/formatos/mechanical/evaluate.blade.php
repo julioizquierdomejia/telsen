@@ -52,112 +52,336 @@
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Placa Caract Orig</label>
-                <input type="text" class="form-control @error('placa_caract_orig') is-invalid @enderror" placeholder="Placa Caract Orig" value="{{old('placa_caract_orig')}}" name="placa_caract_orig">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('placa_caract_orig_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="placa_caract_orig_has" {{old('placa_caract_orig_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="placa_caract_orig_has" {{old('placa_caract_orig_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('placa_caract_orig') is-invalid @enderror" placeholder="Placa Caract Orig" value="{{old('placa_caract_orig')}}" name="placa_caract_orig">
+                </div>
               @error('placa_caract_orig')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Tapas</label>
-                <input type="text" class="form-control @error('tapas') is-invalid @enderror" placeholder="Tapas" value="{{old('tapas')}}" name="tapas">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('tapas_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="tapas_has" {{old('tapas_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="tapas_has" {{old('tapas_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('tapas') is-invalid @enderror" placeholder="Tapas" value="{{old('tapas')}}" name="tapas">
+                </div>
               @error('tapas')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Ventilador</label>
-                <input type="text" class="form-control @error('ventilador') is-invalid @enderror" placeholder="Ventilador" value="{{old('ventilador')}}" name="ventilador">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('ventilador_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="ventilador_has" {{old('ventilador_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="ventilador_has" {{old('ventilador_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('ventilador') is-invalid @enderror" placeholder="Ventilador" value="{{old('ventilador')}}" name="ventilador">
+                </div>
               @error('ventilador')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Caja Conexión</label>
-                <input type="text" class="form-control @error('caja_conexion') is-invalid @enderror" placeholder="Caja Conexión" value="{{old('caja_conexion')}}" name="caja_conexion">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('caja_conexion_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="caja_conexion_has" {{old('caja_conexion_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="caja_conexion_has" {{old('caja_conexion_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('caja_conexion') is-invalid @enderror" placeholder="Caja Conexión" value="{{old('caja_conexion')}}" name="caja_conexion">
+                </div>
               @error('caja_conexion')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Ejes</label>
-                <input type="text" class="form-control @error('ejes') is-invalid @enderror" placeholder="Ejes" value="{{old('ejes')}}" name="ejes">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('ejes_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="ejes_has" {{old('ejes_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="ejes_has" {{old('ejes_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('ejes') is-invalid @enderror" placeholder="Ejes" value="{{old('ejes')}}" name="ejes">
+                </div>
               @error('ejes')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Acople</label>
-                <input type="text" class="form-control @error('acople') is-invalid @enderror" placeholder="Acople" value="{{old('acople')}}" name="acople">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('acople_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="acople_has" {{old('acople_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="acople_has" {{old('acople_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('acople') is-invalid @enderror" placeholder="Acople" value="{{old('acople')}}" name="ejes">
+                </div>
               @error('acople')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Bornera</label>
-                <input type="text" class="form-control @error('bornera') is-invalid @enderror" placeholder="Bornera" value="{{old('bornera')}}" name="bornera">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('bornera_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="bornera_has" {{old('bornera_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="bornera_has" {{old('bornera_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('bornera') is-invalid @enderror" placeholder="Bornera" value="{{old('bornera')}}" name="ejes">
+                </div>
               @error('bornera')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Fundas</label>
-                <input type="text" class="form-control @error('fundas') is-invalid @enderror" placeholder="Fundas" value="{{old('fundas')}}" name="fundas">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('fundas_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="fundas_has" {{old('fundas_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="fundas_has" {{old('fundas_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('fundas') is-invalid @enderror" placeholder="Bornera" value="{{old('fundas')}}" name="ejes">
+                </div>
               @error('fundas')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Chaveta</label>
-                <input type="text" class="form-control @error('chaveta') is-invalid @enderror" placeholder="Chaveta" value="{{old('chaveta')}}" name="chaveta">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('chaveta_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="chaveta_has" {{old('chaveta_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="chaveta_has" {{old('chaveta_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('chaveta') is-invalid @enderror" placeholder="Bornera" value="{{old('chaveta')}}" name="ejes">
+                </div>
               @error('chaveta')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Impro Seal</label>
-                <input type="text" class="form-control @error('impro_seal') is-invalid @enderror" placeholder="Impro Seal" value="{{old('impro_seal')}}" name="impro_seal">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('impro_seal_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="impro_seal_has" {{old('impro_seal_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="impro_seal_has" {{old('impro_seal_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('impro_seal') is-invalid @enderror" placeholder="Bornera" value="{{old('impro_seal')}}" name="ejes">
+                </div>
               @error('impro_seal')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Laberintos</label>
-                <input type="text" class="form-control @error('laberintos') is-invalid @enderror" placeholder="Laberintos" value="{{old('laberintos')}}" name="laberintos">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('laberintos_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="laberintos_has" {{old('laberintos_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="laberintos_has" {{old('laberintos_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('laberintos') is-invalid @enderror" placeholder="Bornera" value="{{old('laberintos')}}" name="ejes">
+                </div>
               @error('laberintos')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Estator</label>
-                <input type="text" class="form-control @error('estator') is-invalid @enderror" placeholder="Estator" value="{{old('estator')}}" name="estator">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('estator_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="estator_has" {{old('estator_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="estator_has" {{old('estator_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('estator') is-invalid @enderror" placeholder="Bornera" value="{{old('estator')}}" name="ejes">
+                </div>
               @error('estator')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Slam muelle p1</label>
-                <input type="text" class="form-control @error('slam_muelle_p1') is-invalid @enderror" placeholder="Slam muelle p1" value="{{old('slam_muelle_p1')}}" name="slam_muelle_p1">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('slam_muelle_p1_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="slam_muelle_p1_has" {{old('slam_muelle_p1_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="slam_muelle_p1_has" {{old('slam_muelle_p1_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('slam_muelle_p1') is-invalid @enderror" placeholder="Bornera" value="{{old('slam_muelle_p1')}}" name="ejes">
+                </div>
               @error('slam_muelle_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Slam muelle p2</label>
-                <input type="text" class="form-control @error('slam_muelle_p2') is-invalid @enderror" placeholder="Slam muelle p2" value="{{old('slam_muelle_p2')}}" name="slam_muelle_p2">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('slam_muelle_p2_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="slam_muelle_p2_has" {{old('slam_muelle_p2_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="slam_muelle_p2_has" {{old('slam_muelle_p2_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('slam_muelle_p2') is-invalid @enderror" placeholder="Bornera" value="{{old('slam_muelle_p2')}}" name="ejes">
+                </div>
               @error('slam_muelle_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Resortes contra tapas</label>
-                <input type="text" class="form-control @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Resortes contra tapas" value="{{old('resortes_contra_tapas')}}" name="resortes_contra_tapas">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('resortes_contra_tapas_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="resortes_contra_tapas_has" {{old('resortes_contra_tapas_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="resortes_contra_tapas_has" {{old('resortes_contra_tapas_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Bornera" value="{{old('resortes_contra_tapas')}}" name="ejes">
+                </div>
               @error('resortes_contra_tapas')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
                 <label class="col-form-label">Alieneamiento paquete</label>
-                <input type="text" class="form-control @error('alineamiento_paquete') is-invalid @enderror" placeholder="Alieneamiento paquete" value="{{old('alineamiento_paquete')}}" name="alineamiento_paquete">
+                <div class="d-flex">
+                <ul class="form-check-list list-inline mb-0 col-7 @error('alineamiento_paquete_has') is-invalid @enderror">
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="1" name="alineamiento_paquete_has" {{old('alineamiento_paquete_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
+                    </label>
+                  </li>
+                  <li class="form-check-inline">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input align-middle" value="0" name="alineamiento_paquete_has" {{old('alineamiento_paquete_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
+                    </label>
+                  </li>
+                </ul>
+                <input type="text" class="form-control col-5 @error('alineamiento_paquete') is-invalid @enderror" placeholder="Bornera" value="{{old('alineamiento_paquete')}}" name="ejes">
+                </div>
               @error('alineamiento_paquete')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror

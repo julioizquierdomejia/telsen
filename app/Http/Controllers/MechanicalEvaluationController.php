@@ -87,6 +87,20 @@ class MechanicalEvaluationController extends Controller
             'impro_seal' => 'string|nullable',
             'laberintos' => 'string|nullable',
             'estator' => 'string|nullable',
+            //Sí/no
+            'placa_caract_orig_has' => 'boolean|nullable',
+            'tapas_has' => 'boolean|nullable',
+            'ventilador_has' => 'boolean|nullable',
+            'caja_conexion_has' => 'boolean|nullable',
+            'ejes_has' => 'boolean|nullable',
+            'acople_has' => 'boolean|nullable',
+            'bornera_has' => 'boolean|nullable',
+            'fundas_has' => 'boolean|nullable',
+            'chaveta_has' => 'boolean|nullable',
+            'impro_seal_has' => 'boolean|nullable',
+            'laberintos_has' => 'boolean|nullable',
+            'estator_has' => 'boolean|nullable',
+            //
 
             'slam_muelle_p1' => 'string|nullable',
             'slam_muelle_p2' => 'string|nullable',

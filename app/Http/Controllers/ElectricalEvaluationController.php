@@ -138,6 +138,16 @@ class ElectricalEvaluationController extends Controller
             'rec_chaveta' => 'string|nullable',
             'rec_otros' => 'string|nullable',
             'rec_detalles' => 'string|nullable',
+            //Botones sí/no
+            'rec_placa_caract_orig_has' => 'boolean|nullable',
+            'rec_escudos_has' => 'boolean|nullable',
+            'rec_ventilador_has' => 'boolean|nullable',
+            'rec_caja_conexion_has' => 'boolean|nullable',
+            'rec_ejes_has' => 'boolean|nullable',
+            'rec_acople_has' => 'boolean|nullable',
+            'rec_bornera_has' => 'boolean|nullable',
+            'rec_funda_has' => 'boolean|nullable',
+            'rec_chaveta_has' => 'boolean|nullable',
 
             'testin_motor_aisl_m' => 'string|nullable',
             'testin_motor_nro_salidas' => 'string|nullable',
@@ -252,6 +262,17 @@ class ElectricalEvaluationController extends Controller
         $elreceval->bornera = $request->input('rec_bornera');
         $elreceval->funda = $request->input('rec_funda');
         $elreceval->chaveta = $request->input('rec_chaveta');
+        //
+        $elreceval->placa_caract_orig_has = $request->input('rec_placa_caract_orig_has');
+        $elreceval->escudos_has = $request->input('rec_escudos_has');
+        $elreceval->ventilador_has = $request->input('rec_ventilador_has');
+        $elreceval->caja_conexion_has = $request->input('rec_caja_conexion_has');
+        $elreceval->ejes_has = $request->input('rec_ejes_has');
+        $elreceval->acople_has = $request->input('rec_acople_has');
+        $elreceval->bornera_has = $request->input('rec_bornera_has');
+        $elreceval->funda_has = $request->input('rec_funda_has');
+        $elreceval->chaveta_has = $request->input('rec_chaveta_has');
+        //
         $elreceval->otros = $request->input('rec_otros');
         $elreceval->detalles = $request->input('rec_detalles');
         $elreceval->save();
@@ -339,8 +360,29 @@ class ElectricalEvaluationController extends Controller
                     ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                     ->join('motor_models', 'motor_models.id', '=', 'ots.marca_id')
                     ->join('electrical_evaluations as ev', 'ev.ot_id', '=', 'ots.id')
-                    ->join('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'ev.id')
-                    ->select('electrical_evaluations.*', 'ots.descripcion_motor', 'ots.codigo_motor', 'ots.numero_potencia', 'ots.medida_potencia', 'ots.voltaje', 'ots.velocidad', 'ots.solped', 'motor_brands.name as marca', 'motor_models.name as modelo', 'eet.tap')
+                    ->join('eval_electrical_reception as eer', 'eer.eel_id', '=', 'ots.id')
+                    ->join('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'ots.id')
+                    ->select('electrical_evaluations.*', 'ots.descripcion_motor', 'ots.codigo_motor', 'ots.numero_potencia', 'ots.medida_potencia', 'ots.voltaje', 'ots.velocidad', 'ots.solped', 'motor_brands.name as marca', 'motor_models.name as modelo', 'eet.tap',
+                        'eer.placa_caract_orig',
+                        'eer.escudos',
+                        'eer.ventilador',
+                        'eer.caja_conexion',
+                        'eer.ejes',
+                        'eer.acople',
+                        'eer.bornera',
+                        'eer.funda',
+                        'eer.chaveta',
+                        'eer.placa_caract_orig_has',
+                        'eer.escudos_has',
+                        'eer.ventilador_has',
+                        'eer.caja_conexion_has',
+                        'eer.ejes_has',
+                        'eer.acople_has',
+                        'eer.bornera_has',
+                        'eer.funda_has',
+                        'eer.chaveta_has',
+                        'eer.otros'
+                )
                     ->where('ev.ot_id', $ot_id)->firstOrFail();
 
         return view('formatos.electrical.show', compact('formato'));

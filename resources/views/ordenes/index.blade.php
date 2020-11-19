@@ -67,7 +67,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="text-center text-muted" colspan="6">No hay órdenes de trabajo eliminadas.</td>
+                    <td class="text-center text-muted" colspan="6">No hay órdenes de trabajo.</td>
                   </tr>
                 </tbody>
               </table>
@@ -110,7 +110,7 @@ $(document).ready(function() {
                 _token: '{{csrf_token()}}',
             },
             beforeSend: function(data) {
-                $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo eliminadas.</td></tr>');
+                $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo.</td></tr>');
             },
             success: function(response) {
                 if (response.success) {

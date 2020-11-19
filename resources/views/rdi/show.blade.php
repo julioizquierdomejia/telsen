@@ -20,17 +20,17 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 					<span class="card-title-buttons text-right">
 						@if ($rdi_fecha)
 						<p class="mb-0 mt-2">Fecha de entrega <span class="badge badge-success px-3 py-1">{{date('d-m-Y', strtotime($rdi->fecha_entrega))}}</span></p>
-						@else
-						@if($rdi->fecha_entrega == null)
+						@endif
+						@if($rdi->fecha_entrega == null && $rdi_approved)
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Generar fecha de entrega</button>
 						@endif
 						@if($rdi_approved)
 						<span class="badge badge-success px-3 py-1">Aprobada</span>
 						@elseif($rdi_disapproved)
 						<span class="badge badge-secondary px-3 py-1">Desaprobada</span>
-						@else
-						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
 						@endif
+						@if($status_last->status_id <= 10 && $status_last->status_id != 9 && $status_last->status_id != 10)
+						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
 						@endif
 					</span>
 				</h5>
@@ -269,8 +269,8 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
         	</div>
         	@endif
         	@endif
-        	@if(!$rdi_fecha)
-        	<div class="row fecha_entrega text-center" @if(!$status_last->status_id == 9)style="display: none;"@endif>
+        	@if(!$rdi_fecha && $rdi_approved)
+        	<div class="row fecha_entrega text-center">
 	          	<div class="col-12">
 	          		<p><label class="col-form-label" for="fecha_entrega">Fecha de entrega</label></p>
 	          		<input class="form-control" min="{{date('Y-m-d')}}" type="date" id="fecha_entrega" name="fecha_entrega">
@@ -321,10 +321,7 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 			        	setTimeout(function () {
 		        			location.reload();
 		        		}, 200)
-	        		} else if(response.data) {
-		        		$('.fecha_entrega').show();
-		        		$('.confirmar_ots').hide();
-		        	}
+	        		}
 	        	} else if(response.data) {
 	        		$('.confirmar_ots .btn').attr('disabled', true);
 	        		$('.c-ots').html(response.data);

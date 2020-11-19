@@ -129,7 +129,7 @@ $(document).ready(function() {
                                   status.html
                                   +
                                   `</td>
-                                  <td>` + item.razon_social + ((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
+                                  <td><span class="align-middle">` + item.razon_social + "</span>"+((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1 align-middle">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
                                   `</td>
                                   <td class="text-center">` + item.descripcion_motor + `</td>
                                   <td class="text-left text-nowrap">
@@ -203,6 +203,9 @@ $(document).ready(function() {
               }
               if(status.data[i].id == 4) {
               html += `<a class="dropdown-item" href="/tarjeta-costo/`+id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>`
+              }
+              if(status.data[i].id == 11) {
+              html += `<a class="dropdown-item" href="/rdi/`+id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>`
               }
             }
             html += `</div></div>`;

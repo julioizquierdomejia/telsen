@@ -6,6 +6,7 @@ $ot_status = \DB::table('status_ot')
       ->where('status_ot.ot_id', '=', $ot->id)
       ->select('status_ot.status_id', 'status.id', 'status.name')
       ->get();
+$statuses = array_column($ot_status->toArray(), "status_id");
 $status_last = $ot_status->last();
 @endphp
 <div class="row">
@@ -100,7 +101,7 @@ $status_last = $ot_status->last();
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
 					@elseif(count($ot_status) == 2)
-						@if($status_last->status_id == 2)
+						@if(in_array(2, $statuses))
 						<!-- Tiene mecanica: muestra electrica -->
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
 						<div class="dropdown-divider"></div>
@@ -125,10 +126,10 @@ $status_last = $ot_status->last();
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
 						<div class="dropdown-divider"></div>
 					@endif
-					@if($status_last->status_id == 8 || $status_last->status_id == 9 && $ot->tipo_cliente_id == 1)
+					@if(in_array(8, $statuses) || in_array(9, $statuses) && $ot->tipo_cliente_id == 1)
 					<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
 					@endif
-					@if($status_last->status_id == 4 || $status_last->status_id == 5 || $status_last->status_id == 6 && $ot->tipo_cliente_id == 2)
+					@if(in_array(4, $statuses) || in_array(5, $statuses) || in_array(6, $statuses) && $ot->tipo_cliente_id == 2)
 					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Ver Tarjeta de Costo</a>
 					@endif
 				</div>

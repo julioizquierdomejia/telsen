@@ -6,9 +6,10 @@ $ot_status = \DB::table('status_ot')
       ->where('status_ot.ot_id', '=', $ccost->ot_id)
       ->select('status_ot.status_id', 'status.id', 'status.name')
       ->get();
-$status_last = $ot_status->last();
-$cc_approved = $status_last->status_id == 6 && $ccost->fecha_entrega != null;
-$cc_disapproved = $status_last->status_id == 7;
+$statuses = array_column($ot_status->toArray(), "status_id");
+//$status_last = $ot_status->last();
+$cc_approved = in_array(6, $statuses) && $ccost->fecha_entrega != null;
+$cc_disapproved = in_array(7, $statuses);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -287,8 +288,8 @@ $cc_disapproved = $status_last->status_id == 7;
 				<button id="btnUpload" type="submit" class="btn btn-primary btn-sm px-md-5">Enviar</button>
 			</div>
 			</form>
-			@else
-			@if(!$cc_approved)
+			@endif
+			@if($ccost->fecha_entrega == null && !in_array(6, $statuses) && !in_array(7, $statuses))
 			<div class="row approve_tc">
 				<div class="update ml-auto mr-auto">
             		<button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>
@@ -299,13 +300,14 @@ $cc_disapproved = $status_last->status_id == 7;
 			</div>
 			@else
 			<div class="text-center py-3">
-				@if($status_last->status_id == 6)
+				@if(in_array(6, $statuses))
 				<span class="badge badge-success px-3 py-2">Cotización Aprobada</span>
-				@elseif($status_last->status_id == 7)
+				@elseif(in_array(7, $statuses))
 				<span class="badge badge-secondary px-3 py-2">Cotización Desaprobada</span>
 				@endif
 			</div>
 			@endif
+			@if($ccost->cotizacion)
 			<embed class="w-100" src="/uploads/cotizacion/{{$ccost->cotizacion}}" width="500" height="375" style="height: calc(100vh - 140px)" type="application/pdf">
 			@endif
 		</div>

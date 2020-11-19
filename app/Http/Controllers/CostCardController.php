@@ -238,7 +238,7 @@ class CostCardController extends Controller
                         ->where('status_id', 6)->orWhere('status_id', 7)
                         ->first();
         if ($exist_status) {
-            return response()->json(['data'=>'Tarjeta de costo ya cambió de estado' . $exist_status->id,'success'=>false]);
+            return response()->json(['data'=>'Tarjeta de costo ya cambió de estado: ' . $exist_status->status_id,'success'=>false]);
         } else {
             if ($action == 1) {
                 $status = Status::where('id', 6)->first();

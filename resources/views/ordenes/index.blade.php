@@ -67,7 +67,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="text-center" colspan="6">No hay órdenes de trabajo eliminadas.</td>
+                    <td class="text-center text-muted" colspan="6">No hay órdenes de trabajo eliminadas.</td>
                   </tr>
                 </tbody>
               </table>
@@ -129,7 +129,7 @@ $(document).ready(function() {
                                   status.html
                                   +
                                   `</td>
-                                  <td>` + item.razon_social + ((item.client_type_id == 1) ? `<span class="badge badge-primary">`+item.client_type+`</span>` : `<span class="badge badge-secondary">`+item.client_type+`</span>`) +
+                                  <td>` + item.razon_social + ((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
                                   `</td>
                                   <td class="text-center">` + item.descripcion_motor + `</td>
                                   <td class="text-left text-nowrap">
@@ -167,18 +167,20 @@ $(document).ready(function() {
                 var data = $.parseJSON(response.data);
                 status['data'] = data;
                 if (data) {
-                  if(data.status_id == 4) {
-                    status['html'] = `<span class="badge badge-primary px-2 py-1 w-100">`+data.name+`</span>`
-                  }
-                  if(data.status_id == 4) {
-                    status['html'] = `<span class="badge badge-primary px-2 py-1 w-100">`+data.name+`</span>`
-                  } else if(data.status_id == 5) {
-                    status['html'] = `<span class="badge badge-danger px-2 py-1 w-100">`+data.name+`</span>`
-                  } else if(data.status_id == 6) {
-                    status['html'] = `<span class="badge badge-success px-2 py-1 w-100">`+data.name+`</span>`
-                  } else {
-                    status['html'] = `<span class="badge badge-secondary px-2 py-1 w-100">`+data.name+`</span>`
-                  }
+                  $.each(data, function (id, item) {
+                    if(item.status_id == 4) {
+                      status['html'] = `<span class="badge badge-primary px-2 py-1 w-100">`+item.name+`</span>`
+                    }
+                    if(item.status_id == 4) {
+                      status['html'] = `<span class="badge badge-primary px-2 py-1 w-100">`+item.name+`</span>`
+                    } else if(item.status_id == 5) {
+                      status['html'] = `<span class="badge badge-danger px-2 py-1 w-100">`+item.name+`</span>`
+                    } else if(item.status_id == 6) {
+                      status['html'] = `<span class="badge badge-success px-2 py-1 w-100">`+item.name+`</span>`
+                    } else {
+                      status['html'] = `<span class="badge badge-secondary px-2 py-1 w-100">`+item.name+`</span>`
+                    }
+                  })
                 }
             }
         }
@@ -270,7 +272,7 @@ $(document).ready(function() {
                 _token: '{{csrf_token()}}',
             },
             beforeSend: function(data) {
-                $('#nav-disenabledots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo eliminadas.</td></tr>');
+                $('#nav-disenabledots tbody').html('<tr><td class="text-center text-muted" colspan="6">No hay órdenes de trabajo eliminadas.</td></tr>');
             },
             success: function(response) {
                 if (response.success) {

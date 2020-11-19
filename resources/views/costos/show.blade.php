@@ -277,8 +277,7 @@ $cc_disapproved = $status_last->status_id == 7;
 						<span class="input-group-text"><i class="fal fa-file"></i></span>
 					</div>
 					<div class="custom-file">
-						<input type="file" accept="application/pdf" class="custom-file-input" id="inputGroupFile"
-						aria-describedby="inputGroupFile" name="upload_file">
+						<input type="file" accept="application/pdf" class="custom-file-input" id="inputGroupFile" required="" aria-describedby="inputGroupFile" name="upload_file">
 						<label class="custom-file-label" for="inputGroupFile">Elegir</label>
 					</div>
 				</div>
@@ -349,6 +348,15 @@ $cc_disapproved = $status_last->status_id == 7;
     })
     @endif
 
+    $('#inputGroupFile').change(function (event) {
+    	var val = $(this).val();
+    	if(val) {
+    		$('.custom-file-label').text(val.split('\\').pop());
+    	} else {
+    		$('.custom-file-label').text('Elegir');
+    	}
+    })
+
     $('#uploadForm').submit(function (event) {
     	event.preventDefault();
     	var form = $(this);
@@ -356,7 +364,9 @@ $cc_disapproved = $status_last->status_id == 7;
     	$.ajax({
 	        type: "post",
 	        url: url,
-	        data: form.serialize(),
+	        data: new FormData(this),
+	        processData: false,
+        	contentType: false,
 	        beforeSend: function (data) {
 	        	$('.c-ots').empty();
 	        },

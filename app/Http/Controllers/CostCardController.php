@@ -97,7 +97,7 @@ class CostCardController extends Controller
 
     public function upload(Request $request, $id)
     {
-        if ($request->hasFile('upload_file')) {
+        if ($request->file('upload_file')) {
             $rules = array(
                 'upload_file' => 'required|mimes:pdf|max:5000',
                 'cost_id' => 'required|exists:ots,id',

@@ -142,7 +142,7 @@ $(document).ready(function() {
                             );
                         })
                     } else {
-                        $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo eliminadas.</td></tr>');
+                        $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo.</td></tr>');
                     }
                 }
             },

@@ -67,11 +67,11 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-4 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Código</label>
               <input type="text" class="form-control @error('codigo_motor') is-invalid @enderror" name="codigo_motor" placeholder="Ingrese código del motor" value="{{$orden->codigo_motor}}">
             </div>
-            <div class="col-md-4 form-group">
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Marca</label>
               <!-- <input type="text" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="Ingrese Marca" value="" name="marca"> -->
               <select name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca" value="{{$orden->marca_id}}">
@@ -81,11 +81,12 @@
                 @endforeach
               </select>
             </div>
-            <div class="col-md-4  form-group">
+            <div class="col-6 col-md-3 form-group">
+              <label class="col-form-label" for="solped">Solped</label>
+              <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped')}}" id="solped" name="solped">
+            </div>
+            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Modelo</label>
-              <!-- <input type="number" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
-              <?php
-              ?>
               <select name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
                 <option value="">Selecciona el modelo</option>
                 @foreach($modelos as $modelo)
@@ -112,10 +113,17 @@
               <label class="col-form-label">Velocidad</label>
               <input type="number" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{$orden->velocidad}}" name="velocidad">
             </div>
+            <div class="col-6 col-md-3 form-group">
+              <label class="col-form-label" for="selectEstado">Estado</label>
+              <select style="width: 100%" name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
+                <option value="1">Activo</option>
+                <option value="0">Inactivo</option>
+              </select>
+            </div>
           </div>
           <div class="row">
             <div class="update ml-auto mr-auto">
-              <button type="submit" class="btn btn-primary btn-round">Crear Orden de Trabajo</button>
+              <button type="submit" class="btn btn-primary btn-round">Actualizar Orden de Trabajo</button>
             </div>
           </div>
         </form>

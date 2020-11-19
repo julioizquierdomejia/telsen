@@ -23,7 +23,7 @@
 
             <div class="col-md-12 form-group">
                 <label class="col-form-label">Descripción</label>
-                <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{$marca->description}}" name="description"></textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" name="description">{{$marca->description}}</textarea>
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Estado</label>

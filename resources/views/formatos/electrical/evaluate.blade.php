@@ -513,6 +513,19 @@
               </tr>
             </thead>
             <tbody>
+              @if($tran_tap = json_decode(old('tran_tap'), true))
+              @foreach($tran_tap as $key => $tap)
+              <tr>
+                <td class="cell-counter"><span class="number"></span></td>
+                <td><input type="text" class="form-control" name="uv1" value="{{$tap['uv1'] ?? ''}}"></td>
+                <td><input type="text" class="form-control" name="uv2" value="{{$tap['uv2'] ?? ''}}"></td>
+                <td><input type="text" class="form-control" name="vu1" value="{{$tap['vu1'] ?? ''}}"></td>
+                <td><input type="text" class="form-control" name="vu2" value="{{$tap['vu2'] ?? ''}}"></td>
+                <td><input type="text" class="form-control" name="wu1" value="{{$tap['wu1'] ?? ''}}"></td>
+                <td><input type="text" class="form-control" name="wu2" value="{{$tap['wu2'] ?? ''}}"></td>
+              </tr>
+              @endforeach
+              @else
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
                 <td><input type="text" class="form-control" name="uv1" value=""></td>
@@ -522,6 +535,7 @@
                 <td><input type="text" class="form-control" name="wu1" value=""></td>
                 <td><input type="text" class="form-control" name="wu2" value=""></td>
               </tr>
+              @endif
             </tbody>
             <tfoot class="buttons">
             <tr>

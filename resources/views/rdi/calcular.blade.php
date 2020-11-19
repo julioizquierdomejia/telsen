@@ -143,7 +143,7 @@
             </div>
             <div class="col-md-12 form-group">
               <label class="col-form-label">ANTECEDENTES</label>
-              <textarea class="form-control @error('antecedentes') is-invalid @enderror" placeholder="(Indique motivo de salida del componente de las instalaciones del cliente)" value="{{old('antecedentes')}}" name="antecedentes"></textarea>
+              <textarea class="form-control @error('antecedentes') is-invalid @enderror" placeholder="(Indique motivo de salida del componente de las instalaciones del cliente)" name="antecedentes">{{old('antecedentes')}}</textarea>
               @error('antecedentes')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -219,7 +219,7 @@
             </div>
             <div class="col-12 col-md-6 mb-4">
               <label class="col-form-label" for="diagnostico_actual">DIAGNOSTICO ACTUAL</label>
-              <textarea class="form-control h-100 @error('diagnostico_actual') is-invalid @enderror" placeholder="(Indique causa raiz y recomendaciones)" value="{{old('diagnostico_actual')}}" name="diagnostico_actual" id="diagnostico_actual"></textarea>
+              <textarea class="form-control h-100 @error('diagnostico_actual') is-invalid @enderror" placeholder="(Indique causa raiz y recomendaciones)" name="diagnostico_actual" id="diagnostico_actual">{{old('diagnostico_actual')}}</textarea>
             </div>
           </div>
           <div class="row">

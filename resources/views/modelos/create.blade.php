@@ -23,7 +23,7 @@
 
             <div class="col-md-12 form-group">
                 <label class="col-form-label">Descripción</label>
-                <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" value="{{old('description')}}" name="description"></textarea>
+                <textarea class="form-control @error('description') is-invalid @enderror" placeholder="" name="description">{{old('description')}}</textarea>
         				@error('description')
         					<p class="error-message text-danger">{{ $message }}</p>
         				@enderror

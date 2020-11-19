@@ -305,6 +305,17 @@ $cc_disapproved = in_array(7, $statuses);
 				@elseif(in_array(7, $statuses))
 				<span class="badge badge-secondary px-3 py-2">Cotización Desaprobada</span>
 				@endif
+				@if ($ccost->fecha_entrega == null)
+				<form class="mt-3" enctype="multipart/form-data" action="{{route('ordenes.generateotdate', $ccost->ot_id)}}" method="POST" id="generateDateForm">
+					@csrf
+					<div class="form-group">
+						<input class="form-control" type="date" min="{{date('Y-m-d')}}" name="fecha_entrega" required="">
+					<button type="submit" class="btn btn-secondary btn-sm px-md-5 btn-fecha_entrega">Generar fecha</button>
+					</div>
+				</form>
+				@else
+				<p>Fecha de entrega: {{$ccost->fecha_entrega}}</p>
+				@endif
 			</div>
 			@endif
 			@if($ccost->cotizacion)
@@ -379,6 +390,38 @@ $cc_disapproved = in_array(7, $statuses);
 	        		}, 200)
 	        	} else if(response.data) {
 	        		$('.confirmar_ots .btn').attr('disabled', true);
+	        		$('.c-ots').html(response.data);
+	        	} else {
+	        		$('.c-ots').empty();
+	        	}
+	        },
+	        error: function (request, status, error) {
+	          var data = jQuery.parseJSON(request.responseText);
+	          console.log(data);
+	        }
+	    });
+    })
+
+    $('#generateDateForm').submit(function (event) {
+    	event.preventDefault();
+    	var form = $(this);
+    	var url = form.attr('action');
+    	$.ajax({
+	        type: "post",
+	        url: url,
+	        data: new FormData(this),
+	        processData: false,
+        	contentType: false,
+	        beforeSend: function (data) {
+	        	$('.c-ots').empty();
+	        },
+	        success: function (response) {
+	        	if(response.success) {
+	        		setTimeout(function () {
+	        			location.reload();
+	        		}, 200)
+	        	} else if(response.data) {
+	        		$('.btn-fecha_entrega').attr('disabled', true);
 	        		$('.c-ots').html(response.data);
 	        	} else {
 	        		$('.c-ots').empty();

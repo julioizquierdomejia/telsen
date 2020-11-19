@@ -18,16 +18,82 @@ class OtController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'mechanical', 'electrical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'worker']);
         
         //Listar OTs
+        $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                    ->where('ots.enabled', 1)->get();
+
+        return view('ordenes.index', compact('ordenes'));
+    }
+
+    public function enabled_ots(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'worker']);
+
         $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type');
-        $ordenes = $ots->where('ots.enabled', 1)->get();
-        $disabled_ordenes = $ots->where('ots.enabled', 0)->get();
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                    ->where('ots.enabled', 1)->get();
 
-        return view('ordenes.index', compact('ordenes', 'disabled_ordenes'));
+        return response()->json(['data'=>json_encode($ots), 'success'=>true]);
+    }
+
+    public function disapproved_ots(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'worker']);
+
+        $ots_array = [];
+
+        $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                    ->where('ots.enabled', 0)->get();
+
+        foreach ($ots as $key => $ot) {
+            $ot_status = \DB::table('status_ot')
+                  ->join('status', 'status_ot.status_id', '=', 'status.id')
+                  ->where('status_ot.ot_id', '=', $ot->id)
+                  ->select('status_ot.status_id', 'status.id', 'status.name')
+                  ->get();
+            $ot_status_arr = array_column($ot_status->toArray(), "status_id");
+            if (in_array(7, $ot_status_arr) || in_array(10, $ot_status_arr)) {
+                $ots_array[] = $ots;
+            }
+        }
+
+        if ($ots_array) {
+            return response()->json(['data'=>json_encode($ots_array), 'success'=>true]);
+        }
+        return response()->json(['data'=>null, 'success'=>false]);
+    }
+
+    public function disabled_ots(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'worker']);
+
+        $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                    ->where('ots.enabled', 2)->get();
+
+        return response()->json(['data'=>json_encode($ots), 'success'=>true]);
+    }
+
+    public function getOTStatus(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'worker']);
+
+        $ot_status = \DB::table('status_ot')
+                  ->join('status', 'status_ot.status_id', '=', 'status.id')
+                  ->where('status_ot.ot_id', '=', $id)
+                  ->select('status_ot.status_id', 'status.id', 'status.name')
+                  //->latest('status_ot.id')
+                  //->first();
+                  ->get();
+        return response()->json(['data'=>json_encode($ot_status), 'success'=>true]);
     }
 
     public function list(Request $request)
@@ -282,8 +348,25 @@ class OtController extends Controller
      * @param  \App\Models\Ot  $ot
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Ot $ot)
+    public function destroy(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $ot = Ot::findOrFail($id);
+        $ot->enabled = 2;
+        $ot->save();
+
+        return response()->json(['data'=>json_encode($ot), 'success'=>true]);
+    }
+
+    public function enabling_ot(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+
+        $ot = Ot::findOrFail($id);
+        $ot->enabled = 1;
+        $ot->save();
+
+        return response()->json(['data'=>json_encode($ot), 'success'=>true]);
     }
 }

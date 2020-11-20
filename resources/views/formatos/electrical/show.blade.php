@@ -1,6 +1,5 @@
 @extends('layouts.app', ['title' => 'Ver Evaluación Eléctrica'])
 @section('content')
-@php $data = $formato->toArray() @endphp
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">

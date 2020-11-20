@@ -163,18 +163,18 @@ class MechanicalEvaluationController extends Controller
         $meval->laberintos = $request->input('laberintos');
         $meval->estator = $request->input('estator');
         //
-        $meval->placa_caract_orig_has = $request->input('placa_caract_orig_has');
-        $meval->tapas_has = $request->input('tapas_has');
-        $meval->ventilador_has = $request->input('ventilador_has');
-        $meval->caja_conexion_has = $request->input('caja_conexion_has');
-        $meval->ejes_has = $request->input('ejes_has');
-        $meval->acople_has = $request->input('acople_has');
-        $meval->bornera_has = $request->input('bornera_has');
-        $meval->fundas_has = $request->input('fundas_has');
-        $meval->chaveta_has = $request->input('chaveta_has');
-        $meval->impro_seal_has = $request->input('impro_seal_has');
-        $meval->laberintos_has = $request->input('laberintos_has');
-        $meval->estator_has = $request->input('estator_has');
+        $meval->placa_caract_orig_has = $request->input('placa_caract_orig_has') ?? 0;
+        $meval->tapas_has = $request->input('tapas_has') ?? 0;
+        $meval->ventilador_has = $request->input('ventilador_has') ?? 0;
+        $meval->caja_conexion_has = $request->input('caja_conexion_has') ?? 0;
+        $meval->ejes_has = $request->input('ejes_has') ?? 0;
+        $meval->acople_has = $request->input('acople_has') ?? 0;
+        $meval->bornera_has = $request->input('bornera_has') ?? 0;
+        $meval->fundas_has = $request->input('fundas_has') ?? 0;
+        $meval->chaveta_has = $request->input('chaveta_has') ?? 0;
+        $meval->impro_seal_has = $request->input('impro_seal_has') ?? 0;
+        $meval->laberintos_has = $request->input('laberintos_has') ?? 0;
+        $meval->estator_has = $request->input('estator_has') ?? 0;
         //
 
         $meval->slam_muelle_p1 = $request->input('slam_muelle_p1');

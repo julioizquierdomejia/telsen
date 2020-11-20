@@ -263,15 +263,15 @@ class ElectricalEvaluationController extends Controller
         $elreceval->funda = $request->input('rec_funda');
         $elreceval->chaveta = $request->input('rec_chaveta');
         //
-        $elreceval->placa_caract_orig_has = $request->input('rec_placa_caract_orig_has');
-        $elreceval->escudos_has = $request->input('rec_escudos_has');
-        $elreceval->ventilador_has = $request->input('rec_ventilador_has');
-        $elreceval->caja_conexion_has = $request->input('rec_caja_conexion_has');
-        $elreceval->ejes_has = $request->input('rec_ejes_has');
-        $elreceval->acople_has = $request->input('rec_acople_has');
-        $elreceval->bornera_has = $request->input('rec_bornera_has');
-        $elreceval->funda_has = $request->input('rec_funda_has');
-        $elreceval->chaveta_has = $request->input('rec_chaveta_has');
+        $elreceval->placa_caract_orig_has = $request->input('rec_placa_caract_orig_has') ?? 0;
+        $elreceval->escudos_has = $request->input('rec_escudos_has') ?? 0;
+        $elreceval->ventilador_has = $request->input('rec_ventilador_has') ?? 0;
+        $elreceval->caja_conexion_has = $request->input('rec_caja_conexion_has') ?? 0;
+        $elreceval->ejes_has = $request->input('rec_ejes_has') ?? 0;
+        $elreceval->acople_has = $request->input('rec_acople_has') ?? 0;
+        $elreceval->bornera_has = $request->input('rec_bornera_has') ?? 0;
+        $elreceval->funda_has = $request->input('rec_funda_has') ?? 0;
+        $elreceval->chaveta_has = $request->input('rec_chaveta_has') ?? 0;
         //
         $elreceval->otros = $request->input('rec_otros');
         $elreceval->detalles = $request->input('rec_detalles');

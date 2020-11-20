@@ -318,7 +318,7 @@ $cc_disapproved = in_array(7, $statuses);
 			</div>
 			</form>
 			@endif
-			@if($ccost->fecha_entrega == null && !in_array(6, $statuses) && !in_array(7, $statuses))
+			@if($ccost->cotizacion && !in_array(6, $statuses) && !in_array(7, $statuses))
 			<div class="row approve_tc">
 				<div class="update ml-auto mr-auto">
             		<button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>

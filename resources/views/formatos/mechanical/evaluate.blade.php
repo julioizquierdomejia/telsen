@@ -169,7 +169,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('acople') is-invalid @enderror" placeholder="Acople" value="{{old('acople')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('acople') is-invalid @enderror" placeholder="Acople" value="{{old('acople')}}" name="acople">
               </div>
               @error('acople')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -190,7 +190,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('bornera') is-invalid @enderror" placeholder="Bornera" value="{{old('bornera')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('bornera') is-invalid @enderror" placeholder="Bornera" value="{{old('bornera')}}" name="bornera">
               </div>
               @error('bornera')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -211,7 +211,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('fundas') is-invalid @enderror" placeholder="Bornera" value="{{old('fundas')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('fundas') is-invalid @enderror" placeholder="Fundas" value="{{old('fundas')}}" name="fundas">
               </div>
               @error('fundas')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -232,7 +232,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('chaveta') is-invalid @enderror" placeholder="Bornera" value="{{old('chaveta')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('chaveta') is-invalid @enderror" placeholder="Chaveta" value="{{old('chaveta')}}" name="chaveta">
               </div>
               @error('chaveta')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -253,7 +253,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('impro_seal') is-invalid @enderror" placeholder="Bornera" value="{{old('impro_seal')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('impro_seal') is-invalid @enderror" placeholder="Impro Seal" value="{{old('impro_seal')}}" name="impro_seal">
               </div>
               @error('impro_seal')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -274,7 +274,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('laberintos') is-invalid @enderror" placeholder="Bornera" value="{{old('laberintos')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('laberintos') is-invalid @enderror" placeholder="Laberintos" value="{{old('laberintos')}}" name="laberintos">
               </div>
               @error('laberintos')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -295,7 +295,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('estator') is-invalid @enderror" placeholder="Bornera" value="{{old('estator')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('estator') is-invalid @enderror" placeholder="Estator" value="{{old('estator')}}" name="estator">
               </div>
               @error('estator')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -316,7 +316,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('slam_muelle_p1') is-invalid @enderror" placeholder="Bornera" value="{{old('slam_muelle_p1')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('slam_muelle_p1') is-invalid @enderror" placeholder="Slam muelle p1" value="{{old('slam_muelle_p1')}}" name="slam_muelle_p1">
               </div>
               @error('slam_muelle_p1')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -337,7 +337,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('slam_muelle_p2') is-invalid @enderror" placeholder="Bornera" value="{{old('slam_muelle_p2')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('slam_muelle_p2') is-invalid @enderror" placeholder="Slam muelle p2" value="{{old('slam_muelle_p2')}}" name="slam_muelle_p2">
               </div>
               @error('slam_muelle_p2')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -358,7 +358,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Bornera" value="{{old('resortes_contra_tapas')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Resortes contra tapas" value="{{old('resortes_contra_tapas')}}" name="resortes_contra_tapas">
               </div>
               @error('resortes_contra_tapas')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -379,7 +379,7 @@
                     </label>
                   </li>
                 </ul>
-                <input type="text" class="form-control col-5 @error('alineamiento_paquete') is-invalid @enderror" placeholder="Bornera" value="{{old('alineamiento_paquete')}}" name="ejes">
+                <input type="text" class="form-control col-5 @error('alineamiento_paquete') is-invalid @enderror" placeholder="Alieneamiento paquete" value="{{old('alineamiento_paquete')}}" name="alineamiento_paquete">
               </div>
               @error('alineamiento_paquete')
               <p class="error-message text-danger">{{ $message }}</p>

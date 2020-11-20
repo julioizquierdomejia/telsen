@@ -1,6 +1,5 @@
 @extends('layouts.app', ['title' => 'Ver Evaluación Mecánica'])
 @section('content')
-@php $data = $formato->toArray() @endphp
 <div class="row">
 	<div class="col-md-12">
 		<div class="card form-card">
@@ -46,19 +45,19 @@
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Ventilador</label>
-						<p class="mb-0">{{$formato->ventilador}}</p>
+						<p class="mb-0">{{$formato->ventilador ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Caja Conexión</label>
-						<p class="mb-0">{{$formato->caja_conexion}}</p>
+						<p class="mb-0">{{$formato->caja_conexion ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Ejes</label>
-						<p class="mb-0">{{$formato->ejes}}</p>
+						<p class="mb-0">{{$formato->ejes ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Acople</label>
-						<p class="mb-0">{{$formato->acople}}</p>
+						<p class="mb-0">{{$formato->acople ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Bornera</label>

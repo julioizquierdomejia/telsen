@@ -253,8 +253,12 @@ class OtController extends Controller
                     ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente', 'cost_cards.cotizacion')
                     ->where('ots.enabled', 1)
                     ->findOrFail($id); 
+        $rdi = Ot::join('rdi', 'rdi.ot_id', '=', 'ots.id')
+                ->where('rdi.enabled', 1)
+                ->where('rdi.ot_id', $id)
+                ->first();
 
-        return view('ordenes.show', compact('ot'));
+        return view('ordenes.show', compact('ot', 'rdi'));
     }
 
     public function pvirtual(Request $request)

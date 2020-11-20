@@ -128,8 +128,8 @@ $status_last = $ot_status->last();
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
 						<div class="dropdown-divider"></div>
 					@endif
-					@if(in_array(8, $statuses) || in_array(9, $statuses) && $ot->tipo_cliente_id == 1)
-					<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
+					@if(in_array(8, $statuses) || in_array(9, $statuses) && $ot->tipo_cliente_id == 1 && isset($rdi->id))
+					<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
 					@endif
 					@if(in_array(4, $statuses) || in_array(5, $statuses) || in_array(6, $statuses) && $ot->tipo_cliente_id == 2)
 					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Ver Tarjeta de Costo</a>

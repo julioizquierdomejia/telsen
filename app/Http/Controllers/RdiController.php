@@ -292,11 +292,11 @@ class RdiController extends Controller
 
         return view('rdi.show', compact('rdi', 'services', 'ingresos'));
     }
-    public function cc_show(Request $request, $ot_id)
+    public function cc_show(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $rdi = Rdi::where('ot_id', $ot_id)->firstOrFail();
+        $rdi = Rdi::where('id', $id)->firstOrFail();
 
         return view('rdi.show', compact('rdi'));
     }

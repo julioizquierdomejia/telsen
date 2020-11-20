@@ -312,27 +312,27 @@
             <div class="row pt-3">
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">Aisl.(M):</label>
-                <p class="mb-1">{{$formato->motor_er_aisl_m ?? '-'}}</p>
+                <p class="mb-1">{{$formato->er_aisl_m ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">N° salidas:</label>
-                <p class="mb-1">{{$formato->motor_nro_salidas ?? '-'}}</p>
+                <p class="mb-1">{{$formato->er_nro_salidas ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">Conexión:</label>
-                <p class="mb-1">{{$formato->motor_er_conexion ?? '-'}}</p>
+                <p class="mb-1">{{$formato->er_conexion ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">Volt(v):</label>
-                <p class="mb-1">{{$formato->motor_er_volt_v ?? '-'}}</p>
+                <p class="mb-1">{{$formato->er_volt_v ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">Amp(A):</label>
-                <p class="mb-1">{{$formato->motor_er_amp_a ?? '-'}}</p>
+                <p class="mb-1">{{$formato->er_amp_a ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">N° polos:</label>
-                <p class="mb-1">{{$formato->motor_er_nro_polos ?? '-'}}</p>
+                <p class="mb-1">{{$formato->er_nro_polos ?? '-'}}</p>
               </div>
             </div>
           </div>

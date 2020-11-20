@@ -53,91 +53,91 @@
         <div class="row pt-3">
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Recepcionado por:</label>
-            <p class="mb-1">{{$formato->eq_recepcionado_por ?? '-'}}</p>
+            <p class="mb-1">{{$formato->recepcionado_por ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Potencia</label>
-            <p class="mb-1">{{$formato->eq_potencia ?? '-'}}</p>
+            <p class="mb-1">{{$formato->potencia ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Conex:</label>
-            <p class="mb-1">{{$formato->eq_conex ?? '-'}}</p>
+            <p class="mb-1">{{$formato->conex ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Mod:</label>
-            <p class="mb-1">{{$formato->eq_mod ?? '-'}}</p>
+            <p class="mb-1">{{$formato->mod ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Voltaje:</label>
-            <p class="mb-1">{{$formato->eq_voltaje ?? '-'}}</p>
+            <p class="mb-1">{{$formato->voltaje ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">N° salida</label>
-            <p class="mb-1">{{$formato->eq_n_salida ?? '-'}}</p>
+            <p class="mb-1">{{$formato->n_salida ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Tipo:</label>
-            <p class="mb-1">{{$formato->eq_tipo ?? '-'}}</p>
+            <p class="mb-1">{{$formato->tipo ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Amperaje:</label>
-            <p class="mb-1">{{$formato->eq_amperaje ?? '-'}}</p>
+            <p class="mb-1">{{$formato->amperaje ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Rod.l.a:</label>
-            <p class="mb-1">{{$formato->eq_rodla ?? '-'}}</p>
+            <p class="mb-1">{{$formato->rodla ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">N° equipo:</label>
-            <p class="mb-1">{{$formato->eq_nro_equipo ?? '-'}}</p>
+            <p class="mb-1">{{$formato->nro_equipo ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Velocidad:</label>
-            <p class="mb-1">{{$formato->eq_velocidad ?? '-'}}</p>
+            <p class="mb-1">{{$formato->velocidad ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Rod.l.o.a:</label>
-            <p class="mb-1">{{$formato->eq_rodloa ?? '-'}}</p>
+            <p class="mb-1">{{$formato->rodloa ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Frame:</label>
-            <p class="mb-1">{{$formato->eq_frame ?? '-'}}</p>
+            <p class="mb-1">{{$formato->frame ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Frecuencia:</label>
-            <p class="mb-1">{{$formato->eq_frecuencia ?? '-'}}</p>
+            <p class="mb-1">{{$formato->frecuencia ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Lub:</label>
-            <p class="mb-1">{{$formato->eq_lub ?? '-'}}</p>
+            <p class="mb-1">{{$formato->lub ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">F.S</label>
-            <p class="mb-1">{{$formato->eq_fs ?? '-'}}</p>
+            <p class="mb-1">{{$formato->fs ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Encl</label>
-            <p class="mb-1">{{$formato->eq_encl ?? '-'}}</p>
+            <p class="mb-1">{{$formato->encl ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Cos o:</label>
-            <p class="mb-1">{{$formato->eq_cos_o ?? '-'}}</p>
+            <p class="mb-1">{{$formato->cos_o ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Aisl. Clase:</label>
-            <p class="mb-1">{{$formato->eq_aisl_clase ?? '-'}}</p>
+            <p class="mb-1">{{$formato->aisl_clase ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Ef:</label>
-            <p class="mb-1">{{$formato->eq_ef ?? '-'}}</p>
+            <p class="mb-1">{{$formato->ef ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Cod:</label>
-            <p class="mb-1">{{$formato->eq_cod ?? '-'}}</p>
+            <p class="mb-1">{{$formato->cod ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Diseño NEMA:</label>
-            <p class="mb-1">{{$formato->eq_diseno_nema ?? '-'}}</p>
+            <p class="mb-1">{{$formato->diseno_nema ?? '-'}}</p>
           </div>
         </div>
       </div>
@@ -150,67 +150,67 @@
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Marca:</label>
-            <p class="mb-1">{{$formato->char_marca ?? '-'}}</p>
+            <p class="mb-1">{{$formato->marca ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Potencia:</label>
-            <p class="mb-1">{{$formato->char_potencia ?? '-'}}</p>
+            <p class="mb-1">{{$formato->potencia ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Escudos:</label>
-            <p class="mb-1">{{$formato->char_escudos ?? '-'}}</p>
+            <p class="mb-1">{{$formato->escudos ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Mod</label>
-            <p class="mb-1">{{$formato->char_mod ?? '-'}}</p>
+            <p class="mb-1">{{$formato->mod ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Voltaje:</label>
-            <p class="mb-1">{{$formato->char_voltaje ?? '-'}}</p>
+            <p class="mb-1">{{$formato->voltaje ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Ejes</label>
-            <p class="mb-1">{{$formato->char_ejes ?? '-'}}</p>
+            <p class="mb-1">{{$formato->ejes ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Amperaje:</label>
-            <p class="mb-1">{{$formato->char_amperaje ?? '-'}}</p>
+            <p class="mb-1">{{$formato->amperaje ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Funda:</label>
-            <p class="mb-1">{{$formato->char_funda ?? '-'}}</p>
+            <p class="mb-1">{{$formato->funda ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Frame:</label>
-            <p class="mb-1">{{$formato->char_frame ?? '-'}}</p>
+            <p class="mb-1">{{$formato->frame ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Velocidad:</label>
-            <p class="mb-1">{{$formato->char_velocidad ?? '-'}}</p>
+            <p class="mb-1">{{$formato->velocidad ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Acople:</label>
-            <p class="mb-1">{{$formato->char_acople ?? '-'}}</p>
+            <p class="mb-1">{{$formato->acople ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">F.S:</label>
-            <p class="mb-1">{{$formato->char_fs ?? '-'}}</p>
+            <p class="mb-1">{{$formato->fs ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Encl:</label>
-            <p class="mb-1">{{$formato->char_encl ?? '-'}}</p>
+            <p class="mb-1">{{$formato->encl ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Peso:</label>
-            <p class="mb-1">{{$formato->char_peso ?? '-'}}</p>
+            <p class="mb-1">{{$formato->peso ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Frecuencia:</label>
-            <p class="mb-1">{{$formato->char_frecuencia ?? '-'}}</p>
+            <p class="mb-1">{{$formato->frecuencia ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Otros:</label>
-            <p class="mb-1">{{$formato->char_otros ?? '-'}}</p>
+            <p class="mb-1">{{$formato->otros ?? '-'}}</p>
           </div>
         </div>
       </div>
@@ -279,31 +279,31 @@
             <div class="row pt-3">
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">Aisl.(M):</label>
-                <p class="mb-1">{{$formato->testin_motor_aisl_m ?? '-'}}</p>
+                <p class="mb-1">{{$formato->motor_aisl_m ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">N° salidas:</label>
-                <p class="mb-1">{{$formato->testin_motor_nro_salidas ?? '-'}}</p>
+                <p class="mb-1">{{$formato->motor_nro_salidas ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">Conexión:</label>
-                <p class="mb-1">{{$formato->testin_motor_conexion ?? '-'}}</p>
+                <p class="mb-1">{{$formato->motor_conexion ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">Volt(v):</label>
-                <p class="mb-1">{{$formato->testin_motor_volt_v ?? '-'}}</p>
+                <p class="mb-1">{{$formato->motor_volt_v ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">Amp(A):</label>
-                <p class="mb-1">{{$formato->testin_motor_amp_a ?? '-'}}</p>
+                <p class="mb-1">{{$formato->motor_amp_a ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">RPM:</label>
-                <p class="mb-1">{{$formato->testin_motor_rpm ?? '-'}}</p>
+                <p class="mb-1">{{$formato->motor_rpm ?? '-'}}</p>
               </div>
               <div class="col-sm-6 col-md-4 mb-2">
                 <label class="c-label">Frec.(HZ):</label>
-                <p class="mb-1">{{$formato->testin_motor_frec_hz ?? '-'}}</p>
+                <p class="mb-1">{{$formato->motor_frec_hz ?? '-'}}</p>
               </div>
             </div>
           </div>
@@ -390,7 +390,7 @@
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">N° salidas:</label>
-            <p class="mb-1">{{$formato->nro_salidas ?? '-'}}</p>
+            <p class="mb-1">{{$formato->tran_nro_salidas ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Conexión:</label>

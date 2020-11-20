@@ -361,6 +361,7 @@ class ElectricalEvaluationController extends Controller
                     ->join('motor_models', 'motor_models.id', '=', 'ots.marca_id')
                     ->join('electrical_evaluations as ev', 'ev.ot_id', '=', 'ots.id')
                     ->join('eval_electrical_reception as eer', 'eer.eel_id', '=', 'ev.id')
+                    ->join('eval_electrical_test_in as eetesting', 'eetesting.eel_id', '=', 'ev.id')
                     ->join('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'ev.id')
                     ->select('electrical_evaluations.*', 'ots.descripcion_motor', 'ots.codigo_motor', 'ots.numero_potencia', 'ots.medida_potencia', 'ots.voltaje', 'ots.velocidad', 'ots.solped', 'motor_brands.name as marca', 'motor_models.name as modelo', 'eet.tap',
                         'eer.placa_caract_orig',
@@ -381,7 +382,45 @@ class ElectricalEvaluationController extends Controller
                         'eer.bornera_has',
                         'eer.funda_has',
                         'eer.chaveta_has',
-                        'eer.otros'
+                        'eer.otros',
+
+                        'eetesting.motor_aisl_m',
+                        'eetesting.motor_nro_salidas',
+                        'eetesting.motor_conexion',
+                        'eetesting.motor_volt_v',
+                        'eetesting.motor_amp_a',
+                        'eetesting.motor_rpm',
+                        'eetesting.motor_frec_hz',
+                        'eetesting.er_aisl_m',
+                        'eetesting.er_nro_salidas',
+                        'eetesting.er_conexion',
+                        'eetesting.er_volt_v',
+                        'eetesting.er_amp_a',
+                        'eetesting.er_nro_polos',
+
+                        'eet.tap as tran_tap',
+                        'eet.aisl_m as tran_aisl_m',
+                        'eet.nro_salidas as tran_nro_salidas',
+                        'eet.conexion as tran_conexion',
+                        'eet.volt_v as tran_volt_v',
+                        'eet.amp_a as tran_amp_a',
+                        'eet.nro_polos as tran_nro_polos',
+                        'eet.aisl_m_at_masa as tran_aisl_m_at_masa',
+                        'eet.st_masa as tran_st_masa',
+                        'eet.et_at as tran_et_at',
+                        'eet.grupo_conex as tran_grupo_conex',
+                        'eet.polaridad as tran_polaridad',
+                        'eet.relac_transf as tran_relac_transf',
+                        'eet.otp as tran_otp',
+                        'eet.tec as tran_tec',
+                        'eet.amp as tran_amp',
+                        'eet.rig_diel_aceite as tran_rig_diel_aceite',
+                        'eet.ruv as tran_ruv',
+                        'eet.rv_w as tran_rv_w',
+                        'eet.rw_u as tran_rw_u',
+                        'eet.ru_v as tran_ru_v',
+                        'eet.rv_u as tran_rv_u',
+                        'eet.ww as tran_ww'
                 )
                     ->where('ev.ot_id', $ot_id)->firstOrFail();
 

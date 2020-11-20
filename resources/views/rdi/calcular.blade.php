@@ -97,7 +97,7 @@
               <select style="width: 100%" name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca">
                 <option value="">Selecciona la marca</option>
                 @foreach($marcas as $marca)
-                <option value="{{ $marca->id }}" {{old('marca_id') == $marca->id ? 'selected' : ''}}>{{ $marca->name }}</option>
+                <option value="{{ $marca->id }}" {{old('marca_id', $ot->marca_id) == $marca->id ? 'selected' : ''}}>{{ $marca->name }}</option>
                 @endforeach
               </select>
             </div>

@@ -308,7 +308,7 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
     	var action = $(this).data('action');
     	$.ajax({
 	        type: "post",
-	        url: "{{route('rdi.approve', $rdi->ot_id)}}",
+	        url: "{{route('rdi.approve', $rdi->id)}}",
 	        data: {
 	        	_token: '{{csrf_token()}}',
 	        	action: action

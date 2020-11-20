@@ -360,8 +360,8 @@ class ElectricalEvaluationController extends Controller
                     ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                     ->join('motor_models', 'motor_models.id', '=', 'ots.marca_id')
                     ->join('electrical_evaluations as ev', 'ev.ot_id', '=', 'ots.id')
-                    ->join('eval_electrical_reception as eer', 'eer.eel_id', '=', 'ots.id')
-                    ->join('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'ots.id')
+                    ->join('eval_electrical_reception as eer', 'eer.eel_id', '=', 'ev.id')
+                    ->join('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'ev.id')
                     ->select('electrical_evaluations.*', 'ots.descripcion_motor', 'ots.codigo_motor', 'ots.numero_potencia', 'ots.medida_potencia', 'ots.voltaje', 'ots.velocidad', 'ots.solped', 'motor_brands.name as marca', 'motor_models.name as modelo', 'eet.tap',
                         'eer.placa_caract_orig',
                         'eer.escudos',

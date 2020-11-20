@@ -47,7 +47,7 @@
               @enderror
             </div>
             <div class="col-12">
-              <h4 class="second-title text-danger py-2">Estado de recepción</h4>
+              <h4 class="second-title text-danger py-2 d-flex justify-content-between align-items-center"><span>Estado de recepción</span> <span><button type="button" class="btn btn-yes btn-success btn-sm my-0 px-3">Sí</button><button type="button" class="btn btn-no btn-sm btn-danger my-0 px-3">No</button></span></h4>
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Placa Caract Orig</label>
@@ -582,6 +582,13 @@ if (row_index > 1) {
 $('#table-tap tbody tr:nth-child('+row_index+')').remove();
 }
 createJSON();
+})
+
+$('.btn-yes').click(function () {
+  $('input[type="radio"][value="1"]').prop('checked', true);
+})
+$('.btn-no').click(function () {
+  $('input[type="radio"][value="0"]').prop('checked', true);
 })
 })
 </script>

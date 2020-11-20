@@ -30,7 +30,7 @@ class ServiceController extends Controller
      */
     public function create(Request $request)
     {
-        $areas = Area::where('enabled', 1)->get();
+        $areas = Area::where('enabled', 1)->where('has_services', 1)->get();
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         return view('servicios.create', compact('areas'));
@@ -102,9 +102,8 @@ class ServiceController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
-        $areas = Area::where('enabled', 1)->get();
-        $service = Service::where('area_id', '<>', 1) // No area cliente
-                    ->findOrFail($id);
+        $areas = Area::where('enabled', 1)->where('has_services', 1)->get();
+        $service = Service::findOrFail($id);
         return view('servicios.edit', compact('service', 'areas'));
     }
 

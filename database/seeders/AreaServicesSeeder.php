@@ -16,10 +16,35 @@ class AreaServicesSeeder extends Seeder
     public function run()
     {
         //Areas
+        $area = new Area();
+        $area->name = 'ADMINISTRACIÓN';
+        $area->enabled = 1;
+        $area->has_services = 0;
+        $area->save();
+
+        $area = new Area();
+        $area->name = 'ALMACEN';
+        $area->enabled = 1;
+        $area->has_services = 0;
+        $area->save();
+
+        $area = new Area();
+        $area->name = 'VIGILANCIA';
+        $area->enabled = 1;
+        $area->has_services = 0;
+        $area->save();
+
+        $area = new Area();
+        $area->name = 'CONDUCTOR';
+        $area->enabled = 1;
+        $area->has_services = 0;
+        $area->save();
+
         //Area cliente
         $area = new Area();
         $area->name = 'CLIENTES';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
         //Servicios
         \DB::table('services')->insert(array (
@@ -41,6 +66,7 @@ class AreaServicesSeeder extends Seeder
         $area = new Area();
         $area->name = 'PRUEBAS';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
         //Servicios
         $service = new Service(); $service->name = 'TOMA DE DATOS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
@@ -64,6 +90,7 @@ class AreaServicesSeeder extends Seeder
         $area = new Area();
         $area->name = 'MECANICA';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
         //Servicios
         $service = new Service(); $service->name = 'DESMONTAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
@@ -83,6 +110,7 @@ class AreaServicesSeeder extends Seeder
         $area = new Area();
         $area->name = 'METALIZADO';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
         //Servicios
         $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE TURBINA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
@@ -101,6 +129,7 @@ class AreaServicesSeeder extends Seeder
         $area = new Area();
         $area->name = 'MAESTRANZA';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
         //Servicios
         $service = new Service(); $service->name = 'MAQUINADO ADAPTACIÓN FELPA EN CONTRATAPA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
@@ -138,6 +167,7 @@ class AreaServicesSeeder extends Seeder
         $area = new Area();
         $area->name = 'REBOBINADO';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
         //Servicios
         $service = new Service(); $service->name = 'EXTRACCIÓN DEL BOBINADO ORIGINAL'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
@@ -155,6 +185,7 @@ class AreaServicesSeeder extends Seeder
         $area = new Area();
         $area->name = 'SOLDADURA';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
         //Servicios
         $service = new Service(); $service->name = 'REPARACIÓN BASE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
@@ -171,12 +202,14 @@ class AreaServicesSeeder extends Seeder
         $area = new Area();
         $area->name = 'BALANCEO';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
         $service = new Service(); $service->name = 'BALANCEO DINÁMICO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
 
         $area = new Area();
         $area->name = 'ACABADOS';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
         //Servicios
         $service = new Service(); $service->name = 'LIMPIEZA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
@@ -186,6 +219,7 @@ class AreaServicesSeeder extends Seeder
         $area = new Area();
         $area->name = 'ALMACÉN';
         $area->enabled = 1;
+        $area->has_services = 1;
         $area->save();
 
         $service = new Service(); $service->name = 'SUMINISTRO Y FABRICACIÓN FUNDA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();

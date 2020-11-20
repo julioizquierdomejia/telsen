@@ -27,11 +27,11 @@
                   <th>Estado</th>
                   <th>Cliente</th>
                   <th>Potencia</th>
-                  <th class="text-center">Descripción del motor</th>
+                  <th class="text-center">Fecha de entrega</th>
                   <th class="text-center">Herramientas</th>
                 </thead>
                 <tbody>
-                  <tr><td class="text-center" colspan="6">No hay órdenes de trabajo.</td></tr>
+                  <tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>
                 </tbody>
               </table>
             </div>
@@ -45,12 +45,12 @@
                   <th>Estado</th>
                   <th>Cliente</th>
                   <th>Potencia</th>
-                  <th class="text-center">Descripción del motor</th>
+                  <th class="text-center">Fecha de entrega</th>
                   <th class="text-center">Herramientas</th>
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="text-center" colspan="6">No hay órdenes de trabajo desaprobadas.</td>
+                    <td class="text-center" colspan="7">No hay órdenes de trabajo desaprobadas.</td>
                   </tr>
                 </tbody>
               </table>
@@ -65,7 +65,7 @@
                   <th>Estado</th>
                   <th>Cliente</th>
                   <th>Potencia</th>
-                  <th class="text-center">Descripción del motor</th>
+                  <th class="text-center">Fecha de entrega</th>
                   <th class="text-center">Herramientas</th>
                 </thead>
                 <tbody>
@@ -113,7 +113,7 @@ $(document).ready(function() {
                 _token: '{{csrf_token()}}',
             },
             beforeSend: function(data) {
-                $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo.</td></tr>');
+                $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>');
             },
             success: function(response) {
                 if (response.success) {
@@ -124,6 +124,14 @@ $(document).ready(function() {
                             var date = new Date(item.created_at);
                             var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
                             var status = getStatus(item);
+                            var item_days = '';
+                            if(status.fecha_entrega) {
+                              start = new Date(status.fecha_entrega);
+                              end   = new Date();
+                              diff  = new Date(start - end);
+                              item_days  = '<span class="text-nowrap">quedan ' +parseInt(diff/1000/60/60/24) + ' días</span>';
+                            }
+
                             $('#nav-enabledots tbody').append(
                                 `<tr class="text-muted" data-id="`+item.id+`">
                                   <td class="text-nowrap">` + created_at + `</td>
@@ -135,7 +143,7 @@ $(document).ready(function() {
                                   <td><span class="align-middle">` + item.razon_social + "</span>"+((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1 align-middle">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
                                   `</td>
                                   <td class="text-center">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
-                                  <td class="text-center">` + item.descripcion_motor + `</td>
+                                  <td class="text-center">` + (status.fecha_entrega ? `<span class="badge badge-primary px-2 py-1 w-100">`+status.fecha_entrega+`</span>` + item_days : '-') + `</td>
                                   <td class="text-left text-nowrap">
 
                                   <a href="/ordenes/`+item.id+`/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
@@ -146,7 +154,7 @@ $(document).ready(function() {
                             );
                         })
                     } else {
-                        $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo.</td></tr>');
+                        $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>');
                     }
                 }
             },
@@ -182,7 +190,7 @@ $(document).ready(function() {
                     } else if(item.status_id == 6 || item.status_id == 9 || item.status_id == 11) {
                       status['html'] = `<span class="badge badge-success px-2 py-1 w-100">`+item.name+`</span>`
                       if(item.status_id == 11) {
-                      status['html'] += `<span class="badge badge-secondary px-2 py-1 w-100">`+element.fecha_entrega+`</span>`
+                      status['fecha_entrega'] = element.fecha_entrega
                     }
                     } else {
                       status['html'] = `<span class="badge badge-secondary px-2 py-1 w-100">`+item.name+`</span>`
@@ -233,7 +241,7 @@ $(document).ready(function() {
                 _token: '{{csrf_token()}}',
             },
             beforeSend: function(data) {
-                $('#nav-disapprovedots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo desaprobadas.</td></tr>');
+                $('#nav-disapprovedots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo desaprobadas.</td></tr>');
             },
             success: function(response) {
                 if (response.success) {
@@ -266,7 +274,7 @@ $(document).ready(function() {
                             );
                         })
                     } else {
-                        $('#nav-disapprovedots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo desaprobadas.</td></tr>');
+                        $('#nav-disapprovedots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo desaprobadas.</td></tr>');
                     }
                 }
             },
@@ -294,14 +302,16 @@ $(document).ready(function() {
                         $('#nav-disenabledots tbody').empty();
                         $.each(data, function(id, item) {
                             var date = new Date(item.created_at);
+                            var status = getStatus(item.id);
                             var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
                             $('#nav-disenabledots tbody').append(
                                 `<tr>
                     <td class="text-muted text-nowrap">` + created_at + `</td>
                     <td class="text-muted">OT-` + pad(item.id, 3) + `</td>
-                    <td class="text-muted text-center">
-                    <span class="badge badge-secondary px-2 py-1 w-100">OT Creada</span>
-                    </td>
+                    <td class="text-center">` +
+                                  status.html
+                                  +
+                                  `</td>
                     <td class="text-muted">` + item.razon_social + `
                     <span class="badge badge-primary">` + item.client_type + `</span>
                     </td>
@@ -348,7 +358,7 @@ $(document).ready(function() {
                     var data = $.parseJSON(response.data);
                     btn.parents('tr').remove();
                     if ($('#nav-disenabledots tbody tr').length == 0) {
-                        $('#nav-disenabledots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo eliminadas.</td></tr>');
+                        $('#nav-disenabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo eliminadas.</td></tr>');
                     }
                 }
             },
@@ -381,7 +391,7 @@ $(document).ready(function() {
                         $('.btn-mdelete[data-otid=' + btn.data('otid') + ']').parents('tr').remove();
                         $('#modalDelOT').modal('hide');
                         if ($('#nav-enabledots tbody tr').length == 0) {
-                            $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="6">No hay órdenes de trabajo.</td></tr>');
+                            $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>');
                         }
                     }
                 }

@@ -30231,6 +30231,10 @@ img {
   color: #e96115;
 }
 
+.badge {
+  font-size: 11px;
+}
+
 .modal-open .modal.show {
   display: flex !important;
   align-items: center;

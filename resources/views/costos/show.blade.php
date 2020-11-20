@@ -16,10 +16,16 @@ $cc_disapproved = in_array(7, $statuses);
 		<div class="card card-user form-card">
 			<div class="card-header">
 				<h5 class="card-title d-flex justify-content-between align-items-center">
-				<span>Tarjeta de Costo</span>
+				<span>Tarjeta de Costo
+			@if($ccost->fecha_entrega)
+			<p><span class="badge badge-success">Fecha de entrega: {{$ccost->fecha_entrega}}</span></p>
+			@endif</span>
 				<span class="card-title-buttons">
+					@if($ccost->fecha_entrega == null && in_array(6, $statuses))
+					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalFecha">Generar fecha de entrega</button>
+					@endif
 					@if ($ccost->cotizacion)
-					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalCotizar"><i class="fa fa-eye"></i> Ver Cotización</button>
+					<button type="button" class="btn btn-success mt-0" data-toggle="modal" data-target="#modalCotizar"><i class="fa fa-eye"></i> Ver Cotización</button>
 					@else
 					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalCotizar">Cotizar</button>
 					@endif
@@ -258,6 +264,29 @@ $cc_disapproved = in_array(7, $statuses);
 		</div>
 	</div>
 </div>
+<div class="modal fade" tabindex="-1" id="modalFecha">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Cotización de Tarjeta de Costo</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="text-center py-3">
+				@if (in_array(6, $statuses) && $ccost->fecha_entrega == null)
+				<form class="mt-3 px-3" enctype="multipart/form-data" action="{{route('ordenes.generateotdate', $ccost->ot_id)}}" method="POST" id="generateDateForm">
+					@csrf
+					<div class="form-group">
+						<input class="form-control" type="date" min="{{date('Y-m-d')}}" name="fecha_entrega" required="">
+					<button type="submit" class="btn btn-primary btn-sm px-md-5 btn-fecha_entrega">Generar fecha</button>
+					</div>
+				</form>
+				@endif
+			</div>
+		</div>
+	</div>
+</div>
 <div class="modal fade" tabindex="-1" id="modalCotizar">
 	<div class="modal-dialog @if($ccost->cotizacion) modal-lg @endif">
 		<div class="modal-content">
@@ -298,14 +327,14 @@ $cc_disapproved = in_array(7, $statuses);
               		<button type="button" class="btn btn-secondary btn-sm px-md-5" data-action="2">No Aprobar</button>
             	</div>
 			</div>
-			@else
+			@endif
 			<div class="text-center py-3">
 				@if(in_array(6, $statuses))
 				<span class="badge badge-success px-3 py-2">Cotización Aprobada</span>
 				@elseif(in_array(7, $statuses))
 				<span class="badge badge-secondary px-3 py-2">Cotización Desaprobada</span>
 				@endif
-				@if ($ccost->fecha_entrega == null)
+				@if (in_array(6, $statuses) && $ccost->fecha_entrega == null)
 				<form class="mt-3" enctype="multipart/form-data" action="{{route('ordenes.generateotdate', $ccost->ot_id)}}" method="POST" id="generateDateForm">
 					@csrf
 					<div class="form-group">
@@ -313,11 +342,8 @@ $cc_disapproved = in_array(7, $statuses);
 					<button type="submit" class="btn btn-secondary btn-sm px-md-5 btn-fecha_entrega">Generar fecha</button>
 					</div>
 				</form>
-				@else
-				<p>Fecha de entrega: {{$ccost->fecha_entrega}}</p>
 				@endif
 			</div>
-			@endif
 			@if($ccost->cotizacion)
 			<embed class="w-100" src="/uploads/cotizacion/{{$ccost->cotizacion}}" width="500" height="375" style="height: calc(100vh - 140px)" type="application/pdf">
 			@endif

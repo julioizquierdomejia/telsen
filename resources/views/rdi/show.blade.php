@@ -7,6 +7,7 @@ $ot_status = \DB::table('status_ot')
       ->select('status_ot.status_id', 'status.id', 'status.name')
       ->get();
 $status_last = $ot_status->last();
+$rdi_forapprove = ($status_last->status_id == 8);
 $rdi_approved = ($status_last->status_id == 9);
 $rdi_disapproved = $status_last->status_id == 10;
 $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
@@ -16,7 +17,8 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 		<div class="card card-user form-card">
 			<div class="card-header">
 				<h5 class="card-title d-flex justify-content-between align-items-center">
-					<span>Ver Reporte de Ingreso (R.D.I.)</span>
+					<span>Ver Reporte de Ingreso (R.D.I.)@if($rdi_forapprove)
+						<span class="badge badge-danger px-3 py-1">Por aprobar</span>@endif</span>
 					<span class="card-title-buttons text-right">
 						@if ($rdi_fecha)
 						<p class="mb-0 mt-2">Fecha de entrega <span class="badge badge-success px-3 py-1">{{date('d-m-Y', strtotime($rdi->fecha_entrega))}}</span></p>

@@ -173,7 +173,7 @@ $(document).ready(function() {
                     }
                     if(item.status_id == 4) {
                       status['html'] = `<span class="badge badge-primary px-2 py-1 w-100">`+item.name+`</span>`
-                    } else if(item.status_id == 5) {
+                    } else if(item.status_id == 5 || item.status_id == 8) {
                       status['html'] = `<span class="badge badge-danger px-2 py-1 w-100">`+item.name+`</span>`
                     } else if(item.status_id == 6) {
                       status['html'] = `<span class="badge badge-success px-2 py-1 w-100">`+item.name+`</span>`

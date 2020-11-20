@@ -359,12 +359,11 @@ class ElectricalEvaluationController extends Controller
                     join('ots', 'ots.id', '=', 'electrical_evaluations.ot_id')
                     ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                     ->join('motor_models', 'motor_models.id', '=', 'ots.marca_id')
-                    ->join('electrical_evaluations as ev', 'ev.ot_id', '=', 'ots.id')
-                    ->join('eval_electrical_reception as eer', 'eer.eel_id', '=', 'ev.id')
-                    ->join('eval_electrical_test_in as eetesting', 'eetesting.eel_id', '=', 'ev.id')
-                    ->join('eval_electrical_characteristics as eechar', 'eechar.eel_id', '=', 'ev.id')
-                    ->join('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'ev.id')
-                    ->select('electrical_evaluations.*', 'ots.descripcion_motor', 'ots.codigo_motor', 'ots.numero_potencia', 'ots.medida_potencia', 'ots.voltaje', 'ots.velocidad', 'ots.solped', 'motor_brands.name as marca', 'motor_models.name as modelo', 'eet.tap',
+                    ->join('eval_electrical_reception as eer', 'eer.eel_id', '=', 'electrical_evaluations.id')
+                    ->join('eval_electrical_test_in as eetesting', 'eetesting.eel_id', '=', 'electrical_evaluations.id')
+                    ->join('eval_electrical_characteristics as eechar', 'eechar.eel_id', '=', 'electrical_evaluations.id')
+                    ->join('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'electrical_evaluations.id')
+                    ->select('electrical_evaluations.*', 'ots.descripcion_motor', 'ots.codigo_motor', 'ots.numero_potencia', 'ots.medida_potencia', 'ots.voltaje', 'ots.velocidad', 'ots.solped', 'motor_brands.name as marca', 'motor_models.name as modelo',
                         'eer.placa_caract_orig as rec_placa_caract_orig',
                         'eer.escudos as rec_escudos',
                         'eer.ventilador as rec_ventilador',
@@ -442,7 +441,7 @@ class ElectricalEvaluationController extends Controller
                         'eechar.frecuencia as char_frecuencia',
                         'eechar.otros as char_otros'
                 )
-                    ->where('ev.ot_id', $ot_id)->firstOrFail();
+                    ->where('electrical_evaluations.ot_id', $ot_id)->firstOrFail();
 
         return view('formatos.electrical.show', compact('formato'));
     }

@@ -237,10 +237,10 @@ class RdiController extends Controller
 
         $exist_status = \DB::table('status_ot')
                         ->where('ot_id', $id)
-                        ->where('status_id', 9)->orWhere('status_id', 10)
+                        ->where('status_id', 9)->where('status_id', 10)
                         ->first();
         if ($exist_status) {
-            return response()->json(['data'=>'RDI ya cambió de estado' . $exist_status->id,'success'=>false]);
+            return response()->json(['data'=>'RDI ya cambió de estado', 'success'=>false]);
         } else {
             if ($action == 1) {
                 $status = Status::where('id', 9)->first();

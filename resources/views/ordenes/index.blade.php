@@ -120,7 +120,7 @@ $(document).ready(function() {
                         $.each(data, function(id, item) {
                             var date = new Date(item.created_at);
                             var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-                            var status = getStatus(item.id);
+                            var status = getStatus(item);
                             $('#nav-enabledots tbody').append(
                                 `<tr class="text-muted" data-id="`+item.id+`">
                                   <td class="text-nowrap">` + created_at + `</td>
@@ -153,11 +153,11 @@ $(document).ready(function() {
         });
     });
 
-    function getStatus(id) {
+    function getStatus(element) {
       var status = [];
       $.ajax({
         type: "get",
-        url: "/ordenes/"+id+"/status",
+        url: "/ordenes/"+element.id+"/status",
         data: {
             _token: '{{csrf_token()}}',
         },
@@ -175,8 +175,11 @@ $(document).ready(function() {
                       status['html'] = `<span class="badge badge-primary px-2 py-1 w-100">`+item.name+`</span>`
                     } else if(item.status_id == 5 || item.status_id == 8) {
                       status['html'] = `<span class="badge badge-danger px-2 py-1 w-100">`+item.name+`</span>`
-                    } else if(item.status_id == 6) {
+                    } else if(item.status_id == 6 || item.status_id == 9 || item.status_id == 11) {
                       status['html'] = `<span class="badge badge-success px-2 py-1 w-100">`+item.name+`</span>`
+                      if(item.status_id == 11) {
+                      status['html'] += `<span class="badge badge-secondary px-2 py-1 w-100">`+element.fecha_entrega+`</span>`
+                    }
                     } else {
                       status['html'] = `<span class="badge badge-secondary px-2 py-1 w-100">`+item.name+`</span>`
                     }

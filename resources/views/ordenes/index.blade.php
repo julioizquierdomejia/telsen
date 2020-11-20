@@ -148,7 +148,7 @@ $(document).ready(function() {
                                   <td><span class="align-middle">` + item.razon_social + "</span>"+((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1 align-middle">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
                                   `</td>
                                   <td class="text-left">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
-                                  <td class="text-center">` + item_days + `</td>
+                                  <td class="text-center" style="background-color: #edd9d9">` + item_days + `</td>
                                   <td class="text-left text-nowrap">
 
                                   <a href="/ordenes/`+item.id+`/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>

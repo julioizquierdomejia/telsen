@@ -41,63 +41,63 @@
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Tapas</label>
-						<p class="mb-0">{{$formato->tapas ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->tapas_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->tapas_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->tapas ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Ventilador</label>
-						<p class="mb-0">{{$formato->ventilador ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->ventilador_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->ventilador_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->ventilador ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Caja Conexión</label>
-						<p class="mb-0">{{$formato->caja_conexion ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->caja_conexion_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->caja_conexion_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->caja_conexion ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Ejes</label>
-						<p class="mb-0">{{$formato->ejes ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->ejes_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->ejes_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->ejes ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Acople</label>
-						<p class="mb-0">{{$formato->acople ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->acople_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->acople_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->acople ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Bornera</label>
-						<p class="mb-0">{{$formato->bornera ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->bornera_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->bornera_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->bornera ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Fundas</label>
-						<p class="mb-0">{{$formato->fundas ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->fundas_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->fundas_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->fundas ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Chaveta</label>
-						<p class="mb-0">{{$formato->chaveta ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->chaveta_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->chaveta_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->chaveta ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Impro Seal</label>
-						<p class="mb-0">{{$formato->impro_seal ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->impro_seal_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->impro_seal_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->impro_seal ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Laberintos</label>
-						<p class="mb-0">{{$formato->laberintos ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->laberintos_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->laberintos_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->laberintos ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Estator</label>
-						<p class="mb-0">{{$formato->estator ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->estator_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->estator_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->estator ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Slam muelle p1</label>
-						<p class="mb-0">{{$formato->slam_muelle_p1 ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->slam_muelle_p1_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->slam_muelle_p1_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->slam_muelle_p1 ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Slam muelle p2</label>
-						<p class="mb-0">{{$formato->slam_muelle_p2 ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->slam_muelle_p2_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->slam_muelle_p2_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->slam_muelle_p2 ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Resortes contra tapas</label>
-						<p class="mb-0">{{$formato->resortes_contra_tapas ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->resortes_contra_tapas_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->resortes_contra_tapas_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->resortes_contra_tapas ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Alieneamiento paquete</label>
-						<p class="mb-0">{{$formato->alineamiento_paquete ?? '-'}}</p>
+						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->alineamiento_paquete_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->alineamiento_paquete_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->alineamiento_paquete ?? '-'}}</span></p>
 					</div>
 					<div class="col-12">
 						<h4 class="second-title text-danger py-2">ROTOR:</h4>

@@ -223,39 +223,39 @@
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Placa caract. Orig:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->placa_caract_orig_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->placa_caract_orig_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->placa_caract_orig ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->placa_caract_orig_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->placa_caract_orig_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->placa_caract_orig ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Escudos:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->escudos_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->escudos_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->escudos ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->escudos_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->escudos_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->escudos ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Ventilador:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->ventilador_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->ventilador_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->ventilador ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->ventilador_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->ventilador_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->ventilador ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Caja de Conexión:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->caja_conexion_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->caja_conexion_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->caja_conexion ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->caja_conexion_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->caja_conexion_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->caja_conexion ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Ejes:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->ejes_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->ejes_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->ejes ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->ejes_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->ejes_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->ejes ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Acople:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->acople_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->acople_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->acople ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->acople_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->acople_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->acople ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Bornera:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->bornera_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->bornera_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->bornera ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->bornera_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->bornera_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->bornera ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Funda:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->funda_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->funda_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->funda ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->funda_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->funda_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->funda ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Chaveta:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->chaveta_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->chaveta_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->chaveta ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->chaveta_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->chaveta_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->chaveta ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Otros:</label>

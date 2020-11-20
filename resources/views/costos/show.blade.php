@@ -334,15 +334,6 @@ $cc_disapproved = in_array(7, $statuses);
 				@elseif(in_array(7, $statuses))
 				<span class="badge badge-secondary px-3 py-2">Cotización Desaprobada</span>
 				@endif
-				@if (in_array(6, $statuses) && $ccost->fecha_entrega == null)
-				<form class="mt-3" enctype="multipart/form-data" action="{{route('ordenes.generateotdate', $ccost->ot_id)}}" method="POST" id="generateDateForm">
-					@csrf
-					<div class="form-group">
-						<input class="form-control" type="date" min="{{date('Y-m-d')}}" name="fecha_entrega" required="">
-					<button type="submit" class="btn btn-secondary btn-sm px-md-5 btn-fecha_entrega">Generar fecha</button>
-					</div>
-				</form>
-				@endif
 			</div>
 			@if($ccost->cotizacion)
 			<embed class="w-100" src="/uploads/cotizacion/{{$ccost->cotizacion}}" width="500" height="375" style="height: calc(100vh - 140px)" type="application/pdf">

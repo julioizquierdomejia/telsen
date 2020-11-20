@@ -318,12 +318,10 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 	        },
 	        success: function (response) {
 	        	if(response.success) {
-	        		if(action == 2) {
-	        			$('#modalAprobar').modal('hide');
-			        	setTimeout(function () {
-		        			location.reload();
-		        		}, 200)
-	        		}
+        			$('#modalAprobar').modal('hide');
+		        	setTimeout(function () {
+	        			location.reload();
+	        		}, 200)
 	        	} else if(response.data) {
 	        		$('.confirmar_ots .btn').attr('disabled', true);
 	        		$('.c-ots').html(response.data);

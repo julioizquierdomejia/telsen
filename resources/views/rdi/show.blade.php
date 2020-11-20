@@ -39,107 +39,107 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 				<input type="text" class="form-control d-none @error('ot_id') is-invalid @enderror" placeholder="" value="{{$rdi->id}}" name='ot_id' id="ot_id" readonly="">
 				<div class="row">
 					<div class="col-6 col-md-3 col-xl-3 form-group">
-						<label class="col-form-label" for="rdi_codigo">RDI Código</label>
-						<p class="form-control mb-0">{{$rdi->rdi_codigo}}</p>
+						<label class="col-label" for="rdi_codigo">RDI Código</label>
+						<p class="mb-0">{{$rdi->rdi_codigo}}</p>
 					</div>
 					<div class="col-6 col-md-3 col-xl-2 form-group">
-						<label class="col-form-label" for="version">Versión</label>
-						<p class="form-control mb-0">{{$rdi->version}}</p>
+						<label class="col-label" for="version">Versión</label>
+						<p class="mb-0">{{$rdi->version}}</p>
 					</div>
 					<div class="col-6 col-md-3 col-xl-3 form-group">
-						<label class="col-form-label">Fecha</label>
-						<p class="form-control mb-0">{{date('d-m-Y', strtotime($rdi->created_at))}}</p>
+						<label class="col-label">Fecha</label>
+						<p class="mb-0">{{date('d-m-Y', strtotime($rdi->created_at))}}</p>
 					</div>
 					<div class="col-md-4 form-group">
-						<label class="col-form-label" for="contact">Contacto</label>
-						<p class="form-control mb-0">{{ $rdi->contact ?? '-' }}</p>
+						<label class="col-label" for="contact">Contacto</label>
+						<p class="mb-0">{{ $rdi->contact ?? '-' }}</p>
 					</div>
 					<div class="col-md-3 form-group">
-						<label class="col-form-label" for="area">Area</label>
-						<p class="form-control mb-0">{{$rdi->area ?? '-' }}</p>
+						<label class="col-label" for="area">Area</label>
+						<p class="mb-0">{{$rdi->area ?? '-' }}</p>
 					</div>
 					<div class="col-md-3 form-group">
-						<label class="col-form-label" for="equipo">Equipo</label>
-						<p class="form-control mb-0">{{$rdi->equipo ?? '-' }}</p>
+						<label class="col-label" for="equipo">Equipo</label>
+						<p class="mb-0">{{$rdi->equipo ?? '-' }}</p>
 					</div>
 					<div class="col-md-2 form-group">
-						<label class="col-form-label" for="codigo">Código</label>
-						<p class="form-control mb-0">{{$rdi->codigo ?? '-' }}</p>
+						<label class="col-label" for="codigo">Código</label>
+						<p class="mb-0">{{$rdi->codigo ?? '-' }}</p>
 					</div>
 					<div class="col-md-4 form-group">
-						<label class="col-form-label" for="razon_social">Razón social</label>
-						<p class="form-control mb-0">{{$rdi->razon_social}}</p>
+						<label class="col-label" for="razon_social">Razón social</label>
+						<p class="mb-0">{{$rdi->razon_social}}</p>
 					</div>
 					<div class="col-md-3 form-group">
-						<label class="col-form-label" for="fecha_ingreso">Fecha de ingreso</label>
-						<p class="form-control mb-0">{{ date('d-m-Y', strtotime($rdi->fecha_ingreso)) }}</p>
+						<label class="col-label" for="fecha_ingreso">Fecha de ingreso</label>
+						<p class="mb-0">{{ date('d-m-Y', strtotime($rdi->fecha_ingreso)) }}</p>
 					</div>
 					<div class="col-md-3 form-group">
-						<label class="col-form-label" for="tiempo_entrega">Tiempo de entrega</label>
-						<p class="form-control mb-0">{{$rdi->tiempo_entrega}}</p>
+						<label class="col-label" for="tiempo_entrega">Tiempo de entrega</label>
+						<p class="mb-0">{{$rdi->tiempo_entrega}}</p>
 					</div>
 					<div class="col-md-3 form-group">
-						<label class="col-form-label" for="orden_servicio">Orden de servicio</label>
-						<p class="form-control mb-0">{{ $rdi->orden_servicio ?? '-' }}</p>
+						<label class="col-label" for="orden_servicio">Orden de servicio</label>
+						<p class="mb-0">{{ $rdi->orden_servicio ?? '-' }}</p>
 					</div>
 					<div class="col-md-3 col-xl-3 form-group">
-						<label class="col-form-label">Hecho por</label>
-						<p class="form-control mb-0">{{$rdi->hecho_por ?? '-'}}</p>
+						<label class="col-label">Hecho por</label>
+						<p class="mb-0">{{$rdi->hecho_por ?? '-'}}</p>
 					</div>
 				</div>
 				<h5 class="text-danger mt-4">Características del Motor</h5>
 				<div class="row">
 					<div class="col-6 col-md-3 form-group">
-						<label class="col-form-label" for="selectMarca">Marca</label>
-						<p class="form-control mb-0">{{$rdi->marca}}</p>
+						<label class="col-label" for="selectMarca">Marca</label>
+						<p class="mb-0">{{$rdi->marca}}</p>
 					</div>
 					<div class="col-md-2 form-group">
-						<label class="col-form-label">N° Serie</label>
-						<p class="form-control mb-0">{{$rdi->nro_serie ?? '-'}}</p>
+						<label class="col-label">N° Serie</label>
+						<p class="mb-0">{{$rdi->nro_serie ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-2 form-group">
-						<label class="col-form-label">Frame</label>
-						<p class="form-control mb-0">{{$rdi->frame ?? '-'}}</p>
+						<label class="col-label">Frame</label>
+						<p class="mb-0">{{$rdi->frame ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-2 form-group">
-						<label class="col-form-label">Potencia</label>
-						<p class="form-control mb-0">{{$rdi->potencia ?? '-'}}</p>
+						<label class="col-label">Potencia</label>
+						<p class="mb-0">{{$rdi->potencia ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-2 form-group">
-						<label class="col-form-label">Tensión</label>
-						<p class="form-control mb-0">{{$rdi->tension ?? '-'}}</p>
+						<label class="col-label">Tensión</label>
+						<p class="mb-0">{{$rdi->tension ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
-						<label class="col-form-label">Corriente</label>
-						<p class="form-control mb-0">{{$rdi->corriente ?? '-'}}</p>
+						<label class="col-label">Corriente</label>
+						<p class="mb-0">{{$rdi->corriente ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
-						<label class="col-form-label">Velocidad</label>
-						<p class="form-control mb-0">{{$rdi->velocidad ?? '-'}}</p>
+						<label class="col-label">Velocidad</label>
+						<p class="mb-0">{{$rdi->velocidad ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
-						<label class="col-form-label">Conexión</label>
-						<p class="form-control mb-0">{{$rdi->conexion ?? '-'}}</p>
+						<label class="col-label">Conexión</label>
+						<p class="mb-0">{{$rdi->conexion ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
-						<label class="col-form-label">Deflexión del Eje</label>
-						<p class="form-control mb-0">{{$rdi->deflexion_eje ?? '-'}}</p>
+						<label class="col-label">Deflexión del Eje</label>
+						<p class="mb-0">{{$rdi->deflexion_eje ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
-						<label class="col-form-label">Rodaje delantero</label>
-						<p class="form-control mb-0">{{$rdi->rodaje_delantero ?? '-'}}</p>
+						<label class="col-label">Rodaje delantero</label>
+						<p class="mb-0">{{$rdi->rodaje_delantero ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
-						<label class="col-form-label">Rodaje posterior</label>
-						<p class="form-control mb-0">{{$rdi->rodaje_posterior ?? '-'}}</p>
+						<label class="col-label">Rodaje posterior</label>
+						<p class="mb-0">{{$rdi->rodaje_posterior ?? '-'}}</p>
 					</div>
 					<div class="col-md-12 form-group">
-						<label class="col-form-label">ANTECEDENTES</label>
-						<p class="form-control mb-0">{{$rdi->antecedentes ?? '-'}}</p>
+						<label class="col-label">ANTECEDENTES</label>
+						<p class="mb-0">{{$rdi->antecedentes ?? '-'}}</p>
 					</div>
 					<div class="col-md-12">
-						<label class="col-form-label">Ingresó con:</label>
-						<div class="form-control mb-4" style="height: auto">
+						<label class="col-label">Ingresó con:</label>
+						<div class="mb-4">
 							@if($ingresos)
 							<ul class="form-check-list list-inline m-0">
 								<li class="form-check-inline">
@@ -194,8 +194,8 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 				</div>
 				<div class="row">
 					<div class="col-12 col-md-6 mb-4">
-						<label class="col-form-label">ACTIVIDADES POR REALIZAR</label>
-						<div class="form-control h-100">
+						<label class="col-label">ACTIVIDADES POR REALIZAR</label>
+						<div class="h-100">
 							<ul class="form-check-list list-inline m-0">
 								@foreach($services as $service)
 								@php
@@ -211,28 +211,28 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 						</div>
 					</div>
 					<div class="col-12 col-md-6 mb-4">
-						<label class="col-form-label" for="diagnostico_actual">DIAGNOSTICO ACTUAL</label>
-						<span class="form-control h-100" id="diagnostico_actual">{{$rdi->diagnostico_actual}}</span>
+						<label class="col-label" for="diagnostico_actual">DIAGNOSTICO ACTUAL</label>
+						<span class="d-block h-100" id="diagnostico_actual">{{$rdi->diagnostico_actual}}</span>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-12 form-group">
-						<label class="col-form-label">Aislamiento a Masa (Ingreso)</label>
-						<p class="form-control mb-0">{{$rdi->aislamiento_masa_ingreso}}</p>
+						<label class="col-label">Aislamiento a Masa (Ingreso)</label>
+						<p class="mb-0">{{$rdi->aislamiento_masa_ingreso}}</p>
 					</div>
-					<div class="col-12 form-group">
-						<label class="col-form-label">TIPO DE MANTENIMIENTO (Seleccione según corresponda)</label>
-						<p class="form-control mb-0">{{$rdi->maintenancetype}}</p>
+					<div class="col-12 col-md-6 form-group">
+						<label class="col-label">TIPO DE MANTENIMIENTO (Seleccione según corresponda)</label>
+						<p class="mb-0"><span class="badge badge-primary px-3 py-1">{{$rdi->maintenancetype}}</span></p>
 					</div>
-					<div class="col-12 form-group">
-						<label class="col-form-label">CRITICIDAD (Seleccione según corresponda)</label>
-						<p class="form-control mb-0">{{$rdi->criticalitytype}}</p>
+					<div class="col-12 col-md-6 form-group">
+						<label class="col-label">CRITICIDAD (Seleccione según corresponda)</label>
+						<p class="mb-0"><span class="badge badge-primary px-3 py-1">{{$rdi->criticalitytype}}</span></p>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-3 form-group">
-						<label class="col-form-label">Estado</label>
-						<p class="form-control mb-0">
+						<label class="col-label">Estado</label>
+						<p class="mb-0">
 							@if ($rdi->enabled)
 							<span class="badge badge-success px-4 py-2">Activo</span>
 							@else
@@ -272,7 +272,7 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
         	@if(!$rdi_fecha && $rdi_approved)
         	<div class="row fecha_entrega text-center">
 	          	<div class="col-12">
-	          		<p><label class="col-form-label" for="fecha_entrega">Fecha de entrega</label></p>
+	          		<p><label class="col-label" for="fecha_entrega">Fecha de entrega</label></p>
 	          		<input class="form-control" min="{{date('Y-m-d')}}" type="date" id="fecha_entrega" name="fecha_entrega">
 	          		<p class="c-ots message text-danger"></p>
 	          		<button type="button" class="btn btn-primary btn-sm px-md-5" id="btngenerateOTDate">Confirmar</button>

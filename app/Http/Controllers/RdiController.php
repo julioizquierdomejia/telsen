@@ -286,8 +286,8 @@ class RdiController extends Controller
         $ingresos = RdiIngreso::where('rdi_id', $id)->first();
 
         $services = RdiServiceCost::where('rdi_id', $id)
-                    ->join('rdi_services', 'rdi_services.id', '=', 'rdi_service_costs.service_id')
-                    ->select('rdi_services.id', 'rdi_services.name', 'rdi_service_costs.subtotal')
+                    ->join('services', 'services.id', '=', 'rdi_service_costs.service_id')
+                    ->select('services.id', 'services.name', 'rdi_service_costs.subtotal')
                     ->get();
 
         return view('rdi.show', compact('rdi', 'services', 'ingresos'));

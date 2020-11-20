@@ -41,55 +41,55 @@ $status_last = $ot_status->last();
 			<div class="card-body">
 				<div class="row">
 					<div class="col-md-3 mb-2">
-						<label class="col-form-label">Fecha de creación <span class="text-danger">(*)</span></label>
-						<p class="form-control mb-1">{{date('d-m-Y', strtotime($ot->created_at))}}</p>
+						<label class="col-label">Fecha de creación <span class="text-danger">(*)</span></label>
+						<p class="mb-1">{{date('d-m-Y', strtotime($ot->created_at))}}</p>
 					</div>
 					<div class="col-md-2 mb-2">
-						<label class="col-form-label">Vendedor</label>
-						<p class="form-control mb-1">{{$ot->guia_cliente ?? '-'}}</p>
+						<label class="col-label">Vendedor</label>
+						<p class="mb-1">{{$ot->guia_cliente ?? '-'}}</p>
 					</div>
 					<div class="col-md-5 mb-2">
-						<label class="col-form-label" for="selectRuc">Razón social:</label>
-						<p class="form-control mb-1">{{ $ot->razon_social }}</p>
+						<label class="col-label" for="selectRuc">Razón social:</label>
+						<p class="mb-1">{{ $ot->razon_social }}</p>
 					</div>
 					<div class="col-md-2 mb-2">
-						<label class="col-form-label" for="selectRuc">Tipo cliente:</label>
-						<p class="form-control mb-1"><span class="badge badge-primary px-3">{{ $ot->tipo_cliente }}</span></p>
+						<label class="col-label" for="selectRuc">Tipo cliente:</label>
+						<p class="mb-1"><span class="badge badge-primary px-3">{{ $ot->tipo_cliente }}</span></p>
 					</div>
 				</div>
 				<h5 class="second-title text-danger py-2">Datos del Motor</h5>
 				<div class="row">
 					<div class="col-md-12 mb-2">
-						<label class="col-form-label">Descripción del motor</label>
-						<p class="form-control mb-1">{{$ot->descripcion_motor ?? '-'}}</p>
+						<label class="col-label">Descripción del motor</label>
+						<p class="mb-1">{{$ot->descripcion_motor ?? '-'}}</p>
 					</div>
 					<div class="col-md-4 mb-2">
-						<label class="col-form-label">Código</label>
-						<p class="form-control mb-1">{{$ot->codigo_motor ?? '-'}}</p>
+						<label class="col-label">Código</label>
+						<p class="mb-1">{{$ot->codigo_motor ?? '-'}}</p>
 					</div>
 					<div class="col-md-4 mb-2">
-						<label class="col-form-label">Marca</label>
-						<p class="form-control mb-1">{{$ot->marca ?? '-'}}</p>
+						<label class="col-label">Marca</label>
+						<p class="mb-1">{{$ot->marca ?? '-'}}</p>
 					</div>
 					<div class="col-md-4  mb-2">
-						<label class="col-form-label">Modelo</label>
-						<p class="form-control mb-1">{{ $ot->modelo ?? '-' }}</p>
+						<label class="col-label">Modelo</label>
+						<p class="mb-1">{{ $ot->modelo ?? '-' }}</p>
 					</div>
 					<div class="col-md-3 mb-2">
-						<label class="col-form-label">Numero de potencia</label>
-						<p class="form-control mb-1">{{$ot->numero_potencia ?? '-'}}</p>
+						<label class="col-label">Numero de potencia</label>
+						<p class="mb-1">{{$ot->numero_potencia ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 mb-2">
-						<label class="col-form-label">Medida de potencia</label>
-						<p class="form-control mb-1">{{$ot->medida_potencia ?? '-'}}</p>
+						<label class="col-label">Medida de potencia</label>
+						<p class="mb-1">{{$ot->medida_potencia ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 mb-2">
-						<label class="col-form-label">Voltaje</label>
-						<p class="form-control mb-1">{{$ot->voltaje ?? '-'}}</p>
+						<label class="col-label">Voltaje</label>
+						<p class="mb-1">{{$ot->voltaje ?? '-'}}</p>
 					</div>
 					<div class="col-md-3 mb-2">
-						<label class="col-form-label">Velocidad</label>
-						<p class="form-control mb-1">{{$ot->velocidad ?? '-'}}</p>
+						<label class="col-label">Velocidad</label>
+						<p class="mb-1">{{$ot->velocidad ?? '-'}}</p>
 					</div>
 				</div>
 				</div>

@@ -26,6 +26,7 @@
                   <th class="text-nowrap">N° de OT</th>
                   <th>Estado</th>
                   <th>Cliente</th>
+                  <th>Potencia</th>
                   <th class="text-center">Descripción del motor</th>
                   <th class="text-center">Herramientas</th>
                 </thead>
@@ -43,6 +44,7 @@
                   <th class="text-nowrap">N° de OT</th>
                   <th>Estado</th>
                   <th>Cliente</th>
+                  <th>Potencia</th>
                   <th class="text-center">Descripción del motor</th>
                   <th class="text-center">Herramientas</th>
                 </thead>
@@ -62,6 +64,7 @@
                   <th class="text-nowrap">N° de OT</th>
                   <th>Estado</th>
                   <th>Cliente</th>
+                  <th>Potencia</th>
                   <th class="text-center">Descripción del motor</th>
                   <th class="text-center">Herramientas</th>
                 </thead>
@@ -131,6 +134,7 @@ $(document).ready(function() {
                                   `</td>
                                   <td><span class="align-middle">` + item.razon_social + "</span>"+((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1 align-middle">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
                                   `</td>
+                                  <td class="text-center">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
                                   <td class="text-center">` + item.descripcion_motor + `</td>
                                   <td class="text-left text-nowrap">
 
@@ -250,6 +254,7 @@ $(document).ready(function() {
                                   `</td>
                                   <td><span class="align-middle">` + item.razon_social + "</span>"+((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1 align-middle">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
                                   `</td>
+                                  <td class="text-center">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
                                   <td class="text-center">` + item.descripcion_motor + `</td>
                                   <td class="text-left text-nowrap">
 
@@ -300,6 +305,7 @@ $(document).ready(function() {
                     <td class="text-muted">` + item.razon_social + `
                     <span class="badge badge-primary">` + item.client_type + `</span>
                     </td>
+                    <td class="text-center">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
                     <td class="text-muted text-center">` + item.descripcion_motor + `</td>
                     <td class="text-muted text-left text-nowrap">
                       <button data-href="/ordenes/` + item.id + `/activar" class="btn btn-sm btn-primary btn-enablingot"><i class="fal fa-trash-restore"></i> Restaurar</button>

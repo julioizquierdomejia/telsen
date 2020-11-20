@@ -47,12 +47,12 @@
           
           <div class="row">
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Numero de potencia</label>
-              <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Número de potencia" value="{{old('numero_potencia', $ot->numero_potencia)}}" name="numero_potencia">
+              <label class="col-form-label">Potencia</label>
+              <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Potencia" value="{{old('numero_potencia', $ot->numero_potencia)}}" name="numero_potencia">
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Medida de potencia</label>
-              <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Medida de medida_potencia" value="{{old('medida_potencia', $ot->medida_potencia)}}" name="medida_potencia">
+              <label class="col-form-label">Unidad de medida (hp/kw)</label>
+              <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Unidad de medida (hp/kw)" value="{{old('medida_potencia', $ot->medida_potencia)}}" name="medida_potencia">
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Voltaje</label>

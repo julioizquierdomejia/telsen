@@ -47,7 +47,7 @@
               @enderror
             </div>
             <div class="col-12">
-              <h4>Estado de recepción</h4>
+              <h4 class="second-title text-danger py-2">Estado de recepción</h4>
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Placa Caract Orig</label>
@@ -303,90 +303,34 @@
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Slam muelle p1</label>
-              <div class="d-flex">
-                <ul class="form-check-list list-inline mb-0 col-7 @error('slam_muelle_p1_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="slam_muelle_p1_has" {{old('slam_muelle_p1_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="slam_muelle_p1_has" {{old('slam_muelle_p1_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-                <input type="text" class="form-control col-5 @error('slam_muelle_p1') is-invalid @enderror" placeholder="Slam muelle p1" value="{{old('slam_muelle_p1')}}" name="slam_muelle_p1">
-              </div>
+              <input type="text" class="form-control col-5 @error('slam_muelle_p1') is-invalid @enderror" placeholder="Slam muelle p1" value="{{old('slam_muelle_p1')}}" name="slam_muelle_p1">
               @error('slam_muelle_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Slam muelle p2</label>
-              <div class="d-flex">
-                <ul class="form-check-list list-inline mb-0 col-7 @error('slam_muelle_p2_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="slam_muelle_p2_has" {{old('slam_muelle_p2_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="slam_muelle_p2_has" {{old('slam_muelle_p2_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-                <input type="text" class="form-control col-5 @error('slam_muelle_p2') is-invalid @enderror" placeholder="Slam muelle p2" value="{{old('slam_muelle_p2')}}" name="slam_muelle_p2">
-              </div>
+              <input type="text" class="form-control col-5 @error('slam_muelle_p2') is-invalid @enderror" placeholder="Slam muelle p2" value="{{old('slam_muelle_p2')}}" name="slam_muelle_p2">
               @error('slam_muelle_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Resortes contra tapas</label>
-              <div class="d-flex">
-                <ul class="form-check-list list-inline mb-0 col-7 @error('resortes_contra_tapas_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="resortes_contra_tapas_has" {{old('resortes_contra_tapas_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="resortes_contra_tapas_has" {{old('resortes_contra_tapas_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-                <input type="text" class="form-control col-5 @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Resortes contra tapas" value="{{old('resortes_contra_tapas')}}" name="resortes_contra_tapas">
-              </div>
+              <input type="text" class="form-control col-5 @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Resortes contra tapas" value="{{old('resortes_contra_tapas')}}" name="resortes_contra_tapas">
               @error('resortes_contra_tapas')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Alieneamiento paquete</label>
-              <div class="d-flex">
-                <ul class="form-check-list list-inline mb-0 col-7 @error('alineamiento_paquete_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="alineamiento_paquete_has" {{old('alineamiento_paquete_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="alineamiento_paquete_has" {{old('alineamiento_paquete_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-                <input type="text" class="form-control col-5 @error('alineamiento_paquete') is-invalid @enderror" placeholder="Alieneamiento paquete" value="{{old('alineamiento_paquete')}}" name="alineamiento_paquete">
-              </div>
+              <input type="text" class="form-control col-5 @error('alineamiento_paquete') is-invalid @enderror" placeholder="Alieneamiento paquete" value="{{old('alineamiento_paquete')}}" name="alineamiento_paquete">
               @error('alineamiento_paquete')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-12">
-              <h4>ROTOR:</h4>
+              <h4 class="second-title text-danger py-2">ROTOR:</h4>
             </div>
             <div class="col-6 col-sm-6 col-lg-3 form-group">
               <label class="col-form-label">Rotor deplexion eje</label>
@@ -459,7 +403,7 @@
               @enderror
             </div>
             <div class="col-12">
-              <h4>Estator</h4>
+              <h4 class="second-title text-danger py-2">Estator</h4>
             </div>
             <div class="col-6 col-sm-6 col-lg-3 form-group">
               <label class="col-form-label">Estator alojamiento rodaje tapa p10</label>

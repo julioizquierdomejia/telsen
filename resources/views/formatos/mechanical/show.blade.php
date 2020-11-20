@@ -85,19 +85,19 @@
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Slam muelle p1</label>
-						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->slam_muelle_p1_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->slam_muelle_p1_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->slam_muelle_p1 ?? '-'}}</span></p>
+						<p class="mb-0">{{$formato->slam_muelle_p1 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Slam muelle p2</label>
-						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->slam_muelle_p2_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->slam_muelle_p2_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->slam_muelle_p2 ?? '-'}}</span></p>
+						<p class="mb-0">{{$formato->slam_muelle_p2 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Resortes contra tapas</label>
-						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->resortes_contra_tapas_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->resortes_contra_tapas_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->resortes_contra_tapas ?? '-'}}</span></p>
+						<p class="mb-0">{{$formato->resortes_contra_tapas ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Alieneamiento paquete</label>
-						<p class="mb-0"><span class="badge align-middle mr-2 px-3 py-1{{$formato->alineamiento_paquete_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->alineamiento_paquete_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->alineamiento_paquete ?? '-'}}</span></p>
+						<p class="mb-0">{{$formato->alineamiento_paquete ?? '-'}}</p>
 					</div>
 					<div class="col-12">
 						<h4 class="second-title text-danger py-2">ROTOR:</h4>

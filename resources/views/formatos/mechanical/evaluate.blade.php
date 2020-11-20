@@ -303,28 +303,28 @@
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Slam muelle p1</label>
-              <input type="text" class="form-control col-5 @error('slam_muelle_p1') is-invalid @enderror" placeholder="Slam muelle p1" value="{{old('slam_muelle_p1')}}" name="slam_muelle_p1">
+              <input type="text" class="form-control @error('slam_muelle_p1') is-invalid @enderror" placeholder="Slam muelle p1" value="{{old('slam_muelle_p1')}}" name="slam_muelle_p1">
               @error('slam_muelle_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Slam muelle p2</label>
-              <input type="text" class="form-control col-5 @error('slam_muelle_p2') is-invalid @enderror" placeholder="Slam muelle p2" value="{{old('slam_muelle_p2')}}" name="slam_muelle_p2">
+              <input type="text" class="form-control @error('slam_muelle_p2') is-invalid @enderror" placeholder="Slam muelle p2" value="{{old('slam_muelle_p2')}}" name="slam_muelle_p2">
               @error('slam_muelle_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Resortes contra tapas</label>
-              <input type="text" class="form-control col-5 @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Resortes contra tapas" value="{{old('resortes_contra_tapas')}}" name="resortes_contra_tapas">
+              <input type="text" class="form-control @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Resortes contra tapas" value="{{old('resortes_contra_tapas')}}" name="resortes_contra_tapas">
               @error('resortes_contra_tapas')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-md-4 col-lg-3 form-group">
               <label class="col-form-label">Alieneamiento paquete</label>
-              <input type="text" class="form-control col-5 @error('alineamiento_paquete') is-invalid @enderror" placeholder="Alieneamiento paquete" value="{{old('alineamiento_paquete')}}" name="alineamiento_paquete">
+              <input type="text" class="form-control @error('alineamiento_paquete') is-invalid @enderror" placeholder="Alieneamiento paquete" value="{{old('alineamiento_paquete')}}" name="alineamiento_paquete">
               @error('alineamiento_paquete')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror

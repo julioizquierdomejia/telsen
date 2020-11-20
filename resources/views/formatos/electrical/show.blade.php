@@ -73,7 +73,7 @@
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">N° salida</label>
-            <p class="mb-1">{{$formato->n_salida ?? '-'}}</p>
+            <p class="mb-1">{{$formato->nro_salida ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Tipo:</label>
@@ -150,67 +150,67 @@
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Marca:</label>
-            <p class="mb-1">{{$formato->marca ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_marca ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Potencia:</label>
-            <p class="mb-1">{{$formato->potencia ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_potencia ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Escudos:</label>
-            <p class="mb-1">{{$formato->escudos ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_escudos ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Mod</label>
-            <p class="mb-1">{{$formato->mod ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_mod ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Voltaje:</label>
-            <p class="mb-1">{{$formato->voltaje ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_voltaje ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Ejes</label>
-            <p class="mb-1">{{$formato->ejes ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_ejes ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Amperaje:</label>
-            <p class="mb-1">{{$formato->amperaje ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_amperaje ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Funda:</label>
-            <p class="mb-1">{{$formato->funda ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_funda ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Frame:</label>
-            <p class="mb-1">{{$formato->frame ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_frame ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Velocidad:</label>
-            <p class="mb-1">{{$formato->velocidad ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_velocidad ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Acople:</label>
-            <p class="mb-1">{{$formato->acople ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_acople ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">F.S:</label>
-            <p class="mb-1">{{$formato->fs ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_fs ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Encl:</label>
-            <p class="mb-1">{{$formato->encl ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_encl ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Peso:</label>
-            <p class="mb-1">{{$formato->peso ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_peso ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Frecuencia:</label>
-            <p class="mb-1">{{$formato->frecuencia ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_frecuencia ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Otros:</label>
-            <p class="mb-1">{{$formato->otros ?? '-'}}</p>
+            <p class="mb-1">{{$formato->char_otros ?? '-'}}</p>
           </div>
         </div>
       </div>
@@ -223,47 +223,47 @@
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Placa caract. Orig:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->placa_caract_orig_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->placa_caract_orig_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->placa_caract_orig ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_placa_caract_orig_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_placa_caract_orig_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_placa_caract_orig ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Escudos:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->escudos_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->escudos_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->escudos ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_escudos_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_escudos_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_escudos ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Ventilador:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->ventilador_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->ventilador_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->ventilador ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_ventilador_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_ventilador_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_ventilador ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Caja de Conexión:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->caja_conexion_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->caja_conexion_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->caja_conexion ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_caja_conexion_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_caja_conexion_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_caja_conexion ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Ejes:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->ejes_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->ejes_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->ejes ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_ejes_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_ejes_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_ejes ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Acople:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->acople_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->acople_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->acople ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_acople_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_acople_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_acople ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Bornera:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->bornera_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->bornera_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->bornera ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_bornera_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_bornera_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_bornera ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Funda:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->funda_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->funda_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->funda ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_funda_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_funda_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_funda ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Chaveta:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->chaveta_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->chaveta_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->chaveta ?? '-'}}</span></p>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_chaveta_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_chaveta_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_chaveta ?? '-'}}</span></p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Otros:</label>
-            <p class="mb-1">{{$formato->otros ?? '-'}}</p>
+            <p class="mb-1">{{$formato->rec_otros ?? '-'}}</p>
           </div>
           <div class="col-12">
             <label class="c-label">Detalles:</label>
-            <p class="mb-1">{{$formato->detalles ?? '-'}}</p>
+            <p class="mb-1">{{$formato->rec_detalles ?? '-'}}</p>
           </div>
         </div>
       </div>

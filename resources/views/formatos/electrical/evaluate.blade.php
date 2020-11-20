@@ -99,7 +99,7 @@
             </div>
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">N° salida</label>
-              <input type="number" min="1" class="form-control @error('eq_n_salida') is-invalid @enderror" placeholder="N° salida" value="{{old('eq_n_salida')}}" name="eq_n_salida">
+              <input type="number" min="1" class="form-control @error('eq_nro_salida') is-invalid @enderror" placeholder="N° salida" value="{{old('eq_nro_salida')}}" name="eq_nro_salida">
             </div>
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">Tipo:</label>

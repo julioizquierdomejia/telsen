@@ -37,7 +37,7 @@
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Placa Caract Orig</label>
-						<p class="mb-0">{{$formato->placa_caract_orig ?? '-'}}</p>
+						<p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->placa_caract_orig_has == "1" ? ' badge-primary' : ' badge-secondary'}}">{{$formato->placa_caract_orig_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->placa_caract_orig ?? '-'}}</span></p>
 					</div>
 					<div class="col-6 col-md-4 col-lg-3 form-group">
 						<label class="c-label">Tapas</label>

@@ -90,15 +90,15 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->string('funda')->nullable();
             $table->string('chaveta')->nullable();
 
-            $table->boolean('placa_caract_orig_has')->nullable();
-            $table->boolean('escudos_has')->nullable();
-            $table->boolean('ventilador_has')->nullable();
-            $table->boolean('caja_conexion_has')->nullable();
-            $table->boolean('ejes_has')->nullable();
-            $table->boolean('acople_has')->nullable();
-            $table->boolean('bornera_has')->nullable();
-            $table->boolean('funda_has')->nullable();
-            $table->boolean('chaveta_has')->nullable();
+            $table->boolean('placa_caract_orig_has')->default(0);
+            $table->boolean('escudos_has')->default(0);
+            $table->boolean('ventilador_has')->default(0);
+            $table->boolean('caja_conexion_has')->default(0);
+            $table->boolean('ejes_has')->default(0);
+            $table->boolean('acople_has')->default(0);
+            $table->boolean('bornera_has')->default(0);
+            $table->boolean('funda_has')->default(0);
+            $table->boolean('chaveta_has')->default(0);
 
             $table->string('otros')->nullable();
             $table->string('detalles')->nullable();

@@ -43,18 +43,18 @@ class CreateMechanicalEvaluationsTable extends Migration
             $table->string('laberintos')->nullable();
             $table->string('estator')->nullable();
 
-            $table->boolean('placa_caract_orig_has')->nullable();
-            $table->boolean('tapas_has')->nullable();
-            $table->boolean('ventilador_has')->nullable();
-            $table->boolean('caja_conexion_has')->nullable();
-            $table->boolean('ejes_has')->nullable();
-            $table->boolean('acople_has')->nullable();
-            $table->boolean('bornera_has')->nullable();
-            $table->boolean('fundas_has')->nullable();
-            $table->boolean('chaveta_has')->nullable();
-            $table->boolean('impro_seal_has')->nullable();
-            $table->boolean('laberintos_has')->nullable();
-            $table->boolean('estator_has')->nullable();
+            $table->boolean('placa_caract_orig_has')->default(0);
+            $table->boolean('tapas_has')->default(0);
+            $table->boolean('ventilador_has')->default(0);
+            $table->boolean('caja_conexion_has')->default(0);
+            $table->boolean('ejes_has')->default(0);
+            $table->boolean('acople_has')->default(0);
+            $table->boolean('bornera_has')->default(0);
+            $table->boolean('fundas_has')->default(0);
+            $table->boolean('chaveta_has')->default(0);
+            $table->boolean('impro_seal_has')->default(0);
+            $table->boolean('laberintos_has')->default(0);
+            $table->boolean('estator_has')->default(0);
 
             $table->string('slam_muelle_p1')->nullable();
             $table->string('slam_muelle_p2')->nullable();

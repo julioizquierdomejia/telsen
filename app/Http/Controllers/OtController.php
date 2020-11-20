@@ -33,12 +33,29 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'worker']);
 
+        $ots_array = [];
+
         $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                     ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
                     ->where('ots.enabled', 1)->get();
 
-        return response()->json(['data'=>json_encode($ots), 'success'=>true]);
+        foreach ($ots as $key => $ot) {
+            $ot_status = \DB::table('status_ot')
+                  ->join('status', 'status_ot.status_id', '=', 'status.id')
+                  ->where('status_ot.ot_id', '=', $ot->id)
+                  ->select('status_ot.status_id', 'status.id', 'status.name')
+                  ->get();
+            $ot_status_arr = array_column($ot_status->toArray(), "status_id");
+            if (!in_array(7, $ot_status_arr) && !in_array(10, $ot_status_arr)) {
+                $ots_array[] = $ot;
+            }
+        }
+
+        if ($ots_array) {
+            return response()->json(['data'=>json_encode($ots_array), 'success'=>true]);
+        }
+        return response()->json(['data'=>null, 'success'=>false]);
     }
 
     public function disapproved_ots(Request $request)
@@ -50,7 +67,7 @@ class OtController extends Controller
         $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                     ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-                    ->where('ots.enabled', 0)->get();
+                    ->where('ots.enabled', 1)->get();
 
         foreach ($ots as $key => $ot) {
             $ot_status = \DB::table('status_ot')
@@ -60,7 +77,7 @@ class OtController extends Controller
                   ->get();
             $ot_status_arr = array_column($ot_status->toArray(), "status_id");
             if (in_array(7, $ot_status_arr) || in_array(10, $ot_status_arr)) {
-                $ots_array[] = $ots;
+                $ots_array[] = $ot;
             }
         }
 

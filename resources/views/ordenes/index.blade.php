@@ -236,23 +236,25 @@ $(document).ready(function() {
                         $.each(data, function(id, item) {
                             var date = new Date(item.created_at);
                             var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                            var status = getStatus(item.id);
                             $('#nav-disapprovedots tbody').append(
-                                `<tr>
-                    <td class="text-nowrap">` + created_at + `</td>
-                    <td>OT-` + pad(item.id, 3) + `</td>
-                    <td class="text-center">
-                    <span class="badge badge-secondary px-2 py-1 w-100">OT Creada</span>
-                    </td>
-                    <td>` + item.razon_social + `
-                    <span class="badge badge-primary">` + item.client_type + `</span>
-                    </td>
-                    <td class="text-center">` + item.descripcion_motor + `</td>
-                    <td class="text-left text-nowrap">
-                      <a href="/ordenes/` + item.id + `/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                      <a href="/ordenes/` + item.id + `/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
-                      <a href="" class="btn btn-sm btn-danger"><i class="fal fa-minus-circle"></i></a>
-                    </td>
-                </tr>`
+                                `<tr class="text-muted" data-id="`+item.id+`">
+                                  <td class="text-nowrap">` + created_at + `</td>
+                                  <td class="otid">OT-` + pad(item.id, 3) + `</td>
+                                  <td class="text-center">` +
+                                  status.html
+                                  +
+                                  `</td>
+                                  <td><span class="align-middle">` + item.razon_social + "</span>"+((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1 align-middle">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
+                                  `</td>
+                                  <td class="text-center">` + item.descripcion_motor + `</td>
+                                  <td class="text-left text-nowrap">
+
+                                  <a href="/ordenes/`+item.id+`/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                                  <a href="/ordenes/`+item.id+`/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
+                                  <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="`+item.id+`" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>
+                                  `+ getStatusHtml(status, item.id) +
+                                  `</td></tr>`
                             );
                         })
                     } else {

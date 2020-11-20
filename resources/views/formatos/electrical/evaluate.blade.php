@@ -650,43 +650,43 @@
 @endsection
 @section('javascript')
 <script>
-$(document).ready(function () {
-function createJSON() {
-var json = '{';
-var otArr = [];
-var tbl2 = $('#table-tap tbody tr').each(function(i) {
-x = $(this).children();
-var itArr = [];
-x.each(function() {
-  var el = $(this).find('.form-control');
-if (el.length) {
-itArr.push('"' + el.attr('name')+ '":"' + el.val() + '"');
-}
-});
-otArr.push('"' + i + '": {' + itArr.join(',') + '}');
-})
-json += otArr.join(",") + '}'
-$('input[name=tran_tap]').val(json);
-return json;
-}
-$(document).on('keyup', '#table-tap .form-control', function () {
-createJSON();
-})
-$(document).on('click', '.card .btn-clear', function () {
-$('#table-tap .form-control').val('');
-})
-$('.btn-add-row').click(function () {
-var row = '<tr><td class="cell-counter"><span class="number"></span></td><td><input type="text" class="form-control" value=""></td><td><input type="text" class="form-control" value=""></td><td><input type="text" class="form-control" value=""></td><td><input type="text" class="form-control" value=""></td><td><input type="text" class="form-control" value=""></td><td><input type="text" class="form-control" value=""></td></tr>';
-$('#table-tap tbody').append(row);
-createJSON();
-})
-$('.btn-remove-row').click(function () {
-var row_index = $('#table-tap tbody tr').length;
-if (row_index > 1) {
-$('#table-tap tbody tr:nth-child('+row_index+')').remove();
-}
-createJSON();
-})
+$(document).ready(function() {
+  function createJSON() {
+    var json = '{';
+    var otArr = [];
+    var tbl2 = $('#table-tap tbody tr').each(function(i) {
+      x = $(this).children();
+      var itArr = [];
+      x.each(function() {
+        var el = $(this).find('.form-control');
+        if (el.length) {
+          itArr.push('"' + el.attr('name') + '":"' + el.val() + '"');
+        }
+      });
+      otArr.push('"' + i + '": {' + itArr.join(',') + '}');
+    })
+    json += otArr.join(",") + '}'
+    $('input[name=tran_tap]').val(json);
+    return json;
+  }
+  $(document).on('keyup', '#table-tap .form-control', function() {
+    createJSON();
+  })
+  $(document).on('click', '.card .btn-clear', function() {
+    $('#table-tap .form-control').val('');
+  })
+  $('.btn-add-row').click(function() {
+    var row = '<tr><td class="cell-counter"><span class="number"></span></td><td><input type="text" class="form-control" name="uv1" value=""></td><td><input type="text" class="form-control" name="uv2" value=""></td><td><input type="text" class="form-control" name="vu1" value=""></td><td><input type="text" class="form-control" name="vu2" value=""></td><td><input type="text" class="form-control" name="wu1" value=""></td><td><input type="text" class="form-control" name="wu2" value=""></td></tr>';
+    $('#table-tap tbody').append(row);
+    createJSON();
+  })
+  $('.btn-remove-row').click(function() {
+    var row_index = $('#table-tap tbody tr').length;
+    if (row_index > 1) {
+      $('#table-tap tbody tr:nth-child(' + row_index + ')').remove();
+    }
+    createJSON();
+  })
 })
 </script>
 @endsection

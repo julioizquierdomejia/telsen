@@ -106,38 +106,93 @@
 $(document).ready(function() {
 
   $('#nav-enabledots-tab').click(function() {
+      $.ajax({
+          type: "get",
+          url: "{{route('ordenes.enabled_ots')}}",
+          data: {
+              _token: '{{csrf_token()}}',
+          },
+          beforeSend: function(data) {
+              $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">Cargando órdenes de trabajo.</td></tr>');
+          },
+          success: function(response) {
+              if (response.success) {
+                  var data = $.parseJSON(response.data);
+                  if (data.length > 0) {
+                      $('#nav-enabledots tbody').empty();
+                      $.each(data, function(id, item) {
+                          var date = new Date(item.created_at);
+                          var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                          var status = getStatus(item);
+                          var item_days = '-';
+                          if(status.fecha_entrega) {
+                            start = new Date(status.fecha_entrega);
+                            end   = new Date();
+                            diff  = new Date(start - end);
+                            days = parseInt(diff/1000/60/60/24);
+                            fecha = start.getUTCDate() +"-"+ (start.getMonth() + 1) +"-"+ start.getFullYear();
+                            i_class = (days > 0) ? ' badge-danger ' : ' badge-success ';
+                            item_days = '<span class="badge'+ i_class+ 'px-2 py-1 w-100">'+fecha+'</span>';
+                            if(days > 0) {
+                              item_days += '<span class="text-nowrap">quedan ' +days + ' días</span>';
+                            }
+                          }
+
+                          $('#nav-enabledots tbody').append(
+                              `<tr class="text-muted" data-id="`+item.id+`">
+                                <td class="text-nowrap">` + created_at + `</td>
+                                <td class="otid">OT-` + pad(item.id, 3) + `</td>
+                                <td class="text-center">` +
+                                status.html
+                                +
+                                `</td>
+                                <td><span class="align-middle">` + item.razon_social + "</span>"+((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1 align-middle">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
+                                `</td>
+                                <td class="text-left">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
+                                <td class="text-center" style="background-color: #edd9d9">` + item_days + `</td>
+                                <td class="text-left text-nowrap">
+
+                                <a href="/ordenes/`+item.id+`/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                                <a href="/ordenes/`+item.id+`/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
+                                <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="`+item.id+`" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>
+                                `+ getStatusHtml(status, item.id) +
+                                `</td></tr>`
+                          );
+                      })
+                  } else {
+                      $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>');
+                  }
+              } else {
+                $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>');
+              }
+          },
+          error: function(request, status, error) {
+              var data = jQuery.parseJSON(request.responseText);
+              console.log(data);
+          }
+      });
+    });
+
+    $('#nav-disapprovedots-tab').click(function() {
         $.ajax({
             type: "get",
-            url: "{{route('ordenes.enabled_ots')}}",
+            url: "{{route('ordenes.disapproved_ots')}}",
             data: {
                 _token: '{{csrf_token()}}',
             },
             beforeSend: function(data) {
-                $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>');
+                $('#nav-disapprovedots tbody').html('<tr><td class="text-center" colspan="7">Cargando órdenes de trabajo desaprobadas.</td></tr>');
             },
             success: function(response) {
                 if (response.success) {
                     var data = $.parseJSON(response.data);
-                    if (data.length > 0) {
-                        $('#nav-enabledots tbody').empty();
+                    if (data) {
+                        $('#nav-disapprovedots tbody').empty();
                         $.each(data, function(id, item) {
                             var date = new Date(item.created_at);
                             var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-                            var status = getStatus(item);
-                            var item_days = '-';
-                            if(status.fecha_entrega) {
-                              start = new Date(status.fecha_entrega);
-                              end   = new Date();
-                              diff  = new Date(start - end);
-                              days = parseInt(diff/1000/60/60/24);
-                              i_class = (days > 0) ? ' badge-danger ' : ' badge-success ';
-                              item_days = '<span class="badge'+ i_class+ 'px-2 py-1 w-100">'+status.fecha_entrega+'</span>';
-                              if(days > 0) {
-                                item_days += '<span class="text-nowrap">quedan ' +days + ' días</span>';
-                              }
-                            }
-
-                            $('#nav-enabledots tbody').append(
+                            var status = getStatus(item.id);
+                            $('#nav-disapprovedots tbody').append(
                                 `<tr class="text-muted" data-id="`+item.id+`">
                                   <td class="text-nowrap">` + created_at + `</td>
                                   <td class="otid">OT-` + pad(item.id, 3) + `</td>
@@ -148,7 +203,7 @@ $(document).ready(function() {
                                   <td><span class="align-middle">` + item.razon_social + "</span>"+((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1 align-middle">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
                                   `</td>
                                   <td class="text-left">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
-                                  <td class="text-center" style="background-color: #edd9d9">` + item_days + `</td>
+                                  <td class="text-center">` + item.descripcion_motor + `</td>
                                   <td class="text-left text-nowrap">
 
                                   <a href="/ordenes/`+item.id+`/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
@@ -159,8 +214,62 @@ $(document).ready(function() {
                             );
                         })
                     } else {
-                        $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>');
+                        $('#nav-disapprovedots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo desaprobadas.</td></tr>');
                     }
+                } else {
+                  $('#nav-disapprovedots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo desaprobadas.</td></tr>');
+                }
+            },
+            error: function(request, status, error) {
+                var data = jQuery.parseJSON(request.responseText);
+                console.log(data);
+            }
+        });
+    })
+
+    $('#nav-disenabledots-tab').click(function() {
+        $.ajax({
+            type: "get",
+            url: "{{route('ordenes.disabled_ots')}}",
+            data: {
+                _token: '{{csrf_token()}}',
+            },
+            beforeSend: function(data) {
+                $('#nav-disenabledots tbody').html('<tr><td class="text-center text-muted" colspan="7">Cargando órdenes de trabajo eliminadas.</td></tr>');
+            },
+            success: function(response) {
+                if (response.success) {
+                    var data = $.parseJSON(response.data);
+                    if (data.length > 0) {
+                        $('#nav-disenabledots tbody').empty();
+                        $.each(data, function(id, item) {
+                            var date = new Date(item.created_at);
+                            var status = getStatus(item.id);
+                            var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                            $('#nav-disenabledots tbody').append(
+                                `<tr>
+                    <td class="text-muted text-nowrap">` + created_at + `</td>
+                    <td class="text-muted">OT-` + pad(item.id, 3) + `</td>
+                    <td class="text-center">` +
+                                  status.html
+                                  +
+                                  `</td>
+                    <td class="text-muted">` + item.razon_social + `
+                    <span class="badge badge-primary">` + item.client_type + `</span>
+                    </td>
+                    <td class="text-left">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
+                    <td class="text-muted text-center">` + item.descripcion_motor + `</td>
+                    <td class="text-muted text-left text-nowrap">
+                      <button data-href="/ordenes/` + item.id + `/activar" class="btn btn-sm btn-primary btn-enablingot"><i class="fal fa-trash-restore"></i> Restaurar</button>
+                    </td>
+                </tr>`
+                            );
+                        })
+                    } else {
+                        $('#nav-disenabledots tbody').html('<tr><td class="text-center text-muted" colspan="7">No hay órdenes de trabajo eliminadas.</td></tr>');
+                    }
+                } else {
+                  $('#nav-disenabledots tbody').html('<tr><td class="text-center text-muted" colspan="7">No hay órdenes de trabajo eliminadas.</td></tr>');
                 }
             },
             error: function(request, status, error) {
@@ -204,7 +313,7 @@ $(document).ready(function() {
                 }
             }
         }
-    })
+      })
       return status;
     }
 
@@ -237,108 +346,6 @@ $(document).ready(function() {
         str = str.toString();
         return str.length < max ? pad("0" + str, max) : str;
     }
-
-    $('#nav-disapprovedots-tab').click(function() {
-        $.ajax({
-            type: "get",
-            url: "{{route('ordenes.disapproved_ots')}}",
-            data: {
-                _token: '{{csrf_token()}}',
-            },
-            beforeSend: function(data) {
-                $('#nav-disapprovedots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo desaprobadas.</td></tr>');
-            },
-            success: function(response) {
-                if (response.success) {
-                    var data = $.parseJSON(response.data);
-                    if (data.length > 0) {
-                        $('#nav-disapprovedots tbody').empty();
-                        $.each(data, function(id, item) {
-                            var date = new Date(item.created_at);
-                            var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-                            var status = getStatus(item.id);
-                            $('#nav-disapprovedots tbody').append(
-                                `<tr class="text-muted" data-id="`+item.id+`">
-                                  <td class="text-nowrap">` + created_at + `</td>
-                                  <td class="otid">OT-` + pad(item.id, 3) + `</td>
-                                  <td class="text-center">` +
-                                  status.html
-                                  +
-                                  `</td>
-                                  <td><span class="align-middle">` + item.razon_social + "</span>"+((item.client_type_id == 1) ? `<span class="badge badge-success px-2 py-1 ml-1 align-middle">`+item.client_type+`</span>` : `<span class="badge badge-danger px-2 py-1 ml-1">`+item.client_type+`</span>`) +
-                                  `</td>
-                                  <td class="text-left">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
-                                  <td class="text-center">` + item.descripcion_motor + `</td>
-                                  <td class="text-left text-nowrap">
-
-                                  <a href="/ordenes/`+item.id+`/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                                  <a href="/ordenes/`+item.id+`/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
-                                  <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="`+item.id+`" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>
-                                  `+ getStatusHtml(status, item.id) +
-                                  `</td></tr>`
-                            );
-                        })
-                    } else {
-                        $('#nav-disapprovedots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo desaprobadas.</td></tr>');
-                    }
-                }
-            },
-            error: function(request, status, error) {
-                var data = jQuery.parseJSON(request.responseText);
-                console.log(data);
-            }
-        });
-    })
-
-    $('#nav-disenabledots-tab').click(function() {
-        $.ajax({
-            type: "get",
-            url: "{{route('ordenes.disabled_ots')}}",
-            data: {
-                _token: '{{csrf_token()}}',
-            },
-            beforeSend: function(data) {
-                $('#nav-disenabledots tbody').html('<tr><td class="text-center text-muted" colspan="6">No hay órdenes de trabajo eliminadas.</td></tr>');
-            },
-            success: function(response) {
-                if (response.success) {
-                    var data = $.parseJSON(response.data);
-                    if (data.length > 0) {
-                        $('#nav-disenabledots tbody').empty();
-                        $.each(data, function(id, item) {
-                            var date = new Date(item.created_at);
-                            var status = getStatus(item.id);
-                            var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-                            $('#nav-disenabledots tbody').append(
-                                `<tr>
-                    <td class="text-muted text-nowrap">` + created_at + `</td>
-                    <td class="text-muted">OT-` + pad(item.id, 3) + `</td>
-                    <td class="text-center">` +
-                                  status.html
-                                  +
-                                  `</td>
-                    <td class="text-muted">` + item.razon_social + `
-                    <span class="badge badge-primary">` + item.client_type + `</span>
-                    </td>
-                    <td class="text-left">` + item.numero_potencia + ' ' + item.medida_potencia + `</td>
-                    <td class="text-muted text-center">` + item.descripcion_motor + `</td>
-                    <td class="text-muted text-left text-nowrap">
-                      <button data-href="/ordenes/` + item.id + `/activar" class="btn btn-sm btn-primary btn-enablingot"><i class="fal fa-trash-restore"></i> Restaurar</button>
-                    </td>
-                </tr>`
-                            );
-                        })
-                    } else {
-                        $('#nav-disenabledots tbody').html('<tr><td class="text-center text-muted" colspan="6">No hay órdenes de trabajo eliminadas.</td></tr>');
-                    }
-                }
-            },
-            error: function(request, status, error) {
-                var data = jQuery.parseJSON(request.responseText);
-                console.log(data);
-            }
-        });
-    });
 
     $(document).on("click", ".btn-mdelete", function(event) {
         $('#modalDelOT .body-title strong').text($(this).parents('tr').find('.otid').text());
@@ -407,7 +414,6 @@ $(document).ready(function() {
             }
         });
     })
-
 
     //Renderizar lista de ordenes:
     $('#nav-enabledots-tab').trigger('click');

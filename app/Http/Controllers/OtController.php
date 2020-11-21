@@ -55,7 +55,7 @@ class OtController extends Controller
         if ($ots_array) {
             return response()->json(['data'=>json_encode($ots_array), 'success'=>true]);
         }
-        return response()->json(['data'=>null, 'success'=>false]);
+        return response()->json(['data'=>[], 'success'=>false]);
     }
 
     public function disapproved_ots(Request $request)
@@ -84,7 +84,7 @@ class OtController extends Controller
         if ($ots_array) {
             return response()->json(['data'=>json_encode($ots_array), 'success'=>true]);
         }
-        return response()->json(['data'=>null, 'success'=>false]);
+        return response()->json(['data'=>[], 'success'=>false]);
     }
 
     public function disabled_ots(Request $request)

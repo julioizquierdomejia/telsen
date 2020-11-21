@@ -41,7 +41,7 @@ class CreateClientsTable extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->dropForeign('client_types_client_type_id_foreign');
+            $table->dropForeign('clients_client_type_id_foreign');
         });
         Schema::dropIfExists('clients');
     }

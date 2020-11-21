@@ -44,6 +44,12 @@
     <p>Tarjeta de Costos</p>
   </a>
 </li>
+<li class="{{ request()->segment(1) == 'talleres' ? 'active' : '' }}">
+  <a href="/talleres">
+    <i class="fal fa-user-hard-hat"></i>
+    <p>Talleres</p>
+  </a>
+</li>
 <li class="px-3"><hr style="border-top-color: #858585;"></li>
 <li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">
   <a href="{{route('clientes.index')}}">

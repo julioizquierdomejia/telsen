@@ -77,8 +77,9 @@ class RdiController extends Controller
         $maintenancetype = RdiMaintenanceType::where('enabled', 1)->get();
         $criticalitytype = RdiCriticalityType::where('enabled', 1)->get();
         //$services = RdiService::where('enabled', 1)->get();
-        $services = Service::where('area_id', 1) //Servicios de area cliente
+        $services = Service::where('enabled', 1) //Servicios de area cliente
                 ->where('enabled', 1)
+                ->where('area_id', 5) //Area clientes
                 ->select('services.id', 'services.name')
                 ->get();
 

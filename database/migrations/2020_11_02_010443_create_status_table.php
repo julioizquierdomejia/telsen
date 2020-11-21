@@ -43,8 +43,8 @@ class CreateStatusTable extends Migration
         Schema::dropIfExists('status');
 
         Schema::table('status_ot', function (Blueprint $table) {
-            $table->dropForeign('ot_id');
-            $table->dropForeign('status_id');
+            $table->dropForeign('status_ot_ot_id_foreign');
+            $table->dropForeign('status_ot_status_id_foreign');
         });
         Schema::dropIfExists('status_ot');
     }

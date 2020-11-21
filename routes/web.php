@@ -120,4 +120,12 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('rdi/{ot}/editar', [App\Http\Controllers\RdiController::class, 'update'])->name('rdi.update');
 	Route::post('rdi/{ot}/aprobarrdi', [App\Http\Controllers\RdiController::class, 'approveRDI'])->name('rdi.approve');
 
+	//rutas para Talleres
+	Route::get('talleres', [App\Http\Controllers\WorkshopController::class, 'index'])->name('workshop.index');
+	Route::get('talleres/crear', [App\Http\Controllers\WorkshopController::class, 'create'])->name('workshop.create');
+	Route::post('talleres', [App\Http\Controllers\WorkshopController::class, 'store'])->name('workshop.store');
+	Route::get('talleres/{area}/editar', [App\Http\Controllers\WorkshopController::class, 'edit'])->name('workshop.edit');
+	Route::post('talleres/{area}/editar', [App\Http\Controllers\WorkshopController::class, 'update'])->name('workshop.update');
+	Route::get('talleres/{ot}/calcular', [App\Http\Controllers\WorkshopController::class, 'calculate'])->name('workshop.calculate');
+
 });

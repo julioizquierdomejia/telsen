@@ -6,9 +6,12 @@ use App\Models\Workshop;
 use App\Models\Ot;
 use App\Models\Status;
 use App\Models\Service;
+use App\Models\Rdi;
 use App\Models\RdiServiceCost;
+use App\Models\CostCard;
 use App\Models\Area;
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class WorkshopController extends Controller
@@ -23,11 +26,11 @@ class WorkshopController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
         
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
-                //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
-                        ->select('ots.*', 'clients.razon_social', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw'
+                        ->select('ots.*', 'clients.razon_social', 'clients.id as client_type_id', 'client_types.name as client_type', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw'
                             //,'cost_cards.id as cost_card'
                         )
                         ->where('ots.enabled', 1)
@@ -64,6 +67,13 @@ class WorkshopController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
+        $users = User::join('user_data', 'user_data.user_id', 'users.id')
+                ->join('user_area', 'user_area.user_id', 'users.id')
+                ->join('areas', 'areas.id', 'user_area.area_id')
+                ->select('users.id', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_area.area_id','areas.name as area')
+                ->get()
+                ;
+
         $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                 ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
@@ -76,63 +86,28 @@ class WorkshopController extends Controller
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
+        $services = [];
         if ($ot->client_type_id == 1) { //RDI
-            $areas = RdiServiceCost::all();
+            $rdi = Rdi::where('ot_id', $ot->id)->firstOrFail();
+            $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
+                    ->join('rdi_service_costs', 'rdi_service_costs.service_id', 'services.id')
+                    ->where('rdi_service_costs.rdi_id', $rdi->id)
+                    ->select('areas.name as area', 'rdi_service_costs.id', 'services.area_id', 'services.name as service', 'rdi_service_costs.subtotal')
+                    ->get();
         } else { //No afiliado
-            $areas = Service::all();
+            $cost_card = CostCard::where('ot_id', $ot->id)->firstOrFail();
+            $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
+                    ->join('cost_card_services', 'cost_card_services.service_id', 'services.id')
+                    ->where('cost_card_services.cost_card_id', $cost_card->id)
+                    ->select('areas.name as area', 'cost_card_services.id', 'services.area_id', 'services.name as service', 'cost_card_services.subtotal', 'cost_card_services.personal')
+                    ->get();
+        }
+        foreach($services_list as $key => $item) {
+            $services[$item->area_id][$key] = $item->toArray();
         }
         //$clientes = Client::where('enabled', 1)->get();
 
-        return view('talleres.calculate', compact('ot', 'areas'));
-    }
-
-    public function filterareas(Request $request)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
-
-        $id = $request->input('id');
-        $services = Service::where('area_id', $id)
-                ->where('enabled', 1)
-                ->select('services.id', 'services.name')
-                ->get();
-        if ($services) {
-            return response()->json(['data'=>json_encode($services),'success'=>true]);
-        }
-        return response()->json(['success'=>false]);
-    }
-
-    public function upload(Request $request, $id)
-    {
-        if ($request->file('upload_file')) {
-            $rules = array(
-                'upload_file' => 'required|mimes:pdf|max:5000',
-                'cost_id' => 'required|exists:ots,id',
-            );
-            $this->validate($request, $rules);
-
-            $file = $request->file('upload_file');
-            $cost_id = $request->get('cost_id');
-            $ext = $file->getClientOriginalExtension();
-            $uniqueFileName = preg_replace('/\s+/', "-", $file->getClientOriginalName()) . '_' . uniqid();
-
-            $cost_card = Workshop::findOrFail($id);
-            $cost_card->cotizacion = $uniqueFileName;
-            $cost_card->save();
-
-            $status = Status::where('id', 5)->first();
-            if ($status) {
-                \DB::table('status_ot')->insert([
-                    'status_id' => $status->id,
-                    'ot_id' => $cost_id,
-                ]);
-            }
-
-            $file->move(public_path('uploads/cotizacion'), $uniqueFileName);
-            if (isset($cost_card->id)) {
-                return response()->json(['data'=>json_encode($cost_card->id),'success'=>true]);
-            }
-        }
-        return response()->json(['success'=>false]);
+        return view('talleres.calculate', compact('ot', 'services', 'users'));
     }
 
     /**
@@ -144,48 +119,23 @@ class WorkshopController extends Controller
     public function store(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
-
         $rules = array(
-            //'ot_id'       => 'integer|required|exists:ots,id',
-            'hecho_por'      => 'string|required',
-            'enabled'      => 'boolean|required',
-            'cost'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
-            'cost_m1'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
-            'cost_m2'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
-            'cost_m3'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
-            'cost_card_services'      => 'string|required',
+            'user_id'      => 'required|array|min:1',
+            'area_id'      => 'required|array|min:1',
         );
-        $this->validate($request, $rules);
-
-        $cost_card_services = $request->input('cost_card_services');
-        $services = json_decode($cost_card_services, true);
-        $services_count = count($services);
-
-        $cost = new Workshop();
-        $cost->ot_id = $id;
-        $cost->hecho_por = $request->input('hecho_por');
-        $cost->cost = $request->input('cost');
-        $cost->cost_m1 = $request->input('cost_m1');
-        $cost->cost_m2 = $request->input('cost_m2');
-        $cost->cost_m3 = $request->input('cost_m3');
-        $cost->enabled = $request->input('enabled');
-        $cost->save();
-
-        $services_array = [];
-        for ($i=0; $i < $services_count; $i++) { 
-            $services_array[] = [
-                'cost_card_id' => $cost->id,
-                'area_id' => $services[$i]['area_id'] ? $services[$i]['area_id'] : null,
-                'service_id' => $services[$i]['service'] ? $services[$i]['service'] : null,
-                'personal' => $services[$i]['personal'],
-                'ingreso' => $services[$i]['ingreso'],
-                'salida' => $services[$i]['salida'],
-                'subtotal' => $services[$i]['subtotal'],
-            ];
+        foreach($request->get('data') as $key => $val){
+            $rules['data.'.$key.'.user_id'] = 'required';
+            $rules['data.'.$key.'.area_id'] = 'required';
         }
-        WorkshopService::insert($services_array);
+        $this->validate($request, $rules);
+        dd($request->get('data'));
 
-        $status = Status::where('id', 4)->first();
+        $data = $request->input('data');
+        $data_count = count($data);
+        
+        WorkshopService::insert($data_array);
+
+        /*$status = Status::where('id', 4)->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
@@ -193,9 +143,8 @@ class WorkshopController extends Controller
             ]);
         }
 
-        activitylog('costos', 'store', null, $cost->toArray());
+        activitylog('costos', 'store', null, $cost->toArray());*/
 
-        $costos = Workshop::where('enabled', 1)->get();
         return redirect('tarjeta-costo')->with('costos');
     }
 

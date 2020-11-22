@@ -119,21 +119,27 @@ class WorkshopController extends Controller
     public function store(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
-        $rules = array(
+        /*$rules = array(
             'user_id'      => 'required|array|min:1',
             'area_id'      => 'required|array|min:1',
-        );
+        );*/
         foreach($request->get('data') as $key => $val){
             $rules['data.'.$key.'.user_id'] = 'required';
             $rules['data.'.$key.'.area_id'] = 'required';
+            $this->validate($request, $rules);
         }
-        $this->validate($request, $rules);
-        dd($request->get('data'));
-
         $data = $request->input('data');
-        $data_count = count($data);
-        
-        WorkshopService::insert($data_array);
+        //$data_count = count($data);
+        $services = [];
+        $date = \Carbon\Carbon::now()->toDateTimeString();
+        foreach ($data as $key => $item) {
+            $item['ot_id'] = $id;
+            $services[$key] = $item;
+            $services[$key]['created_at'] = $date;
+            $services[$key]['updated_at'] = $date;
+        }
+
+        Workshop::insert($services);
 
         /*$status = Status::where('id', 4)->first();
         if ($status) {
@@ -145,7 +151,7 @@ class WorkshopController extends Controller
 
         activitylog('costos', 'store', null, $cost->toArray());*/
 
-        return redirect('tarjeta-costo')->with('costos');
+        return redirect('talleres');
     }
 
     /**

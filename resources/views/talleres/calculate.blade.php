@@ -20,7 +20,7 @@
         <div class="card-body">
           <div class="bg-light px-3 py-2 h-100 d-flex flex-column">
           <h5 class="small text-dark">Servicios</h5>
-          <ul class="list-group">
+          <ul class="list-group mb-3">
             @foreach($service_item as $service)
             <li class="list-group-item">
               <h6 class="subtitle mb-1">{{$service['service']}}</h6>
@@ -28,13 +28,12 @@
             </li>
             @endforeach
           </ul>
-          <div class="mt-4 @error('user_id') is-invalid @enderror">
+          <div class="mt-auto text-center form-control @error("data.$service_key.user_id") is-invalid @enderror" style="height: auto; margin-top: 0">
               <label class="col-form-label mb-0">Personal asignado:</label>
-              <input class="form-control personal_name" disabled="" type="text" placeholder="No asignado">
-              <input class="form-control personal_area_id d-none" type="text" name="data[{{$service_key}}][user_id]">
+              <input class="form-control personal_name" name="personal_name_{{$service_key}}" value="{{old("personal_name_$service_key")}}" readonly="" type="text" placeholder="No asignado">
+              <input class="form-control user_id d-none" type="text" name="data[{{$service_key}}][user_id]" value="">
               <input class="form-control d-none" type="text" name="data[{{$service_key}}][area_id]" value="{{$first['area_id']}}">
-            </div>
-            <div class="update ml-auto mr-auto">
+
               <button type="button" class="btn btn-primary btn-sm btn-personal" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-toggle="modal" data-target="#modalPersonal">Asignar Personal</button>
             </div>
           </div>
@@ -94,8 +93,10 @@
         userid = item.data('userid'),
         areaid = item.data('areaid'),
         personal = item.find('.personal').text();
+        console.log(userid)
+        console.log(areaid)
     $('.form-card[data-id="'+areaid+'"] .personal_name').val(personal);
-    $('.form-card[data-id="'+areaid+'"] .personal_area_id').val(userid);
+    $('.form-card[data-id="'+areaid+'"] .user_id').val(userid);
   })
 
   $('#modalPersonal').on('show.bs.modal', function () {

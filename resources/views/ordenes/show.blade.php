@@ -117,13 +117,13 @@ $status_last = $ot_status->last();
 					@endif
 					@if(in_array(2, $statuses))
 						<!-- eval. mecanica -->
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $ot) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
 					@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
 					@endif
 					@if(in_array(3, $statuses))
 						<!-- eval. electrica -->
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
 					@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
 					@endif

@@ -360,7 +360,7 @@ $status_last = $ot_status->last();
       </div>
       <div class="card-body pb-3 pt-0">
         <hr>
-        @if ($formato->tap)
+        @if ($formato->tran_tap)
         <div class="table-responsive">
           <table class="table table-separate text-center table-numbering mb-0" id="table-tap">
             <thead>
@@ -379,8 +379,8 @@ $status_last = $ot_status->last();
             </thead>
             <tbody>
               @php
-              $tap = json_decode($formato->tap, true);
-              $tap_count = count((array)$tap);
+              $tap = json_decode($formato->tran_tap, true);
+              $tap_count = count($tap);
               @endphp
               @for ($i=0; $i < $tap_count; $i++)
               <tr>

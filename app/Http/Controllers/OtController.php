@@ -7,6 +7,8 @@ use App\Models\Client;
 use App\Models\MotorBrand;
 use App\Models\MotorModel;
 use App\Models\Status;
+use App\Models\ElectricalEvaluation;
+use App\Models\MechanicalEvaluation;
 use Illuminate\Http\Request;
 
 class OtController extends Controller
@@ -257,8 +259,10 @@ class OtController extends Controller
                 ->where('rdi.enabled', 1)
                 ->where('rdi.ot_id', $id)
                 ->first();
+        $meval = MechanicalEvaluation::where('ot_id', $id)->first();
+        $eeval = ElectricalEvaluation::where('ot_id', $id)->first();
 
-        return view('ordenes.show', compact('ot', 'rdi'));
+        return view('ordenes.show', compact('ot', 'rdi', 'meval', 'eeval'));
     }
 
     public function pvirtual(Request $request)

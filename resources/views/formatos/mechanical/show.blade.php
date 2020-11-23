@@ -1,10 +1,25 @@
 @extends('layouts.app', ['title' => 'Ver Evaluación Mecánica'])
 @section('content')
+@php
+$ot_status = \DB::table('status_ot')
+      ->join('status', 'status_ot.status_id', '=', 'status.id')
+      ->where('status_ot.ot_id', '=', $formato->ot_id)
+      ->select('status.id', 'status.name')
+      ->get();
+$status_last = $ot_status->last();
+@endphp
 <div class="row">
 	<div class="col-md-12">
 		<div class="card form-card">
 			<div class="card-header">
-				<h4 class="card-title">Evaluación Mecánica</h4>
+				<h4 class="card-title d-flex align-items-center justify-content-between">
+					<span>Evaluación Mecánica</span>
+					<span class="card-title-buttons">
+						@if($status_last->id == 2)
+						<a class="btn btn-primary btn-round" href="{{route('formatos.mechanical.edit', $formato->ot_id)}}">Editar <i class="fa fa-edit"></i></a>
+						@endif
+					</span>
+				</h4>
 			</div>
 			<div class="card-body">
 				<div class="row">
@@ -14,7 +29,7 @@
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="c-label">Fecha de creación</label>
-						<p class="mb-0">{{date('Y-m-d')}}</p>
+						<p class="mb-0">{{date('d-m-Y', strtotime($formato->created_at))}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="c-label">Máquina</label>

@@ -4,13 +4,13 @@
 $ot_status = \DB::table('status_ot')
       ->join('status', 'status_ot.status_id', '=', 'status.id')
       ->where('status_ot.ot_id', '=', $rdi->ot_id)
-      ->select('status_ot.status_id', 'status.id', 'status.name')
+      ->select('status.id', 'status.name')
       ->get();
 $status_last = $ot_status->last();
-$rdi_forapprove = ($status_last->status_id == 8);
-$rdi_approved = ($status_last->status_id == 9);
-$rdi_disapproved = $status_last->status_id == 10;
-$rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
+$rdi_forapprove = ($status_last->id == 8);
+$rdi_approved = ($status_last->id == 9);
+$rdi_disapproved = $status_last->id == 10;
+$rdi_fecha = $status_last->id == 11 && $rdi->fecha_entrega != null;
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -31,7 +31,7 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 						@elseif($rdi_disapproved)
 						<span class="badge badge-secondary px-3 py-1">Desaprobada</span>
 						@endif
-						@if($status_last->status_id <= 10 && $status_last->status_id != 9 && $status_last->status_id != 10)
+						@if($status_last->id <= 10 && $status_last->id != 9 && $status_last->id != 10)
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
 						@endif
 					</span>
@@ -258,7 +258,7 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 	      	</div>
       	<div class="modal-body">
       		@if(!$rdi_approved && !$rdi_disapproved)
-      		@if($status_last->status_id != 9)
+      		@if($status_last->id != 9)
         	<div class="row confirmar_ots">
       			<p class="text-center col-12">¿Confirma aprobación de {{$rdi->rdi_codigo}}?</p>
             	<div class="update ml-auto mr-auto">

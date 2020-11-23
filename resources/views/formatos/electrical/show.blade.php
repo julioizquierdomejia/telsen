@@ -1,10 +1,25 @@
 @extends('layouts.app', ['title' => 'Ver Evaluación Eléctrica'])
 @section('content')
+@php
+$ot_status = \DB::table('status_ot')
+      ->join('status', 'status_ot.status_id', '=', 'status.id')
+      ->where('status_ot.ot_id', '=', $formato->ot_id)
+      ->select('status.id', 'status.name')
+      ->get();
+$status_last = $ot_status->last();
+@endphp
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title">Evaluación Eléctrica</h4>
+        <h4 class="card-title d-flex align-items-center justify-content-between">
+          <span>Evaluación Eléctrica</span>
+          <span class="card-title-buttons">
+            @if($status_last->id == 2)
+            <a class="btn btn-primary btn-round" href="{{route('formatos.electrical.edit', $formato->ot_id)}}">Editar <i class="fa fa-edit"></i></a>
+            @endif
+          </span>
+        </h4>
       </div>
       <div class="card-body pb-3 pt-0">
         <h5 class="text-danger mt-4">Datos del Motor</h5>

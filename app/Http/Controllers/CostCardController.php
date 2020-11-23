@@ -74,7 +74,11 @@ class CostCardController extends Controller
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
-        $areas = Area::where('enabled', 1)->where('has_services', 1)->get();
+        if ($ot->client_type_id == 1) {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+        } else {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+        }
         //$clientes = Client::where('enabled', 1)->get();
 
         return view('costos.calculate', compact('ot', 'areas'));

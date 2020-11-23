@@ -123,7 +123,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	//rutas para Talleres
 	Route::get('talleres', [App\Http\Controllers\WorkshopController::class, 'index'])->name('workshop.index');
 	Route::get('talleres/crear', [App\Http\Controllers\WorkshopController::class, 'create'])->name('workshop.create');
-	Route::post('talleres', [App\Http\Controllers\WorkshopController::class, 'store'])->name('workshop.store');
+	Route::post('talleres/{ot}/store', [App\Http\Controllers\WorkshopController::class, 'store'])->name('workshop.store');
 	Route::get('talleres/{area}/editar', [App\Http\Controllers\WorkshopController::class, 'edit'])->name('workshop.edit');
 	Route::post('talleres/{area}/editar', [App\Http\Controllers\WorkshopController::class, 'update'])->name('workshop.update');
 	Route::get('talleres/{ot}/calcular', [App\Http\Controllers\WorkshopController::class, 'calculate'])->name('workshop.calculate');

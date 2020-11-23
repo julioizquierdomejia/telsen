@@ -18,7 +18,7 @@ $cc_disapproved = in_array(7, $statuses);
 				<h5 class="card-title d-flex justify-content-between align-items-center">
 				<span>Tarjeta de Costo
 			@if($ccost->fecha_entrega)
-			<p><span class="badge badge-success">Fecha de entrega: {{$ccost->fecha_entrega}}</span></p>
+			<p><span class="badge badge-success">Fecha de entrega: {{date('d-m-Y', strtotime($ccost->fecha_entrega))}}</span></p>
 			@endif</span>
 				<span class="card-title-buttons">
 					@if($ccost->fecha_entrega == null && in_array(6, $statuses))

@@ -28,7 +28,12 @@
                     OT-{{zerosatleft($ot->id, 3)}}
                   </td>
                   <td>
-                    {{$ot->razon_social}}
+                    <span class="align-middle">{{$ot->razon_social}}</span>
+                    @if($ot->client_type_id == 1)
+                    <span class="badge badge-success px-2 py-1 ml-1 align-middle">{{$ot->client_type}}</span>
+                    @else
+                    <span class="badge badge-danger px-2 py-1 ml-1">{{$ot->client_type}}</span>
+                    @endif
                   </td>
                   <td>
                     {{$ot->numero_potencia . ' ' . $ot->medida_potencia}}

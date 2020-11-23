@@ -15,7 +15,7 @@ $status_last = $ot_status->last();
         <h4 class="card-title d-flex align-items-center justify-content-between">
           <span>Evaluación Eléctrica</span>
           <span class="card-title-buttons">
-            @if($status_last->id == 2)
+            @if($status_last->id == 3)
             <a class="btn btn-primary btn-round" href="{{route('formatos.electrical.edit', $formato->ot_id)}}">Editar <i class="fa fa-edit"></i></a>
             @endif
           </span>
@@ -57,11 +57,11 @@ $status_last = $ot_status->last();
           </div>
           <div class="col-6 col-md-3 mb-2">
             <label class="c-label">Voltaje</label>
-            <p class="mb-1">{{$formato->voltaje ?? '-'}}</p>
+            <p class="mb-1">{{$formato->ot_voltaje ?? '-'}}</p>
           </div>
           <div class="col-6 col-md-3 mb-2">
             <label class="c-label">Velocidad</label>
-            <p class="mb-1">{{$formato->velocidad ?? '-'}}</p>
+            <p class="mb-1">{{$formato->ot_velocidad ?? '-'}}</p>
           </div>
         </div>
         <h4 class="second-title text-danger py-2">Características del Equipo</h4>

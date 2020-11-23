@@ -281,68 +281,84 @@ class MechanicalEvaluationController extends Controller
         // read more on validation at http://laravel.com/docs/validation
 
         $rules = array(
-            'ot_id' => 'required',
-
             'rpm' => 'required',
             'hp_kw' => 'required',
 
-            /*'serie' => 'required',
-            'solped' => 'required',
-            'placa_caract_orig' => 'required',
-            'tapas' => 'required',
-            'ventilador' => 'required',
-            'caja_conexion' => 'required',
-            'ejes' => 'required',
-            'acople' => 'required',
-            'bornera' => 'required',
-            'fundas' => 'required',
-            'chaveta' => 'required',
-            'impro_seal' => 'required',
-            'laberintos' => 'required',
-            'estator' => 'required',
+            'serie' => 'string|nullable',
+            'maquina' => 'string|nullable',
+            'placa_caract_orig' => 'string|nullable',
+            'tapas' => 'string|nullable',
+            'ventilador' => 'string|nullable',
+            'caja_conexion' => 'string|nullable',
+            'ejes' => 'string|nullable',
+            'acople' => 'string|nullable',
+            'bornera' => 'string|nullable',
+            'fundas' => 'string|nullable',
+            'chaveta' => 'string|nullable',
+            'impro_seal' => 'string|nullable',
+            'laberintos' => 'string|nullable',
+            'estator' => 'string|nullable',
+            //Sí/no
+            'placa_caract_orig_has' => 'boolean|nullable',
+            'tapas_has' => 'boolean|nullable',
+            'ventilador_has' => 'boolean|nullable',
+            'caja_conexion_has' => 'boolean|nullable',
+            'ejes_has' => 'boolean|nullable',
+            'acople_has' => 'boolean|nullable',
+            'bornera_has' => 'boolean|nullable',
+            'fundas_has' => 'boolean|nullable',
+            'chaveta_has' => 'boolean|nullable',
+            'impro_seal_has' => 'boolean|nullable',
+            'laberintos_has' => 'boolean|nullable',
+            'estator_has' => 'boolean|nullable',
+            //
 
-            'slam_muelle_p1' => 'required',
-            'slam_muelle_p2' => 'required',
-            'resortes_contra_tapas' => 'required',
-            'alineamiento_paquete' => 'required',
+            'slam_muelle_p1' => 'string|nullable',
+            'slam_muelle_p2' => 'string|nullable',
+            'resortes_contra_tapas' => 'string|nullable',
+            'alineamiento_paquete' => 'string|nullable',
 
-            'rotor_deplexion_eje' => 'required',
-            'rotor_valor_balanceo' => 'required',
-            'rotor_cod_rodaje_p1' => 'required',
-            'rotor_cod_rodaje_p2' => 'required',
-            'rotor_asiento_rodaje_p1' => 'required',
-            'rotor_asiento_rodaje_p2' => 'required',
-            'rotor_eje_zona_acople_p1' => 'required',
-            'rotor_eje_zona_acople_p2' => 'required',
-            'rotor_medida_chaveta_p1' => 'required',
-            'rotor_medida_chaveta_p2' => 'required',
+            'rotor_deplexion_eje' => 'string|nullable',
+            'rotor_valor_balanceo' => 'string|nullable',
+            'rotor_cod_rodaje_p1' => 'string|nullable',
+            'rotor_cod_rodaje_p2' => 'string|nullable',
+            'rotor_asiento_rodaje_p1' => 'string|nullable',
+            'rotor_asiento_rodaje_p2' => 'string|nullable',
+            'rotor_eje_zona_acople_p1' => 'string|nullable',
+            'rotor_eje_zona_acople_p2' => 'string|nullable',
+            'rotor_medida_chaveta_p1' => 'string|nullable',
+            'rotor_medida_chaveta_p2' => 'string|nullable',
 
-            'estator_alojamiento_rodaje_tapa_p10' => 'required',
-            'estator_alojamiento_rodaje_tapa_p20' => 'required',
-            'estator_pestana_tapa_p1' => 'required',
-            'estator_pestana_tapa_p2' => 'required',
+            'estator_alojamiento_rodaje_tapa_p10' => 'string|nullable',
+            'estator_alojamiento_rodaje_tapa_p20' => 'string|nullable',
+            'estator_pestana_tapa_p1' => 'string|nullable',
+            'estator_pestana_tapa_p2' => 'string|nullable',
 
-            'estator_contra_tapa_interna_p1' => 'required',
-            'estator_contra_tapa_interna_p2' => 'required',
-            'estator_contra_tapa_externa_p1' => 'required',
-            'estator_contra_tapa_externa_p2' => 'required',
-            'estator_ventilador_0' => 'required',
-            'estator_alabes' => 'required',
-            'estator_caja_conexion' => 'required',
-            'estator_tapa_conexion' => 'required',
+            'estator_contra_tapa_interna_p1' => 'string|nullable',
+            'estator_contra_tapa_interna_p2' => 'string|nullable',
+            'estator_contra_tapa_externa_p1' => 'string|nullable',
+            'estator_contra_tapa_externa_p2' => 'string|nullable',
+            'estator_ventilador_0' => 'string|nullable',
+            'estator_alabes' => 'string|nullable',
+            'estator_caja_conexion' => 'string|nullable',
+            'estator_tapa_conexion' => 'string|nullable',
 
-            'observaciones' => 'required',
+            'observaciones' => 'string|nullable',
 
-            'works' => 'required'*/
+            'works' => 'string|nullable'
         );
 
-        $this->validate($request, $rules);
+        $validator = $this->validate($request, $rules);
 
+        // update
         $meval = MechanicalEvaluation::find($id);
 
-        $meval->ot_id = $request->input('ot_id');
+        //$meval->ot_id = $request->input('ot_id');
+        $meval->ot_id = $id;
+
         $meval->rpm = $request->input('rpm');
         $meval->hp_kw = $request->input('hp_kw');
+
         $meval->serie = $request->input('serie');
         $meval->maquina = $request->input('maquina');
         $meval->placa_caract_orig = $request->input('placa_caract_orig');
@@ -357,6 +373,20 @@ class MechanicalEvaluationController extends Controller
         $meval->impro_seal = $request->input('impro_seal');
         $meval->laberintos = $request->input('laberintos');
         $meval->estator = $request->input('estator');
+        //
+        $meval->placa_caract_orig_has = $request->input('placa_caract_orig_has') ?? 0;
+        $meval->tapas_has = $request->input('tapas_has') ?? 0;
+        $meval->ventilador_has = $request->input('ventilador_has') ?? 0;
+        $meval->caja_conexion_has = $request->input('caja_conexion_has') ?? 0;
+        $meval->ejes_has = $request->input('ejes_has') ?? 0;
+        $meval->acople_has = $request->input('acople_has') ?? 0;
+        $meval->bornera_has = $request->input('bornera_has') ?? 0;
+        $meval->fundas_has = $request->input('fundas_has') ?? 0;
+        $meval->chaveta_has = $request->input('chaveta_has') ?? 0;
+        $meval->impro_seal_has = $request->input('impro_seal_has') ?? 0;
+        $meval->laberintos_has = $request->input('laberintos_has') ?? 0;
+        $meval->estator_has = $request->input('estator_has') ?? 0;
+        //
 
         $meval->slam_muelle_p1 = $request->input('slam_muelle_p1');
         $meval->slam_muelle_p2 = $request->input('slam_muelle_p2');
@@ -387,7 +417,9 @@ class MechanicalEvaluationController extends Controller
         $meval->estator_alabes = $request->input('estator_alabes');
         $meval->estator_caja_conexion = $request->input('estator_caja_conexion');
         $meval->estator_tapa_conexion = $request->input('estator_tapa_conexion');
+
         $meval->observaciones = $request->input('observaciones');
+
         $meval->works = $request->input('works');
 
         $meval->save();

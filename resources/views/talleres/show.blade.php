@@ -4,9 +4,9 @@
 $ot_status = \DB::table('status_ot')
       ->join('status', 'status_ot.status_id', '=', 'status.id')
       ->where('status_ot.ot_id', '=', $ot->id)
-      ->select('status.id', 'status.name')
+      ->select('status.id', 'status_ot.status_id', 'status.name')
       ->get();
-$statuses = array_column($ot_status->toArray(), "id");
+$statuses = array_column($ot_status->toArray(), "status_id");
 $status_last = $ot_status->last();
 @endphp
 <div class="row">

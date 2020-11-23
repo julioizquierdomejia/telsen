@@ -4,9 +4,9 @@
 $ot_status = \DB::table('status_ot')
       ->join('status', 'status_ot.status_id', '=', 'status.id')
       ->where('status_ot.ot_id', '=', $ot->id)
-      ->select('status.id', 'status.name')
+      ->select('status.id', 'status_ot.status_id', 'status.name')
       ->get();
-$statuses = array_column($ot_status->toArray(), "id");
+$statuses = array_column($ot_status->toArray(), "status_id");
 $status_last = $ot_status->last();
 @endphp
 <div class="row">
@@ -18,16 +18,16 @@ $status_last = $ot_status->last();
 					Orden de Trabajo {{zerosatleft($ot->id, 3)}}
                     <span class="d-block">
                     @if ($status_last)
-                      @if($status_last->id == 4)
+                      @if($status_last->status_id == 4)
                       <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->name }}</span>
-                      @elseif($status_last->id == 5)
+                      @elseif($status_last->status_id == 5)
                       <span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->name }}</span>
-                      @elseif($status_last->id == 6 || $status_last->id == 9 || $status_last->id == 11)
+                      @elseif($status_last->status_id == 6 || $status_last->status_id == 9 || $status_last->status_id == 11)
                       <span class="badge badge-success px-2 py-1 w-100">{{ $status_last->name }}</span>
-                      {{-- @if ($status_last->id == 11)
+                      {{-- @if ($status_last->status_id == 11)
                       	Fecha de entrega: <span class="badge badge-secondary">{{$ot->fecha_entrega}}</span>
                       @endif --}}
-                      @elseif($status_last->id == 8)
+                      @elseif($status_last->status_id == 8)
                       <span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->name }}</span>
                       @else
                       <span class="badge badge-secondary px-2 py-1 w-100">{{ $status_last->name }}</span>

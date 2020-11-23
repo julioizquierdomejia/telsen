@@ -4,9 +4,9 @@
 $ot_status = \DB::table('status_ot')
       ->join('status', 'status_ot.status_id', '=', 'status.id')
       ->where('status_ot.ot_id', '=', $ccost->ot_id)
-      ->select('status.id', 'status.name')
+      ->select('status.id', 'status_ot.status_id', 'status.name')
       ->get();
-$statuses = array_column($ot_status->toArray(), "id");
+$statuses = array_column($ot_status->toArray(), "status_id");
 //$status_last = $ot_status->last();
 $cc_approved = in_array(6, $statuses) && $ccost->fecha_entrega != null;
 $cc_disapproved = in_array(7, $statuses);

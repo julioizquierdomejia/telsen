@@ -4,7 +4,7 @@
 $ot_status = \DB::table('status_ot')
       ->join('status', 'status_ot.status_id', '=', 'status.id')
       ->where('status_ot.ot_id', '=', $formato->ot_id)
-      ->select('status.id', 'status.name')
+      ->select('status.id', 'status_ot.status_id', 'status.name')
       ->get();
 $status_last = $ot_status->last();
 @endphp
@@ -15,7 +15,7 @@ $status_last = $ot_status->last();
 				<h4 class="card-title d-flex align-items-center justify-content-between">
 					<span>Evaluación Mecánica</span>
 					<span class="card-title-buttons">
-						@if($status_last->id == 2)
+						@if($status_last->status_id == 2)
 						<a class="btn btn-primary btn-round" href="{{route('formatos.mechanical.edit', $formato->ot_id)}}">Editar <i class="fa fa-edit"></i></a>
 						@endif
 					</span>
@@ -239,11 +239,6 @@ $status_last = $ot_status->last();
 						<div class="text">
 							{{$formato->observaciones ?? '-'}}
 						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="update ml-auto mr-auto">
-						<button type="submit" class="btn btn-primary btn-round">Enviar</button>
 					</div>
 				</div>
 			</div>

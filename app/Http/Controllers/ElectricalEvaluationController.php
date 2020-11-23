@@ -56,6 +56,11 @@ class ElectricalEvaluationController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
 
+        $formato = ElectricalEvaluation::find($id);
+        if ($formato) {
+            return redirect('formatos/electrical');
+        }
+
         $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();

@@ -16,7 +16,7 @@ class CreateElectricalEvaluationsCreate extends Migration
         Schema::create('electrical_evaluations', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('ot_id');
+            $table->unsignedBigInteger('ot_id')->unique();
             $table->foreign('ot_id')->references('id')->on('ots');
 
             //$table->string('solped')->nullable();

@@ -18,7 +18,7 @@ class CreateMechanicalEvaluationsTable extends Migration
             //$table->unsignedBigInteger('client_id');
             //$table->foreign('client_id')->references('id')->on('clients');
 
-            $table->unsignedBigInteger('ot_id');
+            $table->unsignedBigInteger('ot_id')->unique();
             $table->foreign('ot_id')->references('id')->on('ots');
 
             //$table->unsignedBigInteger('brand_id');

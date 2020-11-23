@@ -16,7 +16,7 @@ $status_last = $ot_status->last();
           <span>Evaluación Eléctrica</span>
           <span class="card-title-buttons">
             @if($status_last->status_id < 4)
-            <a class="btn btn-primary btn-round" href="{{route('formatos.electrical.edit', $formato->ot_id)}}">Editar <i class="fa fa-edit"></i></a>
+            <a class="btn btn-primary btn-round" href="{{route('formatos.electrical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
             @endif
           </span>
         </h4>

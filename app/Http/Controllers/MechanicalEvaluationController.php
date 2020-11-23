@@ -243,11 +243,11 @@ class MechanicalEvaluationController extends Controller
         return view('formatos.mechanical.show', compact('formato'));
     }
     
-    public function format_show(Request $request, $ot_id)
+    public function format_show(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
 
-        $formato = MechanicalEvaluation::where('ot_id', $ot_id)->firstOrFail();
+        $formato = MechanicalEvaluation::findOrFail($id);
 
         return view('formatos.mechanical.show', compact('formato'));
     }

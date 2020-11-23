@@ -350,7 +350,7 @@ class ElectricalEvaluationController extends Controller
         return view('formatos.electrical.show', compact('formato'));
     }
 
-    public function format_show(Request $request, $ot_id)
+    public function format_show(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
 
@@ -453,7 +453,8 @@ class ElectricalEvaluationController extends Controller
                         'eechar.frecuencia as char_frecuencia',
                         'eechar.otros as char_otros'
                 )
-                    ->where('electrical_evaluations.ot_id', $ot_id)->firstOrFail();
+                    //->where('electrical_evaluations.ot_id', $ot_id)
+                    ->findOrFail($id);
 
         return view('formatos.electrical.show', compact('formato'));
     }

@@ -190,7 +190,21 @@ $(document).ready(function() {
                         $('#nav-disapprovedots tbody').empty();
                         $.each(data, function(id, item) {
                             var date = new Date(item.created_at);
-                            var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                          var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                          var status = getStatus(item);
+                          var item_days = '-';
+                          if(status.fecha_entrega) {
+                            start = new Date(status.fecha_entrega);
+                            end   = new Date();
+                            diff  = new Date(start - end);
+                            days = parseInt(diff/1000/60/60/24);
+                            fecha = start.getUTCDate() +"-"+ (start.getMonth() + 1) +"-"+ start.getFullYear();
+                            i_class = (days > 0) ? ' badge-danger ' : ' badge-success ';
+                            item_days = '<span class="badge'+ i_class+ 'px-2 py-1 w-100">'+fecha+'</span>';
+                            if(days > 0) {
+                              item_days += '<span class="text-nowrap">quedan ' +days + ' días</span>';
+                            }
+                          }
                             var status = getStatus(item.id);
                             $('#nav-disapprovedots tbody').append(
                                 `<tr class="text-muted" data-id="`+item.id+`">
@@ -244,8 +258,21 @@ $(document).ready(function() {
                         $('#nav-disenabledots tbody').empty();
                         $.each(data, function(id, item) {
                             var date = new Date(item.created_at);
-                            var status = getStatus(item.id);
-                            var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                          var created_at = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+                          var status = getStatus(item);
+                          var item_days = '-';
+                          if(status.fecha_entrega) {
+                            start = new Date(status.fecha_entrega);
+                            end   = new Date();
+                            diff  = new Date(start - end);
+                            days = parseInt(diff/1000/60/60/24);
+                            fecha = start.getUTCDate() +"-"+ (start.getMonth() + 1) +"-"+ start.getFullYear();
+                            i_class = (days > 0) ? ' badge-danger ' : ' badge-success ';
+                            item_days = '<span class="badge'+ i_class+ 'px-2 py-1 w-100">'+fecha+'</span>';
+                            if(days > 0) {
+                              item_days += '<span class="text-nowrap">quedan ' +days + ' días</span>';
+                            }
+                          }
                             $('#nav-disenabledots tbody').append(
                                 `<tr>
                     <td class="text-muted text-nowrap">` + created_at + `</td>

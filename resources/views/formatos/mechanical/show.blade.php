@@ -15,7 +15,7 @@ $status_last = $ot_status->last();
 				<h4 class="card-title d-flex align-items-center justify-content-between">
 					<span>Evaluación Mecánica</span>
 					<span class="card-title-buttons">
-						@if($status_last->status_id == 2)
+						@if($status_last->status_id < 4)
 						<a class="btn btn-primary btn-round" href="{{route('formatos.mechanical.edit', $formato->ot_id)}}">Editar <i class="fa fa-edit"></i></a>
 						@endif
 					</span>

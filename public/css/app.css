@@ -30530,6 +30530,10 @@ img {
   background-color: #efefef;
 }
 
+.form-card .table .select2-container {
+  margin-top: 0;
+}
+
 .form-card .card-footer .btn {
   text-transform: none;
 }

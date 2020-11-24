@@ -661,7 +661,7 @@ $('.btn-add-row').click(function () {
 var row = `<tr>
     <td class="cell-counter"><span class="number"></span></td>
     <td>
-      <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
+      <select class="dropdown2 form-control select-area" name="works[`+row_index+`][area]" style="width: 100%">
         <option value="">Seleccionar area</option>
         @foreach($areas as $area)
         <option value="{{$area->id}}" {{ (old('works')[$key]['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>

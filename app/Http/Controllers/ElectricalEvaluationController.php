@@ -65,9 +65,9 @@ class ElectricalEvaluationController extends Controller
 
         $ot = Ot::where('ots.id', $id)
             ->join('clients', 'ots.client_id', '=', 'clients.id')
-            ->select('ots.*', 'clients.razon_social')
+            ->select('ots.*', 'clients.razon_social', 'clients.client_type_id')
             ->firstOrFail();
-        if ($ot->client_id == 1) { //RDI
+        if ($ot->client_type_id == 1) { //RDI
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         } else {
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
@@ -613,9 +613,9 @@ class ElectricalEvaluationController extends Controller
                     ->where('electrical_evaluations.id', $id)->firstOrFail();
         $ot = Ot::where('ots.id', $formato->ot_id)
             ->join('clients', 'ots.client_id', '=', 'clients.id')
-            ->select('ots.*', 'clients.razon_social')
+            ->select('ots.*', 'clients.razon_social', 'clients.client_type_id')
             ->firstOrFail();
-        if ($ot->client_id == 1) { //RDI
+        if ($ot->client_type_id == 1) { //RDI
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         } else {
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();

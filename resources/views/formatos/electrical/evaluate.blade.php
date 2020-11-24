@@ -759,7 +759,7 @@ $(document).ready(function() {
     createJSON();
   })*/
 
-  $('.select-area').on('change', function () {
+  $(document).on('change', '.select-area', function () {
   var $this = $(this), area = $this.val();
   var service = $(this).parents('tr').find('.select-service');
   if($(this).val().length) {
@@ -796,11 +796,40 @@ $(document).ready(function() {
   $(document).on('click', '.card .btn-clear', function() {
     $('#table-tap .form-control').val('');
   })
-  $('.btn-add-row').click(function() {
-    var row = '<tr><td class="cell-counter"><span class="number"></span></td><td><input type="text" class="form-control" name="uv1" value=""></td><td><input type="text" class="form-control" name="uv2" value=""></td><td><input type="text" class="form-control" name="vu1" value=""></td><td><input type="text" class="form-control" name="vu2" value=""></td><td><input type="text" class="form-control" name="wu1" value=""></td><td><input type="text" class="form-control" name="wu2" value=""></td></tr>';
-    $('#table-tap tbody').append(row);
-    createJSON();
-  })
+  $('.btn-add-row').click(function () {
+  var row_index = $('#table-tap tbody tr').length;
+var row = `<tr>
+    <td class="cell-counter"><span class="number"></span></td>
+    <td>
+      <select class="dropdown2 form-control select-area" name="works[`+row_index+`][area]" style="width: 100%">
+        <option value="">Seleccionar area</option>
+        @foreach($areas as $area)
+        <option value="{{$area->id}}">{{$area->name}}</option>
+        @endforeach
+      </select>
+    </td>
+    <td>
+      <select class="dropdown2 form-control select-service" name="works[`+row_index+`][service_id]" style="width: 100%"  disabled="">
+        <option value="">Seleccionar servicio</option>
+      </select>
+    </td>
+    <td width="120">
+      <input type="text" class="form-control" placeholder="Descripción" value="" name="works[`+row_index+`][description]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control" placeholder="Medida" value="" name="works[`+row_index+`][medidas]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control" placeholder="Personal" value="" name="works[0][personal]">
+    </td>
+  </tr>`;
+$('#table-tap tbody').append(row);
+$('#table-tap .dropdown2').select2();
+//createJSON();
+})
   $('.btn-remove-row').click(function() {
     var row_index = $('#table-tap tbody tr').length;
     if (row_index > 1) {

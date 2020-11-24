@@ -12,6 +12,7 @@ use App\Models\Ot;
 use App\Models\MotorBrand;
 use App\Models\MotorModel;
 use App\Models\Status;
+use App\Models\Area;
 use Illuminate\Http\Request;
 
 class ElectricalEvaluationController extends Controller
@@ -62,7 +63,7 @@ class ElectricalEvaluationController extends Controller
             return redirect('formatos/electrical');
         }
 
-        $ot = Ot::where('ots.id', $ot_id)
+        $ot = Ot::where('ots.id', $id)
             ->join('clients', 'ots.client_id', '=', 'clients.id')
             ->select('ots.*', 'clients.razon_social')
             ->firstOrFail();

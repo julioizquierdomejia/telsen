@@ -60,9 +60,9 @@ class MechanicalEvaluationController extends Controller
             ->select('ots.*', 'clients.razon_social', 'clients.client_type_id')
             ->firstOrFail();
         if ($ot->client_type_id == 1) { //RDI
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
-        } else {
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+        } else {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         }
 
         return view('formatos.mechanical.evaluate', compact('ot', 'areas'));
@@ -306,9 +306,9 @@ class MechanicalEvaluationController extends Controller
             ->select('ots.*', 'clients.razon_social', 'clients.client_type_id')
             ->firstOrFail();
         if ($ot->client_type_id == 1) { //RDI
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
-        } else {
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+        } else {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         }
 
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)

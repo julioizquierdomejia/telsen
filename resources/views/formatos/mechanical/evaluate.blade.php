@@ -138,7 +138,7 @@
                   </div>
                   </div>
                 <div class="col-12 col-md-5">
-                <input type="text" class="form-control mt-0 @error($item['alias']) is-invalid @enderror" placeholder="Placa Caract Orig" value="{{old($item['alias'])}}" name="{{$item['alias']}}">
+                <input type="text" class="form-control mt-0 @error($item['alias']) is-invalid @enderror" placeholder="{{$item['name']}}" value="{{old($item['alias'])}}" name="{{$item['alias']}}">
               </div>
               </div>
               @error($item['alias'])

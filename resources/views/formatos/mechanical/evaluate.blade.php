@@ -618,7 +618,7 @@ $(document).on('keyup', '#table-tap .form-control', function () {
 createJSON();
 })*/
 
-$('.select-area').on('change', function () {
+$(document).on('change', '.select-area', function () {
   var $this = $(this), area = $this.val();
   var service = $(this).parents('tr').find('.select-service');
   if($(this).val().length) {
@@ -657,16 +657,45 @@ $('#table-tap .form-control').val('');
 })
 
 $('.btn-add-row').click(function () {
-var row = '<tr><td class="cell-counter"><span class="number"></span></td><td><input type="text" class="form-control" value=""></td></tr>';
+  var row_index = $('#table-tap tbody tr').length;
+var row = `<tr>
+    <td class="cell-counter"><span class="number"></span></td>
+    <td>
+      <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
+        <option value="">Seleccionar area</option>
+        @foreach($areas as $area)
+        <option value="{{$area->id}}" {{ (old('works')[$key]['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+        @endforeach
+      </select>
+    </td>
+    <td>
+      <select class="dropdown2 form-control select-service" name="works[`+row_index+`][service_id]" style="width: 100%"  disabled="">
+        <option value="">Seleccionar servicio</option>
+      </select>
+    </td>
+    <td width="120">
+      <input type="text" class="form-control" placeholder="Descripción" value="" name="works[`+row_index+`][description]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control" placeholder="Medida" value="" name="works[`+row_index+`][medidas]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control" placeholder="Personal" value="" name="works[0][personal]">
+    </td>
+  </tr>`;
 $('#table-tap tbody').append(row);
-createJSON();
+$('#table-tap .dropdown2').select2();
+//createJSON();
 })
 $('.btn-remove-row').click(function () {
 var row_index = $('#table-tap tbody tr').length;
 if (row_index > 1) {
 $('#table-tap tbody tr:nth-child('+row_index+')').remove();
 }
-createJSON();
+//createJSON();
 })
 
 $('.btn-yes').click(function () {

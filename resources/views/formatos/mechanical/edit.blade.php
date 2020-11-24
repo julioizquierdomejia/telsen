@@ -493,27 +493,75 @@
               <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
                 <thead>
                   <tr>
-                    <th class="text-center py-1" colspan="2">Trabajos</th>
+                    <th class="text-center py-1" colspan="7">Trabajos</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @if($works = json_decode($formato->works, true))
+                  @if($works = old('works', $works))
                   @foreach($works as $key => $item)
                   <tr>
                     <td class="cell-counter"><span class="number"></span></td>
-                    <td><input type="text" class="form-control" value="{{$item[0]}}"></td>
+                    <td>
+                      <select class="dropdown2 form-control select-area" name="works[{{$key}}]['area']" style="width: 100%">
+                        <option value="">Seleccionar area</option>
+                        @foreach($areas as $area)
+                        <option value="{{$area->id}}" {{ (old('works')[$key]['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                        @endforeach
+                      </select>
+                    </td>
+                    <td>
+                      <select class="dropdown2 form-control select-service" name="works[{{$key}}]['service']" style="width: 100%"  disabled="">
+                        <option value="">Seleccionar servicio</option>
+                      </select>
+                    </td>
+                    <td width="120">
+                      <input type="text" class="form-control @error("works[{{$key}}]['desc']") is-invalid @enderror" placeholder="Descripción" value="{{old('works[$key]["desc"]')}}" name="works[{{$key}}]['desc']">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control @error("works[{{$key}}]['medida']") is-invalid @enderror" placeholder="Medida" value="{{old('works[$key]["medida"]')}}" name="works[{{$key}}]['medida']">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control @error("works[{{$key}}]['cantidad']") is-invalid @enderror" placeholder="Cantidad" value="{{old('works[$key]["cantidad"]')}}" name="works[{{$key}}]['cantidad']">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control @error("works[{{$key}}]['personal']") is-invalid @enderror" placeholder="Personal" value="{{old('works[$key]["personal"]')}}" name="works[{{$key}}]['personal']">
+                    </td>
                   </tr>
                   @endforeach
                   @else
                   <tr>
                     <td class="cell-counter"><span class="number"></span></td>
-                    <td><input type="text" class="form-control" value=""></td>
+                    <td>
+                      <select class="dropdown2 form-control select-area" name="works[]" style="width: 100%">
+                        <option value="">Seleccionar area</option>
+                        @foreach($areas as $area)
+                        <option value="{{$area->id}}">{{$area->name}}</option>
+                        @endforeach
+                      </select>
+                    </td>
+                    <td>
+                      <select class="dropdown2 form-control select-service" name="works[{{$key}}]['service']" style="width: 100%"  disabled="">
+                        <option value="">Seleccionar servicio</option>
+                      </select>
+                    </td>
+                    <td width="120">
+                      <input type="text" class="form-control @error("works[{{$key}}]['desc']") is-invalid @enderror" placeholder="Descripción" value="{{old('works[$key]["desc"]')}}" name="works[{{$key}}]['desc']">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control @error("works[{{$key}}]['medida']") is-invalid @enderror" placeholder="Medida" value="{{old('works[$key]["medida"]')}}" name="works[{{$key}}]['medida']">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control @error("works[{{$key}}]['cantidad']") is-invalid @enderror" placeholder="Cantidad" value="{{old('works[$key]["cantidad"]')}}" name="works[{{$key}}]['cantidad']">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control @error("works[{{$key}}]['personal']") is-invalid @enderror" placeholder="Personal" value="{{old('works[$key]["personal"]')}}" name="works[{{$key}}]['personal']">
+                    </td>
                   </tr>
                   @endif
                 </tbody>
                 <tfoot class="buttons">
                 <tr>
-                  <td class="p-0" colspan="2">
+                  <td class="p-0" colspan="7">
                     <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
                     <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
                     <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
@@ -548,7 +596,7 @@
 @section('javascript')
 <script>
 $(document).ready(function () {
-function createJSON() {
+/*function createJSON() {
 var json = '{';
 var otArr = [];
 var tbl2 = $('#table-tap tbody tr').each(function(i) {
@@ -567,10 +615,21 @@ return json;
 }
 $(document).on('keyup', '#table-tap .form-control', function () {
 createJSON();
+})*/
+
+$('.select-area').on('change', function () {
+  var service = $(this).parents('tr').find('.select-service');
+  if($(this).val().length) {
+    service.attr('disabled', false).focus();
+  } else {
+    service.attr('disabled', true);
+  }
 })
+
 $(document).on('click', '.card .btn-clear', function () {
 $('#table-tap .form-control').val('');
 })
+
 $('.btn-add-row').click(function () {
 var row = '<tr><td class="cell-counter"><span class="number"></span></td><td><input type="text" class="form-control" value=""></td></tr>';
 $('#table-tap tbody').append(row);

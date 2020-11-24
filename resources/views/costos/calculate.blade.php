@@ -279,7 +279,7 @@
       if ($this.val()) {
         $.ajax({
           type: "GET",
-          url: "/tarjeta-costo/filterareas",
+          url: "/servicios/filterareas",
           data: {id: area, _token:token},
           success: function (response) {
             if (response.success) {

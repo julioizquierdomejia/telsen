@@ -143,6 +143,21 @@ class ServiceController extends Controller
         return redirect('servicios');
     }
 
+    public function filterareas(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+
+        $id = $request->input('id');
+        $services = Service::where('area_id', $id)
+                ->where('enabled', 1)
+                ->select('services.id', 'services.name')
+                ->get();
+        if ($services) {
+            return response()->json(['data'=>json_encode($services),'success'=>true]);
+        }
+        return response()->json(['success'=>false]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

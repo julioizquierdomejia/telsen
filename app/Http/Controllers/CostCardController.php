@@ -84,21 +84,6 @@ class CostCardController extends Controller
         return view('costos.calculate', compact('ot', 'areas'));
     }
 
-    public function filterareas(Request $request)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
-
-        $id = $request->input('id');
-        $services = Service::where('area_id', $id)
-                ->where('enabled', 1)
-                ->select('services.id', 'services.name')
-                ->get();
-        if ($services) {
-            return response()->json(['data'=>json_encode($services),'success'=>true]);
-        }
-        return response()->json(['success'=>false]);
-    }
-
     public function upload(Request $request, $id)
     {
         if ($request->file('upload_file')) {

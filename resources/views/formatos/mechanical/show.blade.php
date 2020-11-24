@@ -208,27 +208,29 @@ $status_last = $ot_status->last();
 						<label class="c-label">Estator tapa conexión</label>
 						<p class="mb-0">{{$formato->estator_tapa_conexion ?? '-'}}</p>
 					</div>
-					@php
-						$works = json_decode($formato->works, true);
-					@endphp
 					<div class="col-md-12 form-group">
 						<table class="table table-separate text-center table-numbering mb-0" id="table-tap">
 							<thead>
 								<tr>
-									<th class="text-center py-1" colspan="2">Trabajos</th>
+									<th class="text-center py-1" colspan="7">Trabajos</th>
 								</tr>
 							</thead>
 							<tbody>
 								@if($works)
-								@foreach($works as $work)
+								@foreach($works as $key => $work)
 								<tr>
 									<td class="cell-counter"><span class="number"></span></td>
-									<td><input type="text" class="form-control" readonly="" value="{{$work[0]}}"></td>
+									<td><span class="form-control">{{$work->area}}</span></td>
+									<td><span class="form-control">{{$work->service}}</span></td>
+									<td><span class="form-control">{{$work->description}}</span></td>
+									<td><span class="form-control">{{$work->medidas}}</span></td>
+									<td><span class="form-control">{{$work->qty}}</span></td>
+									<td><span class="form-control">{{$work->personal}}</span></td>
 								</tr>
 								@endforeach
 								@else
 								<tr>
-									<td>-</td>
+									<td colspan="7">-</td>
 								</tr>
 								@endif
 							</tbody>

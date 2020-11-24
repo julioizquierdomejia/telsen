@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\MechanicalEvaluation;
+use App\Models\MechanicalEvaluationWork;
 use App\Models\Ot;
 use App\Models\Status;
+use App\Models\Area;
 use Illuminate\Http\Request;
 
 class MechanicalEvaluationController extends Controller
@@ -46,17 +48,24 @@ class MechanicalEvaluationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function evaluate(Request $request, $id)
+    public function evaluate(Request $request, $ot_id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
-        $formato = MechanicalEvaluation::where('ot_id', $id)->first();
+        $formato = MechanicalEvaluation::where('mechanical_evaluations.ot_id', $ot_id)->first();
         if ($formato) {
             return redirect('formatos/mechanical');
         }
-        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
-        $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
+        $ot = Ot::where('ots.id', $ot_id)
+            ->join('clients', 'ots.client_id', '=', 'clients.id')
+            ->select('ots.*', 'clients.razon_social')
+            ->firstOrFail();
+        if ($ot->client_id == 1) { //RDI
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+        } else {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+        }
 
-        return view('formatos.mechanical.evaluate', compact('ot'));
+        return view('formatos.mechanical.evaluate', compact('ot', 'areas'));
     }
 
     /**
@@ -68,7 +77,6 @@ class MechanicalEvaluationController extends Controller
     public function store(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
-        
         // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
@@ -138,7 +146,7 @@ class MechanicalEvaluationController extends Controller
 
             'observaciones' => 'string|nullable',
 
-            'works' => 'string|nullable'
+            'works' => 'array|nullable'
         );
 
         $validator = $this->validate($request, $rules);
@@ -213,7 +221,21 @@ class MechanicalEvaluationController extends Controller
 
         $meval->observaciones = $request->input('observaciones');
 
-        $meval->works = $request->input('works');
+        $meval->save();
+
+        //$meval->works = $request->input('works');
+        $works = $request->input('works');
+        $services = [];
+        $date = \Carbon\Carbon::now()->toDateTimeString();
+        foreach ($works as $key => $item) {
+            $item['me_id'] = $meval->id;
+            $services[$key] = $item;
+            unset($services[$key]['area']);
+            $services[$key]['created_at'] = $date;
+            $services[$key]['updated_at'] = $date;
+        }
+
+        MechanicalEvaluationWork::insert($services);
 
         $meval->save();
 
@@ -243,8 +265,9 @@ class MechanicalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
+        $works = MechanicalEvaluationWork::where('me_id', $formato->id)->first();
 
-        return view('formatos.mechanical.show', compact('formato'));
+        return view('formatos.mechanical.show', compact('formato', 'works'));
     }
     
     public function format_show(Request $request, $id)
@@ -252,8 +275,21 @@ class MechanicalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
+        $works = MechanicalEvaluationWork::where('me_id', $formato->id)
+                ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->select(
+                    'mechanical_evaluation_works.description',
+                    'mechanical_evaluation_works.medidas',
+                    'mechanical_evaluation_works.qty',
+                    'mechanical_evaluation_works.personal',
+                    'services.name as service',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->get();
 
-        return view('formatos.mechanical.show', compact('formato'));
+        return view('formatos.mechanical.show', compact('formato', 'works'));
     }
 
     /**
@@ -267,7 +303,31 @@ class MechanicalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
-        return view('formatos.mechanical.edit', compact('formato'));
+        $ot = Ot::where('ots.id', $formato->ot_id)
+            ->join('clients', 'ots.client_id', '=', 'clients.id')
+            ->select('ots.*', 'clients.razon_social')
+            ->firstOrFail();
+        if ($ot->client_id == 1) { //RDI
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+        } else {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+        }
+
+        $works = MechanicalEvaluationWork::where('me_id', $formato->id)
+                ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->select(
+                    'mechanical_evaluation_works.description',
+                    'mechanical_evaluation_works.medidas',
+                    'mechanical_evaluation_works.qty',
+                    'mechanical_evaluation_works.personal',
+                    'services.name as service',
+                    'areas.name as area',
+                    'services.area_id'
+                )
+                ->get();
+
+        return view('formatos.mechanical.edit', compact('formato', 'areas', 'works'));
     }
 
     /**

@@ -93,7 +93,6 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('tarjeta-costo/{cost}/editar', [App\Http\Controllers\CostCardController::class, 'edit'])->name('card_cost.edit');
 	Route::post('tarjeta-costo/{cost}/editar', [App\Http\Controllers\CostCardController::class, 'update'])->name('card_cost.update');
 	Route::post('tarjeta-costo/{id}/cotizacion', [App\Http\Controllers\CostCardController::class, 'upload'])->name('card_cost.upload');
-	Route::get('tarjeta-costo/filterareas', [App\Http\Controllers\CostCardController::class, 'filterareas']);
 	Route::post('tarjeta-costo/{cost}/aprobar', [App\Http\Controllers\CostCardController::class, 'approveTC'])->name('card_cost.approve');
 
 	//rutas para Areas
@@ -110,6 +109,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('servicios/{servicio}/eliminar', [App\Http\Controllers\ServiceController::class, 'store'])->name('services.destroy');
 	Route::get('servicios/{servicio}/editar', [App\Http\Controllers\ServiceController::class, 'edit'])->name('services.edit');
 	Route::post('servicios/{servicio}/editar', [App\Http\Controllers\ServiceController::class, 'update'])->name('services.update');
+	Route::get('servicios/filterareas', [App\Http\Controllers\ServiceController::class, 'filterareas']);
 
 	//rutas para RDI
 	Route::get('rdi', [App\Http\Controllers\RdiController::class, 'index'])->name('rdi.index');

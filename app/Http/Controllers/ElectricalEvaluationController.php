@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ElectricalEvaluation;
+use App\Models\ElectricalEvaluationWork;
 use App\Models\ElectricalEvaluationCharacteristic;
 use App\Models\ElectricalEvaluationReception;
 use App\Models\ElectricalEvaluationTestIn;
@@ -61,11 +62,19 @@ class ElectricalEvaluationController extends Controller
             return redirect('formatos/electrical');
         }
 
-        $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
+        $ot = Ot::where('ots.id', $ot_id)
+            ->join('clients', 'ots.client_id', '=', 'clients.id')
+            ->select('ots.*', 'clients.razon_social')
+            ->firstOrFail();
+        if ($ot->client_id == 1) { //RDI
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+        } else {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+        }
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();
 
-        return view('formatos.electrical.evaluate', compact('ot', 'marcas', 'modelos'));
+        return view('formatos.electrical.evaluate', compact('ot', 'marcas', 'modelos', 'areas'));
     }
 
     /**
@@ -325,6 +334,19 @@ class ElectricalEvaluationController extends Controller
         $eltraneval->ww = $request->input('tran_ww');
         $eltraneval->save();
 
+        $works = $request->input('works');
+        $services = [];
+        $date = \Carbon\Carbon::now()->toDateTimeString();
+        foreach ($works as $key => $item) {
+            $item['me_id'] = $meval->id;
+            $services[$key] = $item;
+            unset($services[$key]['area']);
+            $services[$key]['created_at'] = $date;
+            $services[$key]['updated_at'] = $date;
+        }
+
+        MechanicalEvaluationWork::insert($services);
+
         $status = Status::where('id', 3)->first();
         if ($status) {
             \DB::table('status_ot')->insert([
@@ -461,7 +483,21 @@ class ElectricalEvaluationController extends Controller
                     //->where('electrical_evaluations.ot_id', $ot_id)
                     ->findOrFail($id);
 
-        return view('formatos.electrical.show', compact('formato'));
+        $works = ElectricalEvaluationWork::where('me_id', $formato->id)
+                ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->select(
+                    'mechanical_evaluation_works.description',
+                    'mechanical_evaluation_works.medidas',
+                    'mechanical_evaluation_works.qty',
+                    'mechanical_evaluation_works.personal',
+                    'services.name as service',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->get();
+
+        return view('formatos.electrical.show', compact('formato', 'works'));
     }
 
     /**
@@ -574,11 +610,33 @@ class ElectricalEvaluationController extends Controller
                         'eechar.otros as char_otros'
                 )
                     ->where('electrical_evaluations.id', $id)->firstOrFail();
-        $ot = Ot::find($formato->ot_id);
+        $ot = Ot::where('ots.id', $formato->ot_id)
+            ->join('clients', 'ots.client_id', '=', 'clients.id')
+            ->select('ots.*', 'clients.razon_social')
+            ->firstOrFail();
+        if ($ot->client_id == 1) { //RDI
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+        } else {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+        }
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();
 
-        return view('formatos.electrical.edit', compact('formato', 'ot', 'marcas', 'modelos'));
+        $works = ElectricalEvaluationWork::where('me_id', $formato->id)
+                ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->select(
+                    'mechanical_evaluation_works.description',
+                    'mechanical_evaluation_works.medidas',
+                    'mechanical_evaluation_works.qty',
+                    'mechanical_evaluation_works.personal',
+                    'services.name as service',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->get();
+
+        return view('formatos.electrical.edit', compact('formato', 'ot', 'marcas', 'modelos', 'areas', 'works'));
     }
 
     /**

@@ -162,6 +162,23 @@ class CreateElectricalEvaluationsCreate extends Migration
 
             $table->timestamps();
         });
+
+        Schema::create('electrical_evaluation_works', function (Blueprint $table) {
+            $table->id();
+
+            $table->unsignedBigInteger('me_id')->unique();
+            $table->foreign('me_id')->references('id')->on('electrical_evaluations');
+
+            $table->unsignedBigInteger('service_id')->unique();
+            $table->foreign('service_id')->references('id')->on('services');
+
+            $table->string('description')->nullable();
+            $table->string('medidas')->nullable();
+            $table->string('qty')->nullable();
+            $table->string('personal')->nullable();
+
+            $table->timestamps();
+        });
     }
 
     /**
@@ -186,11 +203,16 @@ class CreateElectricalEvaluationsCreate extends Migration
         Schema::table('eval_electrical_transformer', function (Blueprint $table) {
             $table->dropForeign('eval_electrical_transformer_eel_id_foreign');
         });
+        Schema::table('electrical_evaluation_works', function (Blueprint $table) {
+            $table->dropForeign('electrical_evaluation_works_me_id_foreign');
+            $table->dropForeign('electrical_evaluation_works_service_id_foreign');
+        });
 
         Schema::dropIfExists('eval_electrical_characteristics');
         Schema::dropIfExists('eval_electrical_reception');
         Schema::dropIfExists('eval_electrical_test_in');
         Schema::dropIfExists('eval_electrical_transformer');
         Schema::dropIfExists('electrical_evaluations');
+        Schema::dropIfExists('electrical_evaluation_works');
     }
 }

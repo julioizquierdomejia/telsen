@@ -237,8 +237,6 @@ class MechanicalEvaluationController extends Controller
 
         MechanicalEvaluationWork::insert($services);
 
-        $meval->save();
-
         $status = Status::where('id', 2)->first();
         if ($status) {
             \DB::table('status_ot')->insert([

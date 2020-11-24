@@ -131,6 +131,8 @@ class MechanicalEvaluationController extends Controller
             'rotor_eje_zona_acople_p2' => 'string|nullable',
             'rotor_medida_chaveta_p1' => 'string|nullable',
             'rotor_medida_chaveta_p2' => 'string|nullable',
+            'rotor_canal_chaveta_p1' => 'string|nullable',
+            'rotor_canal_chaveta_p2' => 'string|nullable',
 
             'estator_alojamiento_rodaje_tapa_p10' => 'string|nullable',
             'estator_alojamiento_rodaje_tapa_p20' => 'string|nullable',
@@ -207,6 +209,8 @@ class MechanicalEvaluationController extends Controller
         $meval->rotor_eje_zona_acople_p2 = $request->input('rotor_eje_zona_acople_p2');
         $meval->rotor_medida_chaveta_p1 = $request->input('rotor_medida_chaveta_p1');
         $meval->rotor_medida_chaveta_p2 = $request->input('rotor_medida_chaveta_p2');
+        $meval->rotor_canal_chaveta_p1 = $request->input('rotor_canal_chaveta_p1');
+        $meval->rotor_canal_chaveta_p2 = $request->input('rotor_canal_chaveta_p2');
 
         $meval->estator_alojamiento_rodaje_tapa_p10 = $request->input('estator_alojamiento_rodaje_tapa_p10');
         $meval->estator_alojamiento_rodaje_tapa_p20 = $request->input('estator_alojamiento_rodaje_tapa_p20');
@@ -231,9 +235,13 @@ class MechanicalEvaluationController extends Controller
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
-            $item['me_id'] = $meval->id;
-            $services[$key] = $item;
-            unset($services[$key]['area']);
+            $services[$key]['me_id'] = $meval->id;
+            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+
             $services[$key]['created_at'] = $date;
             $services[$key]['updated_at'] = $date;
         }
@@ -328,7 +336,7 @@ class MechanicalEvaluationController extends Controller
                 )
                 ->get();
 
-        return view('formatos.mechanical.edit', compact('formato', 'areas', 'works'));
+        return view('formatos.mechanical.edit', compact('formato', 'ot', 'areas', 'works'));
     }
 
     /**
@@ -394,6 +402,8 @@ class MechanicalEvaluationController extends Controller
             'rotor_eje_zona_acople_p2' => 'string|nullable',
             'rotor_medida_chaveta_p1' => 'string|nullable',
             'rotor_medida_chaveta_p2' => 'string|nullable',
+            'rotor_canal_chaveta_p1' => 'string|nullable',
+            'rotor_canal_chaveta_p2' => 'string|nullable',
 
             'estator_alojamiento_rodaje_tapa_p10' => 'string|nullable',
             'estator_alojamiento_rodaje_tapa_p20' => 'string|nullable',
@@ -471,6 +481,8 @@ class MechanicalEvaluationController extends Controller
         $meval->rotor_eje_zona_acople_p2 = $request->input('rotor_eje_zona_acople_p2');
         $meval->rotor_medida_chaveta_p1 = $request->input('rotor_medida_chaveta_p1');
         $meval->rotor_medida_chaveta_p2 = $request->input('rotor_medida_chaveta_p2');
+        $meval->rotor_canal_chaveta_p1 = $request->input('rotor_canal_chaveta_p1');
+        $meval->rotor_canal_chaveta_p2 = $request->input('rotor_canal_chaveta_p2');
 
         $meval->estator_alojamiento_rodaje_tapa_p10 = $request->input('estator_alojamiento_rodaje_tapa_p10');
         $meval->estator_alojamiento_rodaje_tapa_p20 = $request->input('estator_alojamiento_rodaje_tapa_p20');

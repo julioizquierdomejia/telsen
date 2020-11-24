@@ -72,7 +72,9 @@ class CreateMechanicalEvaluationsTable extends Migration
             $table->string('rotor_eje_zona_acople_p1')->nullable();
             $table->string('rotor_eje_zona_acople_p2')->nullable();
             $table->string('rotor_medida_chaveta_p1')->nullable();
+            $table->string('rotor_canal_chaveta_p1')->nullable();
             $table->string('rotor_medida_chaveta_p2')->nullable();
+            $table->string('rotor_canal_chaveta_p2')->nullable();
 
             $table->string('estator_alojamiento_rodaje_tapa_p10')->nullable();
             $table->string('estator_alojamiento_rodaje_tapa_p20')->nullable();
@@ -99,10 +101,10 @@ class CreateMechanicalEvaluationsTable extends Migration
         Schema::create('mechanical_evaluation_works', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('me_id')->unique();
+            $table->unsignedBigInteger('me_id');
             $table->foreign('me_id')->references('id')->on('mechanical_evaluations');
 
-            $table->unsignedBigInteger('service_id')->unique();
+            $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');
 
             $table->string('description')->nullable();

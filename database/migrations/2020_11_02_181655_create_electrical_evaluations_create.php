@@ -166,10 +166,10 @@ class CreateElectricalEvaluationsCreate extends Migration
         Schema::create('electrical_evaluation_works', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('me_id')->unique();
+            $table->unsignedBigInteger('me_id');
             $table->foreign('me_id')->references('id')->on('electrical_evaluations');
 
-            $table->unsignedBigInteger('service_id')->unique();
+            $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');
 
             $table->string('description')->nullable();

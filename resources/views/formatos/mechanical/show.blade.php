@@ -157,6 +157,14 @@ $status_last = $ot_status->last();
 						<label class="c-label">Rotor medida chaveta p2</label>
 						<p class="mb-0">{{$formato->rotor_medida_chaveta_p2 ?? '-'}}</p>
 					</div>
+					<div class="col-6 col-sm-6 col-lg-3 form-group">
+						<label class="c-label">Rotor canal chaveta p1</label>
+						<p class="mb-0">{{$formato->rotor_canal_chaveta_p1 ?? '-'}}</p>
+					</div>
+					<div class="col-6 col-sm-6 col-lg-3 form-group">
+						<label class="c-label">Rotor canal chaveta p2</label>
+						<p class="mb-0">{{$formato->rotor_canal_chaveta_p2 ?? '-'}}</p>
+					</div>
 					<div class="col-12">
 						<h4 class="second-title text-danger py-2">Estator</h4>
 					</div>
@@ -213,6 +221,15 @@ $status_last = $ot_status->last();
 							<thead>
 								<tr>
 									<th class="text-center py-1" colspan="7">Trabajos</th>
+								</tr>
+								<tr>
+									<th class="text-center py-1">Item</th>
+									<th class="text-center py-1">Área</th>
+									<th class="text-center py-1">Tarea</th>
+									<th class="text-center py-1">Descripción</th>
+									<th class="text-center py-1">Medidas</th>
+									<th class="text-center py-1">Cantidad</th>
+									<th class="text-center py-1">Personal</th>
 								</tr>
 							</thead>
 							<tbody>

@@ -513,41 +513,40 @@
               </tr>
             </thead>
             <tbody>
-              @if($tran_tap = json_decode(old('tran_tap'), true))
+              @if($tran_tap = old('tran_tap'))
               @foreach($tran_tap as $key => $tap)
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
-                <td><input type="text" class="form-control" name="uv1" value="{{$tap['uv1'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="uv2" value="{{$tap['uv2'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="vu1" value="{{$tap['vu1'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="vu2" value="{{$tap['vu2'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="wu1" value="{{$tap['wu1'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="wu2" value="{{$tap['wu2'] ?? ''}}"></td>
+                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][uv1]" value="{{old('tran_tap')[$key]['uv1']}}"></td>
+                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][uv2]" value="{{old('tran_tap')[$key]['uv2']}}"></td>
+                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][vu1]" value="{{old('tran_tap')[$key]['vu1']}}"></td>
+                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][vu2]" value="{{old('tran_tap')[$key]['vu2']}}"></td>
+                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][wu1]" value="{{old('tran_tap')[$key]['wu1']}}"></td>
+                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][wu2]" value="{{old('tran_tap')[$key]['wu2']}}"></td>
               </tr>
               @endforeach
               @else
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
-                <td><input type="text" class="form-control" name="uv1" value=""></td>
-                <td><input type="text" class="form-control" name="uv2" value=""></td>
-                <td><input type="text" class="form-control" name="vu1" value=""></td>
-                <td><input type="text" class="form-control" name="vu2" value=""></td>
-                <td><input type="text" class="form-control" name="wu1" value=""></td>
-                <td><input type="text" class="form-control" name="wu2" value=""></td>
+                <td><input type="text" class="form-control" name="tran_tap[0][uv1]" value=""></td>
+                <td><input type="text" class="form-control" name="tran_tap[0][uv2]" value=""></td>
+                <td><input type="text" class="form-control" name="tran_tap[0][vu1]" value=""></td>
+                <td><input type="text" class="form-control" name="tran_tap[0][vu2]" value=""></td>
+                <td><input type="text" class="form-control" name="tran_tap[0][wu1]" value=""></td>
+                <td><input type="text" class="form-control" name="tran_tap[0][wu2]" value=""></td>
               </tr>
               @endif
             </tbody>
             <tfoot class="buttons">
             <tr>
               <td class="p-0" colspan="7">
-                <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
-                <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
+                <button class="btn btn-dark btn-add-tap-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
                 <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
               </td>
             </tr>
             </tfoot>
           </table>
-          <input type="hidden" class="form-control" value="{{old('tran_tap')}}" name="tran_tap">
           <hr class="mt-0">
           <div class="row">
             <div class="col-12 col-sm-6 col-md-3 form-group">
@@ -639,7 +638,7 @@
               <input type="text" class="form-control @error('tran_ww') is-invalid @enderror" placeholder="Ww" value="{{old('tran_ww')}}" name="tran_ww">
             </div>
             <div class="col-md-12 form-group">
-              <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
+              <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
                 <thead>
                   <tr>
                     <th class="text-center py-1" colspan="7">Trabajos</th>
@@ -796,6 +795,20 @@ $(document).ready(function() {
   $(document).on('click', '.card .btn-clear', function() {
     $('#table-tap .form-control').val('');
   })
+  $('.btn-add-tap-row').click(function () {
+  var row_index = $('#table-tap tbody tr').length;
+  var row = `<tr>
+            <td class="cell-counter"><span class="number"></span></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][uv1]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][uv2]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][vu1]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][vu2]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][wu1]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][wu2]" value=""></td>
+          </tr>`;
+$('#table-tap tbody').append(row);
+//createJSON();
+})
   $('.btn-add-row').click(function () {
   var row_index = $('#table-tap tbody tr').length;
 var row = `<tr>
@@ -826,16 +839,22 @@ var row = `<tr>
       <input type="text" class="form-control" placeholder="Personal" value="" name="works[0][personal]">
     </td>
   </tr>`;
-$('#table-tap tbody').append(row);
-$('#table-tap .dropdown2').select2();
+$('#table-works tbody').append(row);
+$('#table-works .dropdown2').select2();
 //createJSON();
 })
-  $('.btn-remove-row').click(function() {
+  $('.btn-remove-tap-row').click(function() {
     var row_index = $('#table-tap tbody tr').length;
     if (row_index > 1) {
       $('#table-tap tbody tr:nth-child(' + row_index + ')').remove();
     }
-    createJSON();
+    //createJSON();
+  })
+  $('.btn-remove-row').click(function() {
+    var row_index = $('#table-works tbody tr').length;
+    if (row_index > 1) {
+      $('#table-works tbody tr:nth-child(' + row_index + ')').remove();
+    }
   })
 
   $('.btn-yes').click(function () {

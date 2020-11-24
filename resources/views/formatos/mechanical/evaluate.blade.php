@@ -146,237 +146,6 @@
               @enderror
             </div>
             @endforeach
-            {{-- <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Tapas</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('tapas_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="tapas_has" {{old('tapas_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="tapas_has" {{old('tapas_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-                <input type="text" class="form-control mt-0 @error('tapas') is-invalid @enderror" placeholder="Tapas" value="{{old('tapas')}}" name="tapas">
-              @error('tapas')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Ventilador</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('ventilador_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="ventilador_has" {{old('ventilador_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="ventilador_has" {{old('ventilador_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-              <input type="text" class="form-control mt-0 @error('ventilador') is-invalid @enderror" placeholder="Ventilador" value="{{old('ventilador')}}" name="ventilador">
-              @error('ventilador')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-                <label class="col-label col-7 mb-0">Caja Conexión</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('caja_conexion_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="caja_conexion_has" {{old('caja_conexion_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="caja_conexion_has" {{old('caja_conexion_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-              <input type="text" class="form-control mt-0 @error('caja_conexion') is-invalid @enderror" placeholder="Caja Conexión" value="{{old('caja_conexion')}}" name="caja_conexion">
-              @error('caja_conexion')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Ejes</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('ejes_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="ejes_has" {{old('ejes_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="ejes_has" {{old('ejes_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-              <input type="text" class="form-control mt-0 @error('ejes') is-invalid @enderror" placeholder="Ejes" value="{{old('ejes')}}" name="ejes">
-              @error('ejes')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Acople</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('acople_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="acople_has" {{old('acople_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="acople_has" {{old('acople_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-              <input type="text" class="form-control mt-0 @error('acople') is-invalid @enderror" placeholder="Acople" value="{{old('acople')}}" name="acople">
-              @error('acople')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Bornera</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('bornera_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="bornera_has" {{old('bornera_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="bornera_has" {{old('bornera_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-                <input type="text" class="form-control mt-0 @error('bornera') is-invalid @enderror" placeholder="Bornera" value="{{old('bornera')}}" name="bornera">
-              @error('bornera')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Fundas</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('fundas_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="fundas_has" {{old('fundas_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="fundas_has" {{old('fundas_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-                <input type="text" class="form-control mt-0 @error('fundas') is-invalid @enderror" placeholder="Fundas" value="{{old('fundas')}}" name="fundas">
-              @error('fundas')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Chaveta</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('chaveta_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="chaveta_has" {{old('chaveta_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="chaveta_has" {{old('chaveta_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-                <input type="text" class="form-control mt-0 @error('chaveta') is-invalid @enderror" placeholder="Chaveta" value="{{old('chaveta')}}" name="chaveta">
-              @error('chaveta')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Impro-seal</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('impro_seal_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="impro_seal_has" {{old('impro_seal_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="impro_seal_has" {{old('impro_seal_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-                <input type="text" class="form-control mt-0 @error('impro_seal') is-invalid @enderror" placeholder="Impro-seal" value="{{old('impro_seal')}}" name="impro_seal">
-              @error('impro_seal')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Laberintos</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('laberintos_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="laberintos_has" {{old('laberintos_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="laberintos_has" {{old('laberintos_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-                <input type="text" class="form-control mt-0 @error('laberintos') is-invalid @enderror" placeholder="Laberintos" value="{{old('laberintos')}}" name="laberintos">
-              @error('laberintos')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Estator</label>
-                <ul class="form-check-list list-inline mb-0 col-5 text-right @error('estator_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="estator_has" {{old('estator_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="estator_has" {{old('estator_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-                <input type="text" class="form-control mt-0 @error('estator') is-invalid @enderror" placeholder="Estator" value="{{old('estator')}}" name="estator">
-              @error('estator')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div> --}}
             <div class="col-12 mb-2">
               <label class="col-form-label">Otros</label>
               <input type="text" class="form-control @error('otros') is-invalid @enderror" placeholder="Otros" value="{{old('otros')}}" name="otros">
@@ -501,91 +270,117 @@
             <div class="col-12">
               <h4 class="second-title text-danger py-2">Estator</h4>
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <div class="row">
+            <div class="col-12 mb-2">
               <label class="col-form-label">Alojamiento rodaje tapa p10</label>
               <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p10') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p10" value="{{old('estator_alojamiento_rodaje_tapa_p10')}}" name="estator_alojamiento_rodaje_tapa_p10">
               @error('estator_alojamiento_rodaje_tapa_p10')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-12 mb-2">
               <label class="col-form-label">Alojamiento rodaje tapa p20</label>
               <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p20') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p20" value="{{old('estator_alojamiento_rodaje_tapa_p20')}}" name="estator_alojamiento_rodaje_tapa_p20">
               @error('estator_alojamiento_rodaje_tapa_p20')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="row">
+            <div class="col-12 mb-2">
               <label class="col-form-label">Pestana tapa p1</label>
               <input type="text" class="form-control @error('estator_pestana_tapa_p1') is-invalid @enderror" placeholder="Pestana tapa p1" value="{{old('estator_pestana_tapa_p1')}}" name="estator_pestana_tapa_p1">
               @error('estator_pestana_tapa_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-12 mb-2">
               <label class="col-form-label">Pestana tapa p2</label>
               <input type="text" class="form-control @error('estator_pestana_tapa_p2') is-invalid @enderror" placeholder="Pestana tapa p2" value="{{old('estator_pestana_tapa_p2')}}" name="estator_pestana_tapa_p2">
               @error('estator_pestana_tapa_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            </div>
+            </div>
+            </div>
+            <hr>
+            <div class="row">
+            <div class="col-6 col-sm-6 mb-2">
+              <div class="row">
+            <div class="col-12 mb-2">
               <label class="col-form-label">Contra tapa interna p1</label>
               <input type="text" class="form-control @error('estator_contra_tapa_interna_p1') is-invalid @enderror" placeholder="Contra tapa interna p1" value="{{old('estator_contra_tapa_interna_p1')}}" name="estator_contra_tapa_interna_p1">
               @error('estator_contra_tapa_interna_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-12 mb-2">
               <label class="col-form-label">Contra tapa interna p2</label>
               <input type="text" class="form-control @error('estator_contra_tapa_interna_p2') is-invalid @enderror" placeholder="Contra tapa interna p2" value="{{old('estator_contra_tapa_interna_p2')}}" name="estator_contra_tapa_interna_p2">
               @error('estator_contra_tapa_interna_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            </div>
+            </div>
+            <div class="col-6 col-sm-6 mb-2">
+              <div class="row">
+            <div class="col-12 mb-2">
               <label class="col-form-label">Contra tapa externa p1</label>
               <input type="text" class="form-control @error('estator_contra_tapa_externa_p1') is-invalid @enderror" placeholder="Contra tapa externa p1" value="{{old('estator_contra_tapa_externa_p1')}}" name="estator_contra_tapa_externa_p1">
               @error('estator_contra_tapa_externa_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-12 mb-2">
               <label class="col-form-label">Contra tapa externa p2</label>
               <input type="text" class="form-control @error('estator_contra_tapa_externa_p2') is-invalid @enderror" placeholder="Contra tapa externa p2" value="{{old('estator_contra_tapa_externa_p2')}}" name="estator_contra_tapa_externa_p2">
               @error('estator_contra_tapa_externa_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
-              <label class="col-form-label">Ventilador 0</label>
+            </div>
+            </div>
+            </div>
+            <hr>
+            <div class="row">
+            <div class="col-6 col-sm-6 mb-2">
+              <label class="col-form-label">Ventilador Ø</label>
               <input type="text" class="form-control @error('estator_ventilador_0') is-invalid @enderror" placeholder="Ventilador" value="{{old('estator_ventilador_0')}}" name="estator_ventilador_0">
               @error('estator_ventilador_0')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-6 col-sm-6 mb-2">
               <label class="col-form-label">Alabes</label>
               <input type="text" class="form-control @error('estator_alabes') is-invalid @enderror" placeholder="Alabes" value="{{old('estator_alabes')}}" name="estator_alabes">
               @error('estator_alabes')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
-              <label class="col-form-label">Caja conexion</label>
-              <input type="text" class="form-control @error('estator_caja_conexion') is-invalid @enderror" placeholder="Caja conexión" value="{{old('estator_caja_conexion')}}" name="estator_caja_conexion">
+            <div class="col-6 col-sm-6 mb-2">
+              <label class="col-form-label">Caja de conexión</label>
+              <input type="text" class="form-control @error('estator_caja_conexion') is-invalid @enderror" placeholder="Caja de conexión" value="{{old('estator_caja_conexion')}}" name="estator_caja_conexion">
               @error('estator_caja_conexion')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
-              <label class="col-form-label">Tapa conexion</label>
-              <input type="text" class="form-control @error('estator_tapa_conexion') is-invalid @enderror" placeholder="Tapa conexión" value="{{old('estator_tapa_conexion')}}" name="estator_tapa_conexion">
+            <div class="col-6 col-sm-6 mb-2">
+              <label class="col-form-label">Tapa de caja de Conexión</label>
+              <input type="text" class="form-control @error('estator_tapa_conexion') is-invalid @enderror" placeholder="Tapa de caja de Conexión" value="{{old('estator_tapa_conexion')}}" name="estator_tapa_conexion">
               @error('estator_tapa_conexion')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-12 mb-2">
+            </div>
+            <hr>
+            <div class="tap-section mb-2">
               <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
                 <thead>
                   <tr>
@@ -671,7 +466,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-12 mb-2">
+            <div class="mb-2">
               <label class="col-form-label">Observaciones</label>
               <textarea class="form-control @error('observaciones') is-invalid @enderror" placeholder="" name="observaciones">{{old('observaciones')}}</textarea>
               @error('observaciones')

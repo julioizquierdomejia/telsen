@@ -201,11 +201,11 @@ $status_last = $ot_status->last();
 						<p class="mb-0">{{$formato->estator_alabes ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Estator caja conexion</label>
+						<label class="c-label">Estator caja conexión</label>
 						<p class="mb-0">{{$formato->estator_caja_conexion ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Estator tapa conexion</label>
+						<label class="c-label">Estator tapa conexión</label>
 						<p class="mb-0">{{$formato->estator_tapa_conexion ?? '-'}}</p>
 					</div>
 					@php

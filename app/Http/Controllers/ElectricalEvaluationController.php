@@ -56,7 +56,7 @@ class ElectricalEvaluationController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
 
-        $formato = ElectricalEvaluation::find($id);
+        $formato = ElectricalEvaluation::where('ot_id', $id)->first();
         if ($formato) {
             return redirect('formatos/electrical');
         }

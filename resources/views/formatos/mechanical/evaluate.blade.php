@@ -501,13 +501,27 @@
                   @foreach($works as $key => $item)
                   <tr>
                     <td class="cell-counter"><span class="number"></span></td>
-                    <td><input type="text" class="form-control" value="{{$item[0]}}"></td>
+                    <td>
+                      <select class="dropdown2 form-control" name="works[]">
+                        <option value="">Seleccionar area</option>
+                        @foreach($areas as $area)
+                        <option value="{{$area->id}}">{{$area->name}}</option>
+                        @endforeach
+                      </select>
+                    </td>
                   </tr>
                   @endforeach
                   @else
                   <tr>
                     <td class="cell-counter"><span class="number"></span></td>
-                    <td><input type="text" class="form-control" value=""></td>
+                    <td>
+                      <select class="dropdown2 form-control" name="works[]">
+                        <option value="">Seleccionar area</option>
+                        @foreach($areas as $area)
+                        <option value="{{$area->id}}">{{$area->name}}</option>
+                        @endforeach
+                      </select>
+                    </td>
                   </tr>
                   @endif
                 </tbody>

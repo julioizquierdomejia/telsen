@@ -49,10 +49,11 @@ class MechanicalEvaluationController extends Controller
     public function evaluate(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
-        $formato = MechanicalEvaluation::find($id);
+        $formato = MechanicalEvaluation::where('ot_id', $id)->first();
         if ($formato) {
             return redirect('formatos/mechanical');
         }
+        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
         $ot = Ot::where('enabled', 1)->where('id', $id)->firstOrFail();
 
         return view('formatos.mechanical.evaluate', compact('ot'));

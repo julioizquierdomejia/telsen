@@ -56,7 +56,7 @@ class MechanicalEvaluationController extends Controller
             return redirect('formatos/mechanical');
         }
         $ot = Ot::where('ots.id', $ot_id)
-            ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+            ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
             ->join('clients', 'ots.client_id', '=', 'clients.id')
             ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'motor_brands.name as marca')
             ->firstOrFail();

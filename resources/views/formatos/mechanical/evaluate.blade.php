@@ -1,5 +1,57 @@
 @extends('layouts.app', ['title' => 'Evaluación Mecánica'])
 @section('content')
+@php
+  $reception_list = [
+    array (
+      'name' => 'Placa Caract Orig',
+      'alias' => 'placa_caract_orig',
+    ),
+    array (
+      'name' => 'Tapas',
+      'alias' => 'tapas',
+    ),
+    array (
+      'name' => 'Ventilador',
+      'alias' => 'ventilador',
+    ),
+    array (
+      'name' => 'Caja de Conexión',
+      'alias' => 'caja_conexion'
+    ),
+    array (
+      'name' => 'Ejes',
+      'alias' => 'ejes',
+    ),
+    array (
+      'name' => 'Acople',
+      'alias' => 'acople',
+    ),
+    array (
+      'name' => 'Bornera',
+      'alias' => 'bornera',
+    ),
+    array (
+      'name' => 'Fundas',
+      'alias' => 'fundas',
+    ),
+    array (
+      'name' => 'Chaveta',
+      'alias' => 'chaveta',
+    ),
+    array (
+      'name' => 'Impro-seal',
+      'alias' => 'impro_seal',
+    ),
+    array (
+      'name' => 'Laberintos',
+      'alias' => 'laberintos',
+    ),
+    array (
+      'name' => 'Estator',
+      'alias' => 'estator',
+    )
+  ];
+@endphp
 <div class="row">
   <div class="col-md-12">
     <div class="card card-user form-card">
@@ -23,7 +75,7 @@
               <input type="date" class="form-control" disabled="" value="{{date('Y-m-d')}}">
             </div>
           </div>
-          <h4 class="second-title text-danger py-2"> </h4>
+          <hr>
           <div class="row">
             <div class="col-6 col-md-6 mb-2">
               <label class="col-form-label">Máquina</label>
@@ -65,28 +117,36 @@
             <div class="col-12">
               <h4 class="second-title text-danger py-2 d-flex justify-content-between align-items-center"><span>Estado de recepción</span> <span><button type="button" class="btn btn-yes btn-success btn-sm my-0 px-3">Sí</button><button type="button" class="btn btn-no btn-sm btn-danger my-0 px-3">No</button></span></h4>
             </div>
+            @foreach($reception_list as $item)
             <div class="col-6 col-md-4 col-lg-4 mb-2">
-              <div class="row">
-              <label class="col-label col-7 mb-0">Placa Caract Orig</label>
-              <ul class="form-check-list list-inline mb-0 col-5 text-right @error('placa_caract_orig_has') is-invalid @enderror">
-                  <li class="form-check-inline">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="1" name="placa_caract_orig_has" {{old('placa_caract_orig_has') == "1" ? 'checked' : ''}} id="ec1"> Sí
-                    </label>
-                  </li>
-                  <li class="form-check-inline mx-1">
-                    <label class="form-check-label mb-0">
-                      <input type="radio" class="form-check-input align-middle" value="0" name="placa_caract_orig_has" {{old('placa_caract_orig_has') == "0" ? 'checked' : ''}} id="ec2"> No
-                    </label>
-                  </li>
-                </ul>
+              <div class="row align-items-center">
+                <div class="col-12 col-md-7">
+                  <div class="row">
+                <label class="col-label mb-0 col-7 col-md-12">{{$item['name']}}</label>
+                <ul class="form-check-list list-inline mb-0 col-5 col-md-12 @error($item['alias']) is-invalid @enderror">
+                    <li class="form-check-inline mx-0">
+                      <label class="form-check-label mb-0">
+                        <input type="radio" class="form-check-input mr-0 align-middle" value="1" name="{{$item['alias']}}_has" {{old($item['alias'].'_has') == "1" ? 'checked' : ''}} id="ec1"><span class="align-middle"> Sí</span>
+                      </label>
+                    </li>
+                    <li class="form-check-inline mx-0 mx-1">
+                      <label class="form-check-label mb-0">
+                        <input type="radio" class="form-check-input mr-0 align-middle" value="0" name="{{$item['alias']}}_has" {{old($item['alias'].'_has') == "0" ? 'checked' : ''}} id="ec2"><span class="align-middle"> No</span>
+                      </label>
+                    </li>
+                  </ul>
+                  </div>
+                  </div>
+                <div class="col-12 col-md-5">
+                <input type="text" class="form-control mt-0 @error($item['alias']) is-invalid @enderror" placeholder="Placa Caract Orig" value="{{old($item['alias'])}}" name="{{$item['alias']}}">
               </div>
-              <input type="text" class="form-control mt-0 @error('placa_caract_orig') is-invalid @enderror" placeholder="Placa Caract Orig" value="{{old('placa_caract_orig')}}" name="placa_caract_orig">
-              @error('placa_caract_orig')
+              </div>
+              @error($item['alias'])
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-4 mb-2">
+            @endforeach
+            {{-- <div class="col-6 col-md-4 col-lg-4 mb-2">
               <div class="row">
               <label class="col-label col-7 mb-0">Tapas</label>
                 <ul class="form-check-list list-inline mb-0 col-5 text-right @error('tapas_has') is-invalid @enderror">
@@ -256,7 +316,7 @@
             </div>
             <div class="col-6 col-md-4 col-lg-4 mb-2">
               <div class="row">
-              <label class="col-label col-7 mb-0">Impro Seal</label>
+              <label class="col-label col-7 mb-0">Impro-seal</label>
                 <ul class="form-check-list list-inline mb-0 col-5 text-right @error('impro_seal_has') is-invalid @enderror">
                   <li class="form-check-inline">
                     <label class="form-check-label mb-0">
@@ -270,7 +330,7 @@
                   </li>
                 </ul>
               </div>
-                <input type="text" class="form-control mt-0 @error('impro_seal') is-invalid @enderror" placeholder="Impro Seal" value="{{old('impro_seal')}}" name="impro_seal">
+                <input type="text" class="form-control mt-0 @error('impro_seal') is-invalid @enderror" placeholder="Impro-seal" value="{{old('impro_seal')}}" name="impro_seal">
               @error('impro_seal')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -316,7 +376,7 @@
               @error('estator')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
-            </div>
+            </div> --}}
             <div class="col-12 mb-2">
               <label class="col-form-label">Otros</label>
               <input type="text" class="form-control @error('otros') is-invalid @enderror" placeholder="Otros" value="{{old('otros')}}" name="otros">
@@ -324,101 +384,114 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 mb-2">
-              <label class="col-form-label">Slam muelle p1</label>
-              <input type="text" class="form-control @error('slam_muelle_p1') is-invalid @enderror" placeholder="Slam muelle p1" value="{{old('slam_muelle_p1')}}" name="slam_muelle_p1">
+            </div>
+            <hr>
+            <div class="row">
+            <div class="col-12 col-md-6">
+            <div class="row">
+            <div class="col-6 col-md-4 col-lg-12 mb-2">
+              <label class="col-form-label">Slam (muelle) p1</label>
+              <input type="text" class="form-control @error('slam_muelle_p1') is-invalid @enderror" placeholder="Slam (muelle) p1" value="{{old('slam_muelle_p1')}}" name="slam_muelle_p1">
               @error('slam_muelle_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 mb-2">
-              <label class="col-form-label">Slam muelle p2</label>
-              <input type="text" class="form-control @error('slam_muelle_p2') is-invalid @enderror" placeholder="Slam muelle p2" value="{{old('slam_muelle_p2')}}" name="slam_muelle_p2">
+            <div class="col-6 col-md-4 col-lg-12 mb-2">
+              <label class="col-form-label">Slam (muelle) p2</label>
+              <input type="text" class="form-control @error('slam_muelle_p2') is-invalid @enderror" placeholder="Slam (muelle) p2" value="{{old('slam_muelle_p2')}}" name="slam_muelle_p2">
               @error('slam_muelle_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 mb-2">
+            </div>
+            </div>
+            <div class="col-12 col-md-6">
+            <div class="row">
+            <div class="col-6 col-md-4 col-lg-12 mb-2">
               <label class="col-form-label">Resortes contra tapas</label>
               <input type="text" class="form-control @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Resortes contra tapas" value="{{old('resortes_contra_tapas')}}" name="resortes_contra_tapas">
               @error('resortes_contra_tapas')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 mb-2">
+            <div class="col-6 col-md-4 col-lg-12 mb-2">
               <label class="col-form-label">Alieneamiento paquete</label>
               <input type="text" class="form-control @error('alineamiento_paquete') is-invalid @enderror" placeholder="Alieneamiento paquete" value="{{old('alineamiento_paquete')}}" name="alineamiento_paquete">
               @error('alineamiento_paquete')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
+            </div>
+            </div>
+            </div>
+            <div class="row">
             <div class="col-12">
               <h4 class="second-title text-danger py-2">ROTOR:</h4>
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
-              <label class="col-form-label">Deplexion eje</label>
-              <input type="text" class="form-control @error('rotor_deplexion_eje') is-invalid @enderror" placeholder="Deplexion eje" value="{{old('rotor_deplexion_eje')}}" name="rotor_deplexion_eje">
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
+              <label class="col-form-label">Deplexión de eje</label>
+              <input type="text" class="form-control @error('rotor_deplexion_eje') is-invalid @enderror" placeholder="Deplexión de eje" value="{{old('rotor_deplexion_eje')}}" name="rotor_deplexion_eje">
               @error('rotor_deplexion_eje')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
               <label class="col-form-label">Valor balanceo</label>
               <input type="text" class="form-control @error('rotor_valor_balanceo') is-invalid @enderror" placeholder="Valor balanceo" value="{{old('rotor_valor_balanceo')}}" name="rotor_valor_balanceo">
               @error('rotor_valor_balanceo')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
               <label class="col-form-label">Cod rodaje p1</label>
               <input type="text" class="form-control @error('rotor_cod_rodaje_p1') is-invalid @enderror" placeholder="Cod rodaje p1" value="{{old('rotor_cod_rodaje_p1')}}" name="rotor_cod_rodaje_p1">
               @error('rotor_cod_rodaje_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
-              <label class="col-form-label">Cod rodaje p2</label>
-              <input type="text" class="form-control @error('rotor_cod_rodaje_p2') is-invalid @enderror" placeholder="Cod rodaje p2" value="{{old('rotor_cod_rodaje_p2')}}" name="rotor_cod_rodaje_p2">
-              @error('rotor_cod_rodaje_p2')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
-            </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
               <label class="col-form-label">Asiento rodaje p1</label>
               <input type="text" class="form-control @error('rotor_asiento_rodaje_p1') is-invalid @enderror" placeholder="Asiento rodaje p1" value="{{old('rotor_asiento_rodaje_p1')}}" name="rotor_asiento_rodaje_p1">
               @error('rotor_asiento_rodaje_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
+              <label class="col-form-label">Cod rodaje p2</label>
+              <input type="text" class="form-control @error('rotor_cod_rodaje_p2') is-invalid @enderror" placeholder="Cod rodaje p2" value="{{old('rotor_cod_rodaje_p2')}}" name="rotor_cod_rodaje_p2">
+              @error('rotor_cod_rodaje_p2')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+            </div>
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
               <label class="col-form-label">Asiento rodaje p2</label>
               <input type="text" class="form-control @error('rotor_asiento_rodaje_p2') is-invalid @enderror" placeholder="Asiento rodaje p2" value="{{old('rotor_asiento_rodaje_p2')}}" name="rotor_asiento_rodaje_p2">
               @error('rotor_asiento_rodaje_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
               <label class="col-form-label">Eje zona acople p1</label>
               <input type="text" class="form-control @error('rotor_eje_zona_acople_p1') is-invalid @enderror" placeholder="Eje zona acople p1" value="{{old('rotor_eje_zona_acople_p1')}}" name="rotor_eje_zona_acople_p1">
               @error('rotor_eje_zona_acople_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
               <label class="col-form-label">Eje zona acople p2</label>
               <input type="text" class="form-control @error('rotor_eje_zona_acople_p2') is-invalid @enderror" placeholder="Eje zona acople p2" value="{{old('rotor_eje_zona_acople_p2')}}" name="rotor_eje_zona_acople_p2">
               @error('rotor_eje_zona_acople_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
               <label class="col-form-label">Medida chaveta p1</label>
               <input type="text" class="form-control @error('rotor_medida_chaveta_p1') is-invalid @enderror" placeholder="Medida chaveta p1" value="{{old('rotor_medida_chaveta_p1')}}" name="rotor_medida_chaveta_p1">
               @error('rotor_medida_chaveta_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 mb-2">
+            <div class="col-6 col-sm-6 col-lg-6 mb-2">
               <label class="col-form-label">Medida chaveta p2</label>
               <input type="text" class="form-control @error('rotor_medida_chaveta_p2') is-invalid @enderror" placeholder="Medida chaveta p2" value="{{old('rotor_medida_chaveta_p2')}}" name="rotor_medida_chaveta_p2">
               @error('rotor_medida_chaveta_p2')

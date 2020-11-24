@@ -7,49 +7,65 @@
         <h5 class="card-title">Evaluación Mecánica</h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="{{route('formatos.mechanical.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
+        <form class="mb-2" method="POST" action="{{route('formatos.mechanical.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
-            <div class="col-6 col-md-3 form-group">
+            <div class="col-6 col-md-6 mb-2">
+              <label class="col-form-label">Cliente</label>
+              <input type="text" class="form-control" readonly="" value="{{$ot->razon_social}}">
+            </div>
+            <div class="col-6 col-md-3 mb-2">
               <label class="col-form-label">OT</label>
               <input type="text" class="form-control" readonly="" value="OT-{{zerosatleft($ot->id, 3)}}">
             </div>
-            <div class="col-6 col-md-3 form-group">
+            <div class="col-6 col-md-3 mb-2">
               <label class="col-form-label">Fecha de creación</label>
               <input type="date" class="form-control" disabled="" value="{{date('Y-m-d')}}">
             </div>
-            <div class="col-6 col-md-3 form-group">
+          </div>
+          <h4 class="second-title text-danger py-2"> </h4>
+          <div class="row">
+            <div class="col-6 col-md-6 mb-2">
               <label class="col-form-label">Máquina</label>
               <input type="text" class="form-control @error('maquina') is-invalid @enderror" placeholder="Máquina" value="{{old('maquina')}}" name="maquina">
               @error('maquina')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-3 form-group">
+            <div class="col-6 col-md-6 mb-2">
               <label class="col-form-label">RPM</label>
               <input type="text" class="form-control @error('rpm') is-invalid @enderror" placeholder="RPM" value="{{old('rpm')}}" name="rpm">
               @error('rpm')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-6 mb-2">
+              <label class="col-form-label">Marca</label>
+              <input type="text" class="form-control" readonly="" placeholder="Marca" value="{{$ot->marca}}">
+            </div>
+            <div class="col-6 col-md-6 mb-2">
               <label class="col-form-label">HP/KW</label>
               <input type="text" class="form-control @error('hp_kw') is-invalid @enderror" placeholder="HP/KW" value="{{old('hp_kw')}}" name="hp_kw">
               @error('hp_kw')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-6 mb-2">
               <label class="col-form-label">Serie</label>
               <input type="text" class="form-control @error('serie') is-invalid @enderror" placeholder="Serie" value="{{old('serie')}}" name="serie">
               @error('serie')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
+            <div class="col-6 col-md-6 mb-2">
+              <label class="col-form-label">Solped</label>
+              <input type="text" class="form-control" readonly="" placeholder="Solped" value="{{$ot->solped}}">
+            </div>
+
             <div class="col-12">
               <h4 class="second-title text-danger py-2 d-flex justify-content-between align-items-center"><span>Estado de recepción</span> <span><button type="button" class="btn btn-yes btn-success btn-sm my-0 px-3">Sí</button><button type="button" class="btn btn-no btn-sm btn-danger my-0 px-3">No</button></span></h4>
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Placa Caract Orig</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('placa_caract_orig_has') is-invalid @enderror">
@@ -70,7 +86,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Tapas</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('tapas_has') is-invalid @enderror">
@@ -91,7 +107,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Ventilador</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('ventilador_has') is-invalid @enderror">
@@ -112,7 +128,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Caja Conexión</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('caja_conexion_has') is-invalid @enderror">
@@ -133,7 +149,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Ejes</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('ejes_has') is-invalid @enderror">
@@ -154,7 +170,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Acople</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('acople_has') is-invalid @enderror">
@@ -175,7 +191,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Bornera</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('bornera_has') is-invalid @enderror">
@@ -196,7 +212,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Fundas</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('fundas_has') is-invalid @enderror">
@@ -217,7 +233,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Chaveta</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('chaveta_has') is-invalid @enderror">
@@ -238,7 +254,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Impro Seal</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('impro_seal_has') is-invalid @enderror">
@@ -259,7 +275,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Laberintos</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('laberintos_has') is-invalid @enderror">
@@ -280,7 +296,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Estator</label>
               <div class="d-flex">
                 <ul class="form-check-list list-inline mb-0 col-7 @error('estator_has') is-invalid @enderror">
@@ -301,28 +317,35 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-12 mb-2">
+              <label class="col-form-label">Otros</label>
+              <input type="text" class="form-control @error('otros') is-invalid @enderror" placeholder="Otros" value="{{old('otros')}}" name="otros">
+              @error('otros')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+            </div>
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Slam muelle p1</label>
               <input type="text" class="form-control @error('slam_muelle_p1') is-invalid @enderror" placeholder="Slam muelle p1" value="{{old('slam_muelle_p1')}}" name="slam_muelle_p1">
               @error('slam_muelle_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Slam muelle p2</label>
               <input type="text" class="form-control @error('slam_muelle_p2') is-invalid @enderror" placeholder="Slam muelle p2" value="{{old('slam_muelle_p2')}}" name="slam_muelle_p2">
               @error('slam_muelle_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Resortes contra tapas</label>
               <input type="text" class="form-control @error('resortes_contra_tapas') is-invalid @enderror" placeholder="Resortes contra tapas" value="{{old('resortes_contra_tapas')}}" name="resortes_contra_tapas">
               @error('resortes_contra_tapas')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-md-4 col-lg-3 form-group">
+            <div class="col-6 col-md-4 col-lg-3 mb-2">
               <label class="col-form-label">Alieneamiento paquete</label>
               <input type="text" class="form-control @error('alineamiento_paquete') is-invalid @enderror" placeholder="Alieneamiento paquete" value="{{old('alineamiento_paquete')}}" name="alineamiento_paquete">
               @error('alineamiento_paquete')
@@ -332,70 +355,70 @@
             <div class="col-12">
               <h4 class="second-title text-danger py-2">ROTOR:</h4>
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor deplexion eje</label>
               <input type="text" class="form-control @error('rotor_deplexion_eje') is-invalid @enderror" placeholder="Rotor deplexion eje" value="{{old('rotor_deplexion_eje')}}" name="rotor_deplexion_eje">
               @error('rotor_deplexion_eje')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor valor balanceo</label>
               <input type="text" class="form-control @error('rotor_valor_balanceo') is-invalid @enderror" placeholder="Rotor valor balanceo" value="{{old('rotor_valor_balanceo')}}" name="rotor_valor_balanceo">
               @error('rotor_valor_balanceo')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor cod rodaje p1</label>
               <input type="text" class="form-control @error('rotor_cod_rodaje_p1') is-invalid @enderror" placeholder="Rotor cod rodaje p1" value="{{old('rotor_cod_rodaje_p1')}}" name="rotor_cod_rodaje_p1">
               @error('rotor_cod_rodaje_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor cod rodaje p2</label>
               <input type="text" class="form-control @error('rotor_cod_rodaje_p2') is-invalid @enderror" placeholder="Rotor cod rodaje p2" value="{{old('rotor_cod_rodaje_p2')}}" name="rotor_cod_rodaje_p2">
               @error('rotor_cod_rodaje_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor asiento rodaje p1</label>
               <input type="text" class="form-control @error('rotor_asiento_rodaje_p1') is-invalid @enderror" placeholder="Rotor asiento rodaje p1" value="{{old('rotor_asiento_rodaje_p1')}}" name="rotor_asiento_rodaje_p1">
               @error('rotor_asiento_rodaje_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor asiento rodaje p2</label>
               <input type="text" class="form-control @error('rotor_asiento_rodaje_p2') is-invalid @enderror" placeholder="Rotor asiento rodaje p2" value="{{old('rotor_asiento_rodaje_p2')}}" name="rotor_asiento_rodaje_p2">
               @error('rotor_asiento_rodaje_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor eje zona acople p1</label>
               <input type="text" class="form-control @error('rotor_eje_zona_acople_p1') is-invalid @enderror" placeholder="Rotor eje zona acople p1" value="{{old('rotor_eje_zona_acople_p1')}}" name="rotor_eje_zona_acople_p1">
               @error('rotor_eje_zona_acople_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor eje zona acople p2</label>
               <input type="text" class="form-control @error('rotor_eje_zona_acople_p2') is-invalid @enderror" placeholder="Rotor eje zona acople p2" value="{{old('rotor_eje_zona_acople_p2')}}" name="rotor_eje_zona_acople_p2">
               @error('rotor_eje_zona_acople_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor medida chaveta p1</label>
               <input type="text" class="form-control @error('rotor_medida_chaveta_p1') is-invalid @enderror" placeholder="Rotor medida chaveta p1" value="{{old('rotor_medida_chaveta_p1')}}" name="rotor_medida_chaveta_p1">
               @error('rotor_medida_chaveta_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Rotor medida chaveta p2</label>
               <input type="text" class="form-control @error('rotor_medida_chaveta_p2') is-invalid @enderror" placeholder="Rotor medida chaveta p2" value="{{old('rotor_medida_chaveta_p2')}}" name="rotor_medida_chaveta_p2">
               @error('rotor_medida_chaveta_p2')
@@ -405,91 +428,91 @@
             <div class="col-12">
               <h4 class="second-title text-danger py-2">Estator</h4>
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator alojamiento rodaje tapa p10</label>
               <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p10') is-invalid @enderror" placeholder="Estator alojamiento rodaje tapa p10" value="{{old('estator_alojamiento_rodaje_tapa_p10')}}" name="estator_alojamiento_rodaje_tapa_p10">
               @error('estator_alojamiento_rodaje_tapa_p10')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator alojamiento rodaje tapa p20</label>
               <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p20') is-invalid @enderror" placeholder="Estator alojamiento rodaje tapa p20" value="{{old('estator_alojamiento_rodaje_tapa_p20')}}" name="estator_alojamiento_rodaje_tapa_p20">
               @error('estator_alojamiento_rodaje_tapa_p20')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator pestana tapa p1</label>
               <input type="text" class="form-control @error('estator_pestana_tapa_p1') is-invalid @enderror" placeholder="Estator pestana tapa p1" value="{{old('estator_pestana_tapa_p1')}}" name="estator_pestana_tapa_p1">
               @error('estator_pestana_tapa_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator pestana tapa p2</label>
               <input type="text" class="form-control @error('estator_pestana_tapa_p2') is-invalid @enderror" placeholder="Estator pestana tapa p2" value="{{old('estator_pestana_tapa_p2')}}" name="estator_pestana_tapa_p2">
               @error('estator_pestana_tapa_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator contra tapa interna p1</label>
               <input type="text" class="form-control @error('estator_contra_tapa_interna_p1') is-invalid @enderror" placeholder="Estator contra tapa interna p1" value="{{old('estator_contra_tapa_interna_p1')}}" name="estator_contra_tapa_interna_p1">
               @error('estator_contra_tapa_interna_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator contra tapa interna p2</label>
               <input type="text" class="form-control @error('estator_contra_tapa_interna_p2') is-invalid @enderror" placeholder="Estator contra tapa interna p2" value="{{old('estator_contra_tapa_interna_p2')}}" name="estator_contra_tapa_interna_p2">
               @error('estator_contra_tapa_interna_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator contra tapa externa p1</label>
               <input type="text" class="form-control @error('estator_contra_tapa_externa_p1') is-invalid @enderror" placeholder="Estator contra tapa externa p1" value="{{old('estator_contra_tapa_externa_p1')}}" name="estator_contra_tapa_externa_p1">
               @error('estator_contra_tapa_externa_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator contra tapa externa p2</label>
               <input type="text" class="form-control @error('estator_contra_tapa_externa_p2') is-invalid @enderror" placeholder="Estator contra tapa externa p2" value="{{old('estator_contra_tapa_externa_p2')}}" name="estator_contra_tapa_externa_p2">
               @error('estator_contra_tapa_externa_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Ventilador 0</label>
               <input type="text" class="form-control @error('estator_ventilador_0') is-invalid @enderror" placeholder="Ventilador" value="{{old('estator_ventilador_0')}}" name="estator_ventilador_0">
               @error('estator_ventilador_0')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator alabes</label>
               <input type="text" class="form-control @error('estator_alabes') is-invalid @enderror" placeholder="Estator alabes" value="{{old('estator_alabes')}}" name="estator_alabes">
               @error('estator_alabes')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator caja conexion</label>
               <input type="text" class="form-control @error('estator_caja_conexion') is-invalid @enderror" placeholder="Estator caja conexión" value="{{old('estator_caja_conexion')}}" name="estator_caja_conexion">
               @error('estator_caja_conexion')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-6 col-sm-6 col-lg-3 form-group">
+            <div class="col-6 col-sm-6 col-lg-3 mb-2">
               <label class="col-form-label">Estator tapa conexion</label>
               <input type="text" class="form-control @error('estator_tapa_conexion') is-invalid @enderror" placeholder="Estator tapa conexión" value="{{old('estator_tapa_conexion')}}" name="estator_tapa_conexion">
               @error('estator_tapa_conexion')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-12 form-group">
+            <div class="col-md-12 mb-2">
               <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
                 <thead>
                   <tr>
@@ -575,7 +598,7 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-12 form-group">
+            <div class="col-md-12 mb-2">
               <label class="col-form-label">Observaciones</label>
               <textarea class="form-control @error('observaciones') is-invalid @enderror" placeholder="" name="observaciones">{{old('observaciones')}}</textarea>
               @error('observaciones')

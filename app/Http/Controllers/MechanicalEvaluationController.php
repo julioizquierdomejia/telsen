@@ -56,8 +56,9 @@ class MechanicalEvaluationController extends Controller
             return redirect('formatos/mechanical');
         }
         $ot = Ot::where('ots.id', $ot_id)
+            ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
             ->join('clients', 'ots.client_id', '=', 'clients.id')
-            ->select('ots.*', 'clients.razon_social', 'clients.client_type_id')
+            ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'motor_brands.name as marca')
             ->firstOrFail();
         if ($ot->client_type_id == 1) { //RDI
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
@@ -113,6 +114,7 @@ class MechanicalEvaluationController extends Controller
             'laberintos_has' => 'boolean|nullable',
             'estator_has' => 'boolean|nullable',
             //
+            'otros' => 'string|nullable',
 
             'slam_muelle_p1' => 'string|nullable',
             'slam_muelle_p2' => 'string|nullable',
@@ -189,6 +191,7 @@ class MechanicalEvaluationController extends Controller
         $meval->estator_has = $request->input('estator_has') ?? 0;
         //
 
+        $meval->otros = $request->input('otros');
         $meval->slam_muelle_p1 = $request->input('slam_muelle_p1');
         $meval->slam_muelle_p2 = $request->input('slam_muelle_p2');
         $meval->resortes_contra_tapas = $request->input('resortes_contra_tapas');
@@ -375,6 +378,7 @@ class MechanicalEvaluationController extends Controller
             'estator_has' => 'boolean|nullable',
             //
 
+            'otros' => 'string|nullable',
             'slam_muelle_p1' => 'string|nullable',
             'slam_muelle_p2' => 'string|nullable',
             'resortes_contra_tapas' => 'string|nullable',
@@ -449,6 +453,8 @@ class MechanicalEvaluationController extends Controller
         $meval->laberintos_has = $request->input('laberintos_has') ?? 0;
         $meval->estator_has = $request->input('estator_has') ?? 0;
         //
+
+        $meval->otros = $request->input('otros');
 
         $meval->slam_muelle_p1 = $request->input('slam_muelle_p1');
         $meval->slam_muelle_p2 = $request->input('slam_muelle_p2');

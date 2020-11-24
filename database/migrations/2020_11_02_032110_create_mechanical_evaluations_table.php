@@ -56,6 +56,8 @@ class CreateMechanicalEvaluationsTable extends Migration
             $table->boolean('laberintos_has')->default(0);
             $table->boolean('estator_has')->default(0);
 
+            $table->string('otros')->nullable();
+
             $table->string('slam_muelle_p1')->nullable();
             $table->string('slam_muelle_p2')->nullable();
             $table->string('resortes_contra_tapas')->nullable();

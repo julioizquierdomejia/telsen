@@ -498,10 +498,6 @@
                 </tr>
                 </tfoot>
               </table>
-              <input type="hidden" class="form-control" value="{{old('works', $formato->works)}}" name="works">
-              @error('works')
-              <p class="error-message text-danger">{{ $message }}</p>
-              @enderror
             </div>
             <div class="obs mb-2">
               <label class="col-form-label">Observaciones</label>

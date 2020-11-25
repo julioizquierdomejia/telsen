@@ -439,7 +439,7 @@
                       </select>
                     </td>
                     <td>
-                      <select class="dropdown2 form-control select-service" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                      <select class="dropdown2 form-control select-service" data-value="{{$item->service_id}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
                         <option value="">Seleccionar servicio</option>
                       </select>
                     </td>
@@ -563,6 +563,9 @@ $(document).on('change', '.select-area', function () {
                   service.append('<option value="'+item.id+'">'+item.name+'</option>');
                 })
               }
+              if(service.data('value')) {
+                service.find('option[value='+service.data('value')+']').prop('selected', true);
+              }
             }
           },
           error: function (request, status, error) {
@@ -628,6 +631,8 @@ $('.btn-yes').click(function () {
 $('.btn-no').click(function () {
   $('input[type="radio"][value="0"]').prop('checked', true);
 })
+
+$('.select-area').trigger('change');
 })
 </script>
 @endsection

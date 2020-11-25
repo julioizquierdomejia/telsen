@@ -743,7 +743,7 @@ class ElectricalEvaluationController extends Controller
             'testin_er_amp_a' => 'string|nullable',
             'testin_er_nro_polos' => 'string|nullable',
 
-            'tran_tap' => 'string|nullable',
+            'tran_tap' => 'array|nullable',
             'tran_aisl_m' => 'string|nullable',
             'tran_nro_salidas' => 'string|nullable',
             'tran_conexion' => 'string|nullable',
@@ -769,6 +769,8 @@ class ElectricalEvaluationController extends Controller
         );
 
         $this->validate($request, $rules);
+
+        $tran_tap = json_encode($request->input('tran_tap'));
 
         // update
         $eleval = ElectricalEvaluation::findOrFail($id);
@@ -869,7 +871,7 @@ class ElectricalEvaluationController extends Controller
         $eltestineval->save();
 
         $eltraneval = ElectricalEvaluationTransformer::where('eel_id', $eleval->id)->first();
-        $eltraneval->tap = $request->input('tran_tap');
+        $eltraneval->tap = $tran_tap;
         $eltraneval->aisl_m = $request->input('tran_aisl_m');
         $eltraneval->nro_salidas = $request->input('tran_nro_salidas');
         $eltraneval->conexion = $request->input('tran_conexion');

@@ -22,11 +22,18 @@
 
 body {
 	background-color: #f7f7f7;
-	font-weight: 600;
+	font-weight: 500;
 }
 
 img {
 	height: auto;
+}
+
+.btn {
+	font-weight: 500;
+	&-link {
+		font-weight: 500;
+	}
 }
 
 .text {
@@ -67,6 +74,7 @@ img {
 		}
 	}
 	.sidebar {
+		font-size: 13px;
 		&:after {
 			background-color: $blue;
 		}
@@ -187,7 +195,7 @@ img {
 	&.table-separate {
 		border-collapse: separate;
 		border-spacing: 0 6px;
-		font-weight: 700;
+		font-weight: 500;
 		tr {
 			> td, th {
 				border: 0;
@@ -280,12 +288,24 @@ img {
 		padding-bottom: 0;
 		.card-title {
 			border-bottom: 3px solid #66e7fa;
-			color: #1e1e1e;
+			color: $dark;
 			font-size: 14px;
 		    font-weight: 700;
 		    margin-bottom: 0;
 		    padding: 0.75rem 0;
 		    text-transform: uppercase;
+		}
+	}
+	.card-body {
+		label {
+			color: $dark;
+			font-size: 10px;
+	    	font-weight: 500;
+		}
+		.list-inline {
+			label {
+				font-size: 13px;
+			}
 		}
 	}
 	.card-title-buttons {
@@ -307,8 +327,7 @@ img {
 	    background-color: $white;
 	    border-radius: 4px;
 	    color: #aaa;
-	    font-size: 13px;
-	    font-weight: 700;
+	    //font-size: 10px;
 	    line-height: 16px;
 	    padding: 0 5px;
 	    margin: 0 0 0 10px;
@@ -318,12 +337,12 @@ img {
 	}
 	.form-control {
 		border-width: 2px;
-		font-size: 0.85rem;
-		font-weight: 600;
+		font-size: 13px;
+		font-weight: 400;
 		line-height: 17px;
 		margin-top: -12px;
 		&:focus {
-			border-color: #1e1e1e;
+			border-color: $dark;
 			box-shadow: none;
 		}
 		&::placeholder {
@@ -341,6 +360,20 @@ img {
 					border-color: $red;
 				}
 			}
+		}
+	}
+	input {
+		&.form-control {
+			&:not([value=""]) {
+				border-color: $dark;
+			}
+		}
+	}
+	textarea {
+		&.form-control {
+			/*&:valid {
+				border-color: $dark;
+			}*/
 		}
 	}
 	p {

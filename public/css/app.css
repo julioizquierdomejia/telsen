@@ -30458,7 +30458,7 @@ img {
 
 .form-card .card-header .card-title {
   border-bottom: 3px solid #66e7fa;
-  color: #1c2956;
+  color: #1e1e1e;
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 0;
@@ -30496,15 +30496,35 @@ img {
 
 .form-card .form-control {
   border-width: 2px;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
   line-height: 17px;
   margin-top: -12px;
 }
 
 .form-card .form-control:focus {
-  border-color: #1c2956;
+  border-color: #1e1e1e;
   box-shadow: none;
+}
+
+.form-card .form-control::-moz-placeholder {
+  color: #f0f0f0;
+}
+
+.form-card .form-control:-ms-input-placeholder {
+  color: #f0f0f0;
+}
+
+.form-card .form-control::placeholder {
+  color: #f0f0f0;
+}
+
+.form-card .form-control:-ms-input-placeholder {
+  color: #f0f0f0;
+}
+
+.form-card .form-control::-webkit-input-placeholder {
+  color: #f0f0f0;
 }
 
 .form-card .form-control.is-invalid + .select2 .select2-selection {

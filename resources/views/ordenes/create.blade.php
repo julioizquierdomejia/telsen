@@ -37,7 +37,7 @@
               <select style="width: 100%" class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
                 <option value="">Ingresa Razón Social</option>
                 @foreach($clientes as $cliente)
-                <option data-rs="{{ $cliente->razon_social }}" data-dir="{{ $cliente->direccion }}" data-contacto="{{$cliente->telefono_contacto}}" data-celular="{{$cliente->celular}}" data-type="{{$cliente->client_type}}" value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->razon_social }}</option>
+                <option data-rs="{{ $cliente->ruc }}" data-dir="{{ $cliente->direccion }}" data-contacto="{{$cliente->telefono_contacto}}" data-celular="{{$cliente->celular}}" data-type="{{$cliente->client_type}}" value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->razon_social }}</option>
                 @endforeach
               </select>
               @error('client_id')

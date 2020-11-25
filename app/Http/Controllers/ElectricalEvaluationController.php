@@ -499,6 +499,7 @@ class ElectricalEvaluationController extends Controller
                     'electrical_evaluation_works.qty',
                     'electrical_evaluation_works.personal',
                     'services.name as service',
+                    'services.id as service_id',
                     'areas.name as area',
                     'areas.id as area_id'
                 )
@@ -638,6 +639,7 @@ class ElectricalEvaluationController extends Controller
                     'electrical_evaluation_works.qty',
                     'electrical_evaluation_works.personal',
                     'services.name as service',
+                    'services.id as service_id',
                     'areas.name as area',
                     'areas.id as area_id'
                 )

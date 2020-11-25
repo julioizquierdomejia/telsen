@@ -512,7 +512,7 @@
               </tr>
             </thead>
             <tbody>
-              @if($tran_tap = json_decode($formato->tap, true))
+              @if($tran_tap = json_decode($formato->tran_tap, true))
               @foreach($tran_tap as $key => $tap)
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
@@ -539,8 +539,8 @@
             <tfoot class="buttons">
             <tr>
               <td class="p-0" colspan="7">
-                <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
-                <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
+                <button class="btn btn-dark btn-add-tap-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
                 <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
               </td>
             </tr>
@@ -654,7 +654,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                  @if($works = old('works'))
+                  @if($works = old('works', $works))
                   @foreach($works as $key => $item)
                   <tr>
                     <td class="cell-counter"><span class="number"></span></td>
@@ -662,28 +662,28 @@
                       <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
                         <option value="">Seleccionar area</option>
                         @foreach($areas as $area)
-                        <option value="{{$area->id}}" {{ (old('works')[$key]['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                        <option value="{{$area->id}}" {{ $item['area_id'] == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
                         @endforeach
                       </select>
                     </td>
                     <td>
-                      <select class="dropdown2 form-control select-service" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                      <select class="dropdown2 form-control select-service" data-value="{{$item->service_id}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
                         <option value="">Seleccionar servicio</option>
                       </select>
                     </td>
                     <td width="120">
                       <input type="text" class="form-control 
                       @error("works[{{$key}}][description]") is-invalid @enderror"
-                       placeholder="Descripción" value="{{old('works')[$key]['description']}}" name="works[{{$key}}][description]">
+                       placeholder="Descripción" value="{{old('works.$key.description', $item->description)}}" name="works[{{$key}}][description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[$key]['medidas']}}" name="works[{{$key}}][medidas]">
+                      <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works.$key.medidas', $item->medidas)}}" name="works[{{$key}}][medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[$key]['qty']}}" name="works[{{$key}}][qty]">
+                      <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.$key.qty', $item->qty)}}" name="works[{{$key}}][qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[$key]['personal']}}" name="works[{{$key}}][personal]">
+                      <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works.$key.personal', $item->personal)}}" name="works[{{$key}}][personal]">
                     </td>
                   </tr>
                   @endforeach
@@ -766,21 +766,107 @@ $(document).ready(function() {
   $(document).on('keyup', '#table-tap .form-control', function() {
     createJSON();
   })*/
+
+  $(document).on('change', '.select-area', function () {
+  var $this = $(this), area = $this.val();
+  var service = $(this).parents('tr').find('.select-service');
+  if($(this).val().length) {
+    $.ajax({
+          type: "GET",
+          url: "/servicios/filterareas",
+          data: {id: area, _token:'{{csrf_token()}}'},
+          beforeSend: function() {
+            service.attr('disabled', true);
+          },
+          success: function (response) {
+            service.attr('disabled', false).focus();
+            service.find('option').remove();
+            if (response.success) {
+              var services = $.parseJSON(response.data), s_length = services.length;
+              if (services.length) {
+                $.each(services, function (id, item) {
+                  service.append('<option value="'+id+'">'+item.name+'</option>');
+                })
+              }
+              if(service.data('value')) {
+                service.find('option[value='+service.data('value')+']').prop('selected', true);
+              }
+            }
+          },
+          error: function (request, status, error) {
+            
+          }
+      });
+
+
+  } else {
+    service.attr('disabled', true);
+  }
+})
+  
   $(document).on('click', '.card .btn-clear', function() {
     $('#table-tap .form-control').val('');
   })
-  $('.btn-add-row').click(function() {
-    var row_index = $('#table-tap tbody tr').length;
-    var row = '<tr><td class="cell-counter"><span class="number"></span></td><td><input type="text" class="form-control" name="tran_tap['+row_index+'][uv1]" value=""></td><td><input type="text" class="form-control" name="tran_tap['+row_index+'][uv2]" value=""></td><td><input type="text" class="form-control" name="tran_tap['+row_index+'][vu1]" value=""></td><td><input type="text" class="form-control" name="tran_tap['+row_index+'][vu2]" value=""></td><td><input type="text" class="form-control" name="tran_tap['+row_index+'][wu1]" value=""></td><td><input type="text" class="form-control" name="tran_tap['+row_index+'][wu2]" value=""></td></tr>';
-    $('#table-tap tbody').append(row);
-    createJSON();
-  })
-  $('.btn-remove-row').click(function() {
+  $('.btn-add-tap-row').click(function () {
+  var row_index = $('#table-tap tbody tr').length;
+  var row = `<tr>
+            <td class="cell-counter"><span class="number"></span></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][uv1]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][uv2]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][vu1]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][vu2]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][wu1]" value=""></td>
+            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][wu2]" value=""></td>
+          </tr>`;
+$('#table-tap tbody').append(row);
+//createJSON();
+})
+  $('.btn-add-row').click(function () {
+  var row_index = $('#table-works tbody tr').length;
+var row = `<tr>
+    <td class="cell-counter"><span class="number"></span></td>
+    <td>
+      <select class="dropdown2 form-control select-area" name="works[`+row_index+`][area]" style="width: 100%">
+        <option value="">Seleccionar area</option>
+        @foreach($areas as $area)
+        <option value="{{$area->id}}">{{$area->name}}</option>
+        @endforeach
+      </select>
+    </td>
+    <td>
+      <select class="dropdown2 form-control select-service" name="works[`+row_index+`][service_id]" style="width: 100%"  disabled="">
+        <option value="">Seleccionar servicio</option>
+      </select>
+    </td>
+    <td width="120">
+      <input type="text" class="form-control" placeholder="Descripción" value="" name="works[`+row_index+`][description]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control" placeholder="Medida" value="" name="works[`+row_index+`][medidas]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
+    </td>
+  </tr>`;
+$('#table-works tbody').append(row);
+$('#table-works .dropdown2').select2();
+//createJSON();
+})
+  $('.btn-remove-tap-row').click(function() {
     var row_index = $('#table-tap tbody tr').length;
     if (row_index > 1) {
       $('#table-tap tbody tr:nth-child(' + row_index + ')').remove();
     }
-    createJSON();
+    //createJSON();
+  })
+  $('.btn-remove-row').click(function() {
+    var row_index = $('#table-works tbody tr').length;
+    if (row_index > 1) {
+      $('#table-works tbody tr:nth-child(' + row_index + ')').remove();
+    }
   })
 
   $('.btn-yes').click(function () {
@@ -789,6 +875,8 @@ $(document).ready(function() {
   $('.btn-no').click(function () {
     $('input[type="radio"][value="0"]').prop('checked', true);
   })
+
+  $('.select-area').trigger('change');
 })
 </script>
 @endsection

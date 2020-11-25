@@ -793,6 +793,9 @@ $(document).ready(function() {
                   service.append('<option value="'+id+'">'+item.name+'</option>');
                 })
               }
+              if(service.data('value')) {
+                service.find('option[value='+service.data('value')+']').prop('selected', true);
+              }
             }
           },
           error: function (request, status, error) {

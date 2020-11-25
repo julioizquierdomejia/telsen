@@ -863,7 +863,7 @@ $('#table-works tbody').append(row);
 $('#table-works .dropdown2').select2();
 //createJSON();
 })
-  $('.btn-remove-tap-row').click(function() {
+  $(document).on('click', '.btn-remove-top-row', function () {
     var row_index = $('#table-tap tbody tr').length;
     if (row_index > 1) {
       $('#table-tap tbody tr:nth-child(' + row_index + ')').remove();

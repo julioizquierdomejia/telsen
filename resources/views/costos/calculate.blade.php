@@ -254,12 +254,10 @@
           </div>
           <div class="formato eel">
           <h4>Evaluación Eléctrica</h4>
+          <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
           <div class="table-responsive">
             <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-el">
               <thead>
-                <tr>
-                  <th class="text-center py-1" colspan="7">Trabajos</th>
-                </tr>
                 <tr>
                   <th class="text-center py-1">Item</th>
                   <th class="text-center py-1">Área</th>
@@ -300,12 +298,10 @@
           </div>
           <div class="formato mel">
           <h4>Evaluación Mecánica</h4>
+          <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
           <div class="table-responsive">
             <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-mec">
               <thead>
-                <tr>
-                  <th class="text-center py-1" colspan="7">Trabajos</th>
-                </tr>
                 <tr>
                   <th class="text-center py-1">Item</th>
                   <th class="text-center py-1">Área</th>
@@ -345,12 +341,10 @@
           </div>
           </div>
           <h4>Otros</h4>
+          <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
           <div class="table-responsive">
             <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
               <thead>
-                <tr>
-                  <th class="text-center py-1" colspan="7">Trabajos</th>
-                </tr>
                 <tr>
                   <th class="text-center py-1">Item</th>
                   <th class="text-center py-1">Área</th>
@@ -359,6 +353,7 @@
                   <th class="text-center py-1">Medidas</th>
                   <th class="text-center py-1">Cantidad</th>
                   <th class="text-center py-1">Personal</th>
+                  <th class="text-center py-1"></th>
                 </tr>
               </thead>
               <tbody>
@@ -370,29 +365,32 @@
                     <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
                       <option value="">Seleccionar area</option>
                       @foreach($areas as $area)
-                      <option value="{{$area->id}}" {{ $item['area_id'] == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                      <option value="{{$area->id}}" {{ old('works'.$key.'area', $item['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
                       @endforeach
                     </select>
                   </td>
                   <td>
-                    <select class="dropdown2 form-control select-service" data-value="{{$item->service_id}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                    <select class="dropdown2 form-control select-service" data-value="{{$item['service_id'] ?? ''}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
                       <option value="">Seleccionar servicio</option>
                     </select>
                   </td>
                   <td width="120">
                     <input type="text" class="form-control
                     @error("works[{{$key}}][description]") is-invalid @enderror"
-                    placeholder="Descripción" value="{{old('works.$key.description', $item->description)}}" name="works[{{$key}}][description]">
+                    placeholder="Descripción" value="{{old('works.$key.description', $item['description'])}}" name="works[{{$key}}][description]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works.$key.medidas', $item->medidas)}}" name="works[{{$key}}][medidas]">
+                    <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works.$key.medidas', $item['medidas'])}}" name="works[{{$key}}][medidas]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.$key.qty', $item->qty)}}" name="works[{{$key}}][qty]">
+                    <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.$key.qty', $item['qty'])}}" name="works[{{$key}}][qty]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works.$key.personal', $item->personal)}}" name="works[{{$key}}][personal]">
+                    <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works.$key.personal', $item['personal'])}}" name="works[{{$key}}][personal]">
                   </td>
+                  <td>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                    </td>
                 </tr>
                 @endforeach
                 @else
@@ -423,6 +421,9 @@
                     <td width="100">
                       <input type="text" class="form-control mt-0 @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
                     </td>
+                    <td>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                    </td>
                 </tr>
                 @endif
               </tbody>
@@ -430,7 +431,6 @@
               <tr>
                 <td class="p-0" colspan="7">
                   <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
-                  <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
                   <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
                 </td>
               </tr>
@@ -452,7 +452,7 @@
 @section('javascript')
 <script>
   $(document).ready(function () {
-    $('#selectArea').change(function () {
+    /*$('#selectArea').change(function () {
       var $this = $(this), area = $('#selectArea').val();
       var token = '{{csrf_token()}}';
       var option_selected = $this.find('option:selected');
@@ -571,32 +571,7 @@
       return json;
     }
 
-    getServicesSum();
-
-  })
-
-$(document).ready(function() {
-  /*function createJSON() {
-    var json = '{';
-    var otArr = [];
-    var tbl2 = $('#table-tap tbody tr').each(function(i) {
-      x = $(this).children();
-      var itArr = [];
-      x.each(function() {
-        var el = $(this).find('.form-control');
-        if (el.length) {
-          itArr.push('"' + el.attr('name') + '":"' + el.val() + '"');
-        }
-      });
-      otArr.push('"' + i + '": {' + itArr.join(',') + '}');
-    })
-    json += otArr.join(",") + '}'
-    $('input[name=tran_tap]').val(json);
-    return json;
-  }
-  $(document).on('keyup', '#table-tap .form-control', function() {
-    createJSON();
-  })*/
+    getServicesSum();*/
 
   $(document).on('change', '.select-area', function () {
   var $this = $(this), area = $this.val();
@@ -616,7 +591,7 @@ $(document).ready(function() {
               var services = $.parseJSON(response.data), s_length = services.length;
               if (services.length) {
                 $.each(services, function (id, item) {
-                  service.append('<option value="'+id+'">'+item.name+'</option>');
+                  service.append('<option value="'+item.id+'">'+item.name+'</option>');
                 })
               }
               if(service.data('value')) {
@@ -668,19 +643,22 @@ var row = `<tr>
     <td width="100">
       <input type="text" class="form-control mt-0" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
     </td>
+    <td>
+      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+    </td>
   </tr>`;
 $('#table-works tbody').append(row);
 $('#table-works .dropdown2').select2();
 //createJSON();
 })
-  $('.btn-remove-tap-row').click(function() {
+  $(document).on('click', '.btn-remove-tap-row', function () {
     var row_index = $('#table-works tbody tr').length;
     if (row_index > 1) {
       $('#table-works tbody tr:nth-child(' + row_index + ')').remove();
     }
     //createJSON();
   })
-  $('.btn-remove-row').click(function() {
+  $(document).on('click', '.btn-remove-row', function () {
     var row_index = $('#table-works tbody tr').length;
     if (row_index > 1) {
       $('#table-works tbody tr:nth-child(' + row_index + ')').remove();
@@ -693,6 +671,8 @@ $('#table-works .dropdown2').select2();
   $('.btn-no').click(function () {
     $('input[type="radio"][value="0"]').prop('checked', true);
   })
+
+  $('.select-area').trigger('change');
 })
 </script>
 @endsection

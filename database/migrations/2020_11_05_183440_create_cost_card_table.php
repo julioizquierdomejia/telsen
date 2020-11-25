@@ -27,10 +27,10 @@ class CreateCostCardTable extends Migration
             $table->string('placa');*/
             $table->string('hecho_por');
             $table->string('cotizacion')->nullable();
-            $table->float('cost');
+            /*$table->float('cost');
             $table->float('cost_m1');
             $table->float('cost_m2');
-            $table->float('cost_m3');
+            $table->float('cost_m3');*/
             $table->boolean('enabled');
 
             $table->timestamps();

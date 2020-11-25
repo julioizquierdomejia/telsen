@@ -655,6 +655,7 @@
                   <th class="text-center py-1">Medidas</th>
                   <th class="text-center py-1">Cantidad</th>
                   <th class="text-center py-1">Personal</th>
+                  <th class="text-center py-1"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -689,6 +690,9 @@
                     <td width="100">
                       <input type="text" class="form-control @error('works.'.$key.'.personal') is-invalid @enderror" placeholder="Personal" value="{{old('works.'.$key.'.personal', $item['personal'])}}" name="works[{{$key}}][personal]">
                     </td>
+                    <td>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                    </td>
                   </tr>
                   @endforeach
                   @else
@@ -719,19 +723,17 @@
                     <td width="100">
                       <input type="text" class="form-control @error("works.0.personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.0.personal')}}" name="works[0][personal]">
                     </td>
+                    <td>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                    </td>
                   </tr>
                   @endif
                 </tbody>
-                <tfoot class="buttons">
-                <tr>
-                  <td class="p-0" colspan="7">
-                    <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
-                    <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
-                    <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
-                  </td>
-                </tr>
-                </tfoot>
               </table>
+              </div>
+              <div class="buttons text-center">
+                  <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                  <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
               </div>
               @error('works')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -854,6 +856,9 @@ var row = `<tr>
     </td>
     <td width="100">
       <input type="text" class="form-control" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
+    </td>
+    <td>
+      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
     </td>
   </tr>`;
 $('#table-works tbody').append(row);

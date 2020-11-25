@@ -854,7 +854,7 @@ $('#table-tap .dropdown2').select2();
 //createJSON();
 })
 $('.btn-remove-row').click(function () {
-var row_index = $('#table-tap tbody tr').length;
+var row_index = $('#table-tap tbody tr:not(.d-none)').length;
 if (row_index > 1) {
 //$(this).parents('tr').remove();
 $(this).parents('tr').addClass('d-none').find('.work_status').val(0);

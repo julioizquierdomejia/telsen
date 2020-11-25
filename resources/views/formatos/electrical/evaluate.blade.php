@@ -419,7 +419,7 @@
             </div>
             <div class="col-12">
               <label class="col-form-label">Detalles:</label>
-              <textarea class="form-control @error('rec_detalles') is-invalid @enderror" placeholder="Detalles" name="rec_detalles">{{old('rec_detalles')}}</textarea>
+              <textarea class="form-control @error('rec_detalles') is-invalid @enderror" placeholder="Detalles" rows="5" name="rec_detalles">{{old('rec_detalles')}}</textarea>
             </div>
           </div>
         </div>
@@ -433,31 +433,31 @@
             <div class="col-md-6">
               <h4 class="second-title text-danger py-2">Motor</h4>
               <div class="row pt-3">
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Aisl.(M):</label>
                   <input type="text" class="form-control @error('testin_motor_aisl_m') is-invalid @enderror" placeholder="Aisl.(M)" value="{{old('testin_motor_aisl_m')}}" name="testin_motor_aisl_m">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">N° salidas:</label>
                   <input type="number" min="1" class="form-control @error('testin_motor_nro_salidas') is-invalid @enderror" placeholder="N° salidas" value="{{old('testin_motor_nro_salidas')}}" name="testin_motor_nro_salidas">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Conexión:</label>
                   <input type="text" class="form-control @error('testin_motor_conexion') is-invalid @enderror" placeholder="Conexión" value="{{old('testin_motor_conexion')}}" name="testin_motor_conexion">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Volt(v):</label>
                   <input type="text" class="form-control @error('testin_motor_volt_v') is-invalid @enderror" placeholder="Volt(v)" value="{{old('testin_motor_volt_v')}}" name="testin_motor_volt_v">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Amp(A):</label>
                   <input type="text" class="form-control @error('testin_motor_amp_a') is-invalid @enderror" placeholder="Amp(A)" value="{{old('testin_motor_amp_a')}}" name="testin_motor_amp_a">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">RPM:</label>
                   <input type="number" min="1" class="form-control @error('testin_motor_rpm') is-invalid @enderror" placeholder="RPM" value="{{old('testin_motor_rpm')}}" name="testin_motor_rpm">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Frec.(HZ):</label>
                   <input type="text" class="form-control @error('testin_motor_frec_hz') is-invalid @enderror" placeholder="Frec.(HZ)" value="{{old('testin_motor_frec_hz')}}" name="testin_motor_frec_hz">
                 </div>
@@ -466,27 +466,27 @@
             <div class="col-md-6">
               <h4 class="second-title text-danger py-2">Pruebas del estator/rotor</h4>
               <div class="row pt-3">
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Aisl.(M):</label>
                   <input type="text" class="form-control @error('testin_er_aisl_m') is-invalid @enderror" placeholder="Aisl.(M)" value="{{old('testin_er_aisl_m')}}" name="testin_er_aisl_m">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">N° salidas:</label>
                   <input type="number" min="1" class="form-control @error('testin_er_nro_salidas') is-invalid @enderror" placeholder="N° salidas" value="{{old('testin_er_nro_salidas')}}" name="testin_er_nro_salidas">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Conexión:</label>
                   <input type="text" class="form-control @error('testin_er_conexion') is-invalid @enderror" placeholder="Conexión" value="{{old('testin_er_conexion')}}" name="testin_er_conexion">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Volt(v):</label>
                   <input type="text" class="form-control @error('testin_er_volt_v') is-invalid @enderror" placeholder="Volt(v)" value="{{old('testin_er_volt_v')}}" name="testin_er_volt_v">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Amp(A):</label>
                   <input type="text" class="form-control @error('testin_er_amp_a') is-invalid @enderror" placeholder="Amp(A)" value="{{old('testin_er_amp_a')}}" name="testin_er_amp_a">
                 </div>
-                <div class="col-sm-6 col-md-4 form-group">
+                <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">N° polos:</label>
                   <input type="number" min="1" class="form-control @error('testin_er_nro_polos') is-invalid @enderror" placeholder="N° polos" value="{{old('testin_er_nro_polos')}}" name="testin_er_nro_polos">
                 </div>

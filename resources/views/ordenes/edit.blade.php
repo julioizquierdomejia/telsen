@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-4 form-group">
+            <div class="col-8 col-md-7 form-group">
               <label class="col-form-label" for="selectRuc">Razón Social</label>
               <select class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
                 <option>Ingresa Razón Social</option>
@@ -40,9 +40,9 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-md-8 form-group">
-              <label class="col-form-label">RUC</label>
-              <input type="text" class="form-control razon_social" placeholder="" value="" disabled="" name="name">
+            <div class="col-4 col-md-2 form-group">
+              <label class="col-form-label">Tipo Cliente</label>
+              <input type="text" class="form-control tipocliente" placeholder="" value="" disabled="" name="name">
             </div>
           </div>
           <div class="row">

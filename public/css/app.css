@@ -30551,7 +30551,27 @@ img {
   border-color: #e3342f;
 }
 
-.form-card input.form-control:not([value=""]) {
+.form-card input.form-control:-moz-placeholder-shown {
+  border-color: #ced4da;
+}
+
+.form-card input.form-control:-ms-input-placeholder {
+  border-color: #ced4da;
+}
+
+.form-card input.form-control:placeholder-shown {
+  border-color: #ced4da;
+}
+
+.form-card input.form-control:not(:-moz-placeholder-shown) {
+  border-color: #1e1e1e;
+}
+
+.form-card input.form-control:not(:-ms-input-placeholder) {
+  border-color: #1e1e1e;
+}
+
+.form-card input.form-control:not(:placeholder-shown) {
   border-color: #1e1e1e;
 }
 

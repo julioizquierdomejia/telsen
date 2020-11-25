@@ -364,7 +364,10 @@ img {
 	}
 	input {
 		&.form-control {
-			&:not([value=""]) {
+			&:placeholder-shown {
+				border-color: #ced4da;
+			}
+			&:not(:placeholder-shown) {
 				border-color: $dark;
 			}
 		}

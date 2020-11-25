@@ -130,7 +130,8 @@ $cc_disapproved = in_array(7, $statuses);
 						</select>
 					</div>
 					<div class="col-md-12">
-						<table class="table table-separate table-bordered table-numbering mb-0" id="table-tap">
+						<h4 class="h6 text-center mb-0"><strong>Otros Trabajos</strong></h4>
+						{{-- <table class="table table-separate table-bordered table-numbering mb-0" id="table-tap">
 							<thead class="text-center">
 								<tr>
 									<th class="py-1 px-2" width="50">ITEM</th>
@@ -195,6 +196,38 @@ $cc_disapproved = in_array(7, $statuses);
 								@else
 								<tr class="empty-services text-center">
 									<td colspan="7">Seleccione un area</td>
+								</tr>
+								@endif
+							</tbody>
+						</table> --}}
+						<table class="table table-separate text-center table-numbering mb-0" id="table-tap">
+							<thead>
+								<tr>
+									<th class="text-center py-1">Item</th>
+									<th class="text-center py-1">Área</th>
+									<th class="text-center py-1">Tarea</th>
+									<th class="text-center py-1">Descripción</th>
+									<th class="text-center py-1">Medidas</th>
+									<th class="text-center py-1">Cantidad</th>
+									<th class="text-center py-1">Personal</th>
+								</tr>
+							</thead>
+							<tbody>
+								@if($services)
+								@foreach($services as $key => $work)
+								<tr>
+									<td class="cell-counter"><span class="number"></span></td>
+									<td><span class="form-control">{{$work->area}}</span></td>
+									<td><span class="form-control">{{$work->service}}</span></td>
+									<td><span class="form-control">{{$work->description}}</span></td>
+									<td><span class="form-control">{{$work->medidas}}</span></td>
+									<td><span class="form-control">{{$work->qty}}</span></td>
+									<td><span class="form-control">{{$work->personal}}</span></td>
+								</tr>
+								@endforeach
+								@else
+								<tr>
+									<td colspan="7">-</td>
 								</tr>
 								@endif
 							</tbody>

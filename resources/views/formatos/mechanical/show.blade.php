@@ -217,11 +217,10 @@ $status_last = $ot_status->last();
 						<p class="mb-0">{{$formato->estator_tapa_conexion ?? '-'}}</p>
 					</div>
 					<div class="col-md-12 form-group">
+						<h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
+						<div class="table-responsive">
 						<table class="table table-separate text-center table-numbering mb-0" id="table-tap">
 							<thead>
-								<tr>
-									<th class="text-center py-1" colspan="7">Trabajos</th>
-								</tr>
 								<tr>
 									<th class="text-center py-1">Item</th>
 									<th class="text-center py-1">Área</th>
@@ -252,6 +251,7 @@ $status_last = $ot_status->last();
 								@endif
 							</tbody>
 						</table>
+						</div>
 					</div>
 					<div class="col-md-12 form-group">
 						<label class="c-label">Observaciones</label>

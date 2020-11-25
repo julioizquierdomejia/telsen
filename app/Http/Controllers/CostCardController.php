@@ -258,10 +258,15 @@ class CostCardController extends Controller
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->select('cost_cards.*', 'ots.id as ot_id', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
                 ->firstOrFail();
-        $services = CostCardService::where('cost_card_id', $ccost->id)
+        /*$services = CostCardService::where('cost_card_id', $ccost->id)
                     ->leftJoin('services', 'services.id', '=', 'cost_card_services.service_id')
                     ->leftJoin('areas', 'areas.id', '=', 'cost_card_services.area_id')
                     ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_services.personal', 'cost_card_services.ingreso', 'cost_card_services.salida', 'cost_card_services.subtotal')
+                    ->get();*/
+        $services = CostCardServiceWork::where('cc_id', $ccost->id)
+                    ->leftJoin('services', 'services.id', '=', 'cost_card_service_works.service_id')
+                    ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
+                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_service_works.*')
                     ->get();
 
         return view('costos.show', compact('ccost', 'services'));

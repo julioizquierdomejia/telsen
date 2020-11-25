@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\MechanicalEvaluation;
 use App\Models\MechanicalEvaluationWork;
+use App\Models\RotorCodRodajePt1;
+use App\Models\RotorCodRodajePt2;
 use App\Models\Ot;
 use App\Models\Status;
 use App\Models\Area;
@@ -55,6 +57,8 @@ class MechanicalEvaluationController extends Controller
         if ($formato) {
             return redirect('formatos/mechanical');
         }
+        $cod_rodaje_p1 = RotorCodRodajePt1::where('enabled', 1)->get();
+        $cod_rodaje_p2 = RotorCodRodajePt2::where('enabled', 1)->get();
         $ot = Ot::where('ots.id', $ot_id)
             ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
             ->join('clients', 'ots.client_id', '=', 'clients.id')
@@ -66,7 +70,7 @@ class MechanicalEvaluationController extends Controller
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         }
 
-        return view('formatos.mechanical.evaluate', compact('ot', 'areas'));
+        return view('formatos.mechanical.evaluate', compact('ot', 'areas', 'cod_rodaje_p1', 'cod_rodaje_p2'));
     }
 
     /**

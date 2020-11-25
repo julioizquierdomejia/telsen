@@ -214,7 +214,13 @@ array (
               <div class="row">
                 <div class="col-12 col-md-6 mb-2">
                   <label class="col-form-label">Cod rodaje Pto 1</label>
-                  <input type="text" class="form-control @error('rotor_cod_rodaje_p1') is-invalid @enderror" placeholder="Cod rodaje Pto 1" value="{{old('rotor_cod_rodaje_p1')}}" name="rotor_cod_rodaje_p1">
+                  {{-- <input type="text" class="form-control @error('rotor_cod_rodaje_p1') is-invalid @enderror" placeholder="Cod rodaje Pto 1" value="{{old('rotor_cod_rodaje_p1')}}" name="rotor_cod_rodaje_p1"> --}}
+                  <select class="dropdown2 form-control" name="rotor_cod_rodaje_p1" style="width: 100%">
+                      <option value="">Seleccionar código</option>
+                      @foreach($cod_rodaje_p1 as $item)
+                      <option value="{{$item->id}}" data-asiento="{{$item->asiento_rodaje}}" data-alojamiento="{{$item->alojamiento_rodaje}}" {{ old('rotor_cod_rodaje_p2', $item['item']) == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
+                      @endforeach
+                    </select>
                   @error('rotor_cod_rodaje_p1')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
@@ -226,14 +232,20 @@ array (
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 col-md-3"><span class="form-control mt-2">Ø</span></div>
+                <div class="col-12 col-md-3"><span class="form-control mt-2 asiento-rodaje-pto1">Ø</span></div>
               </div>
             </div>
             <div class="col-12">
               <div class="row">
                 <div class="col-12 col-md-6 mb-2">
                   <label class="col-form-label">Cod rodaje Pto 2</label>
-                  <input type="text" class="form-control @error('rotor_cod_rodaje_p2') is-invalid @enderror" placeholder="Cod rodaje Pto 2" value="{{old('rotor_cod_rodaje_p2')}}" name="rotor_cod_rodaje_p2">
+                  {{-- <input type="text" class="form-control @error('rotor_cod_rodaje_p2') is-invalid @enderror" placeholder="Cod rodaje Pto 2" value="{{old('rotor_cod_rodaje_p2')}}" name="rotor_cod_rodaje_p2"> --}}
+                  <select class="dropdown2 form-control" name="rotor_cod_rodaje_p2" style="width: 100%">
+                      <option value="">Seleccionar código</option>
+                      @foreach($cod_rodaje_p2 as $item)
+                      <option value="{{$item->id}}" data-asiento="{{$item->asiento_rodaje}}" data-alojamiento="{{$item->alojamiento_rodaje}}" {{ old('rotor_cod_rodaje_p2', $item['item']) == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
+                      @endforeach
+                    </select>
                   @error('rotor_cod_rodaje_p2')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
@@ -245,7 +257,7 @@ array (
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 col-md-3"><span class="form-control mt-2">Ø</span></div>
+                <div class="col-12 col-md-3"><span class="form-control mt-2 asiento-rodaje-pto2">Ø</span></div>
               </div>
             </div>
             <div class="col-6 col-sm-6 col-lg-6 mb-2">
@@ -312,7 +324,7 @@ array (
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 col-md-6"><span class="form-control mt-2">Ø</span></div>
+                <div class="col-12 col-md-6"><span class="form-control mt-2 tapa-pto1">Ø</span></div>
                 <div class="col-12 col-md-6 mb-2">
                   <label class="col-form-label">Alojamiento rodaje tapa Pto 2Ø</label>
                   <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p20') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p2Ø" value="{{old('estator_alojamiento_rodaje_tapa_p20')}}" name="estator_alojamiento_rodaje_tapa_p20">
@@ -320,7 +332,7 @@ array (
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 col-md-6"><span class="form-control mt-2">Ø</span></div>
+                <div class="col-12 col-md-6"><span class="form-control mt-2 tapa-pto2">Ø</span></div>
               </div>
             </div>
             <div class="col-12 col-md-6">

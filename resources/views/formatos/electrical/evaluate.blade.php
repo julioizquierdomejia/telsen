@@ -251,7 +251,7 @@
         </div>
         <div class="card-body pb-3">
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Placa caract. Orig:</label>
               <div class="d-flex">
               <ul class="form-check-list list-inline mb-0 col-7 @error('rec_placa_caract_orig_has') is-invalid @enderror">
@@ -269,7 +269,7 @@
               <input type="text" class="form-control col-5 @error('rec_placa_caract_orig') is-invalid @enderror" placeholder="Placa caract. Orig" value="{{old('rec_placa_caract_orig')}}" name="rec_placa_caract_orig">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Escudos:</label>
               <div class="d-flex">
               <ul class="form-check-list list-inline mb-0 col-7 @error('rec_escudos_has') is-invalid @enderror">
@@ -287,7 +287,7 @@
               <input type="text" class="form-control @error('rec_escudos') is-invalid @enderror" placeholder="Escudos" value="{{old('rec_escudos')}}" name="rec_escudos">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Ventilador:</label>
               <div class="d-flex">
               <ul class="form-check-list list-inline mb-0 col-7 @error('rec_ventilador_has') is-invalid @enderror">
@@ -305,7 +305,7 @@
               <input type="text" class="form-control @error('rec_ventilador') is-invalid @enderror" placeholder="Ventilador" value="{{old('rec_ventilador')}}" name="rec_ventilador">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Caja de Conexión:</label>
               <div class="d-flex">
               <ul class="form-check-list list-inline mb-0 col-7 @error('rec_caja_conexion_has') is-invalid @enderror">
@@ -323,7 +323,7 @@
               <input type="text" class="form-control @error('rec_caja_conexion') is-invalid @enderror" placeholder="Caja de Conexión" value="{{old('rec_caja_conexion')}}" name="rec_caja_conexion">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Ejes:</label>
               <div class="d-flex">
               <ul class="form-check-list list-inline mb-0 col-7 @error('rec_ejes_has') is-invalid @enderror">
@@ -341,7 +341,7 @@
               <input type="text" class="form-control @error('rec_ejes') is-invalid @enderror" placeholder="Ejes" value="{{old('rec_ejes')}}" name="rec_ejes">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Acople:</label>
               <div class="d-flex">
               <ul class="form-check-list list-inline mb-0 col-7 @error('rec_acople_has') is-invalid @enderror">
@@ -359,7 +359,7 @@
               <input type="text" class="form-control @error('rec_acople') is-invalid @enderror" placeholder="Acople" value="{{old('rec_acople')}}" name="rec_acople">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Bornera:</label>
               <div class="d-flex">
               <ul class="form-check-list list-inline mb-0 col-7 @error('rec_bornera_has') is-invalid @enderror">
@@ -377,7 +377,7 @@
               <input type="text" class="form-control @error('rec_bornera') is-invalid @enderror" placeholder="Bornera" value="{{old('rec_bornera')}}" name="rec_bornera">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Funda:</label>
               <div class="d-flex">
               <ul class="form-check-list list-inline mb-0 col-7 @error('rec_funda_has') is-invalid @enderror">
@@ -395,7 +395,7 @@
               <input type="text" class="form-control @error('rec_funda') is-invalid @enderror" placeholder="Funda" value="{{old('rec_funda')}}" name="rec_funda">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Chaveta:</label>
               <div class="d-flex">
               <ul class="form-check-list list-inline mb-0 col-7 @error('rec_chaveta_has') is-invalid @enderror">
@@ -413,13 +413,13 @@
               <input type="text" class="form-control @error('rec_chaveta') is-invalid @enderror" placeholder="Chaveta" value="{{old('rec_chaveta')}}" name="rec_chaveta">
               </div>
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 form-group">
               <label class="col-form-label">Otros:</label>
               <input type="text" class="form-control @error('rec_otros') is-invalid @enderror" placeholder="Otros" value="{{old('rec_otros')}}" name="rec_otros">
             </div>
             <div class="col-12">
               <label class="col-form-label">Detalles:</label>
-              <input type="text" class="form-control @error('rec_detalles') is-invalid @enderror" placeholder="Detalles" value="{{old('rec_detalles')}}" name="rec_detalles">
+              <textarea class="form-control @error('rec_detalles') is-invalid @enderror" placeholder="Detalles" name="rec_detalles">{{old('rec_detalles')}}</textarea>
             </div>
           </div>
         </div>

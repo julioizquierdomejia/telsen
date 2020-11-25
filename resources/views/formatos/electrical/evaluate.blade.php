@@ -790,7 +790,7 @@ $(document).ready(function() {
               var services = $.parseJSON(response.data), s_length = services.length;
               if (services.length) {
                 $.each(services, function (id, item) {
-                  service.append('<option value="'+id+'">'+item.name+'</option>');
+                  service.append('<option value="'+item.id+'">'+item.name+'</option>');
                 })
               }
               if(service.data('value')) {

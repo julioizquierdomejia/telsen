@@ -222,7 +222,7 @@ class ElectricalEvaluationController extends Controller
         $eleval = new ElectricalEvaluation();
         $eleval->ot_id = $id;
         //$eleval->solped = $request->input('solped');
-        $eleval->recepcionado_por = $request->input('recepcionado_por');
+        /*$eleval->recepcionado_por = $request->input('recepcionado_por');
         $eleval->potencia = $request->input('potencia');
         $eleval->conex = $request->input('conex');
         $eleval->mod = $request->input('mod');
@@ -335,9 +335,10 @@ class ElectricalEvaluationController extends Controller
         $eltraneval->ru_v = $request->input('tran_ru_v');
         $eltraneval->rv_u = $request->input('tran_rv_u');
         $eltraneval->ww = $request->input('tran_ww');
-        $eltraneval->save();
+        $eltraneval->save();*/
 
         $works = $request->input('works');
+        dd($works);
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {

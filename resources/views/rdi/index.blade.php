@@ -17,6 +17,7 @@
               <th class="text-right">Herramientas</th>
             </thead>
             <tbody>
+              @if($rdis)
             	@foreach($rdis as $rdi)
 	              <tr>
 	                <td>
@@ -34,6 +35,11 @@
 	                </td>
 	              </tr>
               @endforeach
+              @else
+              <tr>
+                <td colspan="4">-</td>
+              </tr>
+              @endif
             </tbody>
           </table>
         </div>

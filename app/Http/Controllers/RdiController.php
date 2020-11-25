@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Rdi;
 use App\Models\RdiService;
 use App\Models\RdiIngreso;
-use App\Models\RdiServiceCost;
+//use App\Models\RdiServiceCost;
+use App\Models\RdiWork;
+use App\Models\ElectricalEvaluationWork;
+use App\Models\MechanicalEvaluationWork;
 use App\Models\RdiMaintenanceType;
 use App\Models\RdiCriticalityType;
 use App\Models\Status;
 use App\Models\Service;
+use App\Models\Area;
 use App\Models\Client;
 use App\Models\MotorBrand;
 use App\Models\Ot;
@@ -71,19 +75,55 @@ class RdiController extends Controller
                 ->select('ots.*', 'clients.razon_social')
                 ->where('ots.id', $id)
                 ->firstOrFail();
+        if ($ot->client_type_id == 1) {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+        } else {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+        }
         $counter = RDI::count() + 1;
         $clientes = Client::where('enabled', 1)->where('client_type_id', 1)->get();
         $marcas = MotorBrand::where('enabled', 1)->get();
         $maintenancetype = RdiMaintenanceType::where('enabled', 1)->get();
         $criticalitytype = RdiCriticalityType::where('enabled', 1)->get();
         //$services = RdiService::where('enabled', 1)->get();
-        $services = Service::where('enabled', 1) //Servicios de area cliente
+        /*$services = Service::where('enabled', 1) //Servicios de area cliente
                 ->where('enabled', 1)
                 ->where('area_id', 5) //Area clientes
                 ->select('services.id', 'services.name')
+                ->get();*/
+
+        $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
+                ->select(
+                    'electrical_evaluation_works.description',
+                    'electrical_evaluation_works.medidas',
+                    'electrical_evaluation_works.qty',
+                    'electrical_evaluation_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('electrical_evaluations.ot_id', $ot->id)
                 ->get();
 
-        return view('rdi.calcular', compact('ot', 'counter', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype'));
+        $works_mec = MechanicalEvaluationWork::join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
+                ->select(
+                    'mechanical_evaluation_works.description',
+                    'mechanical_evaluation_works.medidas',
+                    'mechanical_evaluation_works.qty',
+                    'mechanical_evaluation_works.personal',
+                    'services.name as service',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('mechanical_evaluations.ot_id', $ot->id)
+                ->get();
+
+        return view('rdi.calcular', compact('ot', 'counter', 'clientes', 'marcas', 'maintenancetype', 'criticalitytype', 'works_el', 'works_mec', 'areas'));
     }
 
     /**
@@ -131,15 +171,17 @@ class RdiController extends Controller
             'acople' => 'boolean|nullable',
             'chaveta' => 'boolean|nullable',
 
-            'services' => 'array|required',
+            //'services' => 'array|required',
             'diagnostico_actual' => 'string|required',
             'aislamiento_masa_ingreso' => 'string|required',
 
             'rdi_maintenance_type_id' => 'required|integer|exists:rdi_maintenance_types,id',
             'rdi_criticality_type_id' => 'required|integer|exists:rdi_criticality_types,id',
             'hecho_por' => 'string|nullable',
-            'cost' => 'required||regex:/^\d+(\.\d{1,2})?$/|gt:0',
+            //'cost' => 'required||regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'enabled' => 'boolean|required',
+
+            'works' => 'array',
         );
         $this->validate($request, $rules);
 
@@ -172,7 +214,7 @@ class RdiController extends Controller
         $rdi->rdi_maintenance_type_id = $request->input('rdi_maintenance_type_id');
         $rdi->rdi_criticality_type_id = $request->input('rdi_criticality_type_id');
         $rdi->hecho_por = $request->input('hecho_por');
-        $rdi->cost = $request->input('cost');
+        //$rdi->cost = $request->input('cost');
         $rdi->enabled = $request->input('enabled');
         $rdi->save();
 
@@ -200,8 +242,25 @@ class RdiController extends Controller
         $rdi_ingreso->chaveta = $chaveta;
         $rdi_ingreso->save();
 
+        $works = $request->input('works');
+        $services = [];
+        $date = \Carbon\Carbon::now()->toDateTimeString();
+        foreach ($works as $key => $item) {
+            $services[$key]['rdi_id'] = $rdi->id;
+            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+
+            $services[$key]['created_at'] = $date;
+            $services[$key]['updated_at'] = $date;
+        }
+
+        RdiWork::insert($services);
+
         //Actividades por realizar
-        $services = $request->input('services');
+        /*$services = $request->input('services');
         if ($services) {
             //$services_count = count($services);
 
@@ -215,7 +274,7 @@ class RdiController extends Controller
                 }
             }
             RdiServiceCost::insert($services_array);
-        }
+        }*/
 
         $status = Status::where('id', 8)->first();
         if ($status) {
@@ -286,9 +345,14 @@ class RdiController extends Controller
 
         $ingresos = RdiIngreso::where('rdi_id', $id)->first();
 
-        $services = RdiServiceCost::where('rdi_id', $id)
+        /*$services = RdiServiceCost::where('rdi_id', $id)
                     ->join('services', 'services.id', '=', 'rdi_service_costs.service_id')
                     ->select('services.id', 'services.name', 'rdi_service_costs.subtotal')
+                    ->get();*/
+        $services = RdiWork::where('rdi_id', $id)
+                    ->leftJoin('services', 'services.id', '=', 'rdi_works.service_id')
+                    ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
+                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','rdi_works.*')
                     ->get();
 
         return view('rdi.show', compact('rdi', 'services', 'ingresos'));

@@ -195,8 +195,9 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-12 col-md-6 mb-4">
-						<label class="col-label d-block border-bottom">ACTIVIDADES POR REALIZAR</label>
+					<div class="col-12 mb-4">
+						<h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
+						{{-- <label class="col-label d-block border-bottom">ACTIVIDADES POR REALIZAR</label>
 						<div class="h-100">
 							<ul class="form-check-list list-inline m-0">
 								@foreach($services as $service)
@@ -210,11 +211,43 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 							</ul>
 							<label class="col-form-label">Total</label>
 							<span class="form-control text-right disabled">{{$rdi->cost}}</span>
-						</div>
+						</div> --}}
+						<table class="table table-separate text-center table-numbering mb-0" id="table-tap">
+							<thead>
+								<tr>
+									<th class="text-center py-1">Item</th>
+									<th class="text-center py-1">Área</th>
+									<th class="text-center py-1">Tarea</th>
+									<th class="text-center py-1">Descripción</th>
+									<th class="text-center py-1">Medidas</th>
+									<th class="text-center py-1">Cantidad</th>
+									<th class="text-center py-1">Personal</th>
+								</tr>
+							</thead>
+							<tbody>
+								@if($services)
+								@foreach($services as $key => $work)
+								<tr>
+									<td class="cell-counter"><span class="number"></span></td>
+									<td><span class="form-control">{{$work->area}}</span></td>
+									<td><span class="form-control">{{$work->service}}</span></td>
+									<td><span class="form-control">{{$work->description}}</span></td>
+									<td><span class="form-control">{{$work->medidas}}</span></td>
+									<td><span class="form-control">{{$work->qty}}</span></td>
+									<td><span class="form-control">{{$work->personal}}</span></td>
+								</tr>
+								@endforeach
+								@else
+								<tr>
+									<td colspan="7">-</td>
+								</tr>
+								@endif
+							</tbody>
+						</table>
 					</div>
-					<div class="col-12 col-md-6 mb-4">
+					<div class="col-12 mb-4">
 						<label class="col-label d-block border-bottom" for="diagnostico_actual">DIAGNOSTICO ACTUAL</label>
-						<span class="d-block h-100" id="diagnostico_actual">{{$rdi->diagnostico_actual}}</span>
+						<div class="d-block h-100" id="diagnostico_actual">{{$rdi->diagnostico_actual}}</div>
 					</div>
 				</div>
 				<div class="row">

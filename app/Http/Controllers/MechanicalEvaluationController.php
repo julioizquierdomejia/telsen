@@ -288,13 +288,14 @@ class MechanicalEvaluationController extends Controller
                 ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
+                    'mechanical_evaluation_works.id',
                     'mechanical_evaluation_works.description',
                     'mechanical_evaluation_works.medidas',
                     'mechanical_evaluation_works.qty',
                     'mechanical_evaluation_works.personal',
                     'services.name as service',
                     'areas.name as area',
-                    'areas.id as area_id'
+                    'services.area_id'
                 )
                 ->get();
 
@@ -326,6 +327,7 @@ class MechanicalEvaluationController extends Controller
                 ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
+                    'mechanical_evaluation_works.id',
                     'mechanical_evaluation_works.description',
                     'mechanical_evaluation_works.medidas',
                     'mechanical_evaluation_works.qty',
@@ -504,22 +506,37 @@ class MechanicalEvaluationController extends Controller
         $meval->save();
 
         $works = $request->input('works');
-        $update_works = MechanicalEvaluationWork::where('me_id', $meval->id)->delete();
+        //$work_ids = array_column($works, 'id');
+        //$update_works = MechanicalEvaluationWork::where('me_id', $meval->id)->delete();
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
-            $services[$key]['me_id'] = $meval->id;
-            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
-
-            $services[$key]['created_at'] = $date;
-            $services[$key]['updated_at'] = $date;
+            if (isset($item['id'])) {
+                $work = MechanicalEvaluationWork::find($item['id']);
+                if (isset($item['status']) && $item['status'] == 0) {
+                    $work->delete();
+                } else {
+                    $work->me_id = $meval->id;
+                    $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                    $work->description = isset($item['description']) ? $item['description'] : '';
+                    $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                    $work->qty = isset($item['qty']) ? $item['qty'] : '';
+                    $work->personal = isset($item['personal']) ? $item['personal'] : '';
+                    $work->updated_at = $date;
+                    $work->save();
+                }
+            } else {
+                $services[$key]['me_id'] = $meval->id;
+                $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+                $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+                $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+                $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+                $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+                $services[$key]['created_at'] = $date;
+                $services[$key]['updated_at'] = $date;
+                MechanicalEvaluationWork::insert($services);
+            }
         }
-
-        MechanicalEvaluationWork::insert($services);
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');

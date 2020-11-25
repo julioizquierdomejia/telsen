@@ -666,28 +666,28 @@
                       <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
                         <option value="">Seleccionar area</option>
                         @foreach($areas as $area)
-                        <option value="{{$area->id}}" {{ (old('works')[$key]['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                        <option value="{{$area->id}}" {{ old('works.'.$key.'.area', $item['area'] ?? '') == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
                         @endforeach
                       </select>
                     </td>
                     <td>
-                      <select class="dropdown2 form-control select-service" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                      <select class="dropdown2 form-control select-service" data-value="{{$item['service_id'] ?? ''}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
                         <option value="">Seleccionar servicio</option>
                       </select>
                     </td>
                     <td width="120">
                       <input type="text" class="form-control 
-                      @error("works[{{$key}}][description]") is-invalid @enderror"
-                       placeholder="Descripción" value="{{old('works')[$key]['description']}}" name="works[{{$key}}][description]">
+                      @error('works.'.$key.'.description') is-invalid @enderror"
+                       placeholder="Descripción" value="{{old('works.'.$key.'.description', $item['description'])}}" name="works[{{$key}}][description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[$key]['medidas']}}" name="works[{{$key}}][medidas]">
+                      <input type="text" class="form-control @error('works.'.$key.'.medidas') is-invalid @enderror" placeholder="Medida" value="{{old('works.'.$key.'.medidas', $item['medidas'])}}" name="works[{{$key}}][medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[$key]['qty']}}" name="works[{{$key}}][qty]">
+                      <input type="text" class="form-control @error('works.'.$key.'.qty') is-invalid @enderror" placeholder="Cantidad" value="{{old('works.'.$key.'.qty', $item['qty'])}}" name="works[{{$key}}][qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[$key]['personal']}}" name="works[{{$key}}][personal]">
+                      <input type="text" class="form-control @error('works.'.$key.'.personal') is-invalid @enderror" placeholder="Personal" value="{{old('works.'.$key.'.personal', $item['personal'])}}" name="works[{{$key}}][personal]">
                     </td>
                   </tr>
                   @endforeach
@@ -708,16 +708,16 @@
                       </select>
                     </td>
                     <td width="120">
-                      <input type="text" class="form-control @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
+                      <input type="text" class="form-control @error("works.0.description") is-invalid @enderror" placeholder="Descripción" value="{{old('works.0.description')}}" name="works[0][description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
+                      <input type="text" class="form-control @error("works.0.medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works.0.medidas')}}" name="works[0][medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
+                      <input type="text" class="form-control @error("works.0.qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.0.qty')}}" name="works[0][qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
+                      <input type="text" class="form-control @error("works.0.personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.0.personal')}}" name="works[0][personal]">
                     </td>
                   </tr>
                   @endif
@@ -880,6 +880,8 @@ $('#table-works .dropdown2').select2();
   $('.btn-no').click(function () {
     $('input[type="radio"][value="0"]').prop('checked', true);
   })
+
+  $('.select-area').trigger('change');
 })
 </script>
 @endsection

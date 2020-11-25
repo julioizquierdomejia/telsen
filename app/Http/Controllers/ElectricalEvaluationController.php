@@ -494,6 +494,7 @@ class ElectricalEvaluationController extends Controller
                 ->join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
+                    'electrical_evaluation_works.id',
                     'electrical_evaluation_works.description',
                     'electrical_evaluation_works.medidas',
                     'electrical_evaluation_works.qty',
@@ -634,6 +635,7 @@ class ElectricalEvaluationController extends Controller
                 ->join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
+                    'electrical_evaluation_works.id',
                     'electrical_evaluation_works.description',
                     'electrical_evaluation_works.medidas',
                     'electrical_evaluation_works.qty',
@@ -903,22 +905,37 @@ class ElectricalEvaluationController extends Controller
         $eltraneval->save();
 
         $works = $request->input('works');
-        $update_works = ElectricalEvaluationWork::where('me_id', $eleval->id)->delete();
+        //$work_ids = array_column($works, 'id');
+        //$update_works = ElectricalEvaluationWork::where('me_id', $eleval->id)->delete();
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
-            $services[$key]['me_id'] = $eleval->id;
-            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
-
-            $services[$key]['created_at'] = $date;
-            $services[$key]['updated_at'] = $date;
+            if (isset($item['id'])) {
+                $work = ElectricalEvaluationWork::find($item['id']);
+                if (isset($item['status']) && $item['status'] == 0) {
+                    $work->delete();
+                } else {
+                    $work->me_id = $eleval->id;
+                    $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                    $work->description = isset($item['description']) ? $item['description'] : '';
+                    $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                    $work->qty = isset($item['qty']) ? $item['qty'] : '';
+                    $work->personal = isset($item['personal']) ? $item['personal'] : '';
+                    $work->updated_at = $date;
+                    $work->save();
+                }
+            } else {
+                $services[$key]['me_id'] = $eleval->id;
+                $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+                $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+                $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+                $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+                $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+                $services[$key]['created_at'] = $date;
+                $services[$key]['updated_at'] = $date;
+                ElectricalEvaluationWork::insert($services);
+            }
         }
-
-        ElectricalEvaluationWork::insert($services);
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');

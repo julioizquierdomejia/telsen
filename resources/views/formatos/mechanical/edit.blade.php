@@ -410,12 +410,10 @@
           </div>
           <hr>
             <div class="tap-section mb-2">
+              <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
               <div class="table-responsive">
               <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
                 <thead>
-                  <tr>
-                    <th class="text-center py-1" colspan="7">Trabajos</th>
-                  </tr>
                   <tr>
                   <th class="text-center py-1">Item</th>
                   <th class="text-center py-1">Área</th>
@@ -424,37 +422,45 @@
                   <th class="text-center py-1">Medidas</th>
                   <th class="text-center py-1">Cantidad</th>
                   <th class="text-center py-1">Personal</th>
+                  <th class="text-center py-1"></th>
                 </tr>
                 </thead>
                 <tbody>
                   @if($works = old('works', $works))
                   @foreach($works as $key => $item)
                   <tr>
-                    <td class="cell-counter"><span class="number"></span></td>
+                    <td class="cell-counter">
+                      <span class="number"></span>
+                      <input type="hidden" name="works[{{$key}}][id]" value="{{old('works.'.$key.'.id', $item['id'])}}">
+                      <input class="work_status" type="hidden" name="works[{{$key}}][status]" value="1">
+                    </td>
                     <td>
                       <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
                         <option value="">Seleccionar area</option>
                         @foreach($areas as $area)
-                        <option value="{{$area->id}}" {{ $item['area_id'] == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                        <option value="{{$area->id}}" {{ old('works.'.$key.'.id', $item['area_id'] ?? '') == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
                         @endforeach
                       </select>
                     </td>
                     <td>
-                      <select class="dropdown2 form-control select-service" data-value="{{$item->service_id}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                      <select class="dropdown2 form-control select-service" data-value="{{$item['service_id']}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
                         <option value="">Seleccionar servicio</option>
                       </select>
                     </td>
                     <td width="120">
-                      <input type="text" class="form-control @error("works[{{$key}}][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works[$key]["desc"]', $item["description"])}}" name="works[{{$key}}][description]">
+                      <input type="text" class="form-control @error("works.".$key.".description") is-invalid @enderror" placeholder="Descripción" value="{{old('works.'.$key.'.description', $item["description"])}}" name="works[{{$key}}][description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{$item["medidas"]}}" name="works[{{$key}}][medidas]">
+                      <input type="text" class="form-control @error("works.".$key.".medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works.'.$key.'.medidas', $item["medidas"])}}" name="works[{{$key}}][medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{$item["qty"]}}" name="works[{{$key}}][qty]">
+                      <input type="text" class="form-control @error("works.".$key.".qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.'.$key.'.qty', $item["qty"])}}" name="works[{{$key}}][qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{$item["personal"]}}" name="works[{{$key}}][personal]">
+                      <input type="text" class="form-control @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.'.$key.'.personal', $item["personal"])}}" name="works[{{$key}}][personal]">
+                    </td>
+                    <td>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                     </td>
                   </tr>
                   @endforeach
@@ -475,30 +481,28 @@
                       </select>
                     </td>
                     <td width="120">
-                      <input type="text" class="form-control @error("works[{{$key}}][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works[$key]["description"]')}}" name="works[{{$key}}][description]">
+                      <input type="text" class="form-control @error("works.0.description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works.0.description')}}" name="works.0.description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works[$key]["medidas"]')}}" name="works[{{$key}}][medidas]">
+                      <input type="text" class="form-control @error("works.0.medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works.0.medidas')}}" name="works.0.medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works[$key]["qty"]')}}" name="works[{{$key}}][qty]">
+                      <input type="text" class="form-control @error("works.0.qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.0.qty')}}" name="works.0.qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works[$key]["personal"]')}}" name="works[{{$key}}][personal]">
+                      <input type="text" class="form-control @error("works.0.personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works.0.personal')}}" name="works.0.personal]">
+                    </td>
+                    <td>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                     </td>
                   </tr>
                   @endif
                 </tbody>
-                <tfoot class="buttons">
-                <tr>
-                  <td class="p-0" colspan="7">
-                    <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
-                    <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
-                    <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
-                  </td>
-                </tr>
-                </tfoot>
               </table>
+              </div>
+              <div class="buttons text-center">
+                  <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                  <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
               </div>
             </div>
             <div class="obs mb-2">
@@ -588,7 +592,10 @@ $('#table-tap .form-control').val('');
 $('.btn-add-row').click(function () {
   var row_index = $('#table-tap tbody tr').length;
 var row = `<tr>
-    <td class="cell-counter"><span class="number"></span></td>
+    <td class="cell-counter">
+      <span class="number"></span>
+      <input class="work_status" type="hidden" name="works[`+row_index+`][status]" value="1">
+    </td>
     <td>
       <select class="dropdown2 form-control select-area" name="works[`+row_index+`][area]" style="width: 100%">
         <option value="">Seleccionar area</option>
@@ -612,7 +619,10 @@ var row = `<tr>
       <input type="text" class="form-control" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
     </td>
     <td width="100">
-      <input type="text" class="form-control" placeholder="Personal" value="" name="works[0][personal]">
+      <input type="text" class="form-control" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
+    </td>
+    <td>
+      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
     </td>
   </tr>`;
 $('#table-tap tbody').append(row);
@@ -622,9 +632,9 @@ $('#table-tap .dropdown2').select2();
 $('.btn-remove-row').click(function () {
 var row_index = $('#table-tap tbody tr').length;
 if (row_index > 1) {
-$('#table-tap tbody tr:nth-child('+row_index+')').remove();
+//$(this).parents('tr').remove();
+$(this).parents('tr').addClass('d-none').find('.work_status').val(0);
 }
-//createJSON();
 })
 
 $('.btn-yes').click(function () {

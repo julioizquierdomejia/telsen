@@ -176,6 +176,9 @@ class ElectricalEvaluationController extends Controller
             'testin_motor_amp_a' => 'string|nullable',
             'testin_motor_rpm' => 'string|nullable',
             'testin_motor_frec_hz' => 'string|nullable',
+            'testin_directo_masa' => 'string|nullable',
+            'testin_bajo_alistamiento' => 'string|nullable',
+            'testin_mayor_cienm' => 'string|nullable',
             'testin_er_aisl_m' => 'string|nullable',
             'testin_er_nro_salidas' => 'string|nullable',
             'testin_er_conexion' => 'string|nullable',
@@ -314,6 +317,9 @@ class ElectricalEvaluationController extends Controller
         $eltestineval->motor_amp_a = $request->input('testin_motor_amp_a');
         $eltestineval->motor_rpm = $request->input('testin_motor_rpm');
         $eltestineval->motor_frec_hz = $request->input('testin_motor_frec_hz');
+        $eltestineval->bajo_alistamiento = $request->input('testin_bajo_alistamiento');
+        $eltestineval->directo_masa = $request->input('testin_directo_masa');
+        $eltestineval->mayor_cienm = $request->input('testin_mayor_cienm');
         $eltestineval->er_aisl_m = $request->input('testin_er_aisl_m');
         $eltestineval->er_nro_salidas = $request->input('testin_er_nro_salidas');
         $eltestineval->er_conexion = $request->input('testin_er_conexion');
@@ -450,6 +456,9 @@ class ElectricalEvaluationController extends Controller
                         'eetesting.motor_amp_a',
                         'eetesting.motor_rpm',
                         'eetesting.motor_frec_hz',
+                        'eetesting.bajo_alistamiento',
+                        'eetesting.directo_masa',
+                        'eetesting.mayor_cienm',
                         'eetesting.er_aisl_m',
                         'eetesting.er_nro_salidas',
                         'eetesting.er_conexion',
@@ -581,6 +590,9 @@ class ElectricalEvaluationController extends Controller
                         'eetesting.motor_amp_a as testin_motor_amp_a',
                         'eetesting.motor_rpm as testin_motor_rpm',
                         'eetesting.motor_frec_hz as testin_motor_frec_hz',
+                        'eetesting.bajo_alistamiento as testin_bajo_alistamiento',
+                        'eetesting.directo_masa as testin_directo_masa',
+                        'eetesting.mayor_cienm as testin_mayor_cienm',
                         'eetesting.er_aisl_m as testin_er_aisl_m',
                         'eetesting.er_nro_salidas as testin_er_nro_salidas',
                         'eetesting.er_conexion as testin_er_conexion',
@@ -758,6 +770,9 @@ class ElectricalEvaluationController extends Controller
             'testin_motor_amp_a' => 'string|nullable',
             'testin_motor_rpm' => 'string|nullable',
             'testin_motor_frec_hz' => 'string|nullable',
+            'testin_directo_masa' => 'string|nullable',
+            'testin_bajo_alistamiento' => 'string|nullable',
+            'testin_mayor_cienm' => 'string|nullable',
             'testin_er_aisl_m' => 'string|nullable',
             'testin_er_nro_salidas' => 'string|nullable',
             'testin_er_conexion' => 'string|nullable',
@@ -886,6 +901,9 @@ class ElectricalEvaluationController extends Controller
         $eltestineval->motor_amp_a = $request->input('testin_motor_amp_a');
         $eltestineval->motor_rpm = $request->input('testin_motor_rpm');
         $eltestineval->motor_frec_hz = $request->input('testin_motor_frec_hz');
+        $eltestineval->bajo_alistamiento = $request->input('testin_bajo_alistamiento');
+        $eltestineval->directo_masa = $request->input('testin_directo_masa');
+        $eltestineval->mayor_cienm = $request->input('testin_mayor_cienm');
         $eltestineval->er_aisl_m = $request->input('testin_er_aisl_m');
         $eltestineval->er_nro_salidas = $request->input('testin_er_nro_salidas');
         $eltestineval->er_conexion = $request->input('testin_er_conexion');

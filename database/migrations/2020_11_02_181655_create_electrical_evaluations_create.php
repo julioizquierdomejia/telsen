@@ -126,6 +126,9 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->string('motor_amp_a')->nullable();
             $table->string('motor_rpm')->nullable();
             $table->string('motor_frec_hz')->nullable();
+            $table->string('directo_masa')->nullable(),
+            $table->string('bajo_alistamiento')->nullable(),
+            $table->string('mayor_cienm')->nullable(),
             $table->string('er_aisl_m')->nullable();
             $table->string('er_nro_salidas')->nullable();
             $table->string('er_conexion')->nullable();

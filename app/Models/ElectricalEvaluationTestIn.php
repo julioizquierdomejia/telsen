@@ -22,12 +22,16 @@ class ElectricalEvaluationTestIn extends Model
         'motor_amp_a',
         'motor_rpm',
         'motor_frec_hz',
+        'directomasa',
+        'bajoalistamiento',
+        'mayorcienm',
         'er_aisl_m',
         'er_nro_salidas',
         'er_conexion',
         'er_volt_v',
         'er_amp_a',
         'er_nro_polos',
+        
     ];
 
     protected $dates = [

@@ -328,6 +328,19 @@ $status_last = $ot_status->last();
                 <label class="c-label">Frec.(HZ):</label>
                 <p class="mb-1">{{$formato->motor_frec_hz ?? '-'}}</p>
               </div>
+
+              <div class="col-sm-6 col-md-4 mb-2">
+                <label class="c-label">Bajo de alistamiento:</label>
+                <p class="mb-1">{{$formato->bajo_alistamiento ?? '-'}}</p>
+              </div>
+              <div class="col-sm-6 col-md-4 mb-2">
+                <label class="c-label">Directo a masa:</label>
+                <p class="mb-1">{{$formato->directo_masa ?? '-'}}</p>
+              </div>
+              <div class="col-sm-6 col-md-4 mb-2">
+                <label class="c-label">Mayor 100mΩ:</label>
+                <p class="mb-1">{{$formato->mayor_cienm ?? '-'}}</p>
+              </div>
             </div>
           </div>
           <div class="col-md-6">

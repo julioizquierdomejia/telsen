@@ -384,6 +384,19 @@
                   <label class="col-form-label">Frec.(HZ):</label>
                   <input type="text" class="form-control @error('testin_motor_frec_hz') is-invalid @enderror" placeholder="Frec.(HZ)" value="{{old('testin_motor_frec_hz')}}" name="testin_motor_frec_hz">
                 </div>
+
+                <div class="col-sm-6 col-md-12 mb-2">
+                  <label class="col-form-label">Directo a masa:</label>
+                  <input type="text" class="form-control @error('testin_directo_masa') is-invalid @enderror" placeholder="Amp(A)" value="{{old('testin_directo_masa')}}" name="testin_directo_masa">
+                </div>
+                <div class="col-sm-6 col-md-12 mb-2">
+                  <label class="col-form-label">Bajo de aislamiento:</label>
+                  <input type="text" class="form-control @error('testin_bajo_alistamiento') is-invalid @enderror" placeholder="RPM" value="{{old('testin_bajo_alistamiento')}}" name="testin_bajo_alistamiento">
+                </div>
+                <div class="col-sm-6 col-md-12 mb-2">
+                  <label class="col-form-label">Mayor a 100mΩ:</label>
+                  <input type="text" class="form-control @error('testin_mayor_cienm') is-invalid @enderror" placeholder="Frec.(HZ)" value="{{old('testin_mayor_cienm')}}" name="testin_mayor_cienm">
+                </div>
               </div>
             </div>
             <div class="col-md-6">

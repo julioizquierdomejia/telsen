@@ -34,6 +34,8 @@ class ElectricalEvaluation extends Model
         'ef',
         'cod',
         'diseno_nema',
+        'ip',
+        'peso',
     ];
 
     protected $dates = [

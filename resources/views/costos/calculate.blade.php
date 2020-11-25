@@ -99,7 +99,7 @@
             </div>
           </div>
           <div class="row">
-          	<div class="col-md-6">
+          	{{-- <div class="col-md-6">
               <div class="form-group">
                 <label class="col-form-label">Area</label>
                 <select name="area_id" class="form-control @error('area_id') is-invalid @enderror dropdown2" id="selectArea">
@@ -109,10 +109,7 @@
                 @endforeach
               </select>
               </div>
-          			@error('name')
-          				<p class="error-message text-danger">{{ $message }}</p>
-          			@enderror
-            </div>
+            </div> --}}
             <div class="col-md-3 ml-md-auto form-group">
               <label class="col-form-label">Estado</label>
               <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
@@ -121,7 +118,7 @@
               </select>
             </div>
 
-            <div class="col-md-12">
+            {{-- <div class="col-md-12">
               <table class="table table-separate table-bordered table-numbering mb-0" id="table-tap">
                 <thead class="text-center">
                      <tr>
@@ -199,7 +196,7 @@
            <div class="text-danger text-center p-1 bg-light my-2">
              <span>DEFLEXION: 0.04 mm</span>
            </div>
-            </div>
+            </div> 
             <div class="col-md-5 col-xl-4">
               <table class="table table-costs">
                 <tbody>
@@ -255,7 +252,7 @@
                   </tr>
                 </tbody>
               </table>
-            </div>
+            </div> --}}
           </div>
 
           <div class="row">

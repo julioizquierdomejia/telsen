@@ -247,15 +247,15 @@ array (
               </div>
             </div>
             <div class="col-6 col-sm-6 col-lg-6 mb-2">
-              <label class="col-form-label">Eje zona acople Pto 1</label>
-              <input type="text" class="form-control @error('rotor_eje_zona_acople_p1') is-invalid @enderror" placeholder="Eje zona acople Pto 1" value="{{old('rotor_eje_zona_acople_p1')}}" name="rotor_eje_zona_acople_p1">
+              <label class="col-form-label">Eje zona acople Ø</label>
+              <input type="text" class="form-control @error('rotor_eje_zona_acople_p1') is-invalid @enderror" placeholder="Eje zona acople Ø" value="{{old('rotor_eje_zona_acople_p1')}}" name="rotor_eje_zona_acople_p1">
               @error('rotor_eje_zona_acople_p1')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="col-6 col-sm-6 col-lg-6 mb-2">
               <label class="col-form-label">Asiento de Ventilador Ø:</label>
-              <input type="text" class="form-control @error('rotor_eje_zona_acople_p2') is-invalid @enderror" placeholder="Asiento de Ventilador 2" value="{{old('rotor_eje_zona_acople_p2')}}" name="rotor_eje_zona_acople_p2">
+              <input type="text" class="form-control @error('rotor_eje_zona_acople_p2') is-invalid @enderror" placeholder="Asiento de Ventilador Ø" value="{{old('rotor_eje_zona_acople_p2')}}" name="rotor_eje_zona_acople_p2">
               @error('rotor_eje_zona_acople_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -304,15 +304,15 @@ array (
             <div class="col-12 col-md-6">
               <div class="row">
                 <div class="col-12 mb-2">
-                  <label class="col-form-label">Alojamiento rodaje tapa Pto 10</label>
-                  <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p10') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p10" value="{{old('estator_alojamiento_rodaje_tapa_p10')}}" name="estator_alojamiento_rodaje_tapa_p10">
+                  <label class="col-form-label">Alojamiento rodaje tapa Pto 1Ø</label>
+                  <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p10') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p1Ø" value="{{old('estator_alojamiento_rodaje_tapa_p10')}}" name="estator_alojamiento_rodaje_tapa_p10">
                   @error('estator_alojamiento_rodaje_tapa_p10')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
                 <div class="col-12 mb-2">
-                  <label class="col-form-label">Alojamiento rodaje tapa Pto 20</label>
-                  <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p20') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p20" value="{{old('estator_alojamiento_rodaje_tapa_p20')}}" name="estator_alojamiento_rodaje_tapa_p20">
+                  <label class="col-form-label">Alojamiento rodaje tapa Pto 2Ø</label>
+                  <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p20') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p2Ø" value="{{old('estator_alojamiento_rodaje_tapa_p20')}}" name="estator_alojamiento_rodaje_tapa_p20">
                   @error('estator_alojamiento_rodaje_tapa_p20')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
@@ -350,9 +350,9 @@ array (
                   @enderror
                 </div>
                 <div class="col-12 mb-2">
-                  <label class="col-form-label">Contra tapa interna Pto 2</label>
-                  <input type="text" class="form-control @error('estator_contra_tapa_interna_p2') is-invalid @enderror" placeholder="Contra tapa interna Pto 2" value="{{old('estator_contra_tapa_interna_p2')}}" name="estator_contra_tapa_interna_p2">
-                  @error('estator_contra_tapa_interna_p2')
+                  <label class="col-form-label">Contra tapa externa Pto 1</label>
+                  <input type="text" class="form-control @error('estator_contra_tapa_externa_p1') is-invalid @enderror" placeholder="Contra tapa externa Pto 1" value="{{old('estator_contra_tapa_externa_p1')}}" name="estator_contra_tapa_externa_p1">
+                  @error('estator_contra_tapa_externa_p1')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
@@ -361,16 +361,16 @@ array (
             <div class="col-6 col-sm-6 mb-2">
               <div class="row">
                 <div class="col-12 mb-2">
-                  <label class="col-form-label">Contra tapa externa Pto 1</label>
-                  <input type="text" class="form-control @error('estator_contra_tapa_externa_p1') is-invalid @enderror" placeholder="Contra tapa externa Pto 1" value="{{old('estator_contra_tapa_externa_p1')}}" name="estator_contra_tapa_externa_p1">
-                  @error('estator_contra_tapa_externa_p1')
+                  <label class="col-form-label">Contra tapa externa Pto 2</label>
+                  <input type="text" class="form-control @error('estator_contra_tapa_externa_p2') is-invalid @enderror" placeholder="Contra tapa externa Pto 2" value="{{old('estator_contra_tapa_externa_p2')}}" name="estator_contra_tapa_externa_p2">
+                  @error('estator_contra_tapa_externa_p2')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
                 <div class="col-12 mb-2">
-                  <label class="col-form-label">Contra tapa externa Pto 2</label>
-                  <input type="text" class="form-control @error('estator_contra_tapa_externa_p2') is-invalid @enderror" placeholder="Contra tapa externa Pto 2" value="{{old('estator_contra_tapa_externa_p2')}}" name="estator_contra_tapa_externa_p2">
-                  @error('estator_contra_tapa_externa_p2')
+                  <label class="col-form-label">Contra tapa interna Pto 2</label>
+                  <input type="text" class="form-control @error('estator_contra_tapa_interna_p2') is-invalid @enderror" placeholder="Contra tapa interna Pto 2" value="{{old('estator_contra_tapa_interna_p2')}}" name="estator_contra_tapa_interna_p2">
+                  @error('estator_contra_tapa_interna_p2')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>

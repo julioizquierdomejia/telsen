@@ -421,7 +421,7 @@ class MechanicalEvaluationController extends Controller
 
             'observaciones' => 'string|nullable',
 
-            'works' => 'string|nullable'
+            'works' => 'array|nullable'
         );
 
         $validator = $this->validate($request, $rules);
@@ -500,9 +500,24 @@ class MechanicalEvaluationController extends Controller
 
         $meval->observaciones = $request->input('observaciones');
 
-        $meval->works = $request->input('works');
-
         $meval->save();
+
+        $works = $request->input('works');
+        $services = [];
+        $date = \Carbon\Carbon::now()->toDateTimeString();
+        foreach ($works as $key => $item) {
+            $services[$key]['me_id'] = $meval->id;
+            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+
+            $services[$key]['created_at'] = $date;
+            $services[$key]['updated_at'] = $date;
+        }
+
+        MechanicalEvaluationWork::insert($services);
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');

@@ -91,6 +91,8 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->string('bornera')->nullable();
             $table->string('funda')->nullable();
             $table->string('chaveta')->nullable();
+            $table->string('cancamo')->nullable();
+            $table->string('base')->nullable();
 
             $table->boolean('placa_caract_orig_has')->default(0);
             $table->boolean('escudos_has')->default(0);
@@ -101,6 +103,8 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->boolean('bornera_has')->default(0);
             $table->boolean('funda_has')->default(0);
             $table->boolean('chaveta_has')->default(0);
+            $table->boolean('cancamo_has')->default(0);
+            $table->boolean('base_has')->default(0);
 
             $table->string('otros')->nullable();
             $table->string('detalles')->nullable();

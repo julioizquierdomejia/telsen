@@ -1,5 +1,53 @@
 @extends('layouts.app', ['title' => 'Evaluación Eléctrica'])
 @section('content')
+@php
+  $reception_list = [
+    array (
+      'name' => 'Placa Caract Orig',
+      'alias' => 'placa_caract_orig',
+    ),
+    array (
+      'name' => 'Escudos',
+      'alias' => 'escudos',
+    ),
+    array (
+      'name' => 'Ventilador',
+      'alias' => 'ventilador',
+    ),
+    array (
+      'name' => 'Caja de Conexión',
+      'alias' => 'caja_conexion'
+    ),
+    array (
+      'name' => 'Ejes',
+      'alias' => 'ejes',
+    ),
+    array (
+      'name' => 'Acople',
+      'alias' => 'acople',
+    ),
+    array (
+      'name' => 'Bornera',
+      'alias' => 'bornera',
+    ),
+    array (
+      'name' => 'Fundas',
+      'alias' => 'fundas',
+    ),
+    array (
+      'name' => 'Chaveta',
+      'alias' => 'chaveta',
+    ),
+    array (
+      'name' => 'Cancamo',
+      'alias' => 'cancamo',
+    ),
+    array (
+      'name' => 'Base',
+      'alias' => 'base',
+    )
+  ];
+@endphp
 <div class="row">
   <div class="col-md-12">
     <form class="form-group" method="POST" action="{{route('formatos.electrical.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
@@ -259,168 +307,35 @@
         </div>
         <div class="card-body pb-3">
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Placa caract. Orig:</label>
-              <div class="d-flex">
-              <ul class="form-check-list list-inline mb-0 col-7 @error('rec_placa_caract_orig_has') is-invalid @enderror">
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="1" name="rec_placa_caract_orig_has" {{old('rec_placa_caract_orig_has') == "1" ? 'checked' : ''}}><span class="align-middle">Sí</span>
-                  </label>
-                </li>
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="0" name="rec_placa_caract_orig_has" {{old('rec_placa_caract_orig_has') == "0" ? 'checked' : ''}}><span class="align-middle">No</span>
-                  </label>
-                </li>
-              </ul>
-              <input type="text" class="form-control col-5 @error('rec_placa_caract_orig') is-invalid @enderror" placeholder="Placa caract. Orig" value="{{old('rec_placa_caract_orig')}}" name="rec_placa_caract_orig">
+            @foreach($reception_list as $r_key => $item)
+            <div class="col-6 col-md-4 col-lg-4 mb-2">
+              <div class="row align-items-center">
+                <div class="col-12 col-md-7">
+                  <div class="row">
+                    <label class="col-label mb-0 col-7 col-md-12">{{$item['name']}}</label>
+                    <ul class="form-check-list list-inline mb-0 col-5 col-md-12 @error('rec_'.$item['alias']) is-invalid @enderror">
+                      <li class="form-check-inline mx-0">
+                        <label class="form-check-label mb-0">
+                          <input type="radio" class="form-check-input mr-0 align-middle" value="1" name="rec_{{$item['alias']}}_has" {{old('rec_'.$item['alias'].'_has') == "1" ? 'checked' : ''}} id="ec{{$r_key}}0"><span class="align-middle"> Sí</span>
+                        </label>
+                      </li>
+                      <li class="form-check-inline mx-0 mx-1">
+                        <label class="form-check-label mb-0">
+                          <input type="radio" class="form-check-input mr-0 align-middle" value="0" name="rec_{{$item['alias']}}_has" {{old('rec_'.$item['alias'].'_has') == "0" ? 'checked' : ''}} id="ec{{$r_key}}1"><span class="align-middle"> No</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-12 col-md-5">
+                  <input type="text" class="form-control mt-0 @error('rec_'.$item['alias']) is-invalid @enderror" placeholder="{{$item['name']}}" value="{{old('rec_'.$item['alias'])}}" name="rec_{{$item['alias']}}">
+                </div>
               </div>
+              @error('rec_'.$item['alias'])
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
             </div>
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Escudos:</label>
-              <div class="d-flex">
-              <ul class="form-check-list list-inline mb-0 col-7 @error('rec_escudos_has') is-invalid @enderror">
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="1" {{old('rec_escudos_has') == "1" ? 'checked' : ''}} name="rec_escudos_has"><span class="align-middle">Sí</span>
-                  </label>
-                </li>
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="0" {{old('rec_escudos_has') == "0" ? 'checked' : ''}} name="rec_escudos_has"><span class="align-middle">No</span>
-                  </label>
-                </li>
-              </ul>
-              <input type="text" class="form-control @error('rec_escudos') is-invalid @enderror" placeholder="Escudos" value="{{old('rec_escudos')}}" name="rec_escudos">
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Ventilador:</label>
-              <div class="d-flex">
-              <ul class="form-check-list list-inline mb-0 col-7 @error('rec_ventilador_has') is-invalid @enderror">
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="1" {{old('rec_ventilador_has') == "1" ? 'checked' : ''}} name="rec_ventilador_has"><span class="align-middle">Sí</span>
-                  </label>
-                </li>
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="0" {{old('rec_ventilador_has') == "0" ? 'checked' : ''}} name="rec_ventilador_has"><span class="align-middle">No</span>
-                  </label>
-                </li>
-              </ul>
-              <input type="text" class="form-control @error('rec_ventilador') is-invalid @enderror" placeholder="Ventilador" value="{{old('rec_ventilador')}}" name="rec_ventilador">
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Caja de Conexión:</label>
-              <div class="d-flex">
-              <ul class="form-check-list list-inline mb-0 col-7 @error('rec_caja_conexion_has') is-invalid @enderror">
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="1" {{old('rec_caja_conexion_has') == "1" ? 'checked' : ''}} name="rec_caja_conexion_has"><span class="align-middle">Sí</span>
-                  </label>
-                </li>
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="0" {{old('rec_caja_conexion_has') == "0" ? 'checked' : ''}} name="rec_caja_conexion_has"><span class="align-middle">No</span>
-                  </label>
-                </li>
-              </ul>
-              <input type="text" class="form-control @error('rec_caja_conexion') is-invalid @enderror" placeholder="Caja de Conexión" value="{{old('rec_caja_conexion')}}" name="rec_caja_conexion">
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Ejes:</label>
-              <div class="d-flex">
-              <ul class="form-check-list list-inline mb-0 col-7 @error('rec_ejes_has') is-invalid @enderror">
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="1" {{old('rec_ejes_has') == "1" ? 'checked' : ''}} name="rec_ejes_has"><span class="align-middle">Sí</span>
-                  </label>
-                </li>
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="0" {{old('rec_ejes_has') == "0" ? 'checked' : ''}} name="rec_ejes_has"><span class="align-middle">No</span>
-                  </label>
-                </li>
-              </ul>
-              <input type="text" class="form-control @error('rec_ejes') is-invalid @enderror" placeholder="Ejes" value="{{old('rec_ejes')}}" name="rec_ejes">
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Acople:</label>
-              <div class="d-flex">
-              <ul class="form-check-list list-inline mb-0 col-7 @error('rec_acople_has') is-invalid @enderror">
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="1" {{old('rec_acople_has') == "1" ? 'checked' : ''}} name="rec_acople_has"><span class="align-middle">Sí</span>
-                  </label>
-                </li>
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="0" {{old('rec_acople_has') == "0" ? 'checked' : ''}} name="rec_acople_has"><span class="align-middle">No</span>
-                  </label>
-                </li>
-              </ul>
-              <input type="text" class="form-control @error('rec_acople') is-invalid @enderror" placeholder="Acople" value="{{old('rec_acople')}}" name="rec_acople">
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Bornera:</label>
-              <div class="d-flex">
-              <ul class="form-check-list list-inline mb-0 col-7 @error('rec_bornera_has') is-invalid @enderror">
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="1" {{old('rec_bornera_has') == "1" ? 'checked' : ''}} name="rec_bornera_has"><span class="align-middle">Sí</span>
-                  </label>
-                </li>
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="0" {{old('rec_bornera_has') == "0" ? 'checked' : ''}} name="rec_bornera_has"><span class="align-middle">No</span>
-                  </label>
-                </li>
-              </ul>
-              <input type="text" class="form-control @error('rec_bornera') is-invalid @enderror" placeholder="Bornera" value="{{old('rec_bornera')}}" name="rec_bornera">
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Funda:</label>
-              <div class="d-flex">
-              <ul class="form-check-list list-inline mb-0 col-7 @error('rec_funda_has') is-invalid @enderror">
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="1" {{old('rec_funda_has') == "1" ? 'checked' : ''}} name="rec_funda_has"><span class="align-middle">Sí</span>
-                  </label>
-                </li>
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="0" {{old('rec_funda_has') == "0" ? 'checked' : ''}} name="rec_funda_has"><span class="align-middle">No</span>
-                  </label>
-                </li>
-              </ul>
-              <input type="text" class="form-control @error('rec_funda') is-invalid @enderror" placeholder="Funda" value="{{old('rec_funda')}}" name="rec_funda">
-              </div>
-            </div>
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Chaveta:</label>
-              <div class="d-flex">
-              <ul class="form-check-list list-inline mb-0 col-7 @error('rec_chaveta_has') is-invalid @enderror">
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="1" {{old('rec_chaveta_has') == "1" ? 'checked' : ''}} name="rec_chaveta_has"><span class="align-middle">Sí</span>
-                  </label>
-                </li>
-                <li class="form-check-inline">
-                  <label class="form-check-label">
-                    <input type="radio" class="form-check-input align-middle" value="0" {{old('rec_chaveta_has') == "0" ? 'checked' : ''}} name="rec_chaveta_has"><span class="align-middle">No</span>
-                  </label>
-                </li>
-              </ul>
-              <input type="text" class="form-control @error('rec_chaveta') is-invalid @enderror" placeholder="Chaveta" value="{{old('rec_chaveta')}}" name="rec_chaveta">
-              </div>
-            </div>
+            @endforeach
             <div class="col-12 form-group">
               <label class="col-form-label">Otros:</label>
               <input type="text" class="form-control @error('rec_otros') is-invalid @enderror" placeholder="Otros" value="{{old('rec_otros')}}" name="rec_otros">

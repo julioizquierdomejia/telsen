@@ -154,6 +154,14 @@ $status_last = $ot_status->last();
             <label class="c-label">Diseño NEMA:</label>
             <p class="mb-1">{{$formato->diseno_nema ?? '-'}}</p>
           </div>
+          <div class="col-12 col-sm-6 col-md-3 mb-2">
+            <label class="c-label">IP:</label>
+            <p class="mb-1">{{$formato->ip ?? '-'}}</p>
+          </div>
+          <div class="col-12 col-sm-6 col-md-3 mb-2">
+            <label class="c-label">Peso:</label>
+            <p class="mb-1">{{$formato->peso ?? '-'}}</p>
+          </div>
         </div>
       </div>
     </div>

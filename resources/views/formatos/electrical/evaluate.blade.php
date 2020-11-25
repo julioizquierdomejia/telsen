@@ -174,59 +174,63 @@
         </div>
         <div class="card-body pb-3">
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Marca:</label>
               <input type="text" class="form-control @error('char_marca') is-invalid @enderror" placeholder="Marca" value="{{old('char_marca')}}" name="char_marca">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Potencia:</label>
               <input type="text" class="form-control @error('char_potencia') is-invalid @enderror" placeholder="Potencia" value="{{old('char_potencia')}}" name="char_potencia">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Escudos:</label>
               <input type="text" class="form-control @error('char_escudos') is-invalid @enderror" placeholder="Escudos" value="{{old('char_escudos')}}" name="char_escudos">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Mod</label>
               <input type="text" class="form-control @error('char_mod') is-invalid @enderror" placeholder="Mod" value="{{old('char_mod')}}" name="char_mod">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Voltaje:</label>
               <input type="text" class="form-control @error('char_voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('char_voltaje')}}" name="char_voltaje">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Ejes</label>
               <input type="text" class="form-control @error('char_ejes') is-invalid @enderror" placeholder="Ejes" value="{{old('char_ejes')}}" name="char_ejes">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
+              <label class="col-form-label">N°:</label>
+              <input type="text" class="form-control @error('char_nro') is-invalid @enderror" placeholder="Amperaje" value="{{old('char_nro')}}" name="char_nro">
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Amperaje:</label>
               <input type="text" class="form-control @error('char_amperaje') is-invalid @enderror" placeholder="Amperaje" value="{{old('char_amperaje')}}" name="char_amperaje">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Funda:</label>
               <input type="text" class="form-control @error('char_funda') is-invalid @enderror" placeholder="Funda" value="{{old('char_funda')}}" name="char_funda">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Frame:</label>
               <input type="text" class="form-control @error('char_frame') is-invalid @enderror" placeholder="Frame" value="{{old('char_frame')}}" name="char_frame">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Velocidad:</label>
               <input type="text" class="form-control @error('char_velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('char_velocidad')}}" name="char_velocidad">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Acople:</label>
               <input type="text" class="form-control @error('char_acople') is-invalid @enderror" placeholder="Acople" value="{{old('char_acople')}}" name="char_acople">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">F.S:</label>
               <input type="text" class="form-control @error('char_fs') is-invalid @enderror" placeholder="F.S" value="{{old('char_fs')}}" name="char_fs">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">Encl:</label>
               <input type="text" class="form-control @error('char_encl') is-invalid @enderror" placeholder="Encl" value="{{old('char_encl')}}" name="char_encl">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">Peso:</label>
               <input type="text" class="form-control @error('char_peso') is-invalid @enderror" placeholder="Peso" value="{{old('char_peso')}}" name="char_peso">
             </div>

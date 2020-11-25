@@ -364,7 +364,7 @@ img {
 	}
 	input {
 		&.form-control {
-			&:placeholder-shown {
+			&:placeholder-shown:not(:focus) {
 				border-color: #ced4da;
 			}
 			&:not(:placeholder-shown) {

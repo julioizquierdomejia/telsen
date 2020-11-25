@@ -30551,15 +30551,15 @@ img {
   border-color: #e3342f;
 }
 
-.form-card input.form-control:-moz-placeholder-shown {
+.form-card input.form-control:-moz-placeholder-shown:not(:focus) {
   border-color: #ced4da;
 }
 
-.form-card input.form-control:-ms-input-placeholder {
+.form-card input.form-control:-ms-input-placeholder:not(:focus) {
   border-color: #ced4da;
 }
 
-.form-card input.form-control:placeholder-shown {
+.form-card input.form-control:placeholder-shown:not(:focus) {
   border-color: #ced4da;
 }
 

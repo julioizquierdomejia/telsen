@@ -218,7 +218,7 @@ array (
                   <select class="dropdown2 form-control" name="rotor_cod_rodaje_p1" style="width: 100%">
                       <option value="">Seleccionar código</option>
                       @foreach($cod_rodaje_p1 as $item)
-                      <option value="{{$item->id}}" data-asiento="{{$item->asiento_rodaje}}" data-alojamiento="{{$item->alojamiento_rodaje}}" {{ old('rotor_cod_rodaje_p2', $item['item']) == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
+                      <option value="{{$item->id}}" data-asiento="{{$item->asiento_rodaje}}" data-alojamiento="{{$item->alojamiento_rodaje}}" {{ old('rotor_cod_rodaje_p1', $item['item']) == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
                       @endforeach
                     </select>
                   @error('rotor_cod_rodaje_p1')
@@ -324,7 +324,7 @@ array (
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 col-md-6"><span class="form-control mt-2 tapa-pto1">Ø</span></div>
+                <div class="col-12 col-md-6"><span class="form-control mt-2 alojamiento-tapa-pto1">Ø</span></div>
                 <div class="col-12 col-md-6 mb-2">
                   <label class="col-form-label">Alojamiento rodaje tapa Pto 2Ø</label>
                   <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p20') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p2Ø" value="{{old('estator_alojamiento_rodaje_tapa_p20')}}" name="estator_alojamiento_rodaje_tapa_p20">
@@ -332,7 +332,7 @@ array (
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 col-md-6"><span class="form-control mt-2 tapa-pto2">Ø</span></div>
+                <div class="col-12 col-md-6"><span class="form-control mt-2 alojamiento-tapa-pto2">Ø</span></div>
               </div>
             </div>
             <div class="col-12 col-md-6">
@@ -641,6 +641,24 @@ $('.btn-no').click(function () {
 })
 
 $('.select-area').trigger('change');
+
+$('[name=rotor_cod_rodaje_p1]').change(function () {
+  var $this = $(this), asiento = $this.find('option:selected').data('asiento'), alojamiento = $this.find('option:selected').data('alojamiento');
+
+  $('[name=rotor_asiento_rodaje_p1]').val(asiento ? asiento : '');
+  $('.asiento-rodaje-pto1').text(asiento ? asiento : 'Ø');
+  $('[name=estator_alojamiento_rodaje_tapa_p10]').val(alojamiento ? asiento : '');
+  $('.alojamiento-tapa-pto1').text(alojamiento ? asiento : '');
+})
+
+$('[name=rotor_cod_rodaje_p2]').change(function () {
+  var $this = $(this), asiento = $this.find('option:selected').data('asiento'), alojamiento = $this.find('option:selected').data('alojamiento');
+
+  $('[name=rotor_asiento_rodaje_p2]').val(asiento ? asiento : '');
+  $('.asiento-rodaje-pto2').text(asiento ? asiento : 'Ø');
+  $('[name=estator_alojamiento_rodaje_tapa_p20]').val(alojamiento ? asiento : '');
+  $('.alojamiento-tapa-pto2').text(alojamiento ? asiento : '');
+})
 })
 </script>
 @endsection

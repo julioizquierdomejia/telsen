@@ -850,7 +850,7 @@ var row = `<tr>
       <input type="text" class="form-control" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
     </td>
     <td width="100">
-      <input type="text" class="form-control" placeholder="Personal" value="" name="works[0][personal]">
+      <input type="text" class="form-control" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
     </td>
   </tr>`;
 $('#table-works tbody').append(row);

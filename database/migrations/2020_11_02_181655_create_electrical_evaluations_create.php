@@ -43,6 +43,8 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->string('ef')->nullable();
             $table->string('cod')->nullable();
             $table->string('diseno_nema')->nullable();
+            $table->string('ip')->nullable();
+            $table->string('peso')->nullable();
 
             $table->timestamps();
         });

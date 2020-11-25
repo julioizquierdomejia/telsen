@@ -165,6 +165,14 @@
               <label class="col-form-label">Diseño NEMA:</label>
               <input type="text" class="form-control @error('diseno_nema') is-invalid @enderror" placeholder="Diseño NEMA" value="{{old('diseno_nema')}}" name="diseno_nema">
             </div>
+            <div class="col-12 col-sm-6 col-md-3 form-group">
+              <label class="col-form-label">IP:</label>
+              <input type="text" class="form-control @error('ip') is-invalid @enderror" placeholder="IP" value="{{old('ip')}}" name="ip">
+            </div>
+            <div class="col-12 col-sm-6 col-md-3 form-group">
+              <label class="col-form-label">Peso:</label>
+              <input type="text" class="form-control @error('peso') is-invalid @enderror" placeholder="Peso" value="{{old('peso')}}" name="peso">
+            </div>
           </div>
         </div>
       </div>

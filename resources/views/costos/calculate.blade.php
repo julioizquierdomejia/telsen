@@ -341,21 +341,12 @@
                 </tr>
                 @endif
               </tbody>
-              <tfoot class="buttons">
-              <tr>
-                <td class="p-0" colspan="7">
-                  <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
-                  <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
-                  <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
-                </td>
-              </tr>
-              </tfoot>
             </table>
           </div>
           </div>
           <h4>Otros</h4>
           <div class="table-responsive">
-            <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-el">
+            <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
               <thead>
                 <tr>
                   <th class="text-center py-1" colspan="7">Trabajos</th>
@@ -371,8 +362,8 @@
                 </tr>
               </thead>
               <tbody>
-                @if($otros_works = old('otros_works'))
-                @foreach($otros_works as $key => $item)
+                @if($works = old('works'))
+                @foreach($works as $key => $item)
                 <tr>
                   <td class="cell-counter"><span class="number"></span></td>
                   <td>
@@ -407,12 +398,31 @@
                 @else
                 <tr>
                   <td class="cell-counter"><span class="number"></span></td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
+                    <td>
+                      <select class="dropdown2 form-control select-area" name="works[0][area]" style="width: 100%">
+                        <option value="">Seleccionar area</option>
+                        @foreach($areas as $area)
+                        <option value="{{$area->id}}">{{$area->name}}</option>
+                        @endforeach
+                      </select>
+                    </td>
+                    <td>
+                      <select class="dropdown2 form-control select-service" name="works[0][service_id]" style="width: 100%"  disabled="">
+                        <option value="">Seleccionar servicio</option>
+                      </select>
+                    </td>
+                    <td width="120">
+                      <input type="text" class="form-control mt-0 @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control mt-0 @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control mt-0 @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control mt-0 @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
+                    </td>
                 </tr>
                 @endif
               </tbody>
@@ -564,5 +574,125 @@
     getServicesSum();
 
   })
+
+$(document).ready(function() {
+  /*function createJSON() {
+    var json = '{';
+    var otArr = [];
+    var tbl2 = $('#table-tap tbody tr').each(function(i) {
+      x = $(this).children();
+      var itArr = [];
+      x.each(function() {
+        var el = $(this).find('.form-control');
+        if (el.length) {
+          itArr.push('"' + el.attr('name') + '":"' + el.val() + '"');
+        }
+      });
+      otArr.push('"' + i + '": {' + itArr.join(',') + '}');
+    })
+    json += otArr.join(",") + '}'
+    $('input[name=tran_tap]').val(json);
+    return json;
+  }
+  $(document).on('keyup', '#table-tap .form-control', function() {
+    createJSON();
+  })*/
+
+  $(document).on('change', '.select-area', function () {
+  var $this = $(this), area = $this.val();
+  var service = $(this).parents('tr').find('.select-service');
+  if($(this).val().length) {
+    $.ajax({
+          type: "GET",
+          url: "/servicios/filterareas",
+          data: {id: area, _token:'{{csrf_token()}}'},
+          beforeSend: function() {
+            service.attr('disabled', true);
+          },
+          success: function (response) {
+            service.attr('disabled', false).focus();
+            service.find('option').remove();
+            if (response.success) {
+              var services = $.parseJSON(response.data), s_length = services.length;
+              if (services.length) {
+                $.each(services, function (id, item) {
+                  service.append('<option value="'+id+'">'+item.name+'</option>');
+                })
+              }
+              if(service.data('value')) {
+                service.find('option[value='+service.data('value')+']').prop('selected', true);
+              }
+            }
+          },
+          error: function (request, status, error) {
+            
+          }
+      });
+
+
+  } else {
+    service.attr('disabled', true);
+  }
+})
+  
+  $(document).on('click', '.card .btn-clear', function() {
+    $('#table-works .form-control').val('');
+  })
+
+  $('.btn-add-row').click(function () {
+  var row_index = $('#table-works tbody tr').length;
+var row = `<tr>
+    <td class="cell-counter"><span class="number"></span></td>
+    <td>
+      <select class="dropdown2 form-control select-area" name="works[`+row_index+`][area]" style="width: 100%">
+        <option value="">Seleccionar area</option>
+        @foreach($areas as $area)
+        <option value="{{$area->id}}">{{$area->name}}</option>
+        @endforeach
+      </select>
+    </td>
+    <td>
+      <select class="dropdown2 form-control select-service" name="works[`+row_index+`][service_id]" style="width: 100%"  disabled="">
+        <option value="">Seleccionar servicio</option>
+      </select>
+    </td>
+    <td width="120">
+      <input type="text" class="form-control mt-0" placeholder="Descripción" value="" name="works[`+row_index+`][description]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control mt-0" placeholder="Medida" value="" name="works[`+row_index+`][medidas]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control mt-0" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control mt-0" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
+    </td>
+  </tr>`;
+$('#table-works tbody').append(row);
+$('#table-works .dropdown2').select2();
+//createJSON();
+})
+  $('.btn-remove-tap-row').click(function() {
+    var row_index = $('#table-works tbody tr').length;
+    if (row_index > 1) {
+      $('#table-works tbody tr:nth-child(' + row_index + ')').remove();
+    }
+    //createJSON();
+  })
+  $('.btn-remove-row').click(function() {
+    var row_index = $('#table-works tbody tr').length;
+    if (row_index > 1) {
+      $('#table-works tbody tr:nth-child(' + row_index + ')').remove();
+    }
+  })
+
+  $('.btn-yes').click(function () {
+    $('input[type="radio"][value="1"]').prop('checked', true);
+  })
+  $('.btn-no').click(function () {
+    $('input[type="radio"][value="0"]').prop('checked', true);
+  })
+})
 </script>
 @endsection

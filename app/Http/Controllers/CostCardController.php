@@ -165,11 +165,12 @@ class CostCardController extends Controller
             //'ot_id'       => 'integer|required|exists:ots,id',
             'hecho_por'      => 'string|required',
             'enabled'      => 'boolean|required',
-            'cost'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
+            /*'cost'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'cost_m1'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'cost_m2'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
-            'cost_m3'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
-            'cost_card_services'      => 'string|required',
+            'cost_m3'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',*/
+            //'cost_card_services'      => 'string|required',
+            'works'         => 'array|nullable'
         );
         $this->validate($request, $rules);
 
@@ -187,7 +188,7 @@ class CostCardController extends Controller
         $cost->enabled = $request->input('enabled');
         $cost->save();
 
-        $services_array = [];
+        /*$services_array = [];
         for ($i=0; $i < $services_count; $i++) { 
             $services_array[] = [
                 'cost_card_id' => $cost->id,
@@ -199,7 +200,23 @@ class CostCardController extends Controller
                 'subtotal' => $services[$i]['subtotal'],
             ];
         }
-        CostCardService::insert($services_array);
+        CostCardService::insert($services_array);*/
+        $works = $request->input('works');
+        $services = [];
+        $date = \Carbon\Carbon::now()->toDateTimeString();
+        foreach ($works as $key => $item) {
+            $services[$key]['me_id'] = $eleval->id;
+            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+
+            $services[$key]['created_at'] = $date;
+            $services[$key]['updated_at'] = $date;
+        }
+
+        ElectricalEvaluationWork::insert($services);
 
         $status = Status::where('id', 4)->first();
         if ($status) {

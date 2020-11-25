@@ -219,13 +219,14 @@ array (
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 col-md-6 mb-2">
+                <div class="col-12 col-md-3 mb-2">
                   <label class="col-form-label">Asiento rodaje Pto 1 Ø</label>
                   <input type="text" class="form-control @error('rotor_asiento_rodaje_p1') is-invalid @enderror" placeholder="Asiento rodaje p1" value="{{old('rotor_asiento_rodaje_p1')}}" name="rotor_asiento_rodaje_p1">
                   @error('rotor_asiento_rodaje_p1')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
+                <div class="col-12 col-md-3"><span class="form-control mt-2">Ø</span></div>
               </div>
             </div>
             <div class="col-12">
@@ -237,13 +238,14 @@ array (
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 col-md-6 mb-2">
+                <div class="col-12 col-md-3 mb-2">
                   <label class="col-form-label">Asiento rodaje Pto 2 Ø</label>
                   <input type="text" class="form-control @error('rotor_asiento_rodaje_p2') is-invalid @enderror" placeholder="Asiento rodaje Pto 2" value="{{old('rotor_asiento_rodaje_p2')}}" name="rotor_asiento_rodaje_p2">
                   @error('rotor_asiento_rodaje_p2')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
+                <div class="col-12 col-md-3"><span class="form-control mt-2">Ø</span></div>
               </div>
             </div>
             <div class="col-6 col-sm-6 col-lg-6 mb-2">
@@ -303,20 +305,22 @@ array (
           <div class="row">
             <div class="col-12 col-md-6">
               <div class="row">
-                <div class="col-12 mb-2">
+                <div class="col-12 col-md-6 mb-2">
                   <label class="col-form-label">Alojamiento rodaje tapa Pto 1Ø</label>
                   <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p10') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p1Ø" value="{{old('estator_alojamiento_rodaje_tapa_p10')}}" name="estator_alojamiento_rodaje_tapa_p10">
                   @error('estator_alojamiento_rodaje_tapa_p10')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 mb-2">
+                <div class="col-12 col-md-6"><span class="form-control mt-2">Ø</span></div>
+                <div class="col-12 col-md-6 mb-2">
                   <label class="col-form-label">Alojamiento rodaje tapa Pto 2Ø</label>
                   <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p20') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p2Ø" value="{{old('estator_alojamiento_rodaje_tapa_p20')}}" name="estator_alojamiento_rodaje_tapa_p20">
                   @error('estator_alojamiento_rodaje_tapa_p20')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
+                <div class="col-12 col-md-6"><span class="form-control mt-2">Ø</span></div>
               </div>
             </div>
             <div class="col-12 col-md-6">

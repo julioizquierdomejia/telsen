@@ -268,8 +268,38 @@ class CostCardController extends Controller
                     ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
                     ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_service_works.*')
                     ->get();
+        $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
+                ->select(
+                    'electrical_evaluation_works.description',
+                    'electrical_evaluation_works.medidas',
+                    'electrical_evaluation_works.qty',
+                    'electrical_evaluation_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('electrical_evaluations.ot_id', $ot_id)
+                ->get();
 
-        return view('costos.show', compact('ccost', 'services'));
+        $works_mec = MechanicalEvaluationWork::join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
+                ->select(
+                    'mechanical_evaluation_works.description',
+                    'mechanical_evaluation_works.medidas',
+                    'mechanical_evaluation_works.qty',
+                    'mechanical_evaluation_works.personal',
+                    'services.name as service',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('mechanical_evaluations.ot_id', $ot_id)
+                ->get();
+
+        return view('costos.show', compact('ccost', 'services', 'works_mec', 'works_el'));
     }
 
     public function approveTC(Request $request, $id)

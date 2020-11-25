@@ -130,6 +130,95 @@ $cc_disapproved = in_array(7, $statuses);
 						</select>
 					</div>
 					<div class="col-md-12">
+
+						<div class="formato eel">
+          <h4 class="text-primary h5">Evaluación Eléctrica</h4>
+          <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
+          <div class="table-responsive">
+            <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-el">
+              <thead>
+                <tr>
+                  <th class="text-center py-1">Item</th>
+                  <th class="text-center py-1">Área</th>
+                  <th class="text-center py-1">Tarea</th>
+                  <th class="text-center py-1">Descripción</th>
+                  <th class="text-center py-1">Medidas</th>
+                  <th class="text-center py-1">Cantidad</th>
+                  <th class="text-center py-1">Personal</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if($works_el)
+                @foreach($works_el as $key => $item)
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->area}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->service}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->description}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->medidas}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->qty}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->personal}}</span></td>
+                </tr>
+                @endforeach
+                @else
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                @endif
+              </tbody>
+            </table>
+          </div>
+          </div>
+          <div class="formato mel">
+          <h4 class="text-primary h5">Evaluación Mecánica</h4>
+          <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
+          <div class="table-responsive">
+            <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-mec">
+              <thead>
+                <tr>
+                  <th class="text-center py-1">Item</th>
+                  <th class="text-center py-1">Área</th>
+                  <th class="text-center py-1">Tarea</th>
+                  <th class="text-center py-1">Descripción</th>
+                  <th class="text-center py-1">Medidas</th>
+                  <th class="text-center py-1">Cantidad</th>
+                  <th class="text-center py-1">Personal</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if($works_mec)
+                @foreach($works_mec as $key => $item)
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->area}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->service}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->description}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->medidas}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->qty}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->personal}}</span></td>
+                </tr>
+                @endforeach
+                @else
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td><span class="form-control mt-0 h-100">-</span></td>
+                  <td><span class="form-control mt-0 h-100">-</span></td>
+                  <td><span class="form-control mt-0 h-100">-</span></td>
+                  <td><span class="form-control mt-0 h-100">-</span></td>
+                  <td><span class="form-control mt-0 h-100">-</span></td>
+                  <td><span class="form-control mt-0 h-100">-</span></td>
+                </tr>
+                @endif
+              </tbody>
+            </table>
+          </div>
+          </div>
 						<h4 class="h6 text-center mb-0"><strong>Otros Trabajos</strong></h4>
 						{{-- <table class="table table-separate table-bordered table-numbering mb-0" id="table-tap">
 							<thead class="text-center">
@@ -232,11 +321,11 @@ $cc_disapproved = in_array(7, $statuses);
 								@endif
 							</tbody>
 						</table>
-						<div class="text-danger text-center p-1 bg-light my-2">
+						{{-- <div class="text-danger text-center p-1 bg-light my-2">
 							<span>DEFLEXION: 0.04 mm</span>
-						</div>
+						</div> --}}
 					</div>
-					<div class="col-md-5 col-xl-4">
+					{{-- <div class="col-md-5 col-xl-4">
 						<table class="table table-costs">
 							<tbody>
 								<tr>
@@ -291,7 +380,7 @@ $cc_disapproved = in_array(7, $statuses);
 								</tr>
 							</tbody>
 						</table>
-					</div>
+					</div> --}}
 				</div>
 			</div>
 		</div>

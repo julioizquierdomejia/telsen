@@ -491,13 +491,13 @@ class ElectricalEvaluationController extends Controller
                     ->findOrFail($id);
 
         $works = ElectricalEvaluationWork::where('me_id', $formato->id)
-                ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
-                    'mechanical_evaluation_works.description',
-                    'mechanical_evaluation_works.medidas',
-                    'mechanical_evaluation_works.qty',
-                    'mechanical_evaluation_works.personal',
+                    'electrical_evaluation_works.description',
+                    'electrical_evaluation_works.medidas',
+                    'electrical_evaluation_works.qty',
+                    'electrical_evaluation_works.personal',
                     'services.name as service',
                     'areas.name as area',
                     'areas.id as area_id'
@@ -630,13 +630,13 @@ class ElectricalEvaluationController extends Controller
         $modelos = MotorModel::where('enabled', 1)->get();
 
         $works = ElectricalEvaluationWork::where('me_id', $formato->id)
-                ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
-                    'mechanical_evaluation_works.description',
-                    'mechanical_evaluation_works.medidas',
-                    'mechanical_evaluation_works.qty',
-                    'mechanical_evaluation_works.personal',
+                    'electrical_evaluation_works.description',
+                    'electrical_evaluation_works.medidas',
+                    'electrical_evaluation_works.qty',
+                    'electrical_evaluation_works.personal',
                     'services.name as service',
                     'areas.name as area',
                     'areas.id as area_id'

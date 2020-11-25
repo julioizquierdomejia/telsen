@@ -501,6 +501,7 @@
         </div>
         <div class="card-body pb-3 pt-0">
           <hr>
+          <div class="table-responsive">
           <table class="table table-separate text-center table-numbering mb-0" id="table-tap">
             <thead>
               <tr>
@@ -548,6 +549,7 @@
             </tr>
             </tfoot>
           </table>
+          </div>
           <hr class="mt-0">
           <div class="row">
             <div class="col-12 col-sm-6 col-md-3 form-group">

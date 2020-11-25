@@ -867,7 +867,7 @@ $('#table-works .dropdown2').select2();
     }
     //createJSON();
   })
-  $('.btn-remove-row').click(function() {
+  $(document).on('click', '.btn-remove-row', function () {
     var row_index = $('#table-works tbody tr').length;
     if (row_index > 1) {
       $('#table-works tbody tr:nth-child(' + row_index + ')').remove();

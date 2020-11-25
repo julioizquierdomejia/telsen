@@ -410,12 +410,10 @@ array (
           </div>
           <hr>
           <div class="tap-section mb-2">
+            <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
             <div class="table-responsive">
             <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
               <thead>
-                <tr>
-                  <th class="text-center py-1" colspan="7">Trabajos</th>
-                </tr>
                 <tr>
                   <th class="text-center py-1">Item</th>
                   <th class="text-center py-1">Área</th>
@@ -424,13 +422,16 @@ array (
                   <th class="text-center py-1">Medidas</th>
                   <th class="text-center py-1">Cantidad</th>
                   <th class="text-center py-1">Personal</th>
+                  <th class="text-center py-1"></th>
                 </tr>
               </thead>
               <tbody>
                 @if($works = old('works'))
                 @foreach($works as $key => $item)
                 <tr>
-                  <td class="cell-counter"><span class="number"></span></td>
+                  <td class="cell-counter">
+                    <span class="number"></span>
+                  </td>
                   <td>
                     <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
                       <option value="">Seleccionar area</option>
@@ -458,11 +459,16 @@ array (
                   <td width="100">
                     <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[$key]['personal']}}" name="works[{{$key}}][personal]">
                   </td>
+                  <td>
+                    <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                  </td>
                 </tr>
                 @endforeach
                 @else
                 <tr>
-                  <td class="cell-counter"><span class="number"></span></td>
+                  <td class="cell-counter">
+                    <span class="number"></span>
+                  </td>
                   <td>
                     <select class="dropdown2 form-control select-area" name="works[0][area]" style="width: 100%">
                       <option value="">Seleccionar area</option>
@@ -488,19 +494,17 @@ array (
                   <td width="100">
                     <input type="text" class="form-control @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
                   </td>
+                  <td>
+                    <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far ml-1 fa-trash"></i></button>
+                  </td>
                 </tr>
                 @endif
               </tbody>
-              <tfoot class="buttons">
-              <tr>
-                <td class="p-0" colspan="7">
-                  <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
-                  <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
-                  <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
-                </td>
-              </tr>
-              </tfoot>
             </table>
+            </div>
+            <div class="buttons text-center">
+                <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
             </div>
             @error('works')
             <p class="error-message text-danger">{{ $message }}</p>
@@ -599,17 +603,19 @@ $('.btn-add-row').click(function () {
 <td width="100">
   <input type="text" class="form-control" placeholder="Personal" value="" name="works[` + row_index + `][personal]">
 </td>
+<td>
+  <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+</td>
 </tr>`;
   $('#table-tap tbody').append(row);
   $('#table-tap .dropdown2').select2();
   //createJSON();
 })
-$('.btn-remove-row').click(function () {
-  var row_index = $('#table-tap tbody tr').length;
-  if (row_index > 1) {
-    $('#table-tap tbody tr:nth-child(' + row_index + ')').remove();
-  }
-  //createJSON();
+$(document).on('click', '.btn-remove-row', function () {
+var row_index = $('#table-tap tbody tr').length;
+if (row_index > 1) {
+$(this).parents('tr').remove();
+}
 })
 $('.btn-yes').click(function () {
   $('input[type="radio"][value="1"]').prop('checked', true);

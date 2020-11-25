@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CostCard;
 use App\Models\CostCardService;
 use App\Models\CostCardServiceWork;
+use App\Models\ElectricalEvaluationWork;
 use App\Models\MechanicalEvaluationWork;
 use App\Models\Ot;
 use App\Models\Status;
@@ -82,7 +83,7 @@ class CostCardController extends Controller
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         }
 
-        $works_el = CostCardServiceWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+        $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
                 ->select(

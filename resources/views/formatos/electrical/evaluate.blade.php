@@ -504,10 +504,7 @@
           <table class="table table-separate text-center table-numbering mb-0" id="table-tap">
             <thead>
               <tr>
-                <th class="text-center py-1" colspan="7">Tap</th>
-              </tr>
-              <tr>
-                <th class="py-1">N°</th>
+                <th class="py-1">Tap</th>
                 <th class="py-1">U-V</th>
                 <th class="py-1">U-V</th>
                 <th class="py-1">V-U</th>

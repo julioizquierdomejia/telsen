@@ -341,14 +341,18 @@ class ElectricalEvaluationController extends Controller
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
-            $item['me_id'] = $eleval->id;
-            $services[$key] = $item;
-            unset($services[$key]['area']);
+            $services[$key]['me_id'] = $meval->id;
+            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+
             $services[$key]['created_at'] = $date;
             $services[$key]['updated_at'] = $date;
         }
 
-        MechanicalEvaluationWork::insert($services);
+        ElectricalEvaluationWork::insert($services);
 
         $status = Status::where('id', 3)->first();
         if ($status) {

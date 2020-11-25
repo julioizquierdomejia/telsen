@@ -30,7 +30,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">25</p>
+            <p class="card-title numbers">{{$ots->count()}}</p>
             <p class="card-category"><br>OT Creadas</p>
           </div>
         </div>

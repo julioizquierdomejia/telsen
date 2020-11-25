@@ -73,7 +73,7 @@
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label" for="tiempo_entrega">Tiempo de entrega</label>
-              <input type="number" class="form-control @error('tiempo_entrega') is-invalid @enderror" min="1" placeholder="Días de entrega" value="{{old('tiempo_entrega', 1)}}" title="Días de entrega" data-toggle="tooltip" name='tiempo_entrega' id="tiempo_entrega">
+              <input type="number" class="form-control @error('tiempo_entrega') is-invalid @enderror" min="1" placeholder="Días de entrega" value="{{old('tiempo_entrega', "1")}}" title="Días de entrega" data-toggle="tooltip" name='tiempo_entrega' id="tiempo_entrega">
               @error('tiempo_entrega')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror

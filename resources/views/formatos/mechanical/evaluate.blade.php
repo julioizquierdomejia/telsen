@@ -428,11 +428,8 @@ array (
               </thead>
               <tbody>
                 @if($works = old('works'))
-                @php
-                  var_dump($works)
-                @endphp
                 @foreach($works as $key => $item)
-                {{-- <tr>
+                <tr>
                   <td class="cell-counter"><span class="number"></span></td>
                   <td>
                     <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
@@ -461,7 +458,7 @@ array (
                   <td width="100">
                     <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[$key]['personal']}}" name="works[{{$key}}][personal]">
                   </td>
-                </tr> --}}
+                </tr>
                 @endforeach
                 @else
                 <tr>

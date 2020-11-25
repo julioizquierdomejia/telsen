@@ -33,11 +33,11 @@
               @enderror
             </div>
             <div class="col-6 col-md-4 form-group">
-              <label class="col-form-label" for="selectRuc">Ingrese RUC</label>
+              <label class="col-form-label" for="selectRuc">Razón Social</label>
               <select style="width: 100%" class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
-                <option value="">Ingresa RUC</option>
+                <option value="">Ingresa Razón Social</option>
                 @foreach($clientes as $cliente)
-                <option data-rs="{{ $cliente->razon_social }}" data-dir="{{ $cliente->direccion }}" data-contacto="{{$cliente->telefono_contacto}}" data-celular="{{$cliente->celular}}" data-type="{{$cliente->client_type}}" value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->ruc }}</option>
+                <option data-rs="{{ $cliente->razon_social }}" data-dir="{{ $cliente->direccion }}" data-contacto="{{$cliente->telefono_contacto}}" data-celular="{{$cliente->celular}}" data-type="{{$cliente->client_type}}" value="{{ $cliente->id }}" {{old('client_id') == $cliente->id ? 'selected' : ''}}>{{ $cliente->razon_social }}</option>
                 @endforeach
               </select>
               @error('client_id')

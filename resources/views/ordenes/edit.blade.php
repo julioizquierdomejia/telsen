@@ -29,11 +29,11 @@
           </div>
           <div class="row">
             <div class="col-md-4 form-group">
-              <label class="col-form-label" for="selectRuc">Ingrese RUC</label>
+              <label class="col-form-label" for="selectRuc">Razón Social</label>
               <select class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
-                <option>Ingresa RUC</option>
+                <option>Ingresa Razón Social</option>
                 @foreach($clientes as $cliente)
-                <option value="{{$cliente->id}}" @if(old('client_id', $orden->client_id) == $cliente->id) selected="" @endif>{{ $cliente->ruc }}</option>
+                <option data-rs="{{ $cliente->razon_social }}" data-dir="{{ $cliente->direccion }}" data-contacto="{{$cliente->telefono_contacto}}" data-celular="{{$cliente->celular}}" data-type="{{$cliente->client_type}}" value="{{$cliente->id}}" @if(old('client_id', $orden->client_id) == $cliente->id) selected="" @endif>{{ $cliente->razon_social }}</option>
                 @endforeach
               </select>
               @error('client_id')
@@ -41,7 +41,7 @@
               @enderror
             </div>
             <div class="col-md-8 form-group">
-              <label class="col-form-label">Razon social</label>
+              <label class="col-form-label">RUC</label>
               <input type="text" class="form-control razon_social" placeholder="" value="" disabled="" name="name">
             </div>
           </div>
@@ -133,12 +133,27 @@
 </div>
 @endsection
 @section('javascript')
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script> -->
 <script type="text/javascript">
 $(document).ready(function(){
-//$('.dropdown2').select2();
-$.ajax({
-url: "/clientes/<?= $orden->client_id ?>/ver",
+$('#selectRuc').change(function () {
+var $this = $(this), val = $this.val(), selected = $this.find('option:selected');
+if (!val) {
+$('.razon_social').val("");
+$('.direccion').val("");
+$('.telefono').val("");
+$('.celular').val("");
+$('.tipocliente').val("");
+$('.telefono_contacto').val("");
+return;
+}
+$('.razon_social').val(selected.data('rs'));
+$('.direccion').val(selected.data('dir'));
+$('.telefono').val(selected.data('tel'));
+$('.celular').val(selected.data('celular'));
+$('.telefono_contacto').val(selected.data('contacto'));
+$('.tipocliente').val(selected.data('type'));
+/*$.ajax({
+url: "/clientes/"+val+"/ver",
 data: {},
 type: 'GET',
 beforeSend: function () {
@@ -154,7 +169,10 @@ $('.telefono_contacto').val(response.telefono_contacto);
 },
 error: function (request, status, error) { // if error occured
 }
-});
+});*/
+})
+
+$('#selectRuc').trigger('change');
 })
 </script>
 @endsection

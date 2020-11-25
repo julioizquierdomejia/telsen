@@ -174,9 +174,9 @@ class CostCardController extends Controller
         );
         $this->validate($request, $rules);
 
-        $cost_card_services = $request->input('cost_card_services');
+        /*$cost_card_services = $request->input('cost_card_services');
         $services = json_decode($cost_card_services, true);
-        $services_count = count($services);
+        $services_count = count($services);*/
 
         $cost = new CostCard();
         $cost->ot_id = $id;

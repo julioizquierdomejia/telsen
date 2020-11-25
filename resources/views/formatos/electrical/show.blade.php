@@ -488,6 +488,68 @@ $status_last = $ot_status->last();
             <p class="mb-1">{{$formato->tran_ww ?? '-'}}</p>
           </div>
         </div>
+        <div class="table-responsive">
+              <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
+                <thead>
+                  <tr>
+                    <th class="text-center py-1" colspan="7">Trabajos</th>
+                  </tr>
+                  <tr>
+                  <th class="text-center py-1">Item</th>
+                  <th class="text-center py-1">Área</th>
+                  <th class="text-center py-1">Tarea</th>
+                  <th class="text-center py-1">Descripción</th>
+                  <th class="text-center py-1">Medidas</th>
+                  <th class="text-center py-1">Cantidad</th>
+                  <th class="text-center py-1">Personal</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @if($works)
+                  @foreach($works as $key => $work)
+                  <tr>
+                    <td class="cell-counter"><span class="number"></span></td>
+                  <td><span class="form-control mt-0 h-100">{{$work->area}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$work->service}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$work->description}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$work->medidas}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$work->qty}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$work->personal}}</span></td>
+                  </tr>
+                  @endforeach
+                  @else
+                  <tr>
+                    <td class="cell-counter"><span class="number"></span></td>
+                    <td>
+                      <select class="dropdown2 form-control select-area" name="works[0][area]" style="width: 100%">
+                        <option value="">Seleccionar area</option>
+                        @foreach($areas as $area)
+                        <option value="{{$area->id}}">{{$area->name}}</option>
+                        @endforeach
+                      </select>
+                    </td>
+                    <td>
+                      <select class="dropdown2 form-control select-service" name="works[0][service_id]" style="width: 100%"  disabled="">
+                        <option value="">Seleccionar servicio</option>
+                      </select>
+                    </td>
+                    <td width="120">
+                      <input type="text" class="form-control @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
+                    </td>
+                  </tr>
+                  @endif
+                </tbody>
+              </table>
+              </div>
       </div>
     </div>
   </div>

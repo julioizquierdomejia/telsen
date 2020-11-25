@@ -641,6 +641,7 @@
               <input type="text" class="form-control @error('tran_ww') is-invalid @enderror" placeholder="Ww" value="{{old('tran_ww')}}" name="tran_ww">
             </div>
             <div class="col-md-12 form-group">
+              <div class="table-responsive">
               <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
                 <thead>
                   <tr>
@@ -731,6 +732,7 @@
                 </tr>
                 </tfoot>
               </table>
+              </div>
               @error('works')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror

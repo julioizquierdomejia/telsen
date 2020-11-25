@@ -1,5 +1,4 @@
 @extends('layouts.app', ['title' => 'Crear Tarjeta de costo'])
-
 @section('content')
 <div class="row">
   <div class="col-md-12">
@@ -99,15 +98,15 @@
             </div>
           </div>
           <div class="row">
-          	{{-- <div class="col-md-6">
+            {{-- <div class="col-md-6">
               <div class="form-group">
                 <label class="col-form-label">Area</label>
                 <select name="area_id" class="form-control @error('area_id') is-invalid @enderror dropdown2" id="selectArea">
-                <option value="">Selecciona el area</option>
-                @foreach($areas as $area)
+                  <option value="">Selecciona el area</option>
+                  @foreach($areas as $area)
                   <option value="{{ $area->id }}" {{old('area_id') == $area->id ? 'selected' : ''}}>{{ $area->name }}</option>
-                @endforeach
-              </select>
+                  @endforeach
+                </select>
               </div>
             </div> --}}
             <div class="col-md-3 ml-md-auto form-group">
@@ -117,86 +116,85 @@
                 <option value="0">Inactivo</option>
               </select>
             </div>
-
             {{-- <div class="col-md-12">
               <table class="table table-separate table-bordered table-numbering mb-0" id="table-tap">
                 <thead class="text-center">
-                     <tr>
-                        <th class="py-1 px-2" width="50">ITEM</th>
-                        <th class="py-1"> </th>
-                        <th class="py-1">PERSONAL</th>
-                        <th class="py-1">INGRESO</th>
-                        <th class="py-1">SALIDA</th>
-                        <th class="py-1"> </th>
-                        <th class="py-1">TOTAL</th>
-                     </tr>
+                  <tr>
+                    <th class="py-1 px-2" width="50">ITEM</th>
+                    <th class="py-1"> </th>
+                    <th class="py-1">PERSONAL</th>
+                    <th class="py-1">INGRESO</th>
+                    <th class="py-1">SALIDA</th>
+                    <th class="py-1"> </th>
+                    <th class="py-1">TOTAL</th>
+                  </tr>
                 </thead>
                 <tbody>
                   @if (old('cost_card_services'))
-                    <?php
-                    $services = json_decode(old('cost_card_services'), true);
-                    $services_count = count($services);
-                    $previousGroup = false;
-                    $row_total = 0;
-                    ?>
-                    @foreach($services as $key => $item)
-                      @php
-                      $lastItem = false;
-                      $row_total += $item['subtotal'];
-                      @endphp
-                      @if($previousGroup !== false && isset($item['service']) && $previousGroup !== $item['service'])
-                        @php
-                        $lastItem = true;
-                        @endphp
+                  <?php
+                  $services = json_decode(old('cost_card_services'), true);
+                  $services_count = count($services);
+                  $previousGroup = false;
+                  $row_total = 0;
+                  ?>
+                  @foreach($services as $key => $item)
+                  @php
+                  $lastItem = false;
+                  $row_total += $item['subtotal'];
+                  @endphp
+                  @if($previousGroup !== false && isset($item['service']) && $previousGroup !== $item['service'])
+                  @php
+                  $lastItem = true;
+                  @endphp
+                  @endif
+                  @if ($key > 1)
+                  <tr><td colspan="7" height="20"></td></tr>
+                  @endif
+                  @if($item['service'] == '')
+                  @php $row_total = $item['subtotal']; @endphp
+                  <tr class="row-area" data-areaid="{{$item['area_id']}}">
+                    <td class="bg-info cell-counter text-center" width="50"><span class="number"></span></td>
+                    <td class="bg-info" width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['area']}}</span></td>
+                    <td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
+                    <td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
+                    <td class="bg-info" width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
+                    <td class="bg-info" width="100"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="{{$item['area_id']}}" value="{{$item['subtotal']}}"></td>
+                    <td class="bg-info" width="50"></td>
+                  </tr>
+                  @else
+                  <tr data-areaid="{{$item['area_id']}}" data-serviceid="{{$item['service']}}">
+                    <td width="50"></td>
+                    <td width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['area']}}</span></td>
+                    <td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
+                    <td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
+                    <td width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
+                    <td width="100"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="{{$item['area_id']}}" value="{{$item['subtotal']}}"></td>
+                    <td width="50">
+                      @if($lastItem)
+                      <input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="areasubtotal" data-areaid="{{$item['area_id']}}" value="{{$row_total}}">
                       @endif
-                      @if ($key > 1)
-                        <tr><td colspan="7" height="20"></td></tr>
-                      @endif
-                      @if($item['service'] == '')
-                      @php $row_total = $item['subtotal']; @endphp
-                      <tr class="row-area" data-areaid="{{$item['area_id']}}">
-                          <td class="bg-info cell-counter text-center" width="50"><span class="number"></span></td>
-                          <td class="bg-info" width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['area']}}</span></td>
-                          <td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
-                          <td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
-                          <td class="bg-info" width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
-                          <td class="bg-info" width="100"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="{{$item['area_id']}}" value="{{$item['subtotal']}}"></td>
-                          <td class="bg-info" width="50"></td>
-                       </tr>
-                       @else
-                       <tr data-areaid="{{$item['area_id']}}" data-serviceid="{{$item['service']}}">
-                          <td width="50"></td>
-                          <td width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['area']}}</span></td>
-                          <td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
-                          <td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
-                          <td width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
-                          <td width="100"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="{{$item['area_id']}}" value="{{$item['subtotal']}}"></td>
-                          <td width="50">
-                            @if($lastItem)
-                          <input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="areasubtotal" data-areaid="{{$item['area_id']}}" value="{{$row_total}}">
-                          @endif
-                          </td>
-                       </tr>
-                       @endif
-                      @php
-                      $previousGroup = $item['area_id'];
-                      @endphp
-                    @endforeach
+                    </td>
+                  </tr>
+                  @endif
+                  @php
+                  $previousGroup = $item['area_id'];
+                  @endphp
+                  @endforeach
                   @else
                   <tr class="empty-services text-center">
                     <td colspan="7">Seleccione un area</td>
                   </tr>
                   @endif
                 </tbody>
-           </table>
-           <input class="form-control d-none" type="text" name="cost_card_services" value="{{old('cost_card_services')}}" readonly="">
-            @error('cost_card_services')
+              </table>
+              <input class="form-control d-none" type="text" name="cost_card_services" value="{{old('cost_card_services')}}" readonly="">
+              @error('cost_card_services')
               <p class="error-message text-danger">{{ $message }}</p>
-            @enderror
-           <div class="text-danger text-center p-1 bg-light my-2">
-             <span>DEFLEXION: 0.04 mm</span>
-           </div>
-            </div> 
+              @enderror
+              <div class="text-danger text-center p-1 bg-light my-2">
+                <span>DEFLEXION: 0.04 mm</span>
+              </div>
+            </div>
             <div class="col-md-5 col-xl-4">
               <table class="table table-costs">
                 <tbody>
@@ -254,7 +252,196 @@
               </table>
             </div> --}}
           </div>
-
+          <div class="formato eel">
+          <h4>Evaluación Eléctrica</h4>
+          <div class="table-responsive">
+            <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-el">
+              <thead>
+                <tr>
+                  <th class="text-center py-1" colspan="7">Trabajos</th>
+                </tr>
+                <tr>
+                  <th class="text-center py-1">Item</th>
+                  <th class="text-center py-1">Área</th>
+                  <th class="text-center py-1">Tarea</th>
+                  <th class="text-center py-1">Descripción</th>
+                  <th class="text-center py-1">Medidas</th>
+                  <th class="text-center py-1">Cantidad</th>
+                  <th class="text-center py-1">Personal</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if($works_el = old('works', $works_el))
+                @foreach($works_el as $key => $item)
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td>
+                    <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
+                      <option value="">Seleccionar area</option>
+                      @foreach($areas as $area)
+                      <option value="{{$area->id}}" {{ $item['area_id'] == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td>
+                    <select class="dropdown2 form-control select-service" data-value="{{$item->service_id}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                      <option value="">Seleccionar servicio</option>
+                    </select>
+                  </td>
+                  <td width="120">
+                    <input type="text" class="form-control
+                    @error("works[{{$key}}][description]") is-invalid @enderror"
+                    placeholder="Descripción" value="{{old('works.$key.description', $item->description)}}" name="works[{{$key}}][description]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works.$key.medidas', $item->medidas)}}" name="works[{{$key}}][medidas]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.$key.qty', $item->qty)}}" name="works[{{$key}}][qty]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works.$key.personal', $item->personal)}}" name="works[{{$key}}][personal]">
+                  </td>
+                </tr>
+                @endforeach
+                @else
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td>
+                    <select class="dropdown2 form-control select-area" name="works[0][area]" style="width: 100%">
+                      <option value="">Seleccionar area</option>
+                      @foreach($areas as $area)
+                      <option value="{{$area->id}}">{{$area->name}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td>
+                    <select class="dropdown2 form-control select-service" name="works[0][service_id]" style="width: 100%"  disabled="">
+                      <option value="">Seleccionar servicio</option>
+                    </select>
+                  </td>
+                  <td width="120">
+                    <input type="text" class="form-control @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
+                  </td>
+                </tr>
+                @endif
+              </tbody>
+              <tfoot class="buttons">
+              <tr>
+                <td class="p-0" colspan="7">
+                  <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                  <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
+                  <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+          </div>
+          <div class="formato mel">
+          <h4>Evaluación Mecánica</h4>
+          <div class="table-responsive">
+            <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-mec">
+              <thead>
+                <tr>
+                  <th class="text-center py-1" colspan="7">Trabajos</th>
+                </tr>
+                <tr>
+                  <th class="text-center py-1">Item</th>
+                  <th class="text-center py-1">Área</th>
+                  <th class="text-center py-1">Tarea</th>
+                  <th class="text-center py-1">Descripción</th>
+                  <th class="text-center py-1">Medidas</th>
+                  <th class="text-center py-1">Cantidad</th>
+                  <th class="text-center py-1">Personal</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if($works_mec = old('works', $works_mec))
+                @foreach($works_mec as $key => $item)
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td>
+                    <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
+                      <option value="">Seleccionar area</option>
+                      @foreach($areas as $area)
+                      <option value="{{$area->id}}" {{ $item['area_id'] == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td>
+                    <select class="dropdown2 form-control select-service" data-value="{{$item->service_id}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                      <option value="">Seleccionar servicio</option>
+                    </select>
+                  </td>
+                  <td width="120">
+                    <input type="text" class="form-control
+                    @error("works[{{$key}}][description]") is-invalid @enderror"
+                    placeholder="Descripción" value="{{old('works.$key.description', $item->description)}}" name="works[{{$key}}][description]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works.$key.medidas', $item->medidas)}}" name="works[{{$key}}][medidas]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.$key.qty', $item->qty)}}" name="works[{{$key}}][qty]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works.$key.personal', $item->personal)}}" name="works[{{$key}}][personal]">
+                  </td>
+                </tr>
+                @endforeach
+                @else
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td>
+                    <select class="dropdown2 form-control select-area" name="works[0][area]" style="width: 100%">
+                      <option value="">Seleccionar area</option>
+                      @foreach($areas as $area)
+                      <option value="{{$area->id}}">{{$area->name}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td>
+                    <select class="dropdown2 form-control select-service" name="works[0][service_id]" style="width: 100%"  disabled="">
+                      <option value="">Seleccionar servicio</option>
+                    </select>
+                  </td>
+                  <td width="120">
+                    <input type="text" class="form-control @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
+                  </td>
+                </tr>
+                @endif
+              </tbody>
+              <tfoot class="buttons">
+              <tr>
+                <td class="p-0" colspan="7">
+                  <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                  <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
+                  <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+          </div>
+          </div>
           <div class="row">
             <div class="update ml-auto mr-auto">
               <button type="submit" class="btn btn-primary btn-round">Enviar</button>

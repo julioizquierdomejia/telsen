@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CostCard;
 use App\Models\CostCardService;
+use App\Models\ElectricalEvaluationWork;
+use App\Models\MechanicalEvaluationWork;
 use App\Models\Ot;
 use App\Models\Status;
 use App\Models\Service;
@@ -79,9 +81,40 @@ class CostCardController extends Controller
         } else {
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         }
+
+        $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
+                ->select(
+                    'electrical_evaluation_works.description',
+                    'electrical_evaluation_works.medidas',
+                    'electrical_evaluation_works.qty',
+                    'electrical_evaluation_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('electrical_evaluations.ot_id', $ot->id)
+                ->get();
+
+        $works_mec = MechanicalEvaluationWork::join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
+                ->select(
+                    'mechanical_evaluation_works.description',
+                    'mechanical_evaluation_works.medidas',
+                    'mechanical_evaluation_works.qty',
+                    'mechanical_evaluation_works.personal',
+                    'services.name as service',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('mechanical_evaluations.ot_id', $ot->id)
+                ->get();
         //$clientes = Client::where('enabled', 1)->get();
 
-        return view('costos.calculate', compact('ot', 'areas'));
+        return view('costos.calculate', compact('ot', 'areas', 'works_el', 'works_mec'));
     }
 
     public function upload(Request $request, $id)

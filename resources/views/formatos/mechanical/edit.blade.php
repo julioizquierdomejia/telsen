@@ -410,6 +410,7 @@
           </div>
           <hr>
             <div class="tap-section mb-2">
+              <div class="table-responsive">
               <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
                 <thead>
                   <tr>
@@ -498,6 +499,7 @@
                 </tr>
                 </tfoot>
               </table>
+              </div>
             </div>
             <div class="obs mb-2">
               <label class="col-form-label">Observaciones</label>
@@ -588,10 +590,10 @@ $('.btn-add-row').click(function () {
 var row = `<tr>
     <td class="cell-counter"><span class="number"></span></td>
     <td>
-      <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
+      <select class="dropdown2 form-control select-area" name="works[`+row_index+`][area]" style="width: 100%">
         <option value="">Seleccionar area</option>
         @foreach($areas as $area)
-        <option value="{{$area->id}}" {{ (old('works')[$key]['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+        <option value="{{$area->id}}">{{$area->name}}</option>
         @endforeach
       </select>
     </td>

@@ -639,6 +639,15 @@
                   <tr>
                     <th class="text-center py-1" colspan="7">Trabajos</th>
                   </tr>
+                  <tr>
+                  <th class="text-center py-1">Item</th>
+                  <th class="text-center py-1">Área</th>
+                  <th class="text-center py-1">Tarea</th>
+                  <th class="text-center py-1">Descripción</th>
+                  <th class="text-center py-1">Medidas</th>
+                  <th class="text-center py-1">Cantidad</th>
+                  <th class="text-center py-1">Personal</th>
+                </tr>
                 </thead>
                 <tbody>
                   @if($works = old('works'))

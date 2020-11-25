@@ -504,7 +504,7 @@ class MechanicalEvaluationController extends Controller
         $meval->save();
 
         $works = $request->input('works');
-        $update_works = MechanicalEvaluationWork::where('me_id', $meval->id);
+        $update_works = MechanicalEvaluationWork::where('me_id', $meval->id)->delete();
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
@@ -515,11 +515,11 @@ class MechanicalEvaluationController extends Controller
             $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
             $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
 
-            $services[$key]['created_at'] = $date;
+            //$services[$key]['created_at'] = $date;
             $services[$key]['updated_at'] = $date;
         }
 
-        MechanicalEvaluationWork::find($services);
+        MechanicalEvaluationWork::insert($services);
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');

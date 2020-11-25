@@ -431,29 +431,29 @@
                   <tr>
                     <td class="cell-counter"><span class="number"></span></td>
                     <td>
-                      <select class="dropdown2 form-control select-area" name="works[{{$key}}]['area']" style="width: 100%">
+                      <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
                         <option value="">Seleccionar area</option>
                         @foreach($areas as $area)
-                        <option value="{{$area->id}}" {{ (old('works')[$key]['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                        <option value="{{$area->id}}" {{ $item['area_id'] == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
                         @endforeach
                       </select>
                     </td>
                     <td>
-                      <select class="dropdown2 form-control select-service" name="works[{{$key}}]['service']" style="width: 100%"  disabled="">
+                      <select class="dropdown2 form-control select-service" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
                         <option value="">Seleccionar servicio</option>
                       </select>
                     </td>
                     <td width="120">
-                      <input type="text" class="form-control @error("works[{{$key}}]['desc']") is-invalid @enderror" placeholder="Descripción" value="{{old('works[$key]["desc"]')}}" name="works[{{$key}}]['desc']">
+                      <input type="text" class="form-control @error("works[{{$key}}][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works[$key]["desc"]', $item["description"])}}" name="works[{{$key}}][description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}]['medida']") is-invalid @enderror" placeholder="Medida" value="{{old('works[$key]["medida"]')}}" name="works[{{$key}}]['medida']">
+                      <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{$item["medidas"]}}" name="works[{{$key}}][medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}]['cantidad']") is-invalid @enderror" placeholder="Cantidad" value="{{old('works[$key]["cantidad"]')}}" name="works[{{$key}}]['cantidad']">
+                      <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{$item["qty"]}}" name="works[{{$key}}][qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}]['personal']") is-invalid @enderror" placeholder="Personal" value="{{old('works[$key]["personal"]')}}" name="works[{{$key}}]['personal']">
+                      <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{$item["personal"]}}" name="works[{{$key}}][personal]">
                     </td>
                   </tr>
                   @endforeach
@@ -461,7 +461,7 @@
                   <tr>
                     <td class="cell-counter"><span class="number"></span></td>
                     <td>
-                      <select class="dropdown2 form-control select-area" name="works[]" style="width: 100%">
+                      <select class="dropdown2 form-control select-area" name="works[0][area]" style="width: 100%">
                         <option value="">Seleccionar area</option>
                         @foreach($areas as $area)
                         <option value="{{$area->id}}">{{$area->name}}</option>
@@ -469,21 +469,21 @@
                       </select>
                     </td>
                     <td>
-                      <select class="dropdown2 form-control select-service" name="works[{{$key}}]['service']" style="width: 100%"  disabled="">
+                      <select class="dropdown2 form-control select-service" name="works[0][service_id]" style="width: 100%"  disabled="">
                         <option value="">Seleccionar servicio</option>
                       </select>
                     </td>
                     <td width="120">
-                      <input type="text" class="form-control @error("works[{{$key}}]['desc']") is-invalid @enderror" placeholder="Descripción" value="{{old('works[$key]["desc"]')}}" name="works[{{$key}}]['desc']">
+                      <input type="text" class="form-control @error("works[{{$key}}][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works[$key]["description"]')}}" name="works[{{$key}}][description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}]['medida']") is-invalid @enderror" placeholder="Medida" value="{{old('works[$key]["medida"]')}}" name="works[{{$key}}]['medida']">
+                      <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works[$key]["medidas"]')}}" name="works[{{$key}}][medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}]['cantidad']") is-invalid @enderror" placeholder="Cantidad" value="{{old('works[$key]["cantidad"]')}}" name="works[{{$key}}]['cantidad']">
+                      <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works[$key]["qty"]')}}" name="works[{{$key}}][qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works[{{$key}}]['personal']") is-invalid @enderror" placeholder="Personal" value="{{old('works[$key]["personal"]')}}" name="works[{{$key}}]['personal']">
+                      <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works[$key]["personal"]')}}" name="works[{{$key}}][personal]">
                     </td>
                   </tr>
                   @endif

@@ -515,7 +515,7 @@ class MechanicalEvaluationController extends Controller
             $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
             $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
 
-            //$services[$key]['created_at'] = $date;
+            $services[$key]['created_at'] = $date;
             $services[$key]['updated_at'] = $date;
         }
 

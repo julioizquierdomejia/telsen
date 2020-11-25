@@ -341,7 +341,7 @@ class ElectricalEvaluationController extends Controller
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
-            $services[$key]['me_id'] = $meval->id;
+            $services[$key]['me_id'] = $eleval->id;
             $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
             $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
             $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
@@ -899,6 +899,24 @@ class ElectricalEvaluationController extends Controller
         $eltraneval->rv_u = $request->input('tran_rv_u');
         $eltraneval->ww = $request->input('tran_ww');
         $eltraneval->save();
+
+        $works = $request->input('works');
+        $update_works = ElectricalEvaluationWork::where('me_id', $eleval->id)->delete();
+        $services = [];
+        $date = \Carbon\Carbon::now()->toDateTimeString();
+        foreach ($works as $key => $item) {
+            $services[$key]['me_id'] = $eleval->id;
+            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+
+            $services[$key]['created_at'] = $date;
+            $services[$key]['updated_at'] = $date;
+        }
+
+        ElectricalEvaluationWork::insert($services);
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');

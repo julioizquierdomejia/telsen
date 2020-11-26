@@ -30438,18 +30438,18 @@ img {
   padding: 2px 10px;
 }
 
-#table-tap tbody td {
+.table-tap tbody td {
   padding: 5px;
 }
 
-#table-tap .form-control {
+.table-tap .form-control {
   height: 26px;
   padding: 2px 10px;
   font-size: 12px;
   margin: 0;
 }
 
-#table-tap .input-expandable {
+.table-tap .input-expandable {
   background: transparent !important;
   color: #000;
   cursor: text;
@@ -31138,6 +31138,12 @@ img {
 
   .page-ot .steps .step.step-four .card-header:after {
     border-top-color: #293d7a;
+  }
+}
+
+@media print {
+  .main-panel {
+    width: 100%;
   }
 }
 

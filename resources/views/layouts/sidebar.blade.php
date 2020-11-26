@@ -1,4 +1,4 @@
-<div class="sidebar text-white" data-color="white" data-active-color="danger">
+<div class="sidebar text-white d-print-none" data-color="white" data-active-color="danger">
   <div class="sidebar-top">
     <div class="logo text-center">
       <a href="/home" class="simple-text logo-normal">

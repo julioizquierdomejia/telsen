@@ -985,3 +985,8 @@ img {
 		}
 	}
 }
+@media print {
+	.main-panel {
+		width: 100%;
+	}
+}

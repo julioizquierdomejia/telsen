@@ -34,6 +34,7 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 						@if($status_last->status_id <= 10 && $status_last->status_id != 9 && $status_last->status_id != 10)
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
 						@endif
+						<button class="btn btn-secondary" type="button" onclick="window.print();"><i class="fa fa-print"></i></button>
 					</span>
 				</h5>
 			</div>
@@ -229,12 +230,12 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 								@foreach($services as $key => $work)
 								<tr>
 									<td class="cell-counter"><span class="number"></span></td>
-									<td><span class="form-control">{{$work->area}}</span></td>
-									<td><span class="form-control">{{$work->service}}</span></td>
-									<td><span class="form-control">{{$work->description}}</span></td>
-									<td><span class="form-control">{{$work->medidas}}</span></td>
-									<td><span class="form-control">{{$work->qty}}</span></td>
-									<td><span class="form-control">{{$work->personal}}</span></td>
+									<td><div class="form-control h-100 mt-0">{{$work->area}}</div></td>
+									<td><div class="form-control h-100 mt-0">{{$work->service}}</div></td>
+									<td><div class="form-control h-100 mt-0">{{$work->description}}</div></td>
+									<td><div class="form-control h-100 mt-0">{{$work->medidas}}</div></td>
+									<td><div class="form-control h-100 mt-0">{{$work->qty}}</div></td>
+									<td><div class="form-control h-100 mt-0">{{$work->personal}}</div></td>
 								</tr>
 								@endforeach
 								@else

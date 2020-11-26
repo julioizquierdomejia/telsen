@@ -76,6 +76,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('formatos/mechanical/{id}/store', [App\Http\Controllers\MechanicalEvaluationController::class, 'store'])->name('formatos.mechanical.store');
 	Route::get('formatos/mechanical/{id}/editar', [App\Http\Controllers\MechanicalEvaluationController::class, 'edit'])->name('formatos.mechanical.edit');
 	Route::post('formatos/mechanical/{id}/editar', [App\Http\Controllers\MechanicalEvaluationController::class, 'update'])->name('formatos.mechanical.update');
+	Route::post('formatos/mechanical/{id}/aprobar', [App\Http\Controllers\MechanicalEvaluationController::class, 'approve'])->name('formatos.mechanical.approve');
 
 	//rutas para eval electrical
 	Route::get('formatos/electrical', [App\Http\Controllers\ElectricalEvaluationController::class, 'index'])->name('formatos.electrical');
@@ -84,6 +85,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('formatos/electrical/{id}/store', [App\Http\Controllers\ElectricalEvaluationController::class, 'store'])->name('formatos.electrical.store');
 	Route::get('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'edit'])->name('formatos.electrical.edit');
 	Route::post('formatos/electrical/{id}/editar', [App\Http\Controllers\ElectricalEvaluationController::class, 'update'])->name('formatos.electrical.update');
+	Route::post('formatos/electrical/{id}/aprobar', [App\Http\Controllers\ElectricalEvaluationController::class, 'approve'])->name('formatos.electrical.approve');
 
 	//rutas para Tarjeta Costos
 	Route::get('tarjeta-costo', [App\Http\Controllers\CostCardController::class, 'index'])->name('card_cost.index');

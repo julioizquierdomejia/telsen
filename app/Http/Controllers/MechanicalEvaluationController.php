@@ -73,6 +73,24 @@ class MechanicalEvaluationController extends Controller
         return view('formatos.mechanical.evaluate', compact('ot', 'areas', 'cod_rodaje_p1', 'cod_rodaje_p2'));
     }
 
+    public function approve(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $action = $request->input('action');
+
+        if ($action == 1) {
+            $eval = MechanicalEvaluation::findOrFail($id);
+            $eval->approved = 1;
+            $eval->save();
+        } else /*if($action == 2)*/ {
+            $eval = MechanicalEvaluation::findOrFail($id);
+            $eval->approved = 2;
+            $eval->save();
+        }
+        return response()->json(['data'=>json_encode($eval),'success'=>true]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

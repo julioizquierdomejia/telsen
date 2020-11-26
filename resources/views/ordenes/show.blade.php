@@ -103,9 +103,9 @@ $status_last = $ot_status->last();
 				<div class="row text-center">
 					<div class="col">
 					@if(count($ot_status) == 3)
-						@if($ot->tipo_cliente_id == 1)
+						@if($ot->tipo_cliente_id == 1 && $meval->approved == 1 && $eeval->approved == 1)
 						<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
-						@elseif($ot->tipo_cliente_id == 2)
+						@elseif($ot->tipo_cliente_id == 2 && $meval->approved == 1 && $eeval->approved == 1)
 						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
 						@endif
 					@endif

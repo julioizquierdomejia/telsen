@@ -78,6 +78,24 @@ class ElectricalEvaluationController extends Controller
         return view('formatos.electrical.evaluate', compact('ot', 'marcas', 'modelos', 'areas'));
     }
 
+    public function approve(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $action = $request->input('action');
+
+        if ($action == 1) {
+            $eval = ElectricalEvaluation::findOrFail($id);
+            $eval->approved = 1;
+            $eval->save();
+        } else /*if($action == 2)*/ {
+            $eval = ElectricalEvaluation::findOrFail($id);
+            $eval->approved = 2;
+            $eval->save();
+        }
+        return response()->json(['data'=>json_encode($eval),'success'=>true]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -106,6 +124,7 @@ class ElectricalEvaluationController extends Controller
             'lub' => 'string|nullable',
             'fs' => 'string|nullable',
             'encl' => 'string|nullable',
+            'lf' => 'string|nullable',
             'cos_o' => 'string|nullable',
             'aisl_clase' => 'string|nullable',
             'ef' => 'string|nullable',
@@ -248,6 +267,7 @@ class ElectricalEvaluationController extends Controller
         $eleval->lub = $request->input('lub');
         $eleval->fs = $request->input('fs');
         $eleval->encl = $request->input('encl');
+        $eleval->lf = $request->input('lf');
         $eleval->cos_o = $request->input('cos_o');
         $eleval->aisl_clase = $request->input('aisl_clase');
         $eleval->ef = $request->input('ef');
@@ -704,6 +724,7 @@ class ElectricalEvaluationController extends Controller
             'lub' => 'string|nullable',
             'fs' => 'string|nullable',
             'encl' => 'string|nullable',
+            'lf' => 'string|nullable',
             'cos_o' => 'string|nullable',
             'aisl_clase' => 'string|nullable',
             'ef' => 'string|nullable',
@@ -828,6 +849,7 @@ class ElectricalEvaluationController extends Controller
         $eleval->lub = $request->input('lub');
         $eleval->fs = $request->input('fs');
         $eleval->encl = $request->input('encl');
+        $eleval->lf = $request->input('lf');
         $eleval->cos_o = $request->input('cos_o');
         $eleval->aisl_clase = $request->input('aisl_clase');
         $eleval->ef = $request->input('ef');

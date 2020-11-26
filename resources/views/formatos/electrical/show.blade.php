@@ -16,7 +16,14 @@ $status_last = $ot_status->last();
           <span>Evaluación Eléctrica</span>
           <span class="card-title-buttons">
             @if($status_last->status_id < 4)
-            <a class="btn btn-primary btn-round" href="{{route('formatos.electrical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
+            <a class="btn btn-orange btn-round" href="{{route('formatos.electrical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
+            @if($formato->approved == 1)
+            <button type="button" class="btn btn-success mt-0">Aprobada</button>
+            @elseif($formato->approved == 2)
+            <button type="button" class="btn btn-danger mt-0">Desaprobada</button>
+            @else
+            <button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
+            @endif
             @endif
           </span>
         </h4>
@@ -579,4 +586,59 @@ $status_last = $ot_status->last();
     </div>
   </div>
 </div>
+@if($status_last->status_id < 4 && $formato->approved == 0)
+<div class="modal fade" tabindex="-1" id="modalAprobar">
+    <div class="modal-dialog confirmar_eval">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Aprobar Evaluación Eléctrica</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <div class="modal-body">
+            <p class="text-center my-3">¿Confirma aprobación de evaluación eléctrica  para OT-{{zerosatleft($formato->ot_id, 3)}}?</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>
+          <button type="button" class="btn btn-secondary btn-sm px-md-5" data-action="2">No Aprobar</button>
+        </div>
+    </div>
+  </div>
+</div>
+@endif
+@endsection
+@section('javascript')
+<script>
+  $(document).ready(function () {
+    $('.confirmar_eval .btn').click(function () {
+      var action = $(this).data('action');
+      $.ajax({
+          type: "post",
+          url: "{{route('formatos.electrical.approve', $formato->id)}}",
+          data: {
+            _token: '{{csrf_token()}}',
+            action: action
+          },
+          beforeSend: function (data) {
+            
+          },
+          success: function (response) {
+            if(response.success) {
+              $('#modalAprobar').modal('hide');
+              setTimeout(function () {
+                location.reload();
+              }, 200)
+            } else if(response.data) {
+              $('.confirmar_eval .btn').attr('disabled', true);
+            }
+          },
+          error: function (request, status, error) {
+            var data = jQuery.parseJSON(request.responseText);
+            console.log(data);
+          }
+      });
+    })
+  })
+</script>
 @endsection

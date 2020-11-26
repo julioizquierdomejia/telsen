@@ -135,6 +135,10 @@ $status_last = $ot_status->last();
             <p class="mb-1">{{$formato->encl ?? '-'}}</p>
           </div>
           <div class="col-12 col-sm-6 col-md-3 mb-2">
+            <label class="c-label">LF</label>
+            <p class="mb-1">{{$formato->lf ?? '-'}}</p>
+          </div>
+          <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Cos o:</label>
             <p class="mb-1">{{$formato->cos_o ?? '-'}}</p>
           </div>

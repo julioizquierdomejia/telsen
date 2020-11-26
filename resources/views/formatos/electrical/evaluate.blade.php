@@ -78,10 +78,6 @@
               </select>
             </div>
             <div class="col-6 col-md-3 form-group">
-              <label class="col-form-label">Solped</label>
-              <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped', $ot->solped)}}" name="solped">
-            </div>
-            <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Modelo</label>
               <!-- <input type="number" min="1" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
               <select style="width: 100%" name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
@@ -121,103 +117,115 @@
               <label class="col-form-label">Fecha:</label>
               <input type="date" class="form-control" disabled="" value="{{date('Y-m-d')}}">
             </div>
-            <!-- <div class="col-12 col-sm-6 col-md-3 form-group">
-              <label class="col-form-label">Solped:</label>
-              <input type="text" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped')}}" name="solped">
-            </div> -->
+            <div class="col-6 col-md-3 form-group">
+              <label class="col-form-label">Solped</label>
+              <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped', $ot->solped)}}" name="solped">
+            </div>
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">Recepcionado por:</label>
               <input type="text" class="form-control @error('recepcionado_por') is-invalid @enderror" placeholder="Recepcionado por" value="{{old('recepcionado_por')}}" name="recepcionado_por">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 form-group">
+              <label class="col-form-label">Cliente:</label>
+              <input type="text" class="form-control" value="{{$ot->razon_social}}" name="razon_social" readonly="">
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 form-group">
+              <label class="col-form-label">Marca:</label>
+              <input type="text" class="form-control @error('char_marca') is-invalid @enderror" placeholder="Marca" value="{{old('char_marca')}}" name="char_marca">
+            </div>
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Potencia</label>
               <input type="text" class="form-control @error('potencia') is-invalid @enderror" placeholder="Potencia" value="{{old('potencia')}}" name="potencia">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Conex:</label>
               <input type="text" class="form-control @error('conex') is-invalid @enderror" placeholder="Conex" value="{{old('conex')}}" name="conex">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Mod:</label>
               <input type="text" class="form-control @error('mod') is-invalid @enderror" placeholder="Mod" value="{{old('mod')}}" name="mod">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Voltaje:</label>
               <input type="text" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('voltaje')}}" name="voltaje">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">N° salida</label>
               <input type="number" min="1" class="form-control @error('nro_salida') is-invalid @enderror" placeholder="N° salida" value="{{old('nro_salida')}}" name="nro_salida">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Tipo:</label>
               <input type="text" class="form-control @error('tipo') is-invalid @enderror" placeholder="Tipo" value="{{old('tipo')}}" name="tipo">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Amperaje:</label>
               <input type="text" class="form-control @error('amperaje') is-invalid @enderror" placeholder="Amperaje" value="{{old('amperaje')}}" name="amperaje">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Rod.l.a:</label>
               <input type="text" class="form-control @error('rodla') is-invalid @enderror" placeholder="Rod.l.a" value="{{old('rodla')}}" name="rodla">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">N° equipo:</label>
               <input type="text" class="form-control @error('nro_equipo') is-invalid @enderror" placeholder="N° equipo" value="{{old('nro_equipo')}}" name="nro_equipo">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Velocidad:</label>
               <input type="text" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('velocidad')}}" name="velocidad">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Rod.l.o.a:</label>
               <input type="text" class="form-control @error('rodloa') is-invalid @enderror" placeholder="Rod.l.o.a" value="{{old('rodloa')}}" name="rodloa">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Frame:</label>
               <input type="text" class="form-control @error('frame') is-invalid @enderror" placeholder="Frame" value="{{old('frame')}}" name="frame">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Frecuencia:</label>
               <input type="text" class="form-control @error('frecuencia') is-invalid @enderror" placeholder="Frecuencia" value="{{old('frecuencia')}}" name="frecuencia">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Lub:</label>
               <input type="text" class="form-control @error('lub') is-invalid @enderror" placeholder="Lub" value="{{old('lub')}}" name="lub">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">F.S</label>
               <input type="text" class="form-control @error('fs') is-invalid @enderror" placeholder="F.S" value="{{old('fs')}}" name="fs">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">Encl</label>
               <input type="text" class="form-control @error('encl') is-invalid @enderror" placeholder="Encl" value="{{old('encl')}}" name="encl">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
+              <label class="col-form-label">LF:</label>
+              <input type="text" class="form-control @error('lf') is-invalid @enderror" placeholder="LF" value="{{old('lf')}}" name="lf">
+            </div>
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">Cos o:</label>
               <input type="text" class="form-control @error('cos_o') is-invalid @enderror" placeholder="Cos o" value="{{old('cos_o')}}" name="cos_o">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">Aisl. Clase:</label>
               <input type="text" class="form-control @error('aisl_clase') is-invalid @enderror" placeholder="Aisl. Clase" value="{{old('aisl_clase')}}" name="aisl_clase">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">Ef:</label>
               <input type="text" class="form-control @error('ef') is-invalid @enderror" placeholder="Ef" value="{{old('ef')}}" name="ef">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">Cod:</label>
               <input type="text" class="form-control @error('cod') is-invalid @enderror" placeholder="Cod" value="{{old('cod')}}" name="cod">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">Diseño NEMA:</label>
               <input type="text" class="form-control @error('diseno_nema') is-invalid @enderror" placeholder="Diseño NEMA" value="{{old('diseno_nema')}}" name="diseno_nema">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">IP:</label>
               <input type="text" class="form-control @error('ip') is-invalid @enderror" placeholder="IP" value="{{old('ip')}}" name="ip">
             </div>
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-2 form-group">
               <label class="col-form-label">Peso:</label>
               <input type="text" class="form-control @error('peso') is-invalid @enderror" placeholder="Peso" value="{{old('peso')}}" name="peso">
             </div>
@@ -230,10 +238,6 @@
         </div>
         <div class="card-body pb-3">
           <div class="row">
-            <div class="col-12 col-sm-6 col-md-4 form-group">
-              <label class="col-form-label">Marca:</label>
-              <input type="text" class="form-control @error('char_marca') is-invalid @enderror" placeholder="Marca" value="{{old('char_marca')}}" name="char_marca">
-            </div>
             <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Potencia:</label>
               <input type="text" class="form-control @error('char_potencia') is-invalid @enderror" placeholder="Potencia" value="{{old('char_potencia')}}" name="char_potencia">

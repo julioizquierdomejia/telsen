@@ -38,6 +38,7 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->string('lub')->nullable();
             $table->string('fs')->nullable();
             $table->string('encl')->nullable();
+            $table->string('lf')->nullable();
             $table->string('cos_o')->nullable();
             $table->string('aisl_clase')->nullable();
             $table->string('ef')->nullable();

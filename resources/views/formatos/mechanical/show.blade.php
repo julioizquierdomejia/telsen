@@ -219,7 +219,7 @@ $status_last = $ot_status->last();
 					<div class="col-md-12 form-group">
 						<h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
 						<div class="table-responsive">
-						<table class="table table-separate text-center table-numbering mb-0" id="table-tap">
+						<table class="table table-tap table-separate text-center table-numbering mb-0" id="table-tap">
 							<thead>
 								<tr>
 									<th class="text-center py-1">Item</th>

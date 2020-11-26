@@ -1,5 +1,45 @@
 @extends('layouts.app', ['title' => 'Crear Reporte de Ingreso'])
 @section('content')
+@php
+  $reception_list = [
+    array (
+      'name' => 'Placa caracteristicas',
+      'alias' => 'placa_caracteristicas',
+    ),
+    array (
+      'name' => 'Caja conexión',
+      'alias' => 'caja_conexion',
+    ),
+    array (
+      'name' => 'Bornera',
+      'alias' => 'bornera',
+    ),
+    array (
+      'name' => 'Escudos',
+      'alias' => 'escudos',
+    ),
+    array (
+      'name' => 'Ejes',
+      'alias' => 'ejes',
+    ),
+    array (
+      'name' => 'Funda',
+      'alias' => 'funda',
+    ),
+    array (
+      'name' => 'Ventilador',
+      'alias' => 'ventilador',
+    ),
+    array (
+      'name' => 'Acople',
+      'alias' => 'acople',
+    ),
+    array (
+      'name' => 'Chaveta',
+      'alias' => 'chaveta',
+    )
+  ];
+@endphp
 <div class="row">
   <div class="col-md-12">
     <div class="card card-user form-card">
@@ -149,54 +189,19 @@
               @enderror
             </div>
             <div class="col-md-12">
+              <div class="text-right">
+                <button type="button" class="btn btn-yes btn-success btn-sm my-0 px-3">Todos</button><button type="button" class="btn btn-no btn-sm btn-danger my-0 px-3">Ninguno</button>
+              </div>
               <label class="col-form-label">Ingresó con:</label>
               <div class="form-control mb-4" style="height: auto">
                 <ul class="form-check-list list-inline m-0">
-                  <li class="form-check-inline">
+                  @foreach($reception_list as $key => $item)
+                  <li class="form-check-inline" id="ingw_{{$key}}">
                     <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('placa_caracteristicas') ? 'checked' : ''}} name="placa_caracteristicas"><span class="align-middle">Placa caracteristicas</span>
+                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old($item['alias']) ? 'checked' : ''}} name="{{$item['alias']}}"><span class="align-middle">{{$item['name']}}</span>
                     </label>
                   </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('caja_conexion') ? 'checked' : ''}} name="caja_conexion"><span class="align-middle">Caja conexión</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('bornera') ? 'checked' : ''}} name="bornera"><span class="align-middle">Bornera</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('escudos') ? 'checked' : ''}} name="escudos"><span class="align-middle">Escudos</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('ejes') ? 'checked' : ''}} name="ejes"><span class="align-middle">Ejes</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('funda') ? 'checked' : ''}} name="funda"><span class="align-middle">Funda</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('ventilador') ? 'checked' : ''}} name="ventilador"><span class="align-middle">Ventilador</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('acople') ? 'checked' : ''}} name="acople"><span class="align-middle">Acople</span>
-                    </label>
-                  </li>
-                  <li class="form-check-inline">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input align-middle" value="1" {{old('chaveta') ? 'checked' : ''}} name="chaveta"><span class="align-middle">Chaveta</span>
-                    </label>
-                  </li>
+                  @endforeach
                 </ul>
               </div>
             </div>
@@ -220,7 +225,7 @@
           <h4>Evaluación Eléctrica</h4>
           <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
           <div class="table-responsive">
-            <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-el">
+            <table class="table table-tap table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-el">
               <thead>
                 <tr>
                   <th class="text-center py-1">Item</th>
@@ -264,7 +269,7 @@
           <h4>Evaluación Mecánica</h4>
           <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
           <div class="table-responsive">
-            <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-mec">
+            <table class="table table-tap table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works-mec">
               <thead>
                 <tr>
                   <th class="text-center py-1">Item</th>
@@ -307,7 +312,7 @@
           <h4>Otros</h4>
           <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
           <div class="table-responsive">
-            <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
+            <table class="table table-tap table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
               <thead>
                 <tr>
                   <th class="text-center py-1">Item</th>
@@ -569,6 +574,13 @@ $('#table-works .dropdown2').select2();
     if (row_index > 1) {
       $('#table-works tbody tr:nth-child(' + row_index + ')').remove();
     }
+  })
+
+  $('.btn-yes').click(function () {
+    $('.form-check-list input[type="checkbox"]').prop('checked', true);
+  })
+  $('.btn-no').click(function () {
+    $('.form-check-list input[type="checkbox"]').prop('checked', false);
   })
 
   $('.select-area').trigger('change');

@@ -117,7 +117,7 @@
               </select>
             </div>
             {{-- <div class="col-md-12">
-              <table class="table table-separate table-bordered table-numbering mb-0" id="table-tap">
+              <table class="table table-tap table-separate table-bordered table-numbering mb-0" id="table-tap">
                 <thead class="text-center">
                   <tr>
                     <th class="py-1 px-2" width="50">ITEM</th>
@@ -663,13 +663,6 @@ $('#table-works .dropdown2').select2();
     if (row_index > 1) {
       $('#table-works tbody tr:nth-child(' + row_index + ')').remove();
     }
-  })
-
-  $('.btn-yes').click(function () {
-    $('input[type="radio"][value="1"]').prop('checked', true);
-  })
-  $('.btn-no').click(function () {
-    $('input[type="radio"][value="0"]').prop('checked', true);
   })
 
   $('.select-area').trigger('change');

@@ -383,7 +383,7 @@ $status_last = $ot_status->last();
         <hr>
         @if ($formato->tran_tap)
         <div class="table-responsive">
-          <table class="table table-separate text-center table-numbering mb-0" id="table-tap">
+          <table class="table table-tap table-separate text-center table-numbering mb-0" id="table-tap">
             <thead>
               <tr>
                 <th class="text-center py-1" colspan="7">Tap</th>

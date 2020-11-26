@@ -220,7 +220,7 @@ $cc_disapproved = in_array(7, $statuses);
           </div>
           </div>
 						<h4 class="h6 text-center mb-0"><strong>Otros Trabajos</strong></h4>
-						{{-- <table class="table table-separate table-bordered table-numbering mb-0" id="table-tap">
+						{{-- <table class="table table-tap table-separate table-bordered table-numbering mb-0" id="table-tap">
 							<thead class="text-center">
 								<tr>
 									<th class="py-1 px-2" width="50">ITEM</th>
@@ -289,7 +289,7 @@ $cc_disapproved = in_array(7, $statuses);
 								@endif
 							</tbody>
 						</table> --}}
-						<table class="table table-separate text-center table-numbering mb-0" id="table-tap">
+						<table class="table table-tap table-separate text-center table-numbering mb-0" id="table-tap">
 							<thead>
 								<tr>
 									<th class="text-center py-1">Item</th>

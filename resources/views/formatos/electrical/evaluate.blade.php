@@ -438,7 +438,7 @@
         <div class="card-body pb-3 pt-0">
           <hr>
           <div class="table-responsive">
-          <table class="table table-separate text-center table-numbering mb-0" id="table-tap">
+          <table class="table table-tap table-separate text-center table-numbering mb-0" id="table-tap">
             <thead>
               <tr>
                 <th class="py-1">Tap</th>

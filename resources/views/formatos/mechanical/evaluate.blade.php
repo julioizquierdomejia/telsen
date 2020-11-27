@@ -462,18 +462,18 @@ array (
                     </select>
                   </td>
                   <td width="120">
-                    <input type="text" class="form-control
+                    <input type="text" class="form-control mt-0
                     @error("works[{{$key}}][description]") is-invalid @enderror"
                     placeholder="Descripción" value="{{old('works')[$key]['description']}}" name="works[{{$key}}][description]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[$key]['medidas']}}" name="works[{{$key}}][medidas]">
+                    <input type="text" class="form-control mt-0 @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[$key]['medidas']}}" name="works[{{$key}}][medidas]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[$key]['qty']}}" name="works[{{$key}}][qty]">
+                    <input type="text" class="form-control mt-0 @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[$key]['qty']}}" name="works[{{$key}}][qty]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[$key]['personal']}}" name="works[{{$key}}][personal]">
+                    <input type="text" class="form-control mt-0 @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[$key]['personal']}}" name="works[{{$key}}][personal]">
                   </td>
                   <td>
                     <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
@@ -499,16 +499,16 @@ array (
                     </select>
                   </td>
                   <td width="120">
-                    <input type="text" class="form-control @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
+                    <input type="text" class="form-control mt-0 @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
+                    <input type="text" class="form-control mt-0 @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
+                    <input type="text" class="form-control mt-0 @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
+                    <input type="text" class="form-control mt-0 @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
                   </td>
                   <td>
                     <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far ml-1 fa-trash"></i></button>
@@ -532,6 +532,12 @@ array (
             @error('observaciones')
             <p class="error-message text-danger">{{ $message }}</p>
             @enderror
+          </div>
+          <div class="files">
+            <label class="col-form-label">Imágenes</label>
+              <div class="form-control-file h-auto">
+                <input class="form-control" type="file" name="files[]" multiple="" id="evalImages">
+              </div>
           </div>
         </div>
         <div class="row">
@@ -608,16 +614,16 @@ $('.btn-add-row').click(function () {
   </select>
 </td>
 <td width="120">
-  <input type="text" class="form-control" placeholder="Descripción" value="" name="works[` + row_index + `][description]">
+  <input type="text" class="form-control mt-0" placeholder="Descripción" value="" name="works[` + row_index + `][description]">
 </td>
 <td width="100">
-  <input type="text" class="form-control" placeholder="Medida" value="" name="works[` + row_index + `][medidas]">
+  <input type="text" class="form-control mt-0" placeholder="Medida" value="" name="works[` + row_index + `][medidas]">
 </td>
 <td width="100">
-  <input type="text" class="form-control" placeholder="Cantidad" value="" name="works[` + row_index + `][qty]">
+  <input type="text" class="form-control mt-0" placeholder="Cantidad" value="" name="works[` + row_index + `][qty]">
 </td>
 <td width="100">
-  <input type="text" class="form-control" placeholder="Personal" value="" name="works[` + row_index + `][personal]">
+  <input type="text" class="form-control mt-0" placeholder="Personal" value="" name="works[` + row_index + `][personal]">
 </td>
 <td>
   <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>

@@ -50,7 +50,7 @@
 @endphp
 <div class="row">
   <div class="col-md-12">
-    <form class="form-group" method="POST" action="{{route('formatos.electrical.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
+    <form method="POST" action="{{route('formatos.electrical.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
       @csrf
       <div class="card form-card">
         <div class="card-header">
@@ -459,23 +459,23 @@
               @foreach($tran_tap as $key => $tap)
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][uv1]" value="{{old('tran_tap')[$key]['uv1']}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][uv2]" value="{{old('tran_tap')[$key]['uv2']}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][vu1]" value="{{old('tran_tap')[$key]['vu1']}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][vu2]" value="{{old('tran_tap')[$key]['vu2']}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][wu1]" value="{{old('tran_tap')[$key]['wu1']}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][wu2]" value="{{old('tran_tap')[$key]['wu2']}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv1]" value="{{old('tran_tap')[$key]['uv1']}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv2]" value="{{old('tran_tap')[$key]['uv2']}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu1]" value="{{old('tran_tap')[$key]['vu1']}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu2]" value="{{old('tran_tap')[$key]['vu2']}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu1]" value="{{old('tran_tap')[$key]['wu1']}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu2]" value="{{old('tran_tap')[$key]['wu2']}}"></td>
               </tr>
               @endforeach
               @else
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][uv1]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][uv2]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][vu1]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][vu2]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][wu1]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][wu2]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][uv1]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][uv2]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][vu1]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][vu2]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu1]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu2]" value=""></td>
               </tr>
               @endif
             </tbody>
@@ -676,6 +676,13 @@
               @error('works')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
+              </div>
+              <div class="files col-12">
+              <label class="col-form-label">Imágenes</label>
+                <div class="form-control-file h-auto">
+                  <input class="form-control" type="file" name="files[]" multiple="" id="evalImages">
+                </div>
+            </div>
             </div>
             <div class="col-12 text-center mt-4">
               <button type="submit" class="btn btn-primary btn-round">Enviar</button>
@@ -756,12 +763,12 @@ $(document).ready(function() {
   var row_index = $('#table-tap tbody tr').length;
   var row = `<tr>
             <td class="cell-counter"><span class="number"></span></td>
-            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][uv1]" value=""></td>
-            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][uv2]" value=""></td>
-            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][vu1]" value=""></td>
-            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][vu2]" value=""></td>
-            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][wu1]" value=""></td>
-            <td><input type="text" class="form-control" name="tran_tap[`+row_index+`][wu2]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][uv1]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][uv2]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][vu1]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][vu2]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][wu1]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][wu2]" value=""></td>
           </tr>`;
 $('#table-tap tbody').append(row);
 //createJSON();

@@ -270,6 +270,26 @@ $status_last = $ot_status->last();
 				</div>
 			</div>
 		</div>
+		<div class="card form-card">
+	      <div class="card-header">
+	        <h4 class="second-title text-danger py-2">Galería</h4>
+	      </div>
+	      <div class="card-body">
+	          <div class="gallery">
+	            @if($gallery)
+	            <ul class="row list-unstyled">
+	            @foreach($gallery as $file)
+	            <li class="gallery-item col-12 col-md-4 col-xl-3">
+	              <img src="{{ asset("uploads/mechanical/$formato->ot_id/$file->name") }}">
+	            </li>
+	            @endforeach
+	            </ul>
+	            @else
+	            <p class="text-center">No hay imágenes.</p>
+	            @endif
+	          </div>
+	      </div>
+	    </div>
 	</div>
 </div>
 @if($status_last->status_id < 4 && $formato->approved == 0)

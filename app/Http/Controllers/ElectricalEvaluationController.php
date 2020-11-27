@@ -8,6 +8,7 @@ use App\Models\ElectricalEvaluationCharacteristic;
 use App\Models\ElectricalEvaluationReception;
 use App\Models\ElectricalEvaluationTestIn;
 use App\Models\ElectricalEvaluationTransformer;
+use App\Models\ElectricalGallery;
 use App\Models\Ot;
 use App\Models\MotorBrand;
 use App\Models\MotorModel;
@@ -228,6 +229,8 @@ class ElectricalEvaluationController extends Controller
             'tran_ru_v' => 'string|nullable',
             'tran_rv_u' => 'string|nullable',
             'tran_ww' => 'string|nullable',
+
+            'files.*' => 'mimes:jpeg,jpg,png,gif|nullable'
         );
 
         $tran_tap = json_encode($request->input('tran_tap'));
@@ -275,6 +278,7 @@ class ElectricalEvaluationController extends Controller
         $eleval->diseno_nema = $request->input('diseno_nema');
         $eleval->ip = $request->input('ip');
         $eleval->peso = $request->input('peso');
+        $eleval->approved = 0;
         $eleval->save();
 
         $elcheval = new ElectricalEvaluationCharacteristic();
@@ -391,6 +395,21 @@ class ElectricalEvaluationController extends Controller
         }
 
         ElectricalEvaluationWork::insert($services);
+
+        if ($request->file('files')) {
+            $files = $request->file('files');
+            foreach ($files as $key => $file) {
+                $ext = $file->getClientOriginalExtension();
+                $uniqueFileName = preg_replace('/\s+/', "-", str_replace(".".$ext, "", $file->getClientOriginalName()) .uniqid()) . ".".$ext;
+
+                $image = new ElectricalGallery(); // this is to have new instance of own
+                $image->el_id = $eleval->id;
+                $image->name = $uniqueFileName;
+                $image->save();
+
+                $file->move(public_path("uploads/electrical/$id"), $uniqueFileName);
+            }
+        }
 
         $status = Status::where('id', 3)->first();
         if ($status) {
@@ -547,7 +566,9 @@ class ElectricalEvaluationController extends Controller
                 )
                 ->get();
 
-        return view('formatos.electrical.show', compact('formato', 'works'));
+        $gallery = ElectricalGallery::where('el_id', $formato->id)->get();
+
+        return view('formatos.electrical.show', compact('formato', 'works', 'gallery'));
     }
 
     /**
@@ -824,6 +845,8 @@ class ElectricalEvaluationController extends Controller
             'tran_ru_v' => 'string|nullable',
             'tran_rv_u' => 'string|nullable',
             'tran_ww' => 'string|nullable',
+
+            'files.*' => 'mimes:jpeg,jpg,png,gif|nullable'
         );
 
         $this->validate($request, $rules);
@@ -992,6 +1015,21 @@ class ElectricalEvaluationController extends Controller
                 ElectricalEvaluationWork::insert($services);
             }
         }
+
+        /*if ($request->file('files')) {
+            $files = $request->file('files');
+            foreach ($files as $key => $file) {
+                $ext = $file->getClientOriginalExtension();
+                $uniqueFileName = preg_replace('/\s+/', "-", str_replace(".".$ext, "", $file->getClientOriginalName()) .uniqid()) . ".".$ext;
+
+                $image = new ElectricalGallery(); // this is to have new instance of own
+                $image->el_id = $eleval->id;
+                $image->name = $uniqueFileName;
+                $image->save();
+
+                $file->move(public_path("uploads/electrical/$id"), $uniqueFileName);
+            }
+        }*/
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');

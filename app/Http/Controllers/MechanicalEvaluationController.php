@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MechanicalEvaluation;
 use App\Models\MechanicalEvaluationWork;
+use App\Models\MechanicalGallery;
 use App\Models\RotorCodRodajePt1;
 use App\Models\RotorCodRodajePt2;
 use App\Models\Ot;
@@ -172,7 +173,9 @@ class MechanicalEvaluationController extends Controller
 
             'observaciones' => 'string|nullable',
 
-            'works' => 'array|nullable'
+            'works' => 'array|nullable',
+
+            'files.*' => 'mimes:jpeg,jpg,png,gif|nullable'
         );
 
         $validator = $this->validate($request, $rules);
@@ -278,6 +281,21 @@ class MechanicalEvaluationController extends Controller
             ]);
         }
 
+        if ($request->file('files')) {
+            $files = $request->file('files');
+            foreach ($files as $key => $file) {
+                $ext = $file->getClientOriginalExtension();
+                $uniqueFileName = preg_replace('/\s+/', "-", str_replace(".".$ext, "", $file->getClientOriginalName()) .uniqid()) . ".".$ext;
+
+                $image = new MechanicalGallery();
+                $image->me_id = $meval->id;
+                $image->name = $uniqueFileName;
+                $image->save();
+
+                $file->move(public_path("uploads/mechanical/$id"), $uniqueFileName);
+            }
+        }
+
         activitylog('eval. mechanical', 'store', null, json_encode($meval->toArray()));
 
         // redirect
@@ -320,8 +338,9 @@ class MechanicalEvaluationController extends Controller
                     'services.area_id'
                 )
                 ->get();
+        $gallery = MechanicalGallery::where('me_id', $formato->id)->get();
 
-        return view('formatos.mechanical.show', compact('formato', 'works'));
+        return view('formatos.mechanical.show', compact('formato', 'works', 'gallery'));
     }
 
     /**
@@ -446,7 +465,9 @@ class MechanicalEvaluationController extends Controller
 
             'observaciones' => 'string|nullable',
 
-            'works' => 'array|nullable'
+            'works' => 'array|nullable',
+
+            //'files.*' => 'mimes:jpeg,jpg,png,gif|nullable'
         );
 
         $validator = $this->validate($request, $rules);
@@ -559,6 +580,21 @@ class MechanicalEvaluationController extends Controller
                 MechanicalEvaluationWork::insert($services);
             }
         }
+
+        /*if ($request->file('files')) {
+            $files = $request->file('files');
+            foreach ($files as $key => $file) {
+                $ext = $file->getClientOriginalExtension();
+                $uniqueFileName = preg_replace('/\s+/', "-", str_replace(".".$ext, "", $file->getClientOriginalName()) .uniqid()) . ".".$ext;
+
+                $image = new MechanicalGallery();
+                $image->me_id = $eleval->id;
+                $image->name = $uniqueFileName;
+                $image->save();
+
+                $file->move(public_path("uploads/mechanical/$id"), $uniqueFileName);
+            }
+        }*/
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');

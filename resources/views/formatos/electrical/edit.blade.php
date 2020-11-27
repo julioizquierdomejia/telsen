@@ -444,23 +444,23 @@
               @foreach($tran_tap as $key => $tap)
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][uv1]" value="{{$tap['uv1'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][uv2]" value="{{$tap['uv2'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][vu1]" value="{{$tap['vu1'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][vu2]" value="{{$tap['vu2'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][wu1]" value="{{$tap['wu1'] ?? ''}}"></td>
-                <td><input type="text" class="form-control" name="tran_tap[{{$key}}][wu2]" value="{{$tap['wu2'] ?? ''}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv1]" value="{{$tap['uv1'] ?? ''}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv2]" value="{{$tap['uv2'] ?? ''}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu1]" value="{{$tap['vu1'] ?? ''}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu2]" value="{{$tap['vu2'] ?? ''}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu1]" value="{{$tap['wu1'] ?? ''}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu2]" value="{{$tap['wu2'] ?? ''}}"></td>
               </tr>
               @endforeach
               @else
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][uv1]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][uv2]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][vu1]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][vu2]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][wu1]" value=""></td>
-                <td><input type="text" class="form-control" name="tran_tap[0][wu2]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][uv1]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][uv2]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][vu1]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][vu2]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu1]" value=""></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu2]" value=""></td>
               </tr>
               @endif
             </tbody>
@@ -666,6 +666,26 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
+            <div class="col-12">
+              <div class="gallery">
+              <h6>Galería</h6>
+              @if($gallery)
+              <ul class="row list-unstyled">
+              @foreach($gallery as $file)
+              <li class="gallery-item col-12 col-md-4 col-xl-3">
+                <img src="{{ asset("uploads/mechanical/$formato->ot_id/$file->name") }}">
+              </li>
+              @endforeach
+              </ul>
+              @else
+              <p class="text-center">No hay imágenes.</p>
+              @endif
+            </div>
+            {{-- <div class="files">
+              <label class="col-label">Imágenes</label>
+              <input type="file" name="files[]" multiple="" id="evalImages">
+            </div> --}}
+            </div>
             <div class="col-12 text-center mt-4">
               <button type="submit" class="btn btn-primary btn-round">Enviar</button>
             </div>
@@ -762,16 +782,16 @@ var row = `<tr>
       </select>
     </td>
     <td width="120">
-      <input type="text" class="form-control" placeholder="Descripción" value="" name="works[`+row_index+`][description]">
+      <input type="text" class="form-control mt-0" placeholder="Descripción" value="" name="works[`+row_index+`][description]">
     </td>
     <td width="100">
-      <input type="text" class="form-control" placeholder="Medida" value="" name="works[`+row_index+`][medidas]">
+      <input type="text" class="form-control mt-0" placeholder="Medida" value="" name="works[`+row_index+`][medidas]">
     </td>
     <td width="100">
-      <input type="text" class="form-control" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
+      <input type="text" class="form-control mt-0" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
     </td>
     <td width="100">
-      <input type="text" class="form-control" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
+      <input type="text" class="form-control mt-0" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
     </td>
     <td>
       <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>

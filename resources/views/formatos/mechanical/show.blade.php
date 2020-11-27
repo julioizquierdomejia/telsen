@@ -21,6 +21,9 @@ $status_last = $ot_status->last();
 
 						@if($formato->approved == 1)
 			            <button type="button" class="btn btn-success mt-0">Aprobada</button>
+			            @if($approved_by)
+			            <p>Aprobado por: {{ $approved_by->{'name'} }}</p>
+			            @endif
 			            @elseif($formato->approved == 2)
 			            <button type="button" class="btn btn-danger mt-0">Desaprobada</button>
 			            @else

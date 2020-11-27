@@ -19,6 +19,9 @@ $status_last = $ot_status->last();
             <a class="btn btn-orange btn-round" href="{{route('formatos.electrical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
             @if($formato->approved == 1)
             <button type="button" class="btn btn-success mt-0">Aprobada</button>
+            @if($approved_by)
+            <p>Aprobado por: {{ $approved_by->{'name'} }}</p>
+            @endif
             @elseif($formato->approved == 2)
             <button type="button" class="btn btn-danger mt-0">Desaprobada</button>
             @else

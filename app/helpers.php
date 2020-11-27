@@ -33,7 +33,7 @@ if (! function_exists('activitylog')) {
     function activitylog($section, $action, $original_data, $data)
     {
     	if (env('LOG_ENABLED')) {
-    		if ($action == 'update' && !array_diff($original_data, $data)) {
+    		if ($action == 'update' && $original_data && $data && !array_diff($original_data, $data)) {
 	    		//No guardar si no se ha modificado el contenido
 	    		return;
 	    	}

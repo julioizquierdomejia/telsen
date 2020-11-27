@@ -84,16 +84,18 @@ class ElectricalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $action = $request->input('action');
-
+        $eval = ElectricalEvaluation::findOrFail($id);
+        $original_data = $eval->toArray();
+        
         if ($action == 1) {
-            $eval = ElectricalEvaluation::findOrFail($id);
             $eval->approved = 1;
-            $eval->save();
         } else /*if($action == 2)*/ {
-            $eval = ElectricalEvaluation::findOrFail($id);
             $eval->approved = 2;
-            $eval->save();
         }
+        $eval->save();
+
+        activitylog('electrical_evaluations_approve', 'update', $original_data, $eval->toArray());
+
         return response()->json(['data'=>json_encode($eval),'success'=>true]);
     }
 
@@ -419,7 +421,7 @@ class ElectricalEvaluationController extends Controller
             ]);
         }
 
-        activitylog('eval. electrical', 'store', null, json_encode($eltraneval->toArray()));
+        activitylog('electrical_evaluations', 'store', null, $eltraneval->toArray());
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');
@@ -568,7 +570,14 @@ class ElectricalEvaluationController extends Controller
 
         $gallery = ElectricalGallery::where('el_id', $formato->id)->get();
 
-        return view('formatos.electrical.show', compact('formato', 'works', 'gallery'));
+        $approved_by = \DB::table('logs')->where('section', 'electrical_evaluations_approve')
+                        ->join('users', 'users.id', '=', 'logs.user_id')
+                        ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                        ->where('data', 'like', '%"ot_id":'. $formato->ot_id . '%')
+                        ->select('logs.*', 'users.email', 'user_data.name')
+                        ->first();
+
+        return view('formatos.electrical.show', compact('formato', 'works', 'gallery', 'approved_by'));
     }
 
     /**
@@ -855,6 +864,8 @@ class ElectricalEvaluationController extends Controller
 
         // update
         $eleval = ElectricalEvaluation::findOrFail($id);
+        $original_data = $eleval->toArray();
+
         $eleval->recepcionado_por = $request->input('recepcionado_por');
         $eleval->potencia = $request->input('potencia');
         $eleval->conex = $request->input('conex');
@@ -1031,7 +1042,8 @@ class ElectricalEvaluationController extends Controller
             }
         }*/
 
-        // redirect
+        activitylog('electrical_evaluations', 'update', $original_data, $eltraneval->toArray());
+
         \Session::flash('message', 'Successfully updated formato!');
         return redirect('formatos/electrical');
     }

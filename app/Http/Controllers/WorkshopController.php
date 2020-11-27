@@ -147,9 +147,9 @@ class WorkshopController extends Controller
                 'status_id' => $status->id,
                 'ot_id' => $id,
             ]);
-        }
+        }*/
 
-        activitylog('costos', 'store', null, $cost->toArray());*/
+        activitylog('workshop', 'store', null, $data);
 
         return redirect('talleres');
     }
@@ -257,18 +257,18 @@ class WorkshopController extends Controller
         $this->validate($request, $rules);
 
         // update
-        $cost = Workshop::findOrFail($id);
-        $original_data = $cost->toArray();
+        $workshop = Workshop::findOrFail($id);
+        $original_data = $workshop->toArray();
 
-        $cost->name       = $request->get('name');
-        $cost->enabled    = $request->get('enabled');
-        $cost->save();
+        $workshop->name       = $request->get('name');
+        $workshop->enabled    = $request->get('enabled');
+        $workshop->save();
 
-        activitylog('costos', 'update', $original_data, $cost->toArray());
+        activitylog('workshop', 'update', $original_data, $workshop->toArray());
 
         // redirect
         \Session::flash('message', 'Successfully updated cost!');
-        return redirect('costos');
+        return redirect('ordenes');
     }
 
     /**

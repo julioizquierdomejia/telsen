@@ -56,7 +56,7 @@ class MechanicalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
         $formato = MechanicalEvaluation::where('mechanical_evaluations.ot_id', $ot_id)->first();
         if ($formato) {
-            return redirect('formatos/mechanical');
+            return redirect('formatos/mechanical/'.$formato->id.'ver');
         }
         $cod_rodaje_p1 = RotorCodRodajePt1::where('enabled', 1)->get();
         $cod_rodaje_p2 = RotorCodRodajePt2::where('enabled', 1)->get();

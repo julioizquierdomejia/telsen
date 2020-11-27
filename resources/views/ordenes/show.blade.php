@@ -115,14 +115,12 @@ $status_last = $ot_status->last();
 					@if(in_array(4, $statuses) || in_array(5, $statuses) || in_array(6, $statuses) && $ot->tipo_cliente_id == 2)
 					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Ver Tarjeta de Costo</a>
 					@endif
-					@if(in_array(2, $statuses))
-						<!-- eval. mecanica -->
+					@if($meval)
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
 					@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
 					@endif
-					@if(in_array(3, $statuses))
-						<!-- eval. electrica -->
+					@if($eeval)
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
 					@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>

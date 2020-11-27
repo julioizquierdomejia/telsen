@@ -61,7 +61,7 @@ class ElectricalEvaluationController extends Controller
 
         $formato = ElectricalEvaluation::where('ot_id', $id)->first();
         if ($formato) {
-            return redirect('formatos/electrical');
+            return redirect('formatos/electrical/'.$formato->id.'/ver');
         }
 
         $ot = Ot::where('ots.id', $id)

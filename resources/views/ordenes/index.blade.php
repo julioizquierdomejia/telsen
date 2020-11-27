@@ -91,11 +91,11 @@
         </button>
       </div>
       <div class="modal-body text-center">
-        <h6 class="body-title">¿Seguro desea eliminar la OT N° "<strong></strong>"?</h6>
+        <p class="text my-3 body-title">¿Seguro desea eliminar la OT N° "<strong></strong>"?</p>
       </div>
       <div class="modal-footer justify-content-center">
         <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancelar</button>
-        <button class="btn btn-primary btn-delete-confirm" type="button" data-otid="">Eliminar</button>
+        <button class="btn btn-primary btn-delete-confirm" type="button" data-otid=""><i class="fal fa-trash"></i> Eliminar</button>
       </div>
     </div>
   </div>
@@ -155,7 +155,7 @@ $(document).ready(function() {
                                 <a href="/ordenes/`+item.id+`/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                                 <a href="/ordenes/`+item.id+`/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                                 <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="`+item.id+`" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>
-                                `+ getStatusHtml(status, item.id) +
+                                `+ getStatusHtml(status, item) +
                                 `</td></tr>`
                           );
                       })
@@ -205,7 +205,6 @@ $(document).ready(function() {
                               item_days += '<span class="text-nowrap">quedan ' +days + ' días</span>';
                             }
                           }
-                            var status = getStatus(item.id);
                             $('#nav-disapprovedots tbody').append(
                                 `<tr class="text-muted" data-id="`+item.id+`">
                                   <td class="text-nowrap">` + created_at + `</td>
@@ -223,7 +222,7 @@ $(document).ready(function() {
                                   <a href="/ordenes/`+item.id+`/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                                   <a href="/ordenes/`+item.id+`/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                                   <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="`+item.id+`" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>
-                                  `+ getStatusHtml(status, item.id) +
+                                  `+ getStatusHtml(status, item) +
                                   `</td></tr>`
                             );
                         })
@@ -317,10 +316,14 @@ $(document).ready(function() {
         async: false,
         success: function(response) {
             if (response.success) {
-                var data = $.parseJSON(response.data);
-                status['data'] = data;
-                if (data) {
-                  $.each(data, function (id, item) {
+                var statuses = $.parseJSON(response.status);
+                status['status'] = statuses;
+                status['eeval'] = response.eeval ? $.parseJSON(response.eeval) : '';
+                status['meval'] = response.meval ? $.parseJSON(response.meval) : '';
+                status['rdi'] = response.rdi ? $.parseJSON(response.rdi) : '';
+                status['cost_card'] = response.cost_card ? $.parseJSON(response.cost_card) : '';
+                if (statuses) {
+                  $.each(statuses, function (id, item) {
                     if(item.status_id == 4) {
                       status['html'] = `<span class="badge badge-primary px-2 py-1 w-100">`+item.name+`</span>`
                     }
@@ -344,25 +347,28 @@ $(document).ready(function() {
       return status;
     }
 
-    function getStatusHtml(status, id) {
+    function getStatusHtml(data, item) {
       var html = "";
-      if(status.data.length > 1) {
+      if(data.cost_card || data.rdi || data.meval || data.eeval) {
         html = `<div class="dropdown d-inline-block dropleft">
           <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-check"></i></button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">`;
-            for(var i = 0; i < status.data.length; i++) {
-              if(status.data[i].id == 2) {
-              html += `<a class="dropdown-item" href="/formatos/mechanical/`+id+`/ver"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>`
+            /*for(var i = 0; i < data.data.length; i++) {
+              if(data.data[i].id == 4) {
+              html += `<a class="dropdown-item" href="/tarjeta-costo/`+item.id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>`
               }
-              if(status.data[i].id == 3) {
-              html += `<a class="dropdown-item" href="/formatos/electrical/`+id+`/ver"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>`
-              }
-              if(status.data[i].id == 4) {
-              html += `<a class="dropdown-item" href="/tarjeta-costo/`+id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>`
-              }
-              if(status.data[i].id == 11) {
-              html += `<a class="dropdown-item" href="/rdi/`+id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>`
-              }
+            }*/
+            if(data.cost_card) {
+              html += `<a class="dropdown-item" href="/tarjeta-costo/`+data.cost_card.cc_id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>`
+            }
+            if(data.rdi) {
+            html += `<a class="dropdown-item" href="/rdi/`+data.rdi.rdi_id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>`
+            }
+            if(data.meval) {
+            html += `<a class="dropdown-item" href="/formatos/mechanical/`+data.meval.meval_id+`/ver"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>`
+            }
+            if(data.eeval) {
+            html += `<a class="dropdown-item" href="/formatos/electrical/`+data.eeval.eeval_id+`/ver"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>`
             }
             html += `</div></div>`;
         }

@@ -9,6 +9,9 @@ use App\Models\MotorModel;
 use App\Models\Status;
 use App\Models\ElectricalEvaluation;
 use App\Models\MechanicalEvaluation;
+use App\Models\CostCard;
+use App\Models\WorkShop;
+use App\Models\Rdi;
 use Illuminate\Http\Request;
 
 class OtController extends Controller
@@ -112,7 +115,37 @@ class OtController extends Controller
                   //->latest('status_ot.id')
                   //->first();
                   ->get();
-        return response()->json(['data'=>json_encode($ot_status), 'success'=>true]);
+
+        $rdi = Rdi::where('enabled', 1)
+                ->where('ot_id', $id)
+                ->select('id as rdi_id')
+                ->first();
+
+        $meval = MechanicalEvaluation::where('ot_id', $id)
+                ->select('mechanical_evaluations.id as meval_id')
+                ->first();
+
+        $eeval = ElectricalEvaluation::where('ot_id', $id)
+                ->select('electrical_evaluations.id as eeval_id')
+                ->first();
+
+        $cost_card = CostCard::where('ot_id', $id)
+                ->select('cost_cards.id as cc_id')
+                ->first();
+
+        /*$work_shop = WorkShop::where('ot_id', $id)
+                ->select('id as ws_id')
+                ->first();*/
+
+        return response()->json([
+            'status' => json_encode($ot_status),
+            'rdi' => json_encode($rdi),
+            'meval' => json_encode($meval),
+            'eeval' => json_encode($eeval),
+            'cost_card' => json_encode($cost_card),
+            //'work_shop' => json_encode($work_shop),
+            'success' => true
+        ]);
     }
 
     public function list(Request $request)
@@ -262,7 +295,11 @@ class OtController extends Controller
         $meval = MechanicalEvaluation::where('ot_id', $id)->first();
         $eeval = ElectricalEvaluation::where('ot_id', $id)->first();
 
-        return view('ordenes.show', compact('ot', 'rdi', 'meval', 'eeval'));
+        $cost_card = CostCard::where('ot_id', $id)
+                ->select('cost_cards.id as cc_id')
+                ->first();
+
+        return view('ordenes.show', compact('ot', 'rdi', 'meval', 'eeval', 'cost_card'));
     }
 
     public function pvirtual(Request $request)

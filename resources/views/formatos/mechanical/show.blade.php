@@ -282,8 +282,8 @@ $status_last = $ot_status->last();
 	            @if($gallery)
 	            <ul class="row list-unstyled">
 	            @foreach($gallery as $file)
-	            <li class="gallery-item col-12 col-md-4 col-xl-3">
-	              <img src="{{ asset("uploads/mechanical/$formato->ot_id/$file->name") }}">
+	            <li class="gallery-item col-12 col-md-4 col-xl-3 py-2">
+	              <img class="btn p-0" data-toggle="modal" data-target="#galleryModal" src="{{ asset("uploads/mechanical/$formato->ot_id/$file->name") }}" width="250">
 	            </li>
 	            @endforeach
 	            </ul>
@@ -316,6 +316,21 @@ $status_last = $ot_status->last();
   </div>
 </div>
 @endif
+<div class="modal fade" tabindex="-1" id="galleryModal">
+    <div class="modal-dialog modal-lg" style="max-height: calc(100vh - 40px)">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Galería</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <div class="modal-body h-100 text-center">
+            <img class="image img-fluid" src="" width="600">
+        </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('javascript')
 <script>
@@ -347,6 +362,10 @@ $status_last = $ot_status->last();
             console.log(data);
           }
       });
+    })
+
+    $('#galleryModal').on('show.bs.modal', function (event) {
+    	$('#galleryModal .modal-body .image').attr('src', $(event.relatedTarget).attr('src'))
     })
   })
 </script>

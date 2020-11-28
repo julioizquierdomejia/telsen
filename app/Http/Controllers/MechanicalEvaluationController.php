@@ -100,7 +100,7 @@ class MechanicalEvaluationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(Request $request, $ot_id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
         // validate
@@ -186,7 +186,7 @@ class MechanicalEvaluationController extends Controller
         $meval = new MechanicalEvaluation();
 
         //$meval->ot_id = $request->input('ot_id');
-        $meval->ot_id = $id;
+        $meval->ot_id = $ot_id;
 
         $meval->rpm = $request->input('rpm');
         $meval->hp_kw = $request->input('hp_kw');
@@ -262,24 +262,26 @@ class MechanicalEvaluationController extends Controller
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
-            $services[$key]['me_id'] = $meval->id;
-            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+            if (isset($item['service_id'])) {
+                $services[$key]['me_id'] = $meval->id;
+                $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+                $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+                $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+                $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+                $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
 
-            $services[$key]['created_at'] = $date;
-            $services[$key]['updated_at'] = $date;
+                $services[$key]['created_at'] = $date;
+                $services[$key]['updated_at'] = $date;
+
+                MechanicalEvaluationWork::insert($services);
+            }
         }
-
-        MechanicalEvaluationWork::insert($services);
 
         $status = Status::where('id', 2)->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
-                'ot_id' => $id,
+                'ot_id' => $ot_id,
             ]);
         }
 
@@ -327,8 +329,8 @@ class MechanicalEvaluationController extends Controller
 
         $formato = MechanicalEvaluation::findOrFail($id);
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)
-                ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
-                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->leftJoin('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
                     'mechanical_evaluation_works.id',
                     'mechanical_evaluation_works.description',
@@ -348,8 +350,16 @@ class MechanicalEvaluationController extends Controller
                         ->where('data', 'like', '%"ot_id":'. $formato->ot_id . '%')
                         ->select('logs.*', 'users.email', 'user_data.name')
                         ->first();
+        $maded_by = \DB::table('logs')
+                        ->join('users', 'users.id', '=', 'logs.user_id')
+                        ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                        ->where('logs.section', 'electrical_evaluations')
+                        ->where('logs.action', 'store')
+                        ->where('logs.data', 'like', '%"eel_id":'. $formato->id . '%')
+                        ->select('logs.*', 'user_data.name')
+                        ->first();
 
-        return view('formatos.mechanical.show', compact('formato', 'works', 'gallery', 'approved_by'));
+        return view('formatos.mechanical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by'));
     }
 
     /**
@@ -373,6 +383,8 @@ class MechanicalEvaluationController extends Controller
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         }
 
+        $gallery = MechanicalGallery::where('me_id', $formato->id)->get();
+
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)
                 ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
@@ -389,7 +401,7 @@ class MechanicalEvaluationController extends Controller
                 )
                 ->get();
 
-        return view('formatos.mechanical.edit', compact('formato', 'ot', 'areas', 'works'));
+        return view('formatos.mechanical.edit', compact('formato', 'ot', 'areas', 'works', 'gallery'));
     }
 
     /**
@@ -484,9 +496,6 @@ class MechanicalEvaluationController extends Controller
         // update
         $meval = MechanicalEvaluation::find($id);
         $original_data = $meval->toArray();
-
-        //$meval->ot_id = $request->input('ot_id');
-        $meval->ot_id = $id;
 
         $meval->rpm = $request->input('rpm');
         $meval->hp_kw = $request->input('hp_kw');

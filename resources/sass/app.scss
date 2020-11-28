@@ -364,10 +364,10 @@ img {
 	}
 	input {
 		&.form-control {
-			&:placeholder-shown:not(:focus) {
+			&:placeholder-shown:not(:focus):not(.is-invalid) {
 				border-color: #ced4da;
 			}
-			&:not(:placeholder-shown) {
+			&:not(:placeholder-shown):not(.is-invalid) {
 				border-color: $dark;
 			}
 		}

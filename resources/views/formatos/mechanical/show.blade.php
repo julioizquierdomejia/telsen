@@ -21,9 +21,6 @@ $status_last = $ot_status->last();
 
 						@if($formato->approved == 1)
 			            <button type="button" class="btn btn-success mt-0">Aprobada</button>
-			            @if($approved_by)
-			            <p>Aprobado por: {{ $approved_by->{'name'} }}</p>
-			            @endif
 			            @elseif($formato->approved == 2)
 			            <button type="button" class="btn btn-danger mt-0">Desaprobada</button>
 			            @else
@@ -31,6 +28,14 @@ $status_last = $ot_status->last();
 			            @endif
 					</span>
 				</h4>
+				@if($maded_by)
+		        <p class="mb-0 mt-2 py-2 bg-light row mx-0 justify-content-between">
+		          <span class="col-auto">Hecho por: {{ $maded_by->{'name'} }}</span>
+		          @if($approved_by)
+		            <span class="col-auto">{{$formato->approved == 1 ? 'Aprobado por:' : 'Desaprobado por:'}} {{ $approved_by->{'name'} }}</span>
+		            @endif
+		        </p>
+		        @endif
 			</div>
 			<div class="card-body">
 				<div class="row">
@@ -243,7 +248,7 @@ $status_last = $ot_status->last();
 								</tr>
 							</thead>
 							<tbody>
-								@if($works)
+								@if($works->count())
 								@foreach($works as $key => $work)
 								<tr>
 									<td class="cell-counter"><span class="number"></span></td>
@@ -257,7 +262,7 @@ $status_last = $ot_status->last();
 								@endforeach
 								@else
 								<tr>
-									<td colspan="7">-</td>
+									<td class="text-center" colspan="7">No se agregaron trabajos</td>
 								</tr>
 								@endif
 							</tbody>
@@ -279,7 +284,7 @@ $status_last = $ot_status->last();
 	      </div>
 	      <div class="card-body">
 	          <div class="gallery">
-	            @if($gallery)
+	            @if($gallery->count())
 	            <ul class="row list-unstyled">
 	            @foreach($gallery as $file)
 	            <li class="gallery-item col-12 col-md-4 col-xl-3 py-2">
@@ -288,7 +293,7 @@ $status_last = $ot_status->last();
 	            @endforeach
 	            </ul>
 	            @else
-	            <p class="text-center">No hay imágenes.</p>
+	            <p class="text-center">No se agregaron imágenes.</p>
 	            @endif
 	          </div>
 	      </div>

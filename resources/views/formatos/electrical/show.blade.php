@@ -19,9 +19,6 @@ $status_last = $ot_status->last();
             <a class="btn btn-orange btn-round" href="{{route('formatos.electrical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
             @if($formato->approved == 1)
             <button type="button" class="btn btn-success mt-0">Aprobada</button>
-            @if($approved_by)
-            <p>Aprobado por: {{ $approved_by->{'name'} }}</p>
-            @endif
             @elseif($formato->approved == 2)
             <button type="button" class="btn btn-danger mt-0">Desaprobada</button>
             @else
@@ -30,6 +27,14 @@ $status_last = $ot_status->last();
             @endif
           </span>
         </h4>
+        @if($maded_by)
+        <p class="mb-0 mt-2 py-2 bg-light row mx-0 justify-content-between">
+          <span class="col-auto">Hecho por: {{ $maded_by->{'name'} }}</span>
+          @if($approved_by)
+            <span class="col-auto">{{$formato->approved == 1 ? 'Aprobado por:' : 'Desaprobado por:'}} {{ $approved_by->{'name'} }}</span>
+            @endif
+        </p>
+        @endif
       </div>
       <div class="card-body pb-3 pt-0">
         <h5 class="text-danger mt-4">Datos del Motor</h5>
@@ -540,7 +545,7 @@ $status_last = $ot_status->last();
                 </tr>
                 </thead>
                 <tbody>
-                  @if($works)
+                  @if($works->count())
                   @foreach($works as $key => $work)
                   <tr>
                     <td class="cell-counter"><span class="number"></span></td>
@@ -554,32 +559,7 @@ $status_last = $ot_status->last();
                   @endforeach
                   @else
                   <tr>
-                    <td class="cell-counter"><span class="number"></span></td>
-                    <td>
-                      <select class="dropdown2 form-control select-area" name="works[0][area]" style="width: 100%">
-                        <option value="">Seleccionar area</option>
-                        @foreach($areas as $area)
-                        <option value="{{$area->id}}">{{$area->name}}</option>
-                        @endforeach
-                      </select>
-                    </td>
-                    <td>
-                      <select class="dropdown2 form-control select-service" name="works[0][service_id]" style="width: 100%"  disabled="">
-                        <option value="">Seleccionar servicio</option>
-                      </select>
-                    </td>
-                    <td width="120">
-                      <input type="text" class="form-control @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
-                    </td>
-                    <td width="100">
-                      <input type="text" class="form-control @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
-                    </td>
-                    <td width="100">
-                      <input type="text" class="form-control @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
-                    </td>
-                    <td width="100">
-                      <input type="text" class="form-control @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
-                    </td>
+                    <td class="text-center" colspan="7">No se agregaron trabajos</td>
                   </tr>
                   @endif
                 </tbody>
@@ -593,7 +573,7 @@ $status_last = $ot_status->last();
       </div>
       <div class="card-body">
           <div class="gallery">
-            @if($gallery)
+            @if($gallery->count())
             <ul class="row list-unstyled">
             @foreach($gallery as $file)
             <li class="gallery-item col-12 col-md-4 col-xl-3 py-2">
@@ -602,7 +582,7 @@ $status_last = $ot_status->last();
             @endforeach
             </ul>
             @else
-            <p class="text-center">No hay imágenes.</p>
+            <p class="text-center">No se agregaron imágenes.</p>
             @endif
           </div>
       </div>

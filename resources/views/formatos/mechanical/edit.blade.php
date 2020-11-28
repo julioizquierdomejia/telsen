@@ -512,9 +512,9 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="gallery">
+            <div class="gallery pt-3">
               <h6>Galería</h6>
-              @if($gallery)
+              @if($gallery->count())
               <ul class="row list-unstyled">
               @foreach($gallery as $file)
               <li class="gallery-item col-12 col-md-4 col-xl-3">

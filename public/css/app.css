@@ -30551,27 +30551,27 @@ img {
   border-color: #e3342f;
 }
 
-.form-card input.form-control:-moz-placeholder-shown:not(:focus) {
+.form-card input.form-control:-moz-placeholder-shown:not(:focus):not(.is-invalid) {
   border-color: #ced4da;
 }
 
-.form-card input.form-control:-ms-input-placeholder:not(:focus) {
+.form-card input.form-control:-ms-input-placeholder:not(:focus):not(.is-invalid) {
   border-color: #ced4da;
 }
 
-.form-card input.form-control:placeholder-shown:not(:focus) {
+.form-card input.form-control:placeholder-shown:not(:focus):not(.is-invalid) {
   border-color: #ced4da;
 }
 
-.form-card input.form-control:not(:-moz-placeholder-shown) {
+.form-card input.form-control:not(:-moz-placeholder-shown):not(.is-invalid) {
   border-color: #1e1e1e;
 }
 
-.form-card input.form-control:not(:-ms-input-placeholder) {
+.form-card input.form-control:not(:-ms-input-placeholder):not(.is-invalid) {
   border-color: #1e1e1e;
 }
 
-.form-card input.form-control:not(:placeholder-shown) {
+.form-card input.form-control:not(:placeholder-shown):not(.is-invalid) {
   border-color: #1e1e1e;
 }
 

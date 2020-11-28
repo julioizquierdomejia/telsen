@@ -105,7 +105,7 @@ class ElectricalEvaluationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(Request $request, $ot_id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
         
@@ -240,7 +240,7 @@ class ElectricalEvaluationController extends Controller
         $validator = $this->validate($request, $rules);
 
         // store
-        $ot = Ot::find($id);
+        $ot = Ot::find($ot_id);
         $ot->solped = $request->get('solped');
         $ot->descripcion_motor = $request->get('descripcion_motor');
         $ot->codigo_motor = $request->get('codigo_motor');
@@ -253,7 +253,7 @@ class ElectricalEvaluationController extends Controller
         $ot->save();
 
         $eleval = new ElectricalEvaluation();
-        $eleval->ot_id = $id;
+        $eleval->ot_id = $ot_id;
         //$eleval->solped = $request->input('solped');
         $eleval->recepcionado_por = $request->input('recepcionado_por');
         $eleval->potencia = $request->input('potencia');
@@ -385,18 +385,20 @@ class ElectricalEvaluationController extends Controller
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
-            $services[$key]['me_id'] = $eleval->id;
-            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
+            if (isset($item['service_id'])) {
+                $services[$key]['me_id'] = $eleval->id;
+                $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
+                $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
+                $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
+                $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
+                $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
 
-            $services[$key]['created_at'] = $date;
-            $services[$key]['updated_at'] = $date;
+                $services[$key]['created_at'] = $date;
+                $services[$key]['updated_at'] = $date;
+
+                ElectricalEvaluationWork::insert($services);
+            }
         }
-
-        ElectricalEvaluationWork::insert($services);
 
         if ($request->file('files')) {
             $files = $request->file('files');
@@ -417,7 +419,7 @@ class ElectricalEvaluationController extends Controller
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
-                'ot_id' => $id,
+                'ot_id' => $ot_id,
             ]);
         }
 
@@ -449,12 +451,12 @@ class ElectricalEvaluationController extends Controller
 
         $formato = ElectricalEvaluation::
                     join('ots', 'ots.id', '=', 'electrical_evaluations.ot_id')
-                    ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                    ->join('motor_models', 'motor_models.id', '=', 'ots.marca_id')
-                    ->join('eval_electrical_reception as eer', 'eer.eel_id', '=', 'electrical_evaluations.id')
-                    ->join('eval_electrical_test_in as eetesting', 'eetesting.eel_id', '=', 'electrical_evaluations.id')
-                    ->join('eval_electrical_characteristics as eechar', 'eechar.eel_id', '=', 'electrical_evaluations.id')
-                    ->join('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'electrical_evaluations.id')
+                    ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                    ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.marca_id')
+                    ->leftJoin('eval_electrical_reception as eer', 'eer.eel_id', '=', 'electrical_evaluations.id')
+                    ->leftJoin('eval_electrical_test_in as eetesting', 'eetesting.eel_id', '=', 'electrical_evaluations.id')
+                    ->leftJoin('eval_electrical_characteristics as eechar', 'eechar.eel_id', '=', 'electrical_evaluations.id')
+                    ->leftJoin('eval_electrical_transformer as eet', 'eet.eel_id', '=', 'electrical_evaluations.id')
                     ->select(
                         'electrical_evaluations.*',
 
@@ -570,14 +572,23 @@ class ElectricalEvaluationController extends Controller
 
         $gallery = ElectricalGallery::where('el_id', $formato->id)->get();
 
-        $approved_by = \DB::table('logs')->where('section', 'electrical_evaluations_approve')
+        $approved_by = \DB::table('logs')
                         ->join('users', 'users.id', '=', 'logs.user_id')
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
-                        ->where('data', 'like', '%"ot_id":'. $formato->ot_id . '%')
+                        ->where('logs.section', 'electrical_evaluations_approve')
+                        ->where('logs.data', 'like', '%"ot_id":'. $formato->ot_id . '%')
                         ->select('logs.*', 'users.email', 'user_data.name')
                         ->first();
 
-        return view('formatos.electrical.show', compact('formato', 'works', 'gallery', 'approved_by'));
+        $maded_by = \DB::table('logs')
+                        ->join('users', 'users.id', '=', 'logs.user_id')
+                        ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                        ->where('logs.section', 'electrical_evaluations')
+                        ->where('logs.action', 'store')
+                        ->where('logs.data', 'like', '%"eel_id":'. $formato->id . '%')
+                        ->select('logs.*', 'user_data.name')
+                        ->first();
+        return view('formatos.electrical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by'));
     }
 
     /**
@@ -705,6 +716,8 @@ class ElectricalEvaluationController extends Controller
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();
 
+        $gallery = ElectricalGallery::where('el_id', $formato->id)->get();
+
         $works = ElectricalEvaluationWork::where('me_id', $formato->id)
                 ->join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
@@ -721,7 +734,7 @@ class ElectricalEvaluationController extends Controller
                 )
                 ->get();
 
-        return view('formatos.electrical.edit', compact('formato', 'ot', 'marcas', 'modelos', 'areas', 'works'));
+        return view('formatos.electrical.edit', compact('formato', 'ot', 'marcas', 'modelos', 'areas', 'works', 'gallery'));
     }
 
     /**

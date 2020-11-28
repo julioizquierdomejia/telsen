@@ -37,9 +37,9 @@ class RdiController extends Controller
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
-                ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
-                ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
-                        ->select('ots.*', 'clients.razon_social', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw'
+                ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
+                ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
+                        ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.approved as ee_approved', 'ee_val.conex', 'me_val.hp_kw', 'me_val.approved as me_approved'
                         )
                         ->where('ots.enabled', 1)
                         ->where('clients.client_type_id', 1)
@@ -53,7 +53,7 @@ class RdiController extends Controller
             foreach ($ot_status as $key => $status) {
                 $array[] = $status->status_id;
             }
-            if (in_array(2, $array) && in_array(3, $array) && !in_array(4, $array) && !in_array(8, $array)) {
+            if (in_array(2, $array) && in_array(3, $array) && !in_array(4, $array) && !in_array(8, $array) && $ot->me_approved == 1 && $ot->ee_approved == 1) {
                 $rdis[] = $ot;
             }
         }

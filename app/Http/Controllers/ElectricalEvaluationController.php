@@ -86,7 +86,7 @@ class ElectricalEvaluationController extends Controller
 
         $action = $request->input('action');
         $ee_val = ElectricalEvaluation::findOrFail($id);
-        $original_data = $ee_val->toArray();
+        $original_data = $ee_val->getOriginal();
         
         if ($action == 1) {
             $ee_val->approved = 1;
@@ -255,7 +255,7 @@ class ElectricalEvaluationController extends Controller
         $ot->save();
 
         $eleval = new ElectricalEvaluation();
-        $eleval->ot_id = $ot_id;
+        $eleval->ot_id = (int)$ot_id;
         //$eleval->solped = $request->input('solped');
         $eleval->recepcionado_por = $request->input('recepcionado_por');
         $eleval->potencia = $request->input('potencia');
@@ -607,7 +607,7 @@ class ElectricalEvaluationController extends Controller
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
                         ->where('logs.section', 'electrical_evaluations')
                         ->where('logs.action', 'store')
-                        ->where('logs.data', 'like', '%"ot_id":"'. $formato->ot_id . '"%')
+                        ->where('logs.data', 'like', '%"ot_id":'. $formato->ot_id . '%')
                         ->select('logs.*', 'user_data.name')
                         ->first();
         return view('formatos.electrical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by'));

@@ -80,7 +80,7 @@ class MechanicalEvaluationController extends Controller
 
         $action = $request->input('action');
         $me_val = MechanicalEvaluation::findOrFail($id);
-        $original_data = $me_val->toArray();
+        $original_data = $me_val->getOriginal();
 
         if ($action == 1) {
             $me_val->approved = 1;
@@ -186,7 +186,7 @@ class MechanicalEvaluationController extends Controller
         $meval = new MechanicalEvaluation();
 
         //$meval->ot_id = $request->input('ot_id');
-        $meval->ot_id = $ot_id;
+        $meval->ot_id = (int)$ot_id;
 
         $meval->rpm = $request->input('rpm');
         $meval->hp_kw = $request->input('hp_kw');
@@ -299,7 +299,7 @@ class MechanicalEvaluationController extends Controller
                 $file->move(public_path("uploads/mechanical/$id"), $uniqueFileName);
             }
         }*/
-        $files = json_decode($request->input('files'), true);
+        $files = $request->input('files') ? json_decode($request->input('files'), true) : [];
         foreach ($files as $key => $file) {
             $uniqueFileName = $file['name'];
             $imageUpload = new OtGallery();
@@ -368,7 +368,7 @@ class MechanicalEvaluationController extends Controller
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
                         ->where('logs.section', 'mechanical_evaluations')
                         ->where('logs.action', 'store')
-                        ->where('logs.data', 'like', '%"ot_id":"'. $formato->ot_id . '"%')
+                        ->where('logs.data', 'like', '%"ot_id":'. $formato->ot_id . '%')
                         ->select('logs.*', 'user_data.name')
                         ->first();
 

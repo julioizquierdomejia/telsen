@@ -382,7 +382,8 @@ class MechanicalEvaluationController extends Controller
         } else {
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         }
-
+        $cod_rodaje_p1 = RotorCodRodajePt1::where('enabled', 1)->get();
+        $cod_rodaje_p2 = RotorCodRodajePt2::where('enabled', 1)->get();
         $gallery = MechanicalGallery::where('me_id', $formato->id)->get();
 
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)
@@ -401,7 +402,7 @@ class MechanicalEvaluationController extends Controller
                 )
                 ->get();
 
-        return view('formatos.mechanical.edit', compact('formato', 'ot', 'areas', 'works', 'gallery'));
+        return view('formatos.mechanical.edit', compact('formato', 'ot', 'areas', 'works', 'gallery', 'cod_rodaje_p1', 'cod_rodaje_p2'));
     }
 
     /**

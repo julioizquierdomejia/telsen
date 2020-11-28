@@ -59,7 +59,7 @@
         <h5 class="card-title">Editar Evaluación Mecánica</h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="{{route('formatos.mechanical.edit', ['id' => $formato->ot_id])}}" enctype="multipart/form-data">
+        <form class="form-group" method="POST" action="{{route('formatos.mechanical.edit', ['id' => $formato->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
             <div class="col-6 col-md-6 mb-2">
@@ -214,36 +214,48 @@
               <div class="row">
                 <div class="col-12 col-md-6 mb-2">
                 <label class="col-form-label">Cod rodaje Pto 1</label>
-                <input type="text" class="form-control @error('rotor_cod_rodaje_p1') is-invalid @enderror" placeholder="Cod rodaje Pto 1" value="{{old('rotor_cod_rodaje_p1', $formato->rotor_cod_rodaje_p1)}}" name="rotor_cod_rodaje_p1">
+                <select class="dropdown2 form-control" name="rotor_cod_rodaje_p1" style="width: 100%">
+                      <option value="">Seleccionar código</option>
+                      @foreach($cod_rodaje_p1 as $item)
+                      <option value="{{$item->id}}" data-asiento="{{$item->asiento_rodaje}}" data-alojamiento="{{$item->alojamiento_rodaje}}" {{ old('rotor_cod_rodaje_p1', $item['item']) == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
+                      @endforeach
+                    </select>
                 @error('rotor_cod_rodaje_p1')
                 <p class="error-message text-danger">{{ $message }}</p>
                 @enderror
               </div>
-              <div class="col-12 col-md-6 mb-2">
+              <div class="col-12 col-md-3 mb-2">
                 <label class="col-form-label">Asiento rodaje Pto 1 Ø</label>
                 <input type="text" class="form-control @error('rotor_asiento_rodaje_p1') is-invalid @enderror" placeholder="Asiento rodaje p1" value="{{old('rotor_asiento_rodaje_p1', $formato->rotor_asiento_rodaje_p1)}}" name="rotor_asiento_rodaje_p1">
                 @error('rotor_asiento_rodaje_p1')
                 <p class="error-message text-danger">{{ $message }}</p>
                 @enderror
               </div>
+              <div class="col-12 col-md-3"><input class="form-control mt-2 asiento-rodaje-pto1" placeholder="Ø" value="Ø" disabled=""></div>
               </div>
             </div>
             <div class="col-12">
               <div class="row">
                 <div class="col-12 col-md-6 mb-2">
               <label class="col-form-label">Cod rodaje Pto 2</label>
-              <input type="text" class="form-control @error('rotor_cod_rodaje_p2') is-invalid @enderror" placeholder="Cod rodaje Pto 2" value="{{old('rotor_cod_rodaje_p2', $formato->rotor_cod_rodaje_p2)}}" name="rotor_cod_rodaje_p2">
+              <select class="dropdown2 form-control" name="rotor_cod_rodaje_p2" style="width: 100%">
+                      <option value="">Seleccionar código</option>
+                      @foreach($cod_rodaje_p2 as $item)
+                      <option value="{{$item->id}}" data-asiento="{{$item->asiento_rodaje}}" data-alojamiento="{{$item->alojamiento_rodaje}}" {{ old('rotor_cod_rodaje_p2', $item['item']) == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
+                      @endforeach
+                    </select>
               @error('rotor_cod_rodaje_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="col-12 col-md-6 mb-2">
+            <div class="col-12 col-md-3 mb-2">
               <label class="col-form-label">Asiento rodaje Pto 2 Ø</label>
               <input type="text" class="form-control @error('rotor_asiento_rodaje_p2') is-invalid @enderror" placeholder="Asiento rodaje Pto 2" value="{{old('rotor_asiento_rodaje_p2', $formato->rotor_asiento_rodaje_p2)}}" name="rotor_asiento_rodaje_p2">
               @error('rotor_asiento_rodaje_p2')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
+            <div class="col-12 col-md-3"><input class="form-control mt-2 asiento-rodaje-pto2" placeholder="Ø" value="Ø" disabled=""></div>
               </div>
             </div>
             <div class="col-6 col-sm-6 col-lg-6 mb-2">
@@ -663,6 +675,24 @@ $('.btn-no').click(function () {
 })
 
 $('.select-area').trigger('change');
+
+$('[name=rotor_cod_rodaje_p1]').change(function () {
+  var $this = $(this), asiento = $this.find('option:selected').data('asiento'), alojamiento = $this.find('option:selected').data('alojamiento');
+
+  $('[name=rotor_asiento_rodaje_p1]').val(asiento ? asiento : '');
+  $('.asiento-rodaje-pto1').val(asiento ? asiento : 'Ø');
+  $('[name=estator_alojamiento_rodaje_tapa_p10]').val(alojamiento ? asiento : '');
+  $('.alojamiento-tapa-pto1').val(alojamiento ? asiento : '');
+})
+
+$('[name=rotor_cod_rodaje_p2]').change(function () {
+  var $this = $(this), asiento = $this.find('option:selected').data('asiento'), alojamiento = $this.find('option:selected').data('alojamiento');
+
+  $('[name=rotor_asiento_rodaje_p2]').val(asiento ? asiento : '');
+  $('.asiento-rodaje-pto2').val(asiento ? asiento : 'Ø');
+  $('[name=estator_alojamiento_rodaje_tapa_p20]').val(alojamiento ? asiento : '');
+  $('.alojamiento-tapa-pto2').val(alojamiento ? asiento : '');
+})
 })
 </script>
 @endsection

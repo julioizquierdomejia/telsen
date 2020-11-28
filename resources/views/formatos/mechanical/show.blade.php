@@ -252,12 +252,12 @@ $status_last = $ot_status->last();
 								@foreach($works as $key => $work)
 								<tr>
 									<td class="cell-counter"><span class="number"></span></td>
-									<td><span class="form-control">{{$work->area}}</span></td>
-									<td><span class="form-control">{{$work->service}}</span></td>
-									<td><span class="form-control">{{$work->description}}</span></td>
-									<td><span class="form-control">{{$work->medidas}}</span></td>
-									<td><span class="form-control">{{$work->qty}}</span></td>
-									<td><span class="form-control">{{$work->personal}}</span></td>
+									<td><span class="form-control h-auto mt-0">{{$work->area}}</span></td>
+									<td><span class="form-control h-auto mt-0">{{$work->service}}</span></td>
+									<td><span class="form-control h-auto mt-0">{{$work->description}}</span></td>
+									<td><span class="form-control h-auto mt-0">{{$work->medidas}}</span></td>
+									<td><span class="form-control h-auto mt-0">{{$work->qty}}</span></td>
+									<td><span class="form-control h-auto mt-0">{{$work->personal}}</span></td>
 								</tr>
 								@endforeach
 								@else

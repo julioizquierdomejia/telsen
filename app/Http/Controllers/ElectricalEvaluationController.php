@@ -85,19 +85,19 @@ class ElectricalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $action = $request->input('action');
-        $eval = ElectricalEvaluation::findOrFail($id);
-        $original_data = $eval->toArray();
+        $ee_val = ElectricalEvaluation::findOrFail($id);
+        $original_data = $ee_val->toArray();
         
         if ($action == 1) {
-            $eval->approved = 1;
+            $ee_val->approved = 1;
         } else /*if($action == 2)*/ {
-            $eval->approved = 2;
+            $ee_val->approved = 2;
         }
-        $eval->save();
+        $ee_val->save();
 
-        activitylog('electrical_evaluations_approve', 'update', $original_data, $eval->toArray());
+        activitylog('electrical_evaluations_approve', 'update', $original_data, $ee_val->toArray());
 
-        return response()->json(['data'=>json_encode($eval),'success'=>true]);
+        return response()->json(['data'=>json_encode($ee_val),'success'=>true]);
     }
 
     /**
@@ -442,7 +442,7 @@ class ElectricalEvaluationController extends Controller
             ]);
         }
 
-        activitylog('electrical_evaluations', 'store', null, $eltraneval->toArray());
+        activitylog('electrical_evaluations', 'store', null, $eleval->toArray());
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');
@@ -596,6 +596,7 @@ class ElectricalEvaluationController extends Controller
         $approved_by = \DB::table('logs')
                         ->join('users', 'users.id', '=', 'logs.user_id')
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                        ->where('logs.action', 'update')
                         ->where('logs.section', 'electrical_evaluations_approve')
                         ->where('logs.data', 'like', '%"ot_id":'. $formato->ot_id . '%')
                         ->select('logs.*', 'users.email', 'user_data.name')
@@ -606,7 +607,7 @@ class ElectricalEvaluationController extends Controller
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
                         ->where('logs.section', 'electrical_evaluations')
                         ->where('logs.action', 'store')
-                        ->where('logs.data', 'like', '%"eel_id":'. $formato->id . '%')
+                        ->where('logs.data', 'like', '%"ot_id":"'. $formato->ot_id . '"%')
                         ->select('logs.*', 'user_data.name')
                         ->first();
         return view('formatos.electrical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by'));

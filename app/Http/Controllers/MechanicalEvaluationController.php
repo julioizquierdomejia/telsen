@@ -56,7 +56,7 @@ class MechanicalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
         $formato = MechanicalEvaluation::where('mechanical_evaluations.ot_id', $ot_id)->first();
         if ($formato) {
-            return redirect('formatos/mechanical/'.$formato->id.'ver');
+            return redirect('formatos/mechanical/'.$formato->id.'/ver');
         }
         $cod_rodaje_p1 = RotorCodRodajePt1::where('enabled', 1)->get();
         $cod_rodaje_p2 = RotorCodRodajePt2::where('enabled', 1)->get();
@@ -79,19 +79,19 @@ class MechanicalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $action = $request->input('action');
-        $eval = MechanicalEvaluation::findOrFail($id);
-        $original_data = $eval->toArray();
+        $me_val = MechanicalEvaluation::findOrFail($id);
+        $original_data = $me_val->toArray();
 
         if ($action == 1) {
-            $eval->approved = 1;
+            $me_val->approved = 1;
         } else /*if($action == 2)*/ {
-            $eval->approved = 2;
+            $me_val->approved = 2;
         }
-        $eval->save();
+        $me_val->save();
 
-        activitylog('mechanical_evaluations_approve', 'update', $original_data, $eval->toArray());
+        activitylog('mechanical_evaluations_approve', 'update', $original_data, $me_val->toArray());
 
-        return response()->json(['data'=>json_encode($eval),'success'=>true]);
+        return response()->json(['data'=>json_encode($me_val),'success'=>true]);
     }
 
     /**
@@ -310,7 +310,7 @@ class MechanicalEvaluationController extends Controller
             //$file->move(public_path("uploads/mechanical/$id"), $uniqueFileName);
         }
 
-        activitylog('mechanical_evaluations', 'store', null, json_encode($meval->toArray()));
+        activitylog('mechanical_evaluations', 'store', null, $meval->toArray());
 
         // redirect
         \Session::flash('message', 'Successfully updated formato!');
@@ -359,6 +359,7 @@ class MechanicalEvaluationController extends Controller
         $approved_by = \DB::table('logs')->where('section', 'mechanical_evaluations_approve')
                         ->join('users', 'users.id', '=', 'logs.user_id')
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                        ->where('logs.action', 'update')
                         ->where('data', 'like', '%"ot_id":'. $formato->ot_id . '%')
                         ->select('logs.*', 'users.email', 'user_data.name')
                         ->first();
@@ -367,7 +368,7 @@ class MechanicalEvaluationController extends Controller
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
                         ->where('logs.section', 'mechanical_evaluations')
                         ->where('logs.action', 'store')
-                        ->where('logs.data', 'like', '%"eel_id":'. $formato->id . '%')
+                        ->where('logs.data', 'like', '%"ot_id":"'. $formato->ot_id . '"%')
                         ->select('logs.*', 'user_data.name')
                         ->first();
 

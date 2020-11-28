@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateElectricalGalleryTable extends Migration
+class CreateOtGalleryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateElectricalGalleryTable extends Migration
      */
     public function up()
     {
-        Schema::create('electrical_gallery', function (Blueprint $table) {
+        Schema::create('ot_gallery', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('el_id');
-            $table->foreign('el_id')->references('id')->on('electrical_evaluations');
-            
+            $table->unsignedBigInteger('ot_id');
+            $table->foreign('ot_id')->references('id')->on('ots');
+
+            $table->string('eval_type');
             $table->string('name');
             $table->boolean('enabled')->default(1);
             $table->timestamps();
@@ -32,6 +33,9 @@ class CreateElectricalGalleryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('electrical_gallery');
+        Schema::table('ot_gallery', function (Blueprint $table) {
+            $table->dropForeign('ot_gallery_ot_id_foreign');
+        });
+        Schema::dropIfExists('ot_gallery');
     }
 }

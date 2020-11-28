@@ -577,7 +577,7 @@ $status_last = $ot_status->last();
             <ul class="row list-unstyled">
             @foreach($gallery as $file)
             <li class="gallery-item col-12 col-md-4 col-xl-3 py-2">
-              <img class="btn p-0" data-toggle="modal" data-target="#galleryModal" src="{{ asset("uploads/electrical/$formato->ot_id/$file->name") }}" width="250">
+              <img class="btn p-0" data-toggle="modal" data-target="#galleryModal" src="{{ asset("uploads/ots/$formato->ot_id/electrical/$file->name") }}" width="250">
             </li>
             @endforeach
             </ul>

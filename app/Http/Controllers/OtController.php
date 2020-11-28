@@ -9,6 +9,7 @@ use App\Models\MotorModel;
 use App\Models\Status;
 use App\Models\ElectricalEvaluation;
 use App\Models\MechanicalEvaluation;
+use App\Models\OtGallery;
 use App\Models\CostCard;
 use App\Models\WorkShop;
 use App\Models\Rdi;
@@ -433,5 +434,36 @@ class OtController extends Controller
         $ot->save();
 
         return response()->json(['data'=>json_encode($ot), 'success'=>true]);
+    }
+
+    public function galleryStore(Request $request, $ot_id)
+    {
+        $rules = array(
+            'file' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
+        );
+        $this->validate($request, $rules);
+
+        $image = $request->file('file');
+        $eval_type = $request->input('eval_type');
+
+        $avatarName = $image->getClientOriginalName();
+        $ext = $image->getClientOriginalExtension();
+        $url = 'uploads/ots/'.$ot_id.'/'.$eval_type;
+        $image->move(public_path($url), $avatarName);
+        
+        /*if ($eval_type == 'mechanical') {
+            $imageUpload = new OtGallery();
+            $imageUpload->name = $avatarName;
+            $imageUpload->ot_id = $ot_id;
+            $imageUpload->eval_type = $eval_type;
+            $imageUpload->save();
+        } else if($eval_type == 'electrical') {
+            $imageUpload = new OtGallery();
+            $imageUpload->name = $avatarName;
+            $imageUpload->ot_id = $ot_id;
+            $imageUpload->eval_type = $eval_type;
+            $imageUpload->save();
+        }*/
+        return response()->json(['name'=>$avatarName, 'url' => $url .'/'.$avatarName]);
     }
 }

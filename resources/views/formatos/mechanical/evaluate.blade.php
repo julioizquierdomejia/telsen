@@ -1,5 +1,6 @@
 @extends('layouts.app', ['title' => 'Evaluación Mecánica'])
 @section('content')
+<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php
 $reception_list = [
 array (
@@ -533,12 +534,19 @@ array (
             <p class="error-message text-danger">{{ $message }}</p>
             @enderror
           </div>
-          <div class="files">
+          {{-- <div class="files">
             <label class="col-form-label">Imágenes</label>
               <div class="form-control-file h-auto">
                 <input class="form-control" type="file" name="files[]" multiple="" id="evalImages">
               </div>
-          </div>
+          </div> --}}
+          <div class="upload-gallery">
+              <label for="dZUpload">Galería</label>
+              <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">
+              <div id="dZUpload" class="dropzone">
+                <div class="dz-default dz-message">Sube aquí tus imágenes</div>
+              </div>
+            </div>
         </div>
         <div class="row">
           <div class="update ml-auto mr-auto">
@@ -552,8 +560,53 @@ array (
 </div>
 @endsection
 @section('javascript')
+<script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>
 <script>
+  Dropzone.autoDiscover = false;
 $(document).ready(function () {
+
+  var myDrop = new Dropzone("#dZUpload", {
+        url: "{{route('gallery.store', $ot->id)}}",
+        addRemoveLinks: true,
+        //autoProcessQueue: false,
+        params: {
+          _token: '{{csrf_token()}}',
+          eval_type: 'mechanical',
+        },
+        renameFile: function (file) {
+            let newName = new Date().getTime() + '_' + file.name;
+            return newName;
+        },
+        success: function (file, response) {
+            var imgName = response;
+            file.previewElement.classList.add("dz-success");
+            createJSON(myDrop.files);
+        },
+        removedfile: function(file) {
+          createJSON(myDrop.files);
+            file.previewElement.remove();
+        },
+        error: function (file, response) {
+            file.previewElement.classList.add("dz-error");
+        }
+    });
+  function createJSON(files) {
+    var json = '{';
+    var otArr = [];
+    $.each(files, function(id, item) {
+      console.log(item)
+      otArr.push('"' + id + '": {' + 
+        '"name":"' + item.upload.filename + 
+        '", "type":"' + item.type + 
+        '", "status":"' + item.status + 
+        '", "url":"' + item.url + 
+        '"}');
+    });
+    json += otArr.join(",") + '}'
+    $('.images').val(json)
+    return json;
+  }
+
 $(document).on('change', '.select-area', function () {
   var $this = $(this),
     area = $this.val();
@@ -631,7 +684,6 @@ $('.btn-add-row').click(function () {
 </tr>`;
   $('#table-tap tbody').append(row);
   $('#table-tap .dropdown2').select2();
-  //createJSON();
 })
 $(document).on('click', '.btn-remove-row', function () {
 var row_index = $('#table-tap tbody tr').length;

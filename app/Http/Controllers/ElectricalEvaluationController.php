@@ -8,7 +8,8 @@ use App\Models\ElectricalEvaluationCharacteristic;
 use App\Models\ElectricalEvaluationReception;
 use App\Models\ElectricalEvaluationTestIn;
 use App\Models\ElectricalEvaluationTransformer;
-use App\Models\ElectricalGallery;
+//use App\Models\ElectricalGallery;
+use App\Models\OtGallery;
 use App\Models\Ot;
 use App\Models\MotorBrand;
 use App\Models\MotorModel;
@@ -232,7 +233,8 @@ class ElectricalEvaluationController extends Controller
             'tran_rv_u' => 'string|nullable',
             'tran_ww' => 'string|nullable',
 
-            'files.*' => 'mimes:jpeg,jpg,png,gif|nullable'
+            //'files.*' => 'mimes:jpeg,jpg,png,gif|nullable'
+            'files' => 'nullable'
         );
 
         $tran_tap = json_encode($request->input('tran_tap'));
@@ -400,7 +402,7 @@ class ElectricalEvaluationController extends Controller
             }
         }
 
-        if ($request->file('files')) {
+        /*if ($request->file('files')) {
             $files = $request->file('files');
             foreach ($files as $key => $file) {
                 $ext = $file->getClientOriginalExtension();
@@ -413,6 +415,23 @@ class ElectricalEvaluationController extends Controller
 
                 $file->move(public_path("uploads/electrical/$id"), $uniqueFileName);
             }
+        }*/
+
+        $files = json_decode($request->input('files'), true);
+        foreach ($files as $key => $file) {
+            $uniqueFileName = $file['name'];
+
+            /*$image = new ElectricalGallery();
+            $image->el_id = $eleval->id;
+            $image->name = $uniqueFileName;
+            $image->save();*/
+            $imageUpload = new OtGallery();
+            $imageUpload->name = $uniqueFileName;
+            $imageUpload->ot_id = $ot_id;
+            $imageUpload->eval_type = "electrical";
+            $imageUpload->save();
+
+            //$file->move(public_path("uploads/electrical/$id"), $uniqueFileName);
         }
 
         $status = Status::where('id', 3)->first();
@@ -570,7 +589,8 @@ class ElectricalEvaluationController extends Controller
                 )
                 ->get();
 
-        $gallery = ElectricalGallery::where('el_id', $formato->id)->get();
+        $gallery = OtGallery::where('ot_id', $formato->ot_id)
+                    ->where('eval_type', 'electrical')->get();
 
         $approved_by = \DB::table('logs')
                         ->join('users', 'users.id', '=', 'logs.user_id')
@@ -716,7 +736,8 @@ class ElectricalEvaluationController extends Controller
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();
 
-        $gallery = ElectricalGallery::where('el_id', $formato->id)->get();
+        $gallery = OtGallery::where('ot_id', $formato->ot_id)
+                    ->where('eval_type', 'electrical')->get();
 
         $works = ElectricalEvaluationWork::where('me_id', $formato->id)
                 ->join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')

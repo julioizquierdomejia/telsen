@@ -1,5 +1,6 @@
 @extends('layouts.app', ['title' => 'Evaluación Eléctrica'])
 @section('content')
+<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php
   $reception_list = [
     array (
@@ -677,11 +678,18 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
               </div>
-              <div class="files col-12">
+              {{-- <div class="files col-12">
               <label class="col-form-label">Imágenes</label>
                 <div class="form-control-file h-auto">
                   <input class="form-control" type="file" name="files[]" multiple="" id="evalImages">
                 </div>
+            </div> --}}
+            <div class="col-12">
+              <label for="dZUpload">Galería</label>
+              <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">
+              <div id="dZUpload" class="dropzone">
+                <div class="dz-default dz-message">Sube aquí tus imágenes</div>
+              </div>
             </div>
             </div>
             <div class="col-12 text-center mt-4">
@@ -692,32 +700,62 @@
       </div>
     </form>
   </div>
+    {{-- <div class="card border-0 shadow-none">
+      <form method="post" action="{{route('gallery.store', $ot->id)}}" enctype="multipart/form-data"
+          class="dropzone" id="eval-dropzone">
+        @csrf
+        <input type="hidden" name="eval_type" value="electrical">
+        <div class="dz-default dz-message"><button class="dz-button" type="button"><strong class="h5">Galería</strong> <br> Arrastra aquí las imágenes a subir</button></div>
+    </form>
+    </div> --}}
 </div>
 @endsection
 @section('javascript')
+<script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>
 <script>
+Dropzone.autoDiscover = false;
 $(document).ready(function() {
-  /*function createJSON() {
+    var myDrop = new Dropzone("#dZUpload", {
+        url: "{{route('gallery.store', $ot->id)}}",
+        addRemoveLinks: true,
+        //autoProcessQueue: false,
+        params: {
+          _token: '{{csrf_token()}}',
+          eval_type: 'electrical',
+        },
+        renameFile: function (file) {
+            let newName = new Date().getTime() + '_' + file.name;
+            return newName;
+        },
+        success: function (file, response) {
+            var imgName = response;
+            file.previewElement.classList.add("dz-success");
+            createJSON(myDrop.files);
+        },
+        removedfile: function(file) {
+          createJSON(myDrop.files);
+            file.previewElement.remove();
+        },
+        error: function (file, response) {
+            file.previewElement.classList.add("dz-error");
+        }
+    });
+  function createJSON(files) {
     var json = '{';
     var otArr = [];
-    var tbl2 = $('#table-tap tbody tr').each(function(i) {
-      x = $(this).children();
-      var itArr = [];
-      x.each(function() {
-        var el = $(this).find('.form-control');
-        if (el.length) {
-          itArr.push('"' + el.attr('name') + '":"' + el.val() + '"');
-        }
-      });
-      otArr.push('"' + i + '": {' + itArr.join(',') + '}');
-    })
+    $.each(files, function(id, item) {
+      console.log(item)
+      otArr.push('"' + id + '": {' + 
+        '"name":"' + item.upload.filename + 
+        '", "type":"' + item.type + 
+        '", "status":"' + item.status + 
+        '", "url":"' + item.url + 
+        '"}');
+    });
     json += otArr.join(",") + '}'
-    $('input[name=tran_tap]').val(json);
+    $('.images').val(json)
     return json;
   }
-  $(document).on('keyup', '#table-tap .form-control', function() {
-    createJSON();
-  })*/
 
   $(document).on('change', '.select-area', function () {
   var $this = $(this), area = $this.val();

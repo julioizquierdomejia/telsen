@@ -20,6 +20,7 @@ class CreateMechanicalGalleryTable extends Migration
             $table->foreign('me_id')->references('id')->on('mechanical_evaluations');
 
             $table->string('name');
+            $table->boolean('enabled')->default(1);
             $table->timestamps();
         });
     }

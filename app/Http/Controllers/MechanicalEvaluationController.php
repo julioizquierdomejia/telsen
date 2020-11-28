@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MechanicalEvaluation;
 use App\Models\MechanicalEvaluationWork;
-use App\Models\MechanicalGallery;
+use App\Models\OtGallery;
 use App\Models\RotorCodRodajePt1;
 use App\Models\RotorCodRodajePt2;
 use App\Models\Ot;
@@ -285,7 +285,7 @@ class MechanicalEvaluationController extends Controller
             ]);
         }
 
-        if ($request->file('files')) {
+        /*if ($request->file('files')) {
             $files = $request->file('files');
             foreach ($files as $key => $file) {
                 $ext = $file->getClientOriginalExtension();
@@ -298,6 +298,16 @@ class MechanicalEvaluationController extends Controller
 
                 $file->move(public_path("uploads/mechanical/$id"), $uniqueFileName);
             }
+        }*/
+        $files = json_decode($request->input('files'), true);
+        foreach ($files as $key => $file) {
+            $uniqueFileName = $file['name'];
+            $imageUpload = new OtGallery();
+            $imageUpload->name = $uniqueFileName;
+            $imageUpload->ot_id = $ot_id;
+            $imageUpload->eval_type = "mechanical";
+            $imageUpload->save();
+            //$file->move(public_path("uploads/mechanical/$id"), $uniqueFileName);
         }
 
         activitylog('mechanical_evaluations', 'store', null, json_encode($meval->toArray()));
@@ -342,7 +352,8 @@ class MechanicalEvaluationController extends Controller
                     'services.area_id'
                 )
                 ->get();
-        $gallery = MechanicalGallery::where('me_id', $formato->id)->get();
+        $gallery = OtGallery::where('ot_id', $formato->ot_id)
+                    ->where('eval_type', 'mechanical')->get();
 
         $approved_by = \DB::table('logs')->where('section', 'mechanical_evaluations_approve')
                         ->join('users', 'users.id', '=', 'logs.user_id')
@@ -353,7 +364,7 @@ class MechanicalEvaluationController extends Controller
         $maded_by = \DB::table('logs')
                         ->join('users', 'users.id', '=', 'logs.user_id')
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
-                        ->where('logs.section', 'electrical_evaluations')
+                        ->where('logs.section', 'mechanical_evaluations')
                         ->where('logs.action', 'store')
                         ->where('logs.data', 'like', '%"eel_id":'. $formato->id . '%')
                         ->select('logs.*', 'user_data.name')
@@ -384,7 +395,8 @@ class MechanicalEvaluationController extends Controller
         }
         $cod_rodaje_p1 = RotorCodRodajePt1::where('enabled', 1)->get();
         $cod_rodaje_p2 = RotorCodRodajePt2::where('enabled', 1)->get();
-        $gallery = MechanicalGallery::where('me_id', $formato->id)->get();
+        $gallery = OtGallery::where('ot_id', $formato->ot_id)
+                    ->where('eval_type', 'mechanical')->get();
 
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)
                 ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
@@ -489,7 +501,8 @@ class MechanicalEvaluationController extends Controller
 
             'works' => 'array|nullable',
 
-            //'files.*' => 'mimes:jpeg,jpg,png,gif|nullable'
+            //'files.*' => 'mimes:jpeg,jpg,png,gif|nullable',
+            'files' => 'nullable'
         );
 
         $validator = $this->validate($request, $rules);

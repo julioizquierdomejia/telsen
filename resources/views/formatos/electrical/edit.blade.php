@@ -1,5 +1,6 @@
 @extends('layouts.app', ['title' => 'Editar Evaluación Eléctrica'])
 @section('content')
+<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php
   $reception_list = [
     array (
@@ -427,7 +428,7 @@
           <table class="table table-tap table-separate text-center table-numbering mb-0" id="table-tap">
             <thead>
               <tr>
-                <th class="text-center py-1" colspan="7">Tap</th>
+                <th class="text-center py-1" colspan="8">Tap</th>
               </tr>
               <tr>
                 <th class="py-1">N°</th>
@@ -437,6 +438,7 @@
                 <th class="py-1">V-U</th>
                 <th class="py-1">W-U</th>
                 <th class="py-1">W-U</th>
+                <th class="py-1"></th>
               </tr>
             </thead>
             <tbody>
@@ -450,6 +452,9 @@
                 <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu2]" value="{{$tap['vu2'] ?? ''}}"></td>
                 <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu1]" value="{{$tap['wu1'] ?? ''}}"></td>
                 <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu2]" value="{{$tap['wu2'] ?? ''}}"></td>
+                <td>
+                    <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                  </td>
               </tr>
               @endforeach
               @else
@@ -461,6 +466,9 @@
                 <td><input type="text" class="form-control mt-0" name="tran_tap[0][vu2]" value=""></td>
                 <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu1]" value=""></td>
                 <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu2]" value=""></td>
+                <td>
+                    <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                  </td>
               </tr>
               @endif
             </tbody>
@@ -468,7 +476,6 @@
             <tr>
               <td class="p-0" colspan="7">
                 <button class="btn btn-dark btn-add-tap-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
-                <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
                 <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
               </td>
             </tr>
@@ -569,7 +576,7 @@
               <div class="tap-section mb-2">
               <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
               <div class="table-responsive">
-              <table class="table table-tap table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
+              <table class="table table-tap table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
                 <thead>
                   <tr>
                   <th class="text-center py-1">Item</th>
@@ -638,16 +645,16 @@
                       </select>
                     </td>
                     <td width="120">
-                      <input type="text" class="form-control @error("works.0.description") is-invalid @enderror" placeholder="Descripción" value="{{old('works.0.description')}}" name="works[0][description]">
+                      <input type="text" class="form-control mt-0 @error("works.0.description") is-invalid @enderror" placeholder="Descripción" value="{{old('works.0.description')}}" name="works[0][description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works.0.medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works.0.medidas')}}" name="works[0][medidas]">
+                      <input type="text" class="form-control mt-0 @error("works.0.medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works.0.medidas')}}" name="works[0][medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works.0.qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.0.qty')}}" name="works[0][qty]">
+                      <input type="text" class="form-control mt-0 @error("works.0.qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.0.qty')}}" name="works[0][qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works.0.personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.0.personal')}}" name="works[0][personal]">
+                      <input type="text" class="form-control mt-0 @error("works.0.personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.0.personal')}}" name="works[0][personal]">
                     </td>
                     <td>
                       <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
@@ -670,10 +677,11 @@
               <div class="gallery pt-3">
               <h6>Galería</h6>
               @if($gallery->count())
-              <ul class="row list-unstyled">
+              <ul class="row list-unstyled text-center">
               @foreach($gallery as $file)
-              <li class="gallery-item col-12 col-md-4 col-xl-3">
-                <img src="{{ asset("uploads/mechanical/$formato->ot_id/$file->name") }}">
+              <li class="gallery-item col-12 col-md-4 col-xl-3" id="image-{{$file->id}}">
+                <img class="btn p-0" data-toggle="modal" data-target="#galleryModal" src="{{ asset("uploads/ots/$formato->ot_id/electrical/$file->name") }}">
+                <button class="btn btn-danger btn-sm mt-0 btn-idelete" data-id="{{$file->id}}" type="button" data-toggle="modal" data-target="#modalDelImage">Quitar imagen</button>
               </li>
               @endforeach
               </ul>
@@ -686,6 +694,13 @@
               <input type="file" name="files[]" multiple="" id="evalImages">
             </div> --}}
             </div>
+            <div class="col-12">
+              <label for="dZUpload">Galería</label>
+              <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">
+              <div id="dZUpload" class="dropzone">
+                <div class="dz-default dz-message">Sube aquí tus imágenes</div>
+              </div>
+            </div>
             <div class="col-12 text-center mt-4">
               <button type="submit" class="btn btn-primary btn-round">Enviar</button>
             </div>
@@ -695,81 +710,185 @@
     </form>
   </div>
 </div>
+<div class="modal fade" tabindex="-1" id="galleryModal">
+    <div class="modal-dialog modal-lg" style="max-height: calc(100vh - 40px)">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Galería</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <div class="modal-body h-100 text-center">
+            <img class="image img-fluid" src="" width="600" style="width: auto;">
+        </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" id="modalDelImage">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Imagen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text my-3 body-title">¿Seguro desea eliminar la Imagen?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancelar</button>
+        <button class="btn btn-primary btn-delete-confirm" type="button" data-id=""><i class="fal fa-trash"></i> Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('javascript')
+<script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>
 <script>
-$(document).ready(function () {
-/*function createJSON() {
-var json = '{';
-var otArr = [];
-var tbl2 = $('#table-tap tbody tr').each(function(i) {
-x = $(this).children();
-var itArr = [];
-x.each(function() {
-if ($(this).find('.form-control').length) {
-itArr.push('"' + $(this).find('.form-control').val() + '"');
-}
-});
-otArr.push('"' + i + '": [' + itArr.join(',') + ']');
-})
-json += otArr.join(",") + '}'
-$('input[name=works]').val(json);
-return json;
-}
-$(document).on('keyup', '#table-tap .form-control', function () {
-createJSON();
-})*/
+Dropzone.autoDiscover = false;
+$(document).ready(function() {
+  var myDrop = new Dropzone("#dZUpload", {
+    url: "{{route('gallery.store', $ot->id)}}",
+    addRemoveLinks: true,
+    //autoProcessQueue: false,
+    params: {
+      _token: '{{csrf_token()}}',
+      eval_type: 'electrical',
+    },
+    renameFile: function(file) {
+      let newName = new Date().getTime() + '_' + file.name;
+      return newName;
+    },
+    success: function(file, response) {
+      var imgName = response;
+      file.previewElement.classList.add("dz-success");
+      createJSON(myDrop.files);
+    },
+    removedfile: function(file) {
+      createJSON(myDrop.files);
+      file.previewElement.remove();
+    },
+    error: function(file, response) {
+      file.previewElement.classList.add("dz-error");
+    }
+  });
 
-$(document).on('change', '.select-area', function () {
-  var $this = $(this), area = $this.val();
-  var service = $(this).parents('tr').find('.select-service');
-  if($(this).val().length) {
-    $.ajax({
-          type: "GET",
-          url: "/servicios/filterareas",
-          data: {id: area, _token:'{{csrf_token()}}'},
-          beforeSend: function() {
-            service.attr('disabled', true);
-          },
-          success: function (response) {
-            service.attr('disabled', false).focus();
-            service.find('option').remove();
-            if (response.success) {
-              var services = $.parseJSON(response.data), s_length = services.length;
-              if (services.length) {
-                $.each(services, function (id, item) {
-                  service.append('<option value="'+item.id+'">'+item.name+'</option>');
-                })
-              }
-              if(service.data('value')) {
-                service.find('option[value='+service.data('value')+']').prop('selected', true);
-              }
-            }
-          },
-          error: function (request, status, error) {
-            
-          }
-      });
-
-
-  } else {
-    service.attr('disabled', true);
+  function createJSON(files) {
+    var json = '{';
+    var otArr = [];
+    $.each(files, function(id, item) {
+      console.log(item)
+      otArr.push('"' + id + '": {' +
+        '"name":"' + item.upload.filename +
+        '", "type":"' + item.type +
+        '", "status":"' + item.status +
+        '", "url":"' + item.url +
+        '"}');
+    });
+    json += otArr.join(",") + '}'
+    $('.images').val(json)
+    return json;
   }
-})
 
-$(document).on('click', '.card .btn-clear', function () {
-$('#table-tap .form-control').val('');
-})
+  $(document).on('change', '.select-area', function() {
+    var $this = $(this),
+      area = $this.val();
+    var service = $(this).parents('tr').find('.select-service');
+    if ($(this).val().length) {
+      $.ajax({
+        type: "GET",
+        url: "/servicios/filterareas",
+        data: {
+          id: area,
+          _token: '{{csrf_token()}}'
+        },
+        beforeSend: function() {
+          service.attr('disabled', true);
+        },
+        success: function(response) {
+          service.attr('disabled', false).focus();
+          service.find('option').remove();
+          if (response.success) {
+            var services = $.parseJSON(response.data),
+              s_length = services.length;
+            if (services.length) {
+              $.each(services, function(id, item) {
+                service.append('<option value="' + item.id + '">' + item.name + '</option>');
+              })
+            }
+            if (service.data('value')) {
+              service.find('option[value=' + service.data('value') + ']').prop('selected', true);
+            }
+          }
+        },
+        error: function(request, status, error) {
 
-$('.btn-add-row').click(function () {
-  var row_index = $('#table-tap tbody tr').length;
-var row = `<tr>
-    <td class="cell-counter">
-      <span class="number"></span>
-      <input class="work_status" type="hidden" name="works[`+row_index+`][status]" value="1">
-    </td>
+        }
+      });
+    } else {
+      service.attr('disabled', true);
+    }
+  })
+
+  $(document).on('click', '.btn-delete-confirm', function() {
+    var $this = $(this), id = $this.data('id');
+      $.ajax({
+        type: "POST",
+        url: "/ordenes/"+id+"/quitarimagen",
+        data: {
+          _token: '{{csrf_token()}}'
+        },
+        complete: function () {
+          $('#modalDelImage').modal('hide');
+        },
+        beforeSend: function() {
+          $this.attr('disabled', true);
+        },
+        success: function(response) {
+          $this.attr('disabled', false);
+          if (response.success) {
+            $('#image-'+id).remove();
+          }
+        },
+        error: function(request, status, error) {
+          $this.attr('disabled', false);
+        }
+      });
+  })
+  $(document).on("click", ".btn-idelete", function(event) {
+    console.log($(this).data('id'))
+      $('.btn-delete-confirm').data('id', $(this).data('id'));
+  })
+
+  $(document).on('click', '.card .btn-clear', function() {
+    $('#table-tap .form-control').val('');
+  })
+  $('.btn-add-tap-row').click(function() {
+    var row_index = $('#table-tap tbody tr').length;
+    var row = `<tr>
+            <td class="cell-counter"><span class="number"></span></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][uv1]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][uv2]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][vu1]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][vu2]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][wu1]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][wu2]" value=""></td>
+            <td>
+              <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+            </td>
+          </tr>`;
+    $('#table-tap tbody').append(row);
+    //createJSON();
+  })
+  $('.btn-add-row').click(function() {
+    var row_index = $('#table-works tbody tr').length;
+    var row = `<tr>
+    <td class="cell-counter"><span class="number"></span></td>
     <td>
-      <select class="dropdown2 form-control select-area" name="works[`+row_index+`][area]" style="width: 100%">
+      <select class="dropdown2 form-control select-area" name="works[` + row_index + `][area]" style="width: 100%">
         <option value="">Seleccionar area</option>
         @foreach($areas as $area)
         <option value="{{$area->id}}">{{$area->name}}</option>
@@ -777,46 +896,56 @@ var row = `<tr>
       </select>
     </td>
     <td>
-      <select class="dropdown2 form-control select-service" name="works[`+row_index+`][service_id]" style="width: 100%"  disabled="">
+      <select class="dropdown2 form-control select-service" name="works[` + row_index + `][service_id]" style="width: 100%"  disabled="">
         <option value="">Seleccionar servicio</option>
       </select>
     </td>
     <td width="120">
-      <input type="text" class="form-control mt-0" placeholder="Descripción" value="" name="works[`+row_index+`][description]">
+      <input type="text" class="form-control mt-0" placeholder="Descripción" value="" name="works[` + row_index + `][description]">
     </td>
     <td width="100">
-      <input type="text" class="form-control mt-0" placeholder="Medida" value="" name="works[`+row_index+`][medidas]">
+      <input type="text" class="form-control mt-0" placeholder="Medida" value="" name="works[` + row_index + `][medidas]">
     </td>
     <td width="100">
-      <input type="text" class="form-control mt-0" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
+      <input type="text" class="form-control mt-0" placeholder="Cantidad" value="" name="works[` + row_index + `][qty]">
     </td>
     <td width="100">
-      <input type="text" class="form-control mt-0" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
+      <input type="text" class="form-control mt-0" placeholder="Personal" value="" name="works[` + row_index + `][personal]">
     </td>
     <td>
       <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
     </td>
   </tr>`;
-$('#table-tap tbody').append(row);
-$('#table-tap .dropdown2').select2();
-//createJSON();
-})
-$('.btn-remove-row').click(function () {
-var row_index = $('#table-tap tbody tr:not(.d-none)').length;
-if (row_index > 1) {
-//$(this).parents('tr').remove();
-$(this).parents('tr').addClass('d-none').find('.work_status').val(0);
-}
-})
+    $('#table-works tbody').append(row);
+    $('#table-works .dropdown2').select2();
+    //createJSON();
+  })
+  $(document).on('click', '.btn-remove-tap-row', function() {
+    var row_index = $('#table-tap tbody tr').length;
+    if (row_index > 1) {
+      $(this).closest('tr').remove();
+    }
+    //createJSON();
+  })
+  $(document).on('click', '.btn-remove-row', function() {
+    var row_index = $('#table-works tbody tr').length;
+    if (row_index > 1) {
+      $(this).closest('tr').remove();
+    }
+  })
 
-$('.btn-yes').click(function () {
-  $('input[type="radio"][value="1"]').prop('checked', true);
-})
-$('.btn-no').click(function () {
-  $('input[type="radio"][value="0"]').prop('checked', true);
-})
+  $('.btn-yes').click(function() {
+    $('input[type="radio"][value="1"]').prop('checked', true);
+  })
+  $('.btn-no').click(function() {
+    $('input[type="radio"][value="0"]').prop('checked', true);
+  })
 
-$('.select-area').trigger('change');
+  $('.select-area').trigger('change');
+
+  $('#galleryModal').on('show.bs.modal', function (event) {
+      $('#galleryModal .modal-body .image').attr('src', $(event.relatedTarget).attr('src'))
+    })
 })
 </script>
 @endsection

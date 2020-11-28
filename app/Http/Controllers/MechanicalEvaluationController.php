@@ -353,6 +353,7 @@ class MechanicalEvaluationController extends Controller
                 )
                 ->get();
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
+                    ->where('enabled', 1)
                     ->where('eval_type', 'mechanical')->get();
 
         $approved_by = \DB::table('logs')->where('section', 'mechanical_evaluations_approve')
@@ -396,6 +397,7 @@ class MechanicalEvaluationController extends Controller
         $cod_rodaje_p1 = RotorCodRodajePt1::where('enabled', 1)->get();
         $cod_rodaje_p2 = RotorCodRodajePt2::where('enabled', 1)->get();
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
+                    ->where('enabled', 1)
                     ->where('eval_type', 'mechanical')->get();
 
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)
@@ -621,13 +623,22 @@ class MechanicalEvaluationController extends Controller
                 $uniqueFileName = preg_replace('/\s+/', "-", str_replace(".".$ext, "", $file->getClientOriginalName()) .uniqid()) . ".".$ext;
 
                 $image = new MechanicalGallery();
-                $image->me_id = $eleval->id;
+                $image->me_id = $meval->id;
                 $image->name = $uniqueFileName;
                 $image->save();
 
                 $file->move(public_path("uploads/mechanical/$id"), $uniqueFileName);
             }
         }*/
+        $files = $request->input('files') ? json_decode($request->input('files'), true) : [];
+        foreach ($files as $key => $file) {
+            $uniqueFileName = $file['name'];
+            $imageUpload = new OtGallery();
+            $imageUpload->name = $uniqueFileName;
+            $imageUpload->ot_id = $meval->ot_id;
+            $imageUpload->eval_type = "mechanical";
+            $imageUpload->save();
+        }
 
         activitylog('mechanical_evaluations', 'store', $original_data, $meval->toArray());
 

@@ -1,5 +1,6 @@
 @extends('layouts.app', ['title' => 'Evaluación Mecánica'])
 @section('content')
+<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php
   $reception_list = [
     array (
@@ -513,7 +514,7 @@
               </table>
               </div>
               <div class="buttons text-center">
-                  <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                  <button class="btn btn-dark btn-add-tap-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
                   <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
               </div>
             </div>
@@ -527,16 +528,24 @@
             <div class="gallery pt-3">
               <h6>Galería</h6>
               @if($gallery->count())
-              <ul class="row list-unstyled">
+              <ul class="row list-unstyled text-center">
               @foreach($gallery as $file)
-              <li class="gallery-item col-12 col-md-4 col-xl-3">
-                <img src="{{ asset("uploads/mechanical/$formato->ot_id/$file->name") }}">
+              <li class="gallery-item col-12 col-md-4 col-xl-3" id="image-{{$file->id}}">
+                <img class="btn p-0" data-toggle="modal" data-target="#galleryModal" src="{{ asset("uploads/ots/$formato->ot_id/mechanical/$file->name") }}">
+                <button class="btn btn-danger btn-sm mt-0 btn-idelete" data-id="{{$file->id}}" type="button" data-toggle="modal" data-target="#modalDelImage">Quitar imagen</button>
               </li>
               @endforeach
               </ul>
               @else
               <p class="text-center">No hay imágenes.</p>
               @endif
+            </div>
+            <div class="upload-gallery">
+              <label for="dZUpload">Galería</label>
+              <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">
+              <div id="dZUpload" class="dropzone">
+                <div class="dz-default dz-message">Sube aquí tus imágenes</div>
+              </div>
             </div>
             {{-- <div class="files">
               <label class="col-label">Imágenes</label>
@@ -553,10 +562,88 @@
     </div>
   </div>
 </div>
+<div class="modal fade" tabindex="-1" id="galleryModal">
+    <div class="modal-dialog modal-lg" style="max-height: calc(100vh - 40px)">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Galería</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <div class="modal-body h-100 text-center">
+            <img class="image img-fluid" src="" width="600">
+        </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" id="modalDelImage">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Imagen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text my-3 body-title">¿Seguro desea eliminar la Imagen?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancelar</button>
+        <button class="btn btn-primary btn-delete-confirm" type="button" data-id=""><i class="fal fa-trash"></i> Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('javascript')
+<script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>
 <script>
+  Dropzone.autoDiscover = false;
 $(document).ready(function () {
+  var myDrop = new Dropzone("#dZUpload", {
+        url: "{{route('gallery.store', $ot->id)}}",
+        addRemoveLinks: true,
+        //autoProcessQueue: false,
+        params: {
+          _token: '{{csrf_token()}}',
+          eval_type: 'mechanical',
+        },
+        renameFile: function (file) {
+            let newName = new Date().getTime() + '_' + file.name;
+            return newName;
+        },
+        success: function (file, response) {
+            var imgName = response;
+            file.previewElement.classList.add("dz-success");
+            createImageJSON(myDrop.files);
+        },
+        removedfile: function(file) {
+          createImageJSON(myDrop.files);
+            file.previewElement.remove();
+        },
+        error: function (file, response) {
+            file.previewElement.classList.add("dz-error");
+        }
+    });
+  function createImageJSON(files) {
+    var json = '{';
+    var otArr = [];
+    $.each(files, function(id, item) {
+      console.log(item)
+      otArr.push('"' + id + '": {' + 
+        '"name":"' + item.upload.filename + 
+        '", "type":"' + item.type + 
+        '", "status":"' + item.status + 
+        '", "url":"' + item.url + 
+        '"}');
+    });
+    json += otArr.join(",") + '}'
+    $('.images').val(json)
+    return json;
+  }
+
 /*function createJSON() {
 var json = '{';
 var otArr = [];
@@ -608,12 +695,41 @@ $(document).on('change', '.select-area', function () {
             
           }
       });
-
-
   } else {
     service.attr('disabled', true);
   }
 })
+
+$(document).on('click', '.btn-delete-confirm', function() {
+    var $this = $(this), id = $this.data('id');
+      $.ajax({
+        type: "POST",
+        url: "/ordenes/"+id+"/quitarimagen",
+        data: {
+          _token: '{{csrf_token()}}'
+        },
+        complete: function () {
+          $('#modalDelImage').modal('hide');
+        },
+        beforeSend: function() {
+          $this.attr('disabled', true);
+        },
+        success: function(response) {
+          $this.attr('disabled', false);
+          if (response.success) {
+            $('#image-'+id).remove();
+          }
+        },
+        error: function(request, status, error) {
+          $this.attr('disabled', false);
+        }
+      });
+  })
+
+  $(document).on("click", ".btn-idelete", function(event) {
+    console.log($(this).data('id'))
+      $('.btn-delete-confirm').data('id', $(this).data('id'));
+  })
 
 $(document).on('click', '.card .btn-clear', function () {
 $('#table-tap .form-control').val('');
@@ -693,6 +809,10 @@ $('[name=rotor_cod_rodaje_p2]').change(function () {
   $('[name=estator_alojamiento_rodaje_tapa_p20]').val(alojamiento ? asiento : '');
   $('.alojamiento-tapa-pto2').val(alojamiento ? asiento : '');
 })
+
+$('#galleryModal').on('show.bs.modal', function (event) {
+      $('#galleryModal .modal-body .image').attr('src', $(event.relatedTarget).attr('src'))
+    })
 })
 </script>
 @endsection

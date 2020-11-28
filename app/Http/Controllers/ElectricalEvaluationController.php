@@ -383,7 +383,7 @@ class ElectricalEvaluationController extends Controller
         $eltraneval->ww = $request->input('tran_ww');
         $eltraneval->save();
 
-        $works = $request->input('works');
+        $works = $request->input('works') ?? [];
         $services = [];
         $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
@@ -417,7 +417,7 @@ class ElectricalEvaluationController extends Controller
             }
         }*/
 
-        $files = json_decode($request->input('files'), true);
+        $files = $request->input('files') ? json_decode($request->input('files'), true) : [];
         foreach ($files as $key => $file) {
             $uniqueFileName = $file['name'];
 
@@ -590,6 +590,7 @@ class ElectricalEvaluationController extends Controller
                 ->get();
 
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
+                    ->where('enabled', 1)
                     ->where('eval_type', 'electrical')->get();
 
         $approved_by = \DB::table('logs')
@@ -737,6 +738,7 @@ class ElectricalEvaluationController extends Controller
         $modelos = MotorModel::where('enabled', 1)->get();
 
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
+                    ->where('enabled', 1)
                     ->where('eval_type', 'electrical')->get();
 
         $works = ElectricalEvaluationWork::where('me_id', $formato->id)
@@ -1028,7 +1030,7 @@ class ElectricalEvaluationController extends Controller
         $eltraneval->ww = $request->input('tran_ww');
         $eltraneval->save();
 
-        $works = $request->input('works');
+        $works = $request->input('works') ?? [];
         //$work_ids = array_column($works, 'id');
         //$update_works = ElectricalEvaluationWork::where('me_id', $eleval->id)->delete();
         $services = [];
@@ -1075,6 +1077,15 @@ class ElectricalEvaluationController extends Controller
                 $file->move(public_path("uploads/electrical/$id"), $uniqueFileName);
             }
         }*/
+        $files = $request->input('files') ? json_decode($request->input('files'), true) : [];
+        foreach ($files as $key => $file) {
+            $uniqueFileName = $file['name'];
+            $imageUpload = new OtGallery();
+            $imageUpload->name = $uniqueFileName;
+            $imageUpload->ot_id = $eleval->ot_id;
+            $imageUpload->eval_type = "electrical";
+            $imageUpload->save();
+        }
 
         activitylog('electrical_evaluations', 'update', $original_data, $eltraneval->toArray());
 

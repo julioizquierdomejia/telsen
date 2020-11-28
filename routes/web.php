@@ -46,6 +46,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('ordenes/{orden}/status', [App\Http\Controllers\OtController::class, 'getOTStatus'])->name('ordenes.status');
 
 	Route::post('ordenes/{orden}/gallery', [App\Http\Controllers\OtController::class, 'galleryStore'])->name('gallery.store');
+	Route::post('ordenes/{id}/quitarimagen', [App\Http\Controllers\OtController::class, 'galleryDelete'])->name('gallery.delete');
 
 	//rutas para Clientes
 	//Route::resource('clientes', App\Http\Controllers\ClientController::class);

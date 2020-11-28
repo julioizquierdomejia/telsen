@@ -620,7 +620,7 @@ $status_last = $ot_status->last();
             </button>
           </div>
         <div class="modal-body h-100 text-center">
-            <img class="image img-fluid" src="" width="600">
+            <img class="image img-fluid" src="" width="600" style="width: auto;">
         </div>
     </div>
   </div>

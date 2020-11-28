@@ -453,6 +453,7 @@
                 <th class="py-1">V-U</th>
                 <th class="py-1">W-U</th>
                 <th class="py-1">W-U</th>
+                <th class="py-1"></th>
               </tr>
             </thead>
             <tbody>
@@ -466,6 +467,9 @@
                 <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu2]" value="{{old('tran_tap')[$key]['vu2']}}"></td>
                 <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu1]" value="{{old('tran_tap')[$key]['wu1']}}"></td>
                 <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu2]" value="{{old('tran_tap')[$key]['wu2']}}"></td>
+                <td>
+                    <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                  </td>
               </tr>
               @endforeach
               @else
@@ -477,6 +481,9 @@
                 <td><input type="text" class="form-control mt-0" name="tran_tap[0][vu2]" value=""></td>
                 <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu1]" value=""></td>
                 <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu2]" value=""></td>
+                <td>
+                    <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                  </td>
               </tr>
               @endif
             </tbody>
@@ -484,7 +491,6 @@
             <tr>
               <td class="p-0" colspan="7">
                 <button class="btn btn-dark btn-add-tap-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
-                <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button">Remover fila <i class="far ml-1 fa-trash"></i></button>
                 <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
               </td>
             </tr>
@@ -715,41 +721,42 @@
 <script>
 Dropzone.autoDiscover = false;
 $(document).ready(function() {
-    var myDrop = new Dropzone("#dZUpload", {
-        url: "{{route('gallery.store', $ot->id)}}",
-        addRemoveLinks: true,
-        //autoProcessQueue: false,
-        params: {
-          _token: '{{csrf_token()}}',
-          eval_type: 'electrical',
-        },
-        renameFile: function (file) {
-            let newName = new Date().getTime() + '_' + file.name;
-            return newName;
-        },
-        success: function (file, response) {
-            var imgName = response;
-            file.previewElement.classList.add("dz-success");
-            createJSON(myDrop.files);
-        },
-        removedfile: function(file) {
-          createJSON(myDrop.files);
-            file.previewElement.remove();
-        },
-        error: function (file, response) {
-            file.previewElement.classList.add("dz-error");
-        }
-    });
+  var myDrop = new Dropzone("#dZUpload", {
+    url: "{{route('gallery.store', $ot->id)}}",
+    addRemoveLinks: true,
+    //autoProcessQueue: false,
+    params: {
+      _token: '{{csrf_token()}}',
+      eval_type: 'electrical',
+    },
+    renameFile: function(file) {
+      let newName = new Date().getTime() + '_' + file.name;
+      return newName;
+    },
+    success: function(file, response) {
+      var imgName = response;
+      file.previewElement.classList.add("dz-success");
+      createJSON(myDrop.files);
+    },
+    removedfile: function(file) {
+      createJSON(myDrop.files);
+      file.previewElement.remove();
+    },
+    error: function(file, response) {
+      file.previewElement.classList.add("dz-error");
+    }
+  });
+
   function createJSON(files) {
     var json = '{';
     var otArr = [];
     $.each(files, function(id, item) {
       console.log(item)
-      otArr.push('"' + id + '": {' + 
-        '"name":"' + item.upload.filename + 
-        '", "type":"' + item.type + 
-        '", "status":"' + item.status + 
-        '", "url":"' + item.url + 
+      otArr.push('"' + id + '": {' +
+        '"name":"' + item.upload.filename +
+        '", "type":"' + item.type +
+        '", "status":"' + item.status +
+        '", "url":"' + item.url +
         '"}');
     });
     json += otArr.join(",") + '}'
@@ -757,66 +764,72 @@ $(document).ready(function() {
     return json;
   }
 
-  $(document).on('change', '.select-area', function () {
-  var $this = $(this), area = $this.val();
-  var service = $(this).parents('tr').find('.select-service');
-  if($(this).val().length) {
-    $.ajax({
-          type: "GET",
-          url: "/servicios/filterareas",
-          data: {id: area, _token:'{{csrf_token()}}'},
-          beforeSend: function() {
-            service.attr('disabled', true);
-          },
-          success: function (response) {
-            service.attr('disabled', false).focus();
-            service.find('option').remove();
-            if (response.success) {
-              var services = $.parseJSON(response.data), s_length = services.length;
-              if (services.length) {
-                $.each(services, function (id, item) {
-                  service.append('<option value="'+item.id+'">'+item.name+'</option>');
-                })
-              }
-              if(service.data('value')) {
-                service.find('option[value='+service.data('value')+']').prop('selected', true);
-              }
+  $(document).on('change', '.select-area', function() {
+    var $this = $(this),
+      area = $this.val();
+    var service = $(this).parents('tr').find('.select-service');
+    if ($(this).val().length) {
+      $.ajax({
+        type: "GET",
+        url: "/servicios/filterareas",
+        data: {
+          id: area,
+          _token: '{{csrf_token()}}'
+        },
+        beforeSend: function() {
+          service.attr('disabled', true);
+        },
+        success: function(response) {
+          service.attr('disabled', false).focus();
+          service.find('option').remove();
+          if (response.success) {
+            var services = $.parseJSON(response.data),
+              s_length = services.length;
+            if (services.length) {
+              $.each(services, function(id, item) {
+                service.append('<option value="' + item.id + '">' + item.name + '</option>');
+              })
             }
-          },
-          error: function (request, status, error) {
-            
+            if (service.data('value')) {
+              service.find('option[value=' + service.data('value') + ']').prop('selected', true);
+            }
           }
+        },
+        error: function(request, status, error) {
+
+        }
       });
+    } else {
+      service.attr('disabled', true);
+    }
+  })
 
-
-  } else {
-    service.attr('disabled', true);
-  }
-})
-  
   $(document).on('click', '.card .btn-clear', function() {
     $('#table-tap .form-control').val('');
   })
-  $('.btn-add-tap-row').click(function () {
-  var row_index = $('#table-tap tbody tr').length;
-  var row = `<tr>
+  $('.btn-add-tap-row').click(function() {
+    var row_index = $('#table-tap tbody tr').length;
+    var row = `<tr>
             <td class="cell-counter"><span class="number"></span></td>
-            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][uv1]" value=""></td>
-            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][uv2]" value=""></td>
-            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][vu1]" value=""></td>
-            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][vu2]" value=""></td>
-            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][wu1]" value=""></td>
-            <td><input type="text" class="form-control mt-0" name="tran_tap[`+row_index+`][wu2]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][uv1]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][uv2]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][vu1]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][vu2]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][wu1]" value=""></td>
+            <td><input type="text" class="form-control mt-0" name="tran_tap[` + row_index + `][wu2]" value=""></td>
+            <td>
+              <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+            </td>
           </tr>`;
-$('#table-tap tbody').append(row);
-//createJSON();
-})
-  $('.btn-add-row').click(function () {
-  var row_index = $('#table-tap tbody tr').length;
-var row = `<tr>
+    $('#table-tap tbody').append(row);
+    //createJSON();
+  })
+  $('.btn-add-row').click(function() {
+    var row_index = $('#table-works tbody tr').length;
+    var row = `<tr>
     <td class="cell-counter"><span class="number"></span></td>
     <td>
-      <select class="dropdown2 form-control select-area" name="works[`+row_index+`][area]" style="width: 100%">
+      <select class="dropdown2 form-control select-area" name="works[` + row_index + `][area]" style="width: 100%">
         <option value="">Seleccionar area</option>
         @foreach($areas as $area)
         <option value="{{$area->id}}">{{$area->name}}</option>
@@ -824,48 +837,48 @@ var row = `<tr>
       </select>
     </td>
     <td>
-      <select class="dropdown2 form-control select-service" name="works[`+row_index+`][service_id]" style="width: 100%"  disabled="">
+      <select class="dropdown2 form-control select-service" name="works[` + row_index + `][service_id]" style="width: 100%"  disabled="">
         <option value="">Seleccionar servicio</option>
       </select>
     </td>
     <td width="120">
-      <input type="text" class="form-control mt-0" placeholder="Descripción" value="" name="works[`+row_index+`][description]">
+      <input type="text" class="form-control mt-0" placeholder="Descripción" value="" name="works[` + row_index + `][description]">
     </td>
     <td width="100">
-      <input type="text" class="form-control mt-0" placeholder="Medida" value="" name="works[`+row_index+`][medidas]">
+      <input type="text" class="form-control mt-0" placeholder="Medida" value="" name="works[` + row_index + `][medidas]">
     </td>
     <td width="100">
-      <input type="text" class="form-control mt-0" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
+      <input type="text" class="form-control mt-0" placeholder="Cantidad" value="" name="works[` + row_index + `][qty]">
     </td>
     <td width="100">
-      <input type="text" class="form-control mt-0" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
+      <input type="text" class="form-control mt-0" placeholder="Personal" value="" name="works[` + row_index + `][personal]">
     </td>
     <td>
       <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
     </td>
   </tr>`;
-$('#table-works tbody').append(row);
-$('#table-works .dropdown2').select2();
-//createJSON();
-})
-  $(document).on('click', '.btn-remove-top-row', function () {
+    $('#table-works tbody').append(row);
+    $('#table-works .dropdown2').select2();
+    //createJSON();
+  })
+  $(document).on('click', '.btn-remove-tap-row', function() {
     var row_index = $('#table-tap tbody tr').length;
     if (row_index > 1) {
-      $('#table-tap tbody tr:nth-child(' + row_index + ')').remove();
+      $(this).closest('tr').remove();
     }
     //createJSON();
   })
-  $(document).on('click', '.btn-remove-row', function () {
+  $(document).on('click', '.btn-remove-row', function() {
     var row_index = $('#table-works tbody tr').length;
     if (row_index > 1) {
-      $('#table-works tbody tr:nth-child(' + row_index + ')').remove();
+      $(this).closest('tr').remove();
     }
   })
 
-  $('.btn-yes').click(function () {
+  $('.btn-yes').click(function() {
     $('input[type="radio"][value="1"]').prop('checked', true);
   })
-  $('.btn-no').click(function () {
+  $('.btn-no').click(function() {
     $('input[type="radio"][value="0"]').prop('checked', true);
   })
 

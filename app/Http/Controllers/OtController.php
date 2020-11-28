@@ -466,4 +466,15 @@ class OtController extends Controller
         }*/
         return response()->json(['name'=>$avatarName, 'url' => $url .'/'.$avatarName]);
     }
+
+    public function galleryDelete(Request $request, $image_id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+
+        $ot_gallery = OtGallery::findOrFail($image_id);
+        $ot_gallery->enabled = 0;
+        $ot_gallery->save();
+
+        return response()->json(['data'=>json_encode($ot_gallery), 'success'=>true]);
+    }
 }

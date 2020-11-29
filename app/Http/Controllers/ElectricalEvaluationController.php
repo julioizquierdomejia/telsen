@@ -499,6 +499,8 @@ class ElectricalEvaluationController extends Controller
                         'eer.bornera as rec_bornera',
                         'eer.funda as rec_funda',
                         'eer.chaveta as rec_chaveta',
+                        'eer.cancamo as rec_cancamo',
+                        'eer.base as rec_base',
                         'eer.placa_caract_orig_has as rec_placa_caract_orig_has',
                         'eer.escudos_has as rec_escudos_has',
                         'eer.ventilador_has as rec_ventilador_has',
@@ -508,6 +510,8 @@ class ElectricalEvaluationController extends Controller
                         'eer.bornera_has as rec_bornera_has',
                         'eer.funda_has as rec_funda_has',
                         'eer.chaveta_has as rec_chaveta_has',
+                        'eer.cancamo_has as rec_cancamo_has',
+                        'eer.base_has as rec_base_has',
                         'eer.otros as rec_otros',
                         'eer.detalles as rec_detalles',
 
@@ -654,6 +658,8 @@ class ElectricalEvaluationController extends Controller
                         'eer.bornera as rec_bornera',
                         'eer.funda as rec_funda',
                         'eer.chaveta as rec_chaveta',
+                        'eer.cancamo as rec_cancamo',
+                        'eer.base as rec_base',
                         'eer.placa_caract_orig_has as rec_placa_caract_orig_has',
                         'eer.escudos_has as rec_escudos_has',
                         'eer.ventilador_has as rec_ventilador_has',
@@ -663,6 +669,8 @@ class ElectricalEvaluationController extends Controller
                         'eer.bornera_has as rec_bornera_has',
                         'eer.funda_has as rec_funda_has',
                         'eer.chaveta_has as rec_chaveta_has',
+                        'eer.cancamo_has as rec_cancamo_has',
+                        'eer.base_has as rec_base_has',
                         'eer.otros as rec_otros',
                         'eer.detalles as rec_detalles',
 
@@ -838,6 +846,8 @@ class ElectricalEvaluationController extends Controller
             'rec_bornera' => 'string|nullable',
             'rec_funda' => 'string|nullable',
             'rec_chaveta' => 'string|nullable',
+            'rec_cancamo' => 'string|nullable',
+            'rec_base' => 'string|nullable',
             'rec_otros' => 'string|nullable',
             'rec_detalles' => 'string|nullable',
             //Botones sí/no
@@ -850,6 +860,8 @@ class ElectricalEvaluationController extends Controller
             'rec_bornera_has' => 'boolean|nullable',
             'rec_funda_has' => 'boolean|nullable',
             'rec_chaveta_has' => 'boolean|nullable',
+            'rec_cancamo_has' => 'boolean|nullable',
+            'rec_base_has' => 'boolean|nullable',
 
             'testin_motor_aisl_m' => 'string|nullable',
             'testin_motor_nro_salidas' => 'string|nullable',
@@ -971,6 +983,8 @@ class ElectricalEvaluationController extends Controller
         $elreceval->bornera = $request->input('rec_bornera');
         $elreceval->funda = $request->input('rec_funda');
         $elreceval->chaveta = $request->input('rec_chaveta');
+        $elreceval->cancamo = $request->input('rec_cancamo');
+        $elreceval->base = $request->input('rec_base');
         //
         $elreceval->placa_caract_orig_has = $request->input('rec_placa_caract_orig_has') ?? 0;
         $elreceval->escudos_has = $request->input('rec_escudos_has') ?? 0;
@@ -981,6 +995,8 @@ class ElectricalEvaluationController extends Controller
         $elreceval->bornera_has = $request->input('rec_bornera_has') ?? 0;
         $elreceval->funda_has = $request->input('rec_funda_has') ?? 0;
         $elreceval->chaveta_has = $request->input('rec_chaveta_has') ?? 0;
+        $elreceval->cancamo_has = $request->input('rec_cancamo_has') ?? 0;
+        $elreceval->base_has = $request->input('rec_base_has') ?? 0;
         //
         $elreceval->otros = $request->input('rec_otros');
         $elreceval->detalles = $request->input('rec_detalles');

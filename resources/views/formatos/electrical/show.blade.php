@@ -7,6 +7,53 @@ $ot_status = \DB::table('status_ot')
       ->select('status.id', 'status_ot.status_id', 'status.name')
       ->get();
 $status_last = $ot_status->last();
+
+$reception_list = [
+  array (
+    'name' => 'Placa Caract Orig',
+    'alias' => 'placa_caract_orig',
+  ),
+  array (
+    'name' => 'Escudos',
+    'alias' => 'escudos',
+  ),
+  array (
+    'name' => 'Ventilador',
+    'alias' => 'ventilador',
+  ),
+  array (
+    'name' => 'Caja de Conexión',
+    'alias' => 'caja_conexion'
+  ),
+  array (
+    'name' => 'Ejes',
+    'alias' => 'ejes',
+  ),
+  array (
+    'name' => 'Acople',
+    'alias' => 'acople',
+  ),
+  array (
+    'name' => 'Bornera',
+    'alias' => 'bornera',
+  ),
+  array (
+    'name' => 'Fundas',
+    'alias' => 'fundas',
+  ),
+  array (
+    'name' => 'Chaveta',
+    'alias' => 'chaveta',
+  ),
+  array (
+    'name' => 'Cancamo',
+    'alias' => 'cancamo',
+  ),
+  array (
+    'name' => 'Base',
+    'alias' => 'base',
+  )
+];
 @endphp
 <div class="row">
   <div class="col-md-12">
@@ -263,42 +310,12 @@ $status_last = $ot_status->last();
       </div>
       <div class="card-body pb-3">
         <div class="row">
+          @foreach($reception_list as $r_key => $item)
           <div class="col-12 col-sm-6 col-md-3 mb-2">
-            <label class="c-label">Placa caract. Orig:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_placa_caract_orig_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_placa_caract_orig_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_placa_caract_orig ?? '-'}}</span></p>
+            <label class="c-label">{{ $item['name'] }}:</label>
+            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->{'rec_'.$item['alias'].'_has'} == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->{'rec_'.$item['alias'].'_has'} == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{ $formato->{'rec_'.$item['alias'] } ?? '-'}}</span></p>
           </div>
-          <div class="col-12 col-sm-6 col-md-3 mb-2">
-            <label class="c-label">Escudos:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_escudos_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_escudos_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_escudos ?? '-'}}</span></p>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3 mb-2">
-            <label class="c-label">Ventilador:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_ventilador_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_ventilador_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_ventilador ?? '-'}}</span></p>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3 mb-2">
-            <label class="c-label">Caja de Conexión:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_caja_conexion_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_caja_conexion_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_caja_conexion ?? '-'}}</span></p>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3 mb-2">
-            <label class="c-label">Ejes:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_ejes_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_ejes_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_ejes ?? '-'}}</span></p>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3 mb-2">
-            <label class="c-label">Acople:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_acople_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_acople_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_acople ?? '-'}}</span></p>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3 mb-2">
-            <label class="c-label">Bornera:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_bornera_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_bornera_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_bornera ?? '-'}}</span></p>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3 mb-2">
-            <label class="c-label">Funda:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_funda_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_funda_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_funda ?? '-'}}</span></p>
-          </div>
-          <div class="col-12 col-sm-6 col-md-3 mb-2">
-            <label class="c-label">Chaveta:</label>
-            <p class="mb-1"><span class="badge align-middle mr-2 px-3 py-1{{$formato->rec_chaveta_has == "1" ? ' badge-success' : ' badge-danger'}}">{{$formato->rec_chaveta_has == "1" ? 'Sí ' : 'No '}}</span><span class="align-middle">{{$formato->rec_chaveta ?? '-'}}</span></p>
-          </div>
+          @endforeach
           <div class="col-12 col-sm-6 col-md-3 mb-2">
             <label class="c-label">Otros:</label>
             <p class="mb-1">{{$formato->rec_otros ?? '-'}}</p>

@@ -57,7 +57,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">8</p>
+            <p class="card-title numbers">{{count($pending_ots)}}</p>
             <p class="card-category"><br>OT Pendientes</p>
           </div>
         </div>
@@ -84,7 +84,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">12</p>
+            <p class="card-title numbers">{{count($enabled_ots)}}</p>
             <p class="card-category"><br>OT Atendidas</p>
           </div>
         </div>
@@ -111,7 +111,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">68</p>
+            <p class="card-title numbers">{{isset($avarage_ots) ? number_format($avarage_ots[0]->ot_prom, 0) : 0}}</p>
             <p class="card-category">OT <br>Promedio al Mes</p>
           </div>
         </div>
@@ -138,7 +138,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">35</p>
+            <p class="card-title numbers">{{$users->count()}}</p>
             <p class="card-category">Personal <br>en Planta</p>
           </div>
         </div>
@@ -155,8 +155,8 @@
 </div>
 
 <div class="row">
-  <div class="col-md-7">
-    <div class="card card-ot-progress text-white">
+  <div class="col-md-7 mb-4">
+    <div class="card card-ot-progress text-white mb-0">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title">Progreso de Órdenes de Trabajo</h5>
         <span class="buttons">
@@ -221,8 +221,8 @@
       </div>
     </div>
   </div>
-  <div class="col-md-5">
-    <div class="card card-chart">
+  <div class="col-md-5 mb-4">
+    <div class="card card-chart h-100 mb-0">
       <div class="card-header">
         <h5 class="card-title">Resumen de Progreso O.T.</h5>
       </div>

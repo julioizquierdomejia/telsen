@@ -73,10 +73,12 @@ class CostCardController extends Controller
         $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                 ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
-                ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
-                ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
-                ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.frecuencia', 'electrical_evaluations.conex', 'electrical_evaluations.frame', 'electrical_evaluations.amperaje', 'mechanical_evaluations.hp_kw', 'mechanical_evaluations.serie', 'mechanical_evaluations.rpm', 'mechanical_evaluations.placa_caract_orig')
+                ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
+                ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
+                ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'clients.ruc', 'ee_val.nro_equipo', 'ee_val.frecuencia', 'ee_val.conex', 'ee_val.frame', 'ee_val.amperaje', 'me_val.hp_kw', 'me_val.serie', 'me_val.rpm', 'me_val.placa_caract_orig')
                 ->where('ots.enabled', 1)
+                ->where('ee_val.approved', 1)
+                ->where('me_val.approved', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
         if ($ot->client_type_id == 1) {

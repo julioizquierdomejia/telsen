@@ -36,6 +36,8 @@ class CostCardController extends Controller
                         ->where('ots.enabled', 1)
                         ->where('clients.client_type_id', 2)
                         ->where('clients.enabled', 1)
+                        ->where('ee_val.approved', 1)
+                        ->where('me_val.approved', 1)
                         //->groupBy('ots.id')
                         ->get();
 

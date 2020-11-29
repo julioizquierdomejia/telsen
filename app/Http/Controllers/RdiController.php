@@ -44,6 +44,8 @@ class RdiController extends Controller
                         ->where('ots.enabled', 1)
                         ->where('clients.client_type_id', 1)
                         ->where('clients.enabled', 1)
+                        ->where('ee_val.approved', 1)
+                        ->where('me_val.approved', 1)
                         ->get();
 
         $rdis = [];
@@ -53,7 +55,7 @@ class RdiController extends Controller
             foreach ($ot_status as $key => $status) {
                 $array[] = $status->status_id;
             }
-            if (in_array(2, $array) && in_array(3, $array) && !in_array(4, $array) && !in_array(8, $array) && $ot->me_approved == 1 && $ot->ee_approved == 1) {
+            if (in_array(2, $array) && in_array(3, $array) && !in_array(4, $array) && !in_array(8, $array)/* && $ot->me_approved == 1 && $ot->ee_approved == 1*/) {
                 $rdis[] = $ot;
             }
         }

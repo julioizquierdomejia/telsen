@@ -60,7 +60,22 @@ class HomeController extends Controller
             }
         }
 
+        $greetings = self::Greetings();
+
         //$areas = Area::where('areas.enabled', 1)->where('areas.id', '<>', 1)->get();
-        return view('home', compact('users', 'ots', 'pending_ots', 'enabled_ots', 'avarage_ots'));
+        return view('home', compact('users', 'ots', 'pending_ots', 'enabled_ots', 'avarage_ots', 'greetings'));
+    }
+
+    function Greetings() {
+      $hours = gmdate('H') - 5;
+      if ($hours >= 0 && $hours <= 12) {
+          return "Buenos días";
+      } else {
+          if ($hours > 12 && $hours <= 17) {
+              return "Buenas tardes";
+          } else {
+              return "Buenas noches";
+          }
+      }
     }
 }

@@ -14,7 +14,7 @@
 @endphp --}}
 </ul>
 <div class="welcome px-3 px-md-4 py-4 py-md-5 text-center">
-  <h3 class="title pb-md-3">¡Buenas tardes, {{user_data()->name}}!</h3>
+  <h3 class="title pb-md-3">¡{{$greetings}}, {{user_data()->name}}!</h3>
 </div>
 <div class="row card-list row-medium">
   <div class="col-lg col-md-6 col-6 item created-ot">

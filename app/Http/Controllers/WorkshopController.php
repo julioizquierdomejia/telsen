@@ -97,9 +97,9 @@ class WorkshopController extends Controller
         } else { //No afiliado
             $cost_card = CostCard::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
-                    ->join('cost_card_services', 'cost_card_services.service_id', 'services.id')
-                    ->where('cost_card_services.cost_card_id', $cost_card->id)
-                    ->select('areas.name as area', 'cost_card_services.id', 'services.area_id', 'services.name as service', 'cost_card_services.subtotal', 'cost_card_services.personal')
+                    ->join('cost_card_service_works', 'cost_card_service_works.service_id', 'services.id')
+                    ->where('cost_card_service_works.cc_id', $cost_card->id)
+                    ->select('areas.name as area', 'cost_card_service_works.id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal')
                     ->get();
         }
         foreach($services_list as $key => $item) {
@@ -176,10 +176,10 @@ class WorkshopController extends Controller
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->select('cost_cards.*', 'ots.id as ot_id', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
                 ->firstOrFail();
-        $services = WorkshopService::where('cost_card_id', $ccost->id)
-                    ->leftJoin('services', 'services.id', '=', 'cost_card_services.service_id')
-                    ->leftJoin('areas', 'areas.id', '=', 'cost_card_services.area_id')
-                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_services.personal', 'cost_card_services.ingreso', 'cost_card_services.salida', 'cost_card_services.subtotal')
+        $services = WorkshopService::where('cc_id', $ccost->id)
+                    ->leftJoin('services', 'services.id', '=', 'cost_card_service_works.service_id')
+                    ->leftJoin('areas', 'areas.id', '=', 'cost_card_service_works.area_id')
+                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_service_works.personal', 'cost_card_service_works.ingreso', 'cost_card_service_works.salida')
                     ->get();
 
         return view('talleres.show', compact('ccost', 'services'));

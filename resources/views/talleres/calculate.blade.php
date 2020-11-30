@@ -24,7 +24,7 @@
             @foreach($service_item as $service)
             <li class="list-group-item">
               <h6 class="subtitle mb-1">{{$service['service']}}</h6>
-              <p class="mb-0">Subtotal: <span class="badge badge-secondary badge-pill px-3">{{number_format($service['subtotal'], 2)}}</span></p>
+              {{-- <p class="mb-0">Subtotal: <span class="badge badge-secondary badge-pill px-3">{{number_format($service['subtotal'], 2)}}</span></p> --}}
             </li>
             @endforeach
           </ul>

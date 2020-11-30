@@ -50,11 +50,13 @@ class HomeController extends Controller
                   ->select('status_ot.status_id', 'status.id', 'status.name')
                   ->get();
             $ot_status_arr = array_column($ot_status->toArray(), "status_id");
-            if ($ot_status->last()->status_id == 1) {
+            /*if ($ot_status->last()->status_id == 1) {
                 $pending_ots[] = $ot;
-            }
-            if (!in_array(7, $ot_status_arr) && !in_array(10, $ot_status_arr)) {
+            }*/
+            if (count($ot_status_arr) > 1 && !in_array(7, $ot_status_arr) && !in_array(10, $ot_status_arr)) {
                 $enabled_ots[] = $ot;
+            } else {
+              $pending_ots[] = $ot;
             }
         }
 

@@ -359,7 +359,7 @@ $(document).ready(function() {
               }
             }*/
             if(data.cost_card) {
-              html += `<a class="dropdown-item" href="/tarjeta-costo/`+data.cost_card.cc_id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>`
+              html += `<a class="dropdown-item" href="/tarjeta-costo/`+item.id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>`
             }
             if(data.rdi) {
             html += `<a class="dropdown-item" href="/rdi/`+data.rdi.rdi_id+`/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>`

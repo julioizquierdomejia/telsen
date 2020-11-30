@@ -120,7 +120,7 @@ $status_last = $ot_status->last();
 					@endif
 					@if($meval)
 						<span class="d-inline-block">
-						<span class="d-block text-muted">({{ $meval->approved == 1 ? 'Aprobada' : ($eeval->approved == 2 ? 'Desaprobada' : 'Por aprobar') }})</span>
+						<span class="d-block text-muted">({{ $meval->approved == 1 ? 'Aprobada' : ($meval->approved == 2 ? 'Desaprobada' : 'Por aprobar') }})</span>
 							<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
 						</span>
 					@else

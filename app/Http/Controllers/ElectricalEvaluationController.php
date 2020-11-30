@@ -1058,7 +1058,6 @@ class ElectricalEvaluationController extends Controller
                     $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
                     $work->qty = isset($item['qty']) ? $item['qty'] : '';
                     $work->personal = isset($item['personal']) ? $item['personal'] : '';
-                    $work->updated_at = $date;
                     $work->save();
                 }
             } else {

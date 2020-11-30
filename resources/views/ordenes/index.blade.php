@@ -135,6 +135,8 @@ $(document).ready(function() {
                             item_days = '<span class="badge'+ i_class+ 'px-2 py-1 w-100">'+fecha+'</span>';
                             if(days > 0) {
                               item_days += '<span class="text-nowrap">quedan ' +days + ' días</span>';
+                            } else {
+                              item_days += '<span class="text-nowrap text-muted">pasado</span>';
                             }
                           }
 
@@ -316,18 +318,50 @@ $(document).ready(function() {
         async: false,
         success: function(response) {
             if (response.success) {
-                var statuses = $.parseJSON(response.status);
+                var statuses = $.parseJSON(response.status), ee_approved = '', me_approved = '';
                 status['status'] = statuses;
-                status['eeval'] = response.eeval ? $.parseJSON(response.eeval) : '';
-                status['meval'] = response.meval ? $.parseJSON(response.meval) : '';
                 status['rdi'] = response.rdi ? $.parseJSON(response.rdi) : '';
+                if(response.meval) {
+                  status['meval'] = $.parseJSON(response.meval);
+                  var me_status = status['meval'] ? status['meval'].approved : -1;
+                  text_mestatus = '';
+                  if(me_status == 0) {
+                    text_mestatus = 'Por aprobar'
+                  } else if(me_status == 1) {
+                    text_mestatus = 'Aprobada'
+                  } else if(me_status == 2) {
+                    text_mestatus = 'Desaprobada'
+                  }
+                  var me_approved = `<span class="d-block text-muted">(`+text_mestatus+`)</span>`;
+                } else {
+                  status['meval'] = '';
+                }
+                if(response.eeval) {
+                  status['eeval'] = $.parseJSON(response.eeval);
+                  var ee_status = status['eeval'] ? status['eeval'].approved : -1;
+                  text_eestatus = '';
+                  if(ee_status == 0) {
+                    text_eestatus = 'Por aprobar'
+                  } else if(ee_status == 1) {
+                    text_eestatus = 'Aprobada'
+                  } else if(ee_status = 2) {
+                    text_eestatus = 'Desaprobada'
+                  }
+                  var ee_approved = `<span class="d-block text-muted">(`+text_eestatus+`)</span>`;
+                } else {
+                  status['eeval'] = '';
+                }
                 status['cost_card'] = response.cost_card ? $.parseJSON(response.cost_card) : '';
+
                 if (statuses) {
                   $.each(statuses, function (id, item) {
-                    if(item.status_id == 4) {
-                      status['html'] = `<span class="badge badge-primary px-2 py-1 w-100">`+item.name+`</span>`
+                    if(item.status_id == 2) {
+                      status['html'] = `<span class="d-inline-block"><span class="badge badge-secondary px-2 py-1 w-100">`+item.name+`</span>`+me_approved+`</span>`
                     }
-                    if(item.status_id == 4) {
+                    else if(item.status_id == 3) {
+                      status['html'] = `<span class="d-inline-block"><span class="badge badge-secondary px-2 py-1 w-100">`+item.name+`</span>`+ee_approved+`</span>`
+                    }
+                    else if(item.status_id == 4) {
                       status['html'] = `<span class="badge badge-primary px-2 py-1 w-100">`+item.name+`</span>`
                     } else if(item.status_id == 5 || item.status_id == 8) {
                       status['html'] = `<span class="badge badge-danger px-2 py-1 w-100">`+item.name+`</span>`

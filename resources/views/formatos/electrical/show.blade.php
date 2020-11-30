@@ -1,4 +1,7 @@
-@extends('layouts.app', ['title' => 'Ver Evaluación Eléctrica'])
+@php
+  $ot_id = zerosatleft($formato->ot_id, 3);
+@endphp
+@extends('layouts.app', ['title' => 'Evaluación Eléctrica de OT N° '.$ot_id])
 @section('content')
 @php
 $ot_status = \DB::table('status_ot')

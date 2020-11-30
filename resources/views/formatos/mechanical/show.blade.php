@@ -1,4 +1,7 @@
-@extends('layouts.app', ['title' => 'Ver Evaluación Mecánica'])
+@php
+  $ot_id = zerosatleft($formato->ot_id, 3);
+@endphp
+@extends('layouts.app', ['title' => 'Evaluación Mecánica de OT N° '.$ot_id])
 @section('content')
 @php
 $ot_status = \DB::table('status_ot')
@@ -41,7 +44,7 @@ $status_last = $ot_status->last();
 				<div class="row">
 					<div class="col-6 col-md-3 form-group">
 						<label class="c-label">OT</label>
-						<p class="mb-0">OT-{{zerosatleft($formato->ot_id, 3)}}</p>
+						<p class="mb-0">OT-{{$ot_id}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="c-label">Fecha de creación</label>

@@ -582,7 +582,6 @@ class MechanicalEvaluationController extends Controller
         //$work_ids = array_column($works, 'id');
         //$update_works = MechanicalEvaluationWork::where('me_id', $meval->id)->delete();
         $services = [];
-        $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
             if (isset($item['id'])) {
                 $work = MechanicalEvaluationWork::find($item['id']);
@@ -595,7 +594,6 @@ class MechanicalEvaluationController extends Controller
                     $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
                     $work->qty = isset($item['qty']) ? $item['qty'] : '';
                     $work->personal = isset($item['personal']) ? $item['personal'] : '';
-                    $work->updated_at = $date;
                     $work->save();
                 }
             } else {

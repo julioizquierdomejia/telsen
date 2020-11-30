@@ -123,11 +123,11 @@ class OtController extends Controller
                 ->first();
 
         $meval = MechanicalEvaluation::where('ot_id', $id)
-                ->select('mechanical_evaluations.id as meval_id')
+                ->select('mechanical_evaluations.id as meval_id', 'mechanical_evaluations.approved')
                 ->first();
 
         $eeval = ElectricalEvaluation::where('ot_id', $id)
-                ->select('electrical_evaluations.id as eeval_id')
+                ->select('electrical_evaluations.id as eeval_id', 'electrical_evaluations.approved')
                 ->first();
 
         $cost_card = CostCard::where('ot_id', $id)

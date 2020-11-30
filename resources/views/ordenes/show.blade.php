@@ -1,4 +1,7 @@
-@extends('layouts.app', ['title' => 'Ver OT'])
+@php
+	$ot_id = zerosatleft($ot->id, 3);
+@endphp
+@extends('layouts.app', ['title' => 'Ver OT N° '.$ot_id])
 @section('content')
 @php
 $ot_status = \DB::table('status_ot')
@@ -15,7 +18,7 @@ $status_last = $ot_status->last();
 			<div class="card-header">
 				<h5 class="card-title d-flex justify-content-between align-items-center">
 				<span>
-					Orden de Trabajo {{zerosatleft($ot->id, 3)}}
+					Orden de Trabajo {{$ot_id}}
                     <span class="d-block">
                     @if ($status_last)
                       @if($status_last->status_id == 4)
@@ -116,12 +119,18 @@ $status_last = $ot_status->last();
 					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Ver Tarjeta de Costo</a>
 					@endif
 					@if($meval)
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+						<span class="d-inline-block">
+						<span class="d-block text-muted">({{ $meval->approved == 1 ? 'Aprobada' : ($eeval->approved == 2 ? 'Desaprobada' : 'Por aprobar') }})</span>
+							<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+						</span>
 					@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
 					@endif
 					@if($eeval)
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+						<span class="d-inline-block">
+							<span class="d-block text-muted">({{ $eeval->approved == 1 ? 'Aprobada' : ($eeval->approved == 2 ? 'Desaprobada' : 'Por aprobar') }})</span>
+							<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+						</span>
 					@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
 					@endif

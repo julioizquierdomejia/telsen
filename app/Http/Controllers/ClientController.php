@@ -96,12 +96,8 @@ class ClientController extends Controller
             $user_data->last_name = $client->razon_social;
             $user_data->mother_last_name = $client->razon_social;
             $user_data->user_phone = $client->celular;
+            $user_data->area_id = 6; //Clientes
             $user_data->save();
-
-            $user_area = new UserArea();
-            $user_area->user_id = $user->id;
-            $user_area->area_id = 1;
-            $user_area->save();
 
             //vamos a relacionar roles con usuarios
             $user->roles()->attach($role_user);

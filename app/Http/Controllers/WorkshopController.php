@@ -68,9 +68,8 @@ class WorkshopController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
         $users = User::join('user_data', 'user_data.user_id', 'users.id')
-                ->join('user_area', 'user_area.user_id', 'users.id')
-                ->join('areas', 'areas.id', 'user_area.area_id')
-                ->select('users.id', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_area.area_id','areas.name as area')
+                ->join('areas', 'areas.id', 'user_data.area_id')
+                ->select('users.id', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.area_id','areas.name as area')
                 ->get()
                 ;
 

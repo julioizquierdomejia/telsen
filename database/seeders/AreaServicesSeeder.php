@@ -17,6 +17,12 @@ class AreaServicesSeeder extends Seeder
     {
         //Areas
         $area = new Area();
+        $area->name = 'GERENCIA';
+        $area->enabled = 1;
+        $area->has_services = 0;
+        $area->save();
+
+        $area = new Area();
         $area->name = 'ADMINISTRACIÓN';
         $area->enabled = 1;
         $area->has_services = 0;

@@ -66,9 +66,9 @@ class MechanicalEvaluationController extends Controller
             ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'motor_brands.name as marca')
             ->firstOrFail();
         if ($ot->client_type_id == 1) { //RDI
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
         } else {
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 6)->get();
         }
 
         return view('formatos.mechanical.evaluate', compact('ot', 'areas', 'cod_rodaje_p1', 'cod_rodaje_p2'));
@@ -385,9 +385,9 @@ class MechanicalEvaluationController extends Controller
             ->select('ots.*', 'clients.razon_social', 'clients.client_type_id')
             ->firstOrFail();
         if ($ot->client_type_id == 1) { //RDI
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
         } else {
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 6)->get();
         }
         $cod_rodaje_p1 = RotorCodRodajePt1::where('enabled', 1)->get();
         $cod_rodaje_p2 = RotorCodRodajePt2::where('enabled', 1)->get();

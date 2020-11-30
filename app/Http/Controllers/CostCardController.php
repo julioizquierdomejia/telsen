@@ -82,9 +82,9 @@ class CostCardController extends Controller
                 ->where('ots.id', $id)
                 ->firstOrFail();
         if ($ot->client_type_id == 1) {
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
         } else {
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 6)->get();
         }
 
         $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')

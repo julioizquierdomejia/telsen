@@ -78,9 +78,9 @@ class RdiController extends Controller
                 ->where('ots.id', $id)
                 ->firstOrFail();
         if ($ot->client_type_id == 1) {
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
-        } else {
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
+        } else {
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
         }
         $counter = RDI::count() + 1;
         $clientes = Client::where('enabled', 1)->where('client_type_id', 1)->get();

@@ -33,7 +33,7 @@
     ),
     array (
       'name' => 'Fundas',
-      'alias' => 'fundas',
+      'alias' => 'funda',
     ),
     array (
       'name' => 'Chaveta',

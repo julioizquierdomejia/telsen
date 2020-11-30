@@ -1,4 +1,7 @@
-@extends('layouts.app', ['title' => 'Editar Evaluación Eléctrica'])
+@php
+  $ot_id = zerosatleft($ot->id, 3);
+@endphp
+@extends('layouts.app', ['title' => 'Editar Evaluación Eléctrica de OT N° '.$ot_id ])
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php
@@ -33,7 +36,7 @@
     ),
     array (
       'name' => 'Fundas',
-      'alias' => 'fundas',
+      'alias' => 'funda',
     ),
     array (
       'name' => 'Chaveta',
@@ -55,7 +58,7 @@
       @csrf
       <div class="card form-card">
         <div class="card-header">
-          <h4 class="card-title">Editar Evaluación Eléctrica N° {{$formato->id}}</h4>
+          <h4 class="card-title">Editar Evaluación Eléctrica de OT N° {{$ot_id}}</h4>
         </div>
         <div class="card-body pb-3 pt-0">
           <h5 class="text-danger mt-4">Datos del Motor</h5>
@@ -115,7 +118,7 @@
           <div class="row pt-3">
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">OT:</label>
-              <input type="text" readonly="" class="form-control" value="OT-{{zerosatleft($ot->id, 3)}}">
+              <input type="text" readonly="" class="form-control" value="OT-{{$ot_id}}">
             </div>
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">Fecha:</label>
@@ -304,19 +307,19 @@
                 <ul class="form-check-list list-inline mb-0 col-5 col-md-12 @error('rec_'.$item['alias']) is-invalid @enderror">
                     <li class="form-check-inline mx-0">
                       <label class="form-check-label mb-0">
-                        <input type="radio" class="form-check-input mr-0 align-middle" value="1" name="rec_{{$item['alias']}}_has" {{old('rec_'.$item['alias'].'_has', $formato->{$item['alias'].'_has'}) == "1" ? 'checked' : ''}} id="ec{{$r_key}}0"><span class="align-middle"> Sí</span>
+                        <input type="radio" class="form-check-input mr-0 align-middle" value="1" name="rec_{{$item['alias']}}_has" {{old('rec_'.$item['alias'].'_has', $formato->{'rec_'.$item['alias'].'_has'}) == "1" ? 'checked' : ''}} id="ec{{$r_key}}0"><span class="align-middle"> Sí</span>
                       </label>
                     </li>
                     <li class="form-check-inline mx-0 mx-1">
                       <label class="form-check-label mb-0">
-                        <input type="radio" class="form-check-input mr-0 align-middle" value="0" name="rec_{{$item['alias']}}_has" {{old('rec_'.$item['alias'].'_has', $formato->{$item['alias'].'_has'}) == "0" ? 'checked' : ''}} id="ec{{$r_key}}1"><span class="align-middle"> No</span>
+                        <input type="radio" class="form-check-input mr-0 align-middle" value="0" name="rec_{{$item['alias']}}_has" {{old('rec_'.$item['alias'].'_has', $formato->{'rec_'.$item['alias'].'_has'}) == "0" ? 'checked' : ''}} id="ec{{$r_key}}1"><span class="align-middle"> No</span>
                       </label>
                     </li>
                   </ul>
                   </div>
                   </div>
                 <div class="col-12 col-md-5">
-                <input type="text" class="form-control mt-0 @error('rec_'.$item['alias']) is-invalid @enderror" placeholder="{{$item['name']}}" value="{{old('rec_'.$item['alias'], $formato->{$item['alias']})}}" name="rec_{{$item['alias']}}">
+                <input type="text" class="form-control mt-0 @error('rec_'.$item['alias']) is-invalid @enderror" placeholder="{{$item['name']}}" value="{{old('rec_'.$item['alias'], $formato->{'rec_'.$item['alias']})}}" name="rec_{{$item['alias']}}">
               </div>
               </div>
               @error($item['alias'])
@@ -324,7 +327,7 @@
               @enderror
             </div>
             @endforeach
-            <div class="col-12 col-sm-6 col-md-3 form-group">
+            <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Otros:</label>
               <input type="text" class="form-control @error('rec_otros') is-invalid @enderror" placeholder="Otros" value="{{old('rec_otros', $formato->rec_otros)}}" name="rec_otros">
             </div>

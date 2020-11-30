@@ -208,20 +208,18 @@ class CostCardController extends Controller
         CostCardService::insert($services_array);*/
         $works = $request->input('works');
         $services = [];
-        $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
-            $services[$key]['cc_id'] = $cost->id;
-            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
-
-            $services[$key]['created_at'] = $date;
-            $services[$key]['updated_at'] = $date;
+            if (isset($item['service_id'])) {
+                $cc_work = new CostCardServiceWork();
+                $cc_work->cc_id = $cost->id;
+                $cc_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                $cc_work->description = isset($item['description']) ? $item['description'] : '';
+                $cc_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                $cc_work->qty = isset($item['qty']) ? $item['qty'] : '';
+                $cc_work->personal = isset($item['personal']) ? $item['personal'] : '';
+                $cc_work->save();
+            }
         }
-
-        CostCardServiceWork::insert($services);
 
         $status = Status::where('id', 4)->first();
         if ($status) {

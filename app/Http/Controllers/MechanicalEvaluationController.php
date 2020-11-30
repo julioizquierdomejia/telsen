@@ -257,23 +257,17 @@ class MechanicalEvaluationController extends Controller
 
         $meval->save();
 
-        //$meval->works = $request->input('works');
         $works = $request->input('works');
-        $services = [];
-        $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
             if (isset($item['service_id'])) {
-                $services[$key]['me_id'] = $meval->id;
-                $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-                $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-                $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-                $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-                $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
-
-                $services[$key]['created_at'] = $date;
-                $services[$key]['updated_at'] = $date;
-
-                MechanicalEvaluationWork::insert($services);
+                $me_work = new MechanicalEvaluationWork();
+                $me_work->me_id = $meval->id;
+                $me_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                $me_work->description = isset($item['description']) ? $item['description'] : '';
+                $me_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                $me_work->qty = isset($item['qty']) ? $item['qty'] : '';
+                $me_work->personal = isset($item['personal']) ? $item['personal'] : '';
+                $me_work->save();
             }
         }
 
@@ -605,15 +599,14 @@ class MechanicalEvaluationController extends Controller
                     $work->save();
                 }
             } else {
-                $services[$key]['me_id'] = $meval->id;
-                $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-                $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-                $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-                $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-                $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
-                $services[$key]['created_at'] = $date;
-                $services[$key]['updated_at'] = $date;
-                MechanicalEvaluationWork::insert($services);
+                $work = new MechanicalEvaluationWork();
+                $work->me_id = $meval->id;
+                $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                $work->description = isset($item['description']) ? $item['description'] : '';
+                $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                $work->qty = isset($item['qty']) ? $item['qty'] : '';
+                $work->personal = isset($item['personal']) ? $item['personal'] : '';
+                $work->save();
             }
         }
 

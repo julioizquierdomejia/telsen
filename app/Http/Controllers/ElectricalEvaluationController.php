@@ -385,20 +385,16 @@ class ElectricalEvaluationController extends Controller
 
         $works = $request->input('works') ?? [];
         $services = [];
-        $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
             if (isset($item['service_id'])) {
-                $services[$key]['me_id'] = $eleval->id;
-                $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-                $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-                $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-                $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-                $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
-
-                $services[$key]['created_at'] = $date;
-                $services[$key]['updated_at'] = $date;
-
-                ElectricalEvaluationWork::insert($services);
+                $ee_work = new ElectricalEvaluationWork();
+                $ee_work->me_id = $eleval->id;
+                $ee_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                $ee_work->description = isset($item['description']) ? $item['description'] : '';
+                $ee_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                $ee_work->qty = isset($item['qty']) ? $item['qty'] : '';
+                $ee_work->personal = isset($item['personal']) ? $item['personal'] : '';
+                $ee_work->save();
             }
         }
 
@@ -1050,8 +1046,6 @@ class ElectricalEvaluationController extends Controller
         $works = $request->input('works') ?? [];
         //$work_ids = array_column($works, 'id');
         //$update_works = ElectricalEvaluationWork::where('me_id', $eleval->id)->delete();
-        $services = [];
-        $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
             if (isset($item['id'])) {
                 $work = ElectricalEvaluationWork::find($item['id']);
@@ -1068,15 +1062,14 @@ class ElectricalEvaluationController extends Controller
                     $work->save();
                 }
             } else {
-                $services[$key]['me_id'] = $eleval->id;
-                $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-                $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-                $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-                $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-                $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
-                $services[$key]['created_at'] = $date;
-                $services[$key]['updated_at'] = $date;
-                ElectricalEvaluationWork::insert($services);
+                $work = new ElectricalEvaluationWork();
+                $work->me_id = $eleval->id;
+                $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                $work->description = isset($item['description']) ? $item['description'] : '';
+                $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                $work->qty = isset($item['qty']) ? $item['qty'] : '';
+                $work->personal = isset($item['personal']) ? $item['personal'] : '';
+                $work->save();
             }
         }
 

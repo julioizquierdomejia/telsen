@@ -68,14 +68,18 @@ class RdiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function calculate(Request $request, $id)
+    public function calculate(Request $request, $ot_id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
 
+        $rdi = Rdi::where('ot_id', $ot_id)->first();
+        if ($rdi) {
+            return redirect('rdi/'.$rdi->id.'/ver');
+        }
         $ot = Ot::where('ots.enabled', 1)
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->select('ots.*', 'clients.razon_social')
-                ->where('ots.id', $id)
+                ->where('ots.id', $ot_id)
                 ->firstOrFail();
         if ($ot->client_type_id == 1) {
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
@@ -245,21 +249,18 @@ class RdiController extends Controller
         $rdi_ingreso->save();
 
         $works = $request->input('works');
-        $services = [];
-        $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($works as $key => $item) {
-            $services[$key]['rdi_id'] = $rdi->id;
-            $services[$key]['service_id'] = isset($item['service_id']) ? $item['service_id'] : '';
-            $services[$key]['description'] = isset($item['description']) ? $item['description'] : '';
-            $services[$key]['medidas'] = isset($item['medidas']) ? $item['medidas'] : '';
-            $services[$key]['qty'] = isset($item['qty']) ? $item['qty'] : '';
-            $services[$key]['personal'] = isset($item['personal']) ? $item['personal'] : '';
-
-            $services[$key]['created_at'] = $date;
-            $services[$key]['updated_at'] = $date;
+            if (isset($item['service_id'])) {
+                $rdi_work = new RdiWork();
+                $rdi_work->rdi_id = $rdi->id;
+                $rdi_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                $rdi_work->description = isset($item['description']) ? $item['description'] : '';
+                $rdi_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                $rdi_work->qty = isset($item['qty']) ? $item['qty'] : '';
+                $rdi_work->personal = isset($item['personal']) ? $item['personal'] : '';
+                $rdi_work->save();
+            }
         }
-
-        RdiWork::insert($services);
 
         //Actividades por realizar
         /*$services = $request->input('services');

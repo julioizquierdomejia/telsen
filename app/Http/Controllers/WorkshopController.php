@@ -130,16 +130,13 @@ class WorkshopController extends Controller
         }
         $data = $request->input('data');
         //$data_count = count($data);
-        $services = [];
-        $date = \Carbon\Carbon::now()->toDateTimeString();
         foreach ($data as $key => $item) {
-            $item['ot_id'] = $id;
-            $services[$key] = $item;
-            $services[$key]['created_at'] = $date;
-            $services[$key]['updated_at'] = $date;
+            $work_shop = new Workshop();
+            $work_shop->ot_id = $id;
+            $work_shop->area_id = $item['area_id'];
+            $work_shop->user_id = $item['user_id'];
+            $work_shop->save();
         }
-
-        Workshop::insert($services);
 
         /*$status = Status::where('id', 4)->first();
         if ($status) {

@@ -48,7 +48,7 @@ class RoleSeeder extends Seeder
         $role->save();
 
         $role = new Role();
-        $role->name = 'aprobador_de_tarjeta_de costo';
+        $role->name = 'aprobador_de_tarjeta_de_costo';
         $role->description = 'Encragado de aprobar la tarjeta de costo';
         $role->save();
 

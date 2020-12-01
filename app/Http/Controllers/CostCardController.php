@@ -23,7 +23,7 @@ class CostCardController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
         
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -62,13 +62,13 @@ class CostCardController extends Controller
      */
     /*public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
         return view('costos.create');
     }*/
     public function calculate(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
         $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                 ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
@@ -164,7 +164,7 @@ class CostCardController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
         $rules = array(
             //'ot_id'       => 'integer|required|exists:ots,id',
@@ -306,7 +306,7 @@ class CostCardController extends Controller
 
     public function approveTC(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
         $action = $request->input('action');
 
@@ -347,7 +347,7 @@ class CostCardController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
         $cost = CostCard::findOrFail($id);
         return view('costos.edit', compact('cost'));
@@ -362,7 +362,7 @@ class CostCardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation

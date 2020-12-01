@@ -38,6 +38,12 @@ class LoginController extends Controller
      */
     //protected $redirectTo = RouteServiceProvider::HOME;
 
+    protected function attemptLogin(Request $request)
+    {
+        $attempt = auth()->attempt(['email' => $request->email, 'password' => $request->password, 'enabled' => 1]);
+        return ($attempt);
+    }
+
     protected function authenticated(Request $request, $user)
     {
         $user_roles = $user->roles()->first();

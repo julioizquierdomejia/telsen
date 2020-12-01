@@ -57,7 +57,7 @@
             @endif
         @else
             <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a id="navbarDropdown" class="nav-link dropdown-toggle text-lowercase" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ Auth::user()->email }} <span class="icon"><img src="/assets/img/logo-small.png" width="30" height="30"></span>
                 </a>
 
@@ -66,6 +66,9 @@
                         Mi Perfil
                     </a>
                     @if(Auth::user()->roles->first()->name == 'superadmin')
+                    <a class="dropdown-item" href="{{ route('users.index') }}">
+                        Usuarios
+                    </a>
                     <a class="dropdown-item" href="{{ route('users.create') }}">
                         Crear usuario
                     </a>

@@ -24,24 +24,9 @@
     </div>
   <div class="sidebar-wrapper pt-4">
     <ul class="nav">
-    @if ( Auth::user()->roles->first()->name == 'superadmin')
-      @include('layouts.superadminsidebar')
-    @endif
-    @if ( Auth::user()->roles->first()->name == 'admin')
-      @include('layouts.adminsidebar')
-    @endif
-    @if ( Auth::user()->roles->first()->name == 'user')
-      @include('layouts.usersidebar')
-    @endif
-    @if ( Auth::user()->roles->first()->name == 'reception')
-      @include('layouts.receptionsidebar')
-    @endif
-    @if ( Auth::user()->roles->first()->name == 'mechanical')
-      @include('layouts.mechanicalsidebar')
-    @endif
-    @if ( Auth::user()->roles->first()->name == 'electrical')
-      @include('layouts.electricalsidebar')
-    @endif
+      @if (Auth::user()->roles->first())
+        @include('layouts.sidebar.'.Auth::user()->roles->first()->name)
+      @endif
     </ul>
   </div>
 </div>

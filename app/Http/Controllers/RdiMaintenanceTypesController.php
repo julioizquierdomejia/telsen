@@ -14,7 +14,7 @@ class RdiMaintenanceTypeController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $rdi_maintenance_types = RdiMaintenanceType::where('enabled', 1)->get();
         return view('rdi_maintenance_types.index', compact('rdi_maintenance_types'));
@@ -27,7 +27,7 @@ class RdiMaintenanceTypeController extends Controller
      */
     public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         return view('rdi_maintenance_types.create');
     }
@@ -40,7 +40,7 @@ class RdiMaintenanceTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $rules = array(
             'name'       => 'string|required|unique:rdi_criticality_types',
@@ -84,7 +84,7 @@ class RdiMaintenanceTypeController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $rdicriticalitytype = RdiMaintenanceType::findOrFail($id);
         return view('rdicriticalitytypes.edit', compact('rdicriticalitytype'));
@@ -99,7 +99,7 @@ class RdiMaintenanceTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation

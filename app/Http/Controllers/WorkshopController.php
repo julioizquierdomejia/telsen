@@ -23,7 +23,7 @@ class WorkshopController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -59,13 +59,13 @@ class WorkshopController extends Controller
      */
     /*public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         return view('talleres.create');
     }*/
     public function calculate(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $users = User::join('user_data', 'user_data.user_id', 'users.id')
                 ->join('areas', 'areas.id', 'user_data.area_id')
@@ -117,7 +117,7 @@ class WorkshopController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         /*$rules = array(
             'user_id'      => 'required|array|min:1',
             'area_id'      => 'required|array|min:1',
@@ -186,7 +186,7 @@ class WorkshopController extends Controller
 
     public function approveTC(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $action = $request->input('action');
 
@@ -227,7 +227,7 @@ class WorkshopController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $cost = Workshop::findOrFail($id);
         return view('talleres.edit', compact('cost'));
@@ -242,7 +242,7 @@ class WorkshopController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation

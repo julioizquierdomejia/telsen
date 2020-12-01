@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         $role_superadmin = Role::where('name', 'superadmin')->first();
         $role_admin = Role::where('name', 'admin')->first();
         $role_user = Role::where('name', 'user')->first();
-        $role_coordinator = Role::where('name', 'coordinator')->first();
+        $role_coordinator = Role::where('name', 'supervisor')->first();
         $role_worker = Role::where('name', 'worker')->first();
         
         /*$user = new User();
@@ -243,6 +243,7 @@ class UserSeeder extends Seeder
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
         $user_data->area_id = 7;
+        $user_data->save();
         $user->roles()->attach($role_worker);
 
         $user = new User();
@@ -257,6 +258,7 @@ class UserSeeder extends Seeder
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
         $user_data->area_id = 7;
+        $user_data->save();
         $user->roles()->attach($role_worker);
 
         //Coordinador
@@ -272,6 +274,7 @@ class UserSeeder extends Seeder
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
         $user_data->area_id = 8;
+        $user_data->save();
         $user->roles()->attach($role_coordinator);
 
         $user = new User();

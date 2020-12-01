@@ -26,7 +26,7 @@ class ElectricalEvaluationController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         //$ots = Ot::join('status_ot', 'status_ot.ot_id', '=', 'status_ot.ot_id')
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
@@ -58,7 +58,7 @@ class ElectricalEvaluationController extends Controller
      */
     public function evaluate(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         $formato = ElectricalEvaluation::where('ot_id', $id)->first();
         if ($formato) {
@@ -108,7 +108,7 @@ class ElectricalEvaluationController extends Controller
      */
     public function store(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
         
         // validate
         $rules = array(
@@ -453,7 +453,7 @@ class ElectricalEvaluationController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         $formato = ElectricalEvaluation::findOrFail($id);
 
@@ -462,7 +462,7 @@ class ElectricalEvaluationController extends Controller
 
     public function format_show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         $formato = ElectricalEvaluation::
                     join('ots', 'ots.id', '=', 'electrical_evaluations.ot_id')
@@ -591,7 +591,7 @@ class ElectricalEvaluationController extends Controller
 
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
                     ->where('enabled', 1)
-                    ->where('eval_type', 'electrical')->get();
+                    ->where('eval_type', 'evaluador', 'aprobador_de_evaluaciones')->get();
 
         $approved_by = \DB::table('logs')
                         ->join('users', 'users.id', '=', 'logs.user_id')
@@ -621,7 +621,7 @@ class ElectricalEvaluationController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         $formato = ElectricalEvaluation::
                     join('ots', 'ots.id', '=', 'electrical_evaluations.ot_id')
@@ -744,7 +744,7 @@ class ElectricalEvaluationController extends Controller
 
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
                     ->where('enabled', 1)
-                    ->where('eval_type', 'electrical')->get();
+                    ->where('eval_type', 'evaluador', 'aprobador_de_evaluaciones')->get();
 
         $works = ElectricalEvaluationWork::where('me_id', $formato->id)
                 ->join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
@@ -774,7 +774,7 @@ class ElectricalEvaluationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation
@@ -1110,6 +1110,6 @@ class ElectricalEvaluationController extends Controller
      */
     public function destroy(Request $request, ElectricalEvaluation $electricalEvaluation)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'electrical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
     }
 }

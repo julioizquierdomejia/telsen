@@ -16,7 +16,7 @@ class ServiceController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         $services = Service::join('areas', 'areas.id', '=', 'services.area_id')
                     ->select('services.*', 'areas.name as area')->get();
@@ -31,7 +31,7 @@ class ServiceController extends Controller
     public function create(Request $request)
     {
         $areas = Area::where('enabled', 1)->where('has_services', 1)->get();
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         return view('servicios.create', compact('areas'));
     }
@@ -44,7 +44,7 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $rules = array(
             'name'       => ['string', 'required', Rule::unique('services')
@@ -100,7 +100,7 @@ class ServiceController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $areas = Area::where('enabled', 1)->where('has_services', 1)->get();
         $service = Service::findOrFail($id);
@@ -116,7 +116,7 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation
@@ -145,7 +145,7 @@ class ServiceController extends Controller
 
     public function filterareas(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $id = $request->input('id');
         $services = Service::where('area_id', $id)

@@ -44,6 +44,11 @@
                                 @enderror
                             </div>
                         </div>
+                        <ul class="list-unstyled">
+                            @foreach ($errors->all() as $error)
+                                <li class="invalid-feedback d-block">- {{$error}}</li>
+                            @endforeach
+                        </ul>
                         <div class="form-group row mb-0 text-center">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-danger btn-orange btn-block">

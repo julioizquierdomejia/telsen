@@ -14,7 +14,7 @@ class RdiIngresoController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $rdi_ingreso = RdiIngreso::where('enabled', 1)->get();
         return view('rdi_ingreso.index', compact('rdi_ingreso'));
@@ -27,7 +27,7 @@ class RdiIngresoController extends Controller
      */
     public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         return view('rdi_ingreso.create');
     }
@@ -40,7 +40,7 @@ class RdiIngresoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $rules = array(
             'rdi_id' => 'boolean|required',
@@ -100,7 +100,7 @@ class RdiIngresoController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $rdicriticalitytype = RdiIngreso::findOrFail($id);
         return view('rdi_ingreso.edit', compact('rdicriticalitytype'));
@@ -115,7 +115,7 @@ class RdiIngresoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation

@@ -21,7 +21,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         //$ots = Ot::join('status_ot', 'status_ot.ot_id', '=', 'status_ot.ot_id')
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
@@ -53,7 +53,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function evaluate(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
         $formato = MechanicalEvaluation::where('mechanical_evaluations.ot_id', $ot_id)->first();
         if ($formato) {
             return redirect('formatos/mechanical/'.$formato->id.'/ver');
@@ -76,7 +76,7 @@ class MechanicalEvaluationController extends Controller
 
     public function approve(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'aprobador_de_evaluaciones']);
 
         $action = $request->input('action');
         $me_val = MechanicalEvaluation::findOrFail($id);
@@ -102,7 +102,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function store(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
         // validate
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
@@ -319,7 +319,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)->first();
@@ -329,7 +329,7 @@ class MechanicalEvaluationController extends Controller
     
     public function format_show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)
@@ -377,7 +377,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
         $ot = Ot::where('ots.id', $formato->ot_id)
@@ -423,7 +423,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation
@@ -646,6 +646,6 @@ class MechanicalEvaluationController extends Controller
      */
     public function destroy(Request $request, MechanicalEvaluation $mechanicalEvaluation)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
     }
 }

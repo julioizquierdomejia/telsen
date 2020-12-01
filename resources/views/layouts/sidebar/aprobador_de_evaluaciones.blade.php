@@ -11,3 +11,10 @@
     <p>F. Evaluación Eléctrica</p>
   </a>
 </li>
+
+<li class="{{ request()->segment(2) == 'mechanical' ? 'active' : '' }}">
+  <a class="mr-0" href="{{route('formatos.mechanical')}}">
+    <i class="fas fa-wrench"></i>
+    <p>F. Evaluación Mecánica</p>
+  </a>
+</li>

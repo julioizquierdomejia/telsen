@@ -28,7 +28,7 @@ class RdiController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
         
         /*$rdis = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
@@ -70,7 +70,7 @@ class RdiController extends Controller
      */
     public function calculate(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
 
         $rdi = Rdi::where('ot_id', $ot_id)->first();
         if ($rdi) {
@@ -140,7 +140,7 @@ class RdiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
 
         $rules = array(
             'rdi_codigo' => 'required|string',
@@ -294,7 +294,7 @@ class RdiController extends Controller
 
     public function approveRDI(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
 
         $action = $request->input('action');
 
@@ -377,7 +377,7 @@ class RdiController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
 
         $rdi = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
@@ -419,7 +419,7 @@ class RdiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation

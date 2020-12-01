@@ -25,10 +25,14 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(function () {
 
+	Route::get('users/index', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+	Route::get('users/list', [App\Http\Controllers\UserController::class, 'getUsers'])->name('users.list');
 	Route::get('users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
 	Route::post('users/create', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
 	Route::get('users/{user}/perfil', [App\Http\Controllers\UserController::class, 'perfil'])->name('users.perfil');
 	Route::post('users/{user}/edit', [App\Http\Controllers\UserController::class, 'update'])->name('users.edit');
+	//Route::post('users/{user}/eliminar', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');
+	Route::post('users/{user}/cambiarstatus', [App\Http\Controllers\UserController::class, 'userStatus'])->name('users.status');
 
 	//rutas para ordenes de trabajo
 	//Route::resource('ordenes', App\Http\Controllers\OtController::class);

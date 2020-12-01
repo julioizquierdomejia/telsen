@@ -1,7 +1,8 @@
 @extends('layouts.app', ['title' => 'Editar Perfil'])
-@section('css')
-@endsection
 @section('content')
+@php
+  $allowed_roles = ['superadmin', 'admin'];
+@endphp
 <div class="row">
   <div class="col-md-12">
     <h5 class="h5">Mi Perfil</h5>
@@ -55,7 +56,8 @@
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
+            @if (in_array(Auth::user()->roles->first()->name, $allowed_roles))
               <label class="col-form-label" for="selectArea">Area</label>
               <select name="area_id" class="form-control dropdown2 @error('area_id') is-invalid @enderror" id="selectArea" data-placeholder="Selecciona el area">
                 <option value="">Selecciona el area</option>
@@ -66,6 +68,10 @@
               @error('area_id')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
+            @else
+              <label class="col-label d-block" for="selectArea">Area</label>
+            <span class="badge badge-primary px-2 py-1">{{$user->area}}</span>
+            @endif
             </div>
           </div>
         </div>

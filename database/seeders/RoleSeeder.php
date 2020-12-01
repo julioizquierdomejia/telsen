@@ -28,6 +28,52 @@ class RoleSeeder extends Seeder
         $role->save();
 
         $role = new Role();
+        $role->name = 'crear_ot';
+        $role->description = 'Encargado de Crear las OT';
+        $role->save();
+
+        $role = new Role();
+        $role->name = 'evaluador';
+        $role->description = 'Para evaluaciones Electricas y Mecánicas';
+        $role->save();
+
+        $role = new Role();
+        $role->name = 'aprobador_de_evaluaciones';
+        $role->description = 'Es el resonsable de aprobar las evaluaciones';
+        $role->save();
+
+        $role = new Role();
+        $role->name = 'tarjeta_de_costo';
+        $role->description = 'Encragado de generar la tarjeta de costo';
+        $role->save();
+
+        $role = new Role();
+        $role->name = 'aprobador_de_tarjeta_de costo';
+        $role->description = 'Encragado de aprobar la tarjeta de costo';
+        $role->save();
+
+        $role = new Role();
+        $role->name = 'rdi';
+        $role->description = 'Encargado de Generar los RDI';
+        $role->save();
+
+        $role = new Role();
+        $role->name = 'aprobador_rdi';
+        $role->description = 'Encargado de aprobar los RDI';
+        $role->save();
+
+        $role = new Role();
+        $role->name = 'cotizacion';
+        $role->description = 'encargado de subir la cotización';
+        $role->save();
+
+        $role = new Role();
+        $role->name = 'aprobador_cotizacion';
+        $role->description = 'Encargado de aprobar la cotización';
+        $role->save();
+
+
+        $role = new Role();
         $role->name = 'user';
         $role->description = 'Usuario participante';
         $role->save();

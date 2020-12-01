@@ -25,8 +25,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(function () {
 
-	Route::get('user/{user}/perfil', [App\Http\Controllers\UserController::class, 'perfil'])->name('user.perfil');
-	Route::post('user/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('user.edit');
+	Route::get('users/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
+	Route::post('users/create', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+	Route::get('users/{user}/perfil', [App\Http\Controllers\UserController::class, 'perfil'])->name('users.perfil');
+	Route::post('users/{user}/edit', [App\Http\Controllers\UserController::class, 'update'])->name('users.edit');
 
 	//rutas para ordenes de trabajo
 	//Route::resource('ordenes', App\Http\Controllers\OtController::class);

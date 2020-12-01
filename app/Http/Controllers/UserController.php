@@ -75,39 +75,24 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Area  $user
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function perfil($id)
     {
-        //
-        $user = User::findOrFail($id);
+        $user = User::join('user_data', 'user_data.user_id', '=' ,'users.id')
+                ->select('users.id', 'users.email', 'users.password', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone')
+                ->where('users.id', $id)
+                ->firstOrFail();
 
-        return view('users.show', compact('user'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Area  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, $id)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
-        $users = Area::where('enabled', 1)->get();
-        $services = Service::where('enabled', 1)
-                ->where('user_id', $id)
-                ->get();
-        $user = Area::findOrFail($id);
-        return view('users.edit', compact('user', 'users', 'services'));
+        return view('users.edit', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Area  $user
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -116,8 +101,8 @@ class UserController extends Controller
         
         $rules = array(
             'name'        => 'string|min:3|required',
-            'email'       => 'email|required|unique:users,email',
-            'password'    => 'string|min:6|required',
+            'email'       => 'email|required|unique:users,email,'.$id,
+            'password'    => 'string|min:6|nullable',
             'lastname'    => 'string|min:3|required',
             'mlastname'   => 'string|min:3|required',
             'phone'       => 'string|min:6',
@@ -126,7 +111,7 @@ class UserController extends Controller
         $this->validate($request, $rules);
 
         $user = User::findOrFail($id);
-        $original_data = $user->original();
+        $original_data = $user->getOriginal();
         
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
@@ -135,7 +120,7 @@ class UserController extends Controller
 
         $user_data = UserData::where('user_id', $id)->first();
         $user_data->name = $request->input('name');
-        $user_data->lastname = $request->input('lastname');
+        $user_data->last_name = $request->input('lastname');
         $user_data->mother_last_name = $request->input('mlastname');
         $user_data->save();
 
@@ -149,11 +134,17 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Area  $user
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Area $user)
+    public function destroy(Request $request, $user_id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $user = User::findOrFail($user_id);
+        $user->enabled = 0;
+        $user->save();
+
+        return redirect('home');
     }
 }

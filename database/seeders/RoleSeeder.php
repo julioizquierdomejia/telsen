@@ -73,6 +73,11 @@ class RoleSeeder extends Seeder
         $role->save();
 
         $role = new Role();
+        $role->name = 'fecha_de_entrega';
+        $role->description = 'Encargado de Generar la fecha de entrega';
+        $role->save();
+
+        $role = new Role();
         $role->name = 'client';
         $role->description = 'Cliente';
         $role->save();

@@ -72,19 +72,13 @@ class RoleSeeder extends Seeder
         $role->description = 'Encargado de aprobar la cotización';
         $role->save();
 
-
-        $role = new Role();
-        $role->name = 'user';
-        $role->description = 'Usuario participante';
-        $role->save();
-
         $role = new Role();
         $role->name = 'client';
         $role->description = 'Cliente';
         $role->save();
 
         $role = new Role();
-        $role->name = 'coordinator';
+        $role->name = 'supervisor';
         $role->description = 'Coordinador';
         $role->save();
 

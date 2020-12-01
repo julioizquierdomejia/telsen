@@ -29,6 +29,7 @@ class UserController extends Controller
 
     public function getUsers(Request $request)
     {
+        $counter = 0;
         ## Read value
         $draw = $request->get('draw');
         $start = $request->get("start");
@@ -46,7 +47,7 @@ class UserController extends Controller
 
         // Total records
         //$totalRecords = User::select('count(*) as allcount')->join('user_data', 'user_data.user_id', '=', 'users.id')->count();
-        $totalRecordswithFilter = User::select('count(*) as allcount')->join('user_data', 'user_data.user_id', '=', 'users.id')->where('name', 'like', '%' .$searchValue . '%')->count();
+        $totalRecordswithFilter = User::select('count(*) as allcount')->join('user_data', 'user_data.user_id', '=', 'users.id')->where('name', 'like', '%' .$searchValue . '%')->where('users.id', '<>', 1)->count();
 
         // Fetch records
         $records = User::leftJoin('user_data', 'user_data.user_id', '=', 'users.id')
@@ -55,13 +56,14 @@ class UserController extends Controller
                 ->skip($start)
                 ->take($rowperpage)
                 ->where('user_data.name', 'like', '%' .$searchValue . '%')
+                ->where('users.id', '<>', 1)
                 ->orderBy($columnName, $columnSortOrder)
                 ->get();
-
+        $counter = $start;
         $data_arr = array();
-
         foreach($records as $record){
-            $id = $record->id;
+            $counter++;
+            //$id = $record->id;
             $name = $record->name;
             $lastname = $record->lastname;
             $roles = '<ul class="list-unstyled mb-0">';
@@ -76,7 +78,7 @@ class UserController extends Controller
             $tools = '<button type="button" class="btn btn-sm btn-danger btn-mdelete" data-userid="'.$record->id.'" data-state="0" data-toggle="modal" data-target="#modalUser" title="Desactivar usuario"><i class="fal fa-trash"></i></button> '. ($record->enabled == 0 ? '<button type="button" class="btn btn-sm btn-primary btn-mdelete" data-userid="'.$record->id.'" data-state="1" data-toggle="modal" data-target="#modalUser" title="Restaurar usuario"><i class="fal fa-trash-restore"></i></button>' : '');
 
             $data_arr[] = array(
-              "id" => $id,
+              "id" => $counter,
               "name" => $name,
               "lastname" => $lastname,
               "role" => $roles,

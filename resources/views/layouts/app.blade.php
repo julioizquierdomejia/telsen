@@ -75,7 +75,12 @@ Coded by www.creative-tim.com
   <script type="text/javascript">
     $(document).ready(function() {
         $('#tablas').DataTable();
-        $('.dropdown2').select2();
+        $('.dropdown2').select2({
+          placeholder: {
+            text: 'Selecciona una opción'
+          },
+          allowClear: true
+        });
     } );
   </script>
   @yield('javascript')

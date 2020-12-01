@@ -63,8 +63,13 @@
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{{ route('users.perfil', Auth::user()->id) }}">
-                        Editar Perfil
+                        Mi Perfil
                     </a>
+                    @if(Auth::user()->roles->first()->name == 'superadmin')
+                    <a class="dropdown-item" href="{{ route('users.create') }}">
+                        Crear usuario
+                    </a>
+                    @endif
                     <a class="dropdown-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();">

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\UserData;
+use App\Models\Role;
+use App\Models\RoleUser;
+use App\Models\Area;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -15,7 +18,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         $users = User::all();
         return view('users.index', compact('users'));
@@ -28,9 +31,12 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        return view('users.create');
+        $roles = Role::all();
+        $areas = Area::where('enabled', 1)->get();
+
+        return view('users.create', compact('roles', 'areas'));
     }
 
     /**
@@ -49,23 +55,35 @@ class UserController extends Controller
             'lastname'    => 'string|min:3|required',
             'mlastname'   => 'string|min:3|required',
             'phone'       => 'string|min:6',
+            'roles'     => 'array|min:1',
+            'area_id'     => 'integer|required',
+            'password'    => 'string|min:6',
             //'enabled'   => 'boolean|required',
         );
         $this->validate($request, $rules);
 
         $user = new User();
-        
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
         //$user_data->enabled = $request->input('enabled');
         $user->save();
 
-        $user_data = new User();
+        $user_data = new UserData();
         $user_data->name = $request->input('name');
         $user_data->user_id = $user->id;
-        $user_data->lastname = $request->input('lastname');
+        $user_data->last_name = $request->input('lastname');
         $user_data->mother_last_name = $request->input('mlastname');
+        $user_data->user_phone = $request->input('phone');
+        $user_data->area_id = $request->input('area_id');
         $user_data->save();
+
+        $roles = $request->input('roles');
+        foreach ($roles as $key => $item) {
+            $role_user = new RoleUser();
+            $role_user->user_id = $user->id;
+            $role_user->role_id = $item;
+            $role_user->save();
+        }
 
         activitylog('users', 'store', null, $user->toArray());
 
@@ -81,11 +99,13 @@ class UserController extends Controller
     public function perfil($id)
     {
         $user = User::join('user_data', 'user_data.user_id', '=' ,'users.id')
-                ->select('users.id', 'users.email', 'users.password', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone')
+                ->select('users.id', 'users.email', 'users.password', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id')
                 ->where('users.id', $id)
                 ->firstOrFail();
 
-        return view('users.edit', compact('user'));
+        $areas = Area::where('enabled', 1)->get();
+
+        return view('users.edit', compact('user', 'areas'));
     }
 
     /**
@@ -106,6 +126,7 @@ class UserController extends Controller
             'lastname'    => 'string|min:3|required',
             'mlastname'   => 'string|min:3|required',
             'phone'       => 'string|min:6',
+            'area_id'     => 'integer|required',
             //'enabled'   => 'boolean|required',
         );
         $this->validate($request, $rules);
@@ -122,6 +143,8 @@ class UserController extends Controller
         $user_data->name = $request->input('name');
         $user_data->last_name = $request->input('lastname');
         $user_data->mother_last_name = $request->input('mlastname');
+        $user_data->user_phone = $request->input('phone');
+        $user_data->area_id = $request->input('area_id');
         $user_data->save();
 
         activitylog('users', 'update', $original_data, $user->toArray());

@@ -4,7 +4,7 @@
 @section('content')
 <div class="row">
   <div class="col-md-12">
-    <h5 class="h5">Editar Mi Perfil</h5>
+    <h5 class="h5">Mi Perfil</h5>
     <form class="form-group" method="POST" action="{{route('users.edit', $user->id)}}" enctype="multipart/form-data">
       @csrf
       <div class="card form-card h-100">
@@ -52,6 +52,18 @@
               <label class="col-form-label" for="inputpassword">Contraseña</label>
               <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Email" value="{{ old('password') }}" name='password' id="inputpassword">
               @error('password')
+                <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+            </div>
+            <div class="form-group col-md-6">
+              <label class="col-form-label" for="selectArea">Area</label>
+              <select name="area_id" class="form-control dropdown2 @error('area_id') is-invalid @enderror" id="selectArea" data-placeholder="Selecciona el area">
+                <option value="">Selecciona el area</option>
+                @foreach($areas as $key => $area)
+                <option value="{{ $area->id }}" {{old('area_id', $user->area_id) == $area->id ? 'selected' : ''}}>{{ $area->name }}</option>
+                @endforeach
+              </select>
+              @error('area_id')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>

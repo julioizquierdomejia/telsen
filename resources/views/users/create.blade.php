@@ -53,19 +53,23 @@
               @enderror
             </div>
             <div class="form-group col-md-6">
-              <label class="col-form-label" for="selectRol">Rol</label>
-              <select name="roles[]" class="form-control dropdown2 @error('roles') is-invalid @enderror" id="selectRol" multiple="" data-placeholder="Selecciona el rol">
+              <label class="col-form-label" for="selectRol">Roles</label>
+              <ul class="form-check-list list-inline m-0 form-control h-auto">
                 @foreach($roles as $key => $role)
-                <option value="{{ $role->id }}" {{in_array($role->id, old('roles', [])) ? 'selected' : ''}}>{{ $role->description }}</option>
+                <li class="form-check" id="role_{{$key}}">
+                  <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input align-middle" value="{{$role->id}}" {{in_array($role->id, old('roles')) ? 'checked' : ''}} name="roles[]"><span class="align-middle">{{$role->description}}</span>
+                  </label>
+                </li>
                 @endforeach
-              </select>
+              </ul>
               @error('roles')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="form-group col-md-6">
               <label class="col-form-label" for="selectArea">Area</label>
-              <select name="area_id" class="form-control dropdown2 @error('area_id') is-invalid @enderror" id="selectArea" data-placeholder="Selecciona el area" disabled="">
+              <select name="area_id" class="form-control dropdown2 @error('area_id') is-invalid @enderror" id="selectArea" data-placeholder="Selecciona el area">
                 <option value="">Selecciona el area</option>
                 @foreach($areas as $key => $area)
                 <option value="{{ $area->id }}" {{old('area_id') == $area->id ? 'selected' : ''}}>{{ $area->name }}</option>

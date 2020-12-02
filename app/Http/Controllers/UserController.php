@@ -74,7 +74,7 @@ class UserController extends Controller
             $email = $record->email;
             $enabled = ($record->enabled == 1 ? '<span class="badge badge-success d-block">Activo</span>' : '<span class="badge badge-secondary d-block">Inactivo</span>');
 
-            $tools = ($record->enabled == 1 ? '<button type="button" class="btn btn-sm btn-danger btn-mdelete" data-userid="'.$record->id.'" data-state="0" data-toggle="modal" data-target="#modalUser" title="Desactivar usuario"><i class="fal fa-trash"></i></button>' : '<button type="button" class="btn btn-sm btn-primary btn-mdelete" data-userid="'.$record->id.'" data-state="1" data-toggle="modal" data-target="#modalUser" title="Restaurar usuario"><i class="fal fa-trash-undo-alt"></i></button>');
+            $tools = ($record->enabled == 1 ? '<button type="button" class="btn btn-sm btn-danger btn-mdelete" data-userid="'.$record->id.'" data-state="0" data-toggle="modal" data-target="#modalUser" title="Desactivar usuario"><i class="fal fa-trash"></i></button>' : '<button type="button" class="btn btn-sm btn-primary btn-mdelete" data-userid="'.$record->id.'" data-state="1" data-toggle="modal" data-target="#modalUser" title="Restaurar usuario"><i class="fal fa-trash-undo-alt"></i></button>').'<a href="/usuario/'.$record->id.'/perfil" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>';
 
             $data_arr[] = array(
               "id" => $counter,
@@ -178,10 +178,15 @@ class UserController extends Controller
                 ->select('users.id', 'users.email', 'users.password', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id', 'areas.name as area')
                 ->where('users.id', $id)
                 ->firstOrFail();
+        $user_roles = Role::join('role_user', 'role_user.role_id', '=' ,'roles.id')
+                    ->where('role_user.user_id', $id)
+                    ->select('roles.*')
+                    ->get();
 
         $areas = Area::where('enabled', 1)->get();
+        $roles = Role::all();
 
-        return view('users.edit', compact('user', 'areas'));
+        return view('users.edit', compact('user', 'areas', 'roles', 'user_roles'));
     }
 
     /**
@@ -229,6 +234,30 @@ class UserController extends Controller
             $user_data->area_id = $request->input('area_id');
         }
         $user_data->save();
+
+        $roles = $request->input('roles');
+
+        $user_roles = Role::join('role_user', 'role_user.role_id', '=' ,'roles.id')
+                    ->where('role_user.user_id', $id)
+                    ->select('roles.*')
+                    ->get();
+
+        foreach ($user_roles as $key => $item) {
+            if (in_array($item->id, $roles)) {
+                unset($roles[$key]);
+            }
+            /*$role_user = new RoleUser();
+            $role_user->user_id = $user->id;
+            $role_user->role_id = $item;
+            $role_user->save();*/
+        }
+
+        foreach ($roles as $key => $item) {
+            $role_user = new RoleUser();
+            $role_user->user_id = $user->id;
+            $role_user->role_id = $item;
+            $role_user->save();
+        }
 
         activitylog('users', 'update', $original_data, $user->toArray());
 

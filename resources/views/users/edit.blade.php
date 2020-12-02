@@ -56,6 +56,24 @@
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
+            <div class="form-group col-md-6">
+              @php
+                $userRoles = array_column($user_roles->toArray(), 'id');
+              @endphp
+              <label class="col-form-label" for="selectRol">Roles</label>
+              <ul class="form-check-list list-inline m-0 form-control h-auto">
+                @foreach($roles as $key => $role)
+                <li class="form-check" id="role_{{$key}}">
+                  <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input align-middle" value="{{$role->id}}" {{in_array($role->id, old('roles', [])) || in_array($role->id, $userRoles) ? 'checked' : ''}} name="roles[]"><span class="align-middle">{{$role->description}}</span>
+                  </label>
+                </li>
+                @endforeach
+              </ul>
+              @error('roles')
+                <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+            </div>
             <div class="form-group col-md-4">
             @if (in_array(Auth::user()->roles->first()->name, $allowed_roles))
               <label class="col-form-label" for="selectArea">Area</label>

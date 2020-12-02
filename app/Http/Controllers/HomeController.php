@@ -42,6 +42,11 @@ class HomeController extends Controller
                         FROM  `ots` 
                         GROUP BY MONTH( created_at )
                         ) ots_per_month' );
+        if (count($avarage_ots)) {
+          $avarage = number_format($avarage_ots[0]->ot_prom, 0);
+        } else {
+          $avarage = 0;
+        }
 
         foreach ($ots as $key => $ot) {
             $ot_status = \DB::table('status_ot')
@@ -67,7 +72,7 @@ class HomeController extends Controller
         $greetings = self::Greetings();
 
         //$areas = Area::where('areas.enabled', 1)->where('areas.id', '<>', 1)->get();
-        return view('home', compact('users', 'ots', 'ots_count', 'pending_ots', 'enabled_ots', 'avarage_ots', 'greetings'));
+        return view('home', compact('users', 'ots', 'ots_count', 'pending_ots', 'enabled_ots', 'avarage', 'greetings'));
     }
 
     function Greetings() {

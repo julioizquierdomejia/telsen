@@ -29,6 +29,21 @@ if (! function_exists('zerosatleft')) {
     }
 }
 
+if (! function_exists('abreviateTotalCount')) {
+	function abreviateTotalCount($value) 
+	{
+	    $abbreviations = array(12 => 'T', 9 => 'B', 6 => 'M', 3 => 'K', 0 => '');
+
+	    foreach($abbreviations as $exponent => $abbreviation) 
+	    {
+	        if($value >= pow(10, $exponent)) 
+	        {
+	            return round(floatval($value / pow(10, $exponent)),1).$abbreviation;
+	        }
+	    }
+	}
+}
+
 if (! function_exists('activitylog')) {
     function activitylog($section, $action, $original_data, $data)
     {

@@ -30,7 +30,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">{{$ots_count}}</p>
+            <p class="card-title numbers">{{abreviateTotalCount($ots_count)}}</p>
             <p class="card-category"><br>OT Creadas</p>
           </div>
         </div>
@@ -57,7 +57,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">{{$pending_ots}}</p>
+            <p class="card-title numbers">{{abreviateTotalCount($pending_ots)}}</p>
             <p class="card-category"><br>OT Pendientes</p>
           </div>
         </div>
@@ -84,7 +84,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">{{$enabled_ots}}</p>
+            <p class="card-title numbers">{{abreviateTotalCount($enabled_ots)}}</p>
             <p class="card-category"><br>OT Atendidas</p>
           </div>
         </div>
@@ -111,7 +111,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">{{isset($avarage_ots) ? number_format($avarage_ots[0]->ot_prom, 0) : 0}}</p>
+            <p class="card-title numbers">{{abreviateTotalCount($avarage)}}</p>
             <p class="card-category">OT <br>Promedio al Mes</p>
           </div>
         </div>

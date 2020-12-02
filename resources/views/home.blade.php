@@ -30,7 +30,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">{{$ots->count()}}</p>
+            <p class="card-title numbers">{{$ots_count}}</p>
             <p class="card-category"><br>OT Creadas</p>
           </div>
         </div>
@@ -57,7 +57,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">{{count($pending_ots)}}</p>
+            <p class="card-title numbers">{{$pending_ots}}</p>
             <p class="card-category"><br>OT Pendientes</p>
           </div>
         </div>
@@ -84,7 +84,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">{{count($enabled_ots)}}</p>
+            <p class="card-title numbers">{{$enabled_ots}}</p>
             <p class="card-category"><br>OT Atendidas</p>
           </div>
         </div>
@@ -165,35 +165,6 @@
         </span>
       </div>
       <div class="card-body">
-        <?php
-        $ots = array(
-          array(
-            "title" => "Buenaventura",
-            "number" => "09",
-            "progress" => 2
-          ),
-          array(
-            "title" => "Antamina",
-            "number" => "05",
-            "progress" => 1
-          ),
-          array(
-            "title" => "Marcona",
-            "number" => "09",
-            "progress" => 3
-          ),
-          array(
-            "title" => "Campo Verde",
-            "number" => "09",
-            "progress" => 4
-          ),
-          array(
-            "title" => "Minsur",
-            "number" => "14",
-            "progress" => 4
-          )
-        )
-        ?>
         <table class="table table-separate">
           <thead class="text-uppercase">
             <tr>
@@ -205,8 +176,8 @@
           <tbody>
             @foreach($ots as $ot)
             <tr>
-              <td>{{$ot['title']}}</td>
-              <td class="text-center">{{$ot['number']}}</td>
+              <td>{{$ot->razon_social}}</td>
+              <td class="text-center">OT-{{zerosatleft($ot->id, 3)}}</td>
               <td class="text-center">
                 <ul class="list-steps list-unstyled mb-0 step-{{$ot['progress']}}">
                   @for($i=1;$i<=4;$i++)
@@ -301,21 +272,21 @@
         "O.T. Pendientes",
         "O.T. Atendidas",
         "O.T. Creadas",
-        "O.T."
+        //"O.T."
       ],
       "datasets":[{
         "label":"Resumen de Progreso",
         "data":[
-          100,
-          150,
-          120,
-          50
+          {{$pending_ots}},
+          {{$enabled_ots}},
+          {{ $ots_count }},
+          //50
         ],
         "backgroundColor":[
           "#e96115",
           "#10d428",
           "#417bff",
-          "#ffb701"
+          //"#ffb701"
         ]
       }]
     },

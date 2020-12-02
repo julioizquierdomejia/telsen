@@ -49,21 +49,25 @@ class HomeController extends Controller
                   ->where('status_ot.ot_id', '=', $ot->id)
                   ->select('status_ot.status_id', 'status.id', 'status.name')
                   ->get();
-            $ot_status_arr = array_column($ot_status->toArray(), "status_id");
+            $ot_status_arr = array_column($ot_status->toArray(), "name");
             /*if ($ot_status->last()->status_id == 1) {
                 $pending_ots[] = $ot;
             }*/
-            if (count($ot_status_arr) > 1 && !in_array(7, $ot_status_arr) && !in_array(10, $ot_status_arr)) {
+            if (count($ot_status_arr) > 1 && !in_array("cc_disapproved", $ot_status_arr) && !in_array("rdi_disapproved", $ot_status_arr)) {
                 $enabled_ots[] = $ot;
             } else {
               $pending_ots[] = $ot;
             }
         }
 
+        $enabled_ots = count($enabled_ots);
+        $pending_ots = count($pending_ots);
+        $ots_count = count($ots);
+
         $greetings = self::Greetings();
 
         //$areas = Area::where('areas.enabled', 1)->where('areas.id', '<>', 1)->get();
-        return view('home', compact('users', 'ots', 'pending_ots', 'enabled_ots', 'avarage_ots', 'greetings'));
+        return view('home', compact('users', 'ots', 'ots_count', 'pending_ots', 'enabled_ots', 'avarage_ots', 'greetings'));
     }
 
     function Greetings() {

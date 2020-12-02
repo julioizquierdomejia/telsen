@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
 
         $role = new Role();
         $role->name = 'superadmin';
-        $role->description = 'Super administrador del sistema - config';
+        $role->description = 'Super administrador del sistema';
         $role->save();
 
         $role = new Role();
@@ -44,12 +44,12 @@ class RoleSeeder extends Seeder
 
         $role = new Role();
         $role->name = 'tarjeta_de_costo';
-        $role->description = 'Encragado de generar la tarjeta de costo';
+        $role->description = 'Encargado de generar la tarjeta de costo';
         $role->save();
 
         $role = new Role();
         $role->name = 'aprobador_de_tarjeta_de_costo';
-        $role->description = 'Encragado de aprobar la tarjeta de costo';
+        $role->description = 'Encargado de aprobar la tarjeta de costo';
         $role->save();
 
         $role = new Role();

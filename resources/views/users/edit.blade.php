@@ -61,6 +61,7 @@
                 $userRoles = array_column($user_roles->toArray(), 'id');
               @endphp
               <label class="col-form-label" for="selectRol">Roles</label>
+              @if (in_array(Auth::user()->roles->first()->name, $allowed_roles))
               <ul class="form-check-list list-inline m-0 form-control h-auto">
                 @foreach($roles as $key => $role)
                 <li class="form-check" id="role_{{$key}}">
@@ -70,6 +71,17 @@
                 </li>
                 @endforeach
               </ul>
+              @else
+              <ul class="form-check-list list-inline m-0 form-control h-auto">
+                @foreach($user_roles as $key => $role)
+                <li class="check-item">
+                  <label class="form-check-label">
+                    <span class="badge badge-primary">{{$role->description}}</span>
+                  </label>
+                </li>
+                @endforeach
+              </ul>
+              @endif
               @error('roles')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror

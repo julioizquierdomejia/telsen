@@ -152,7 +152,7 @@ class UserController extends Controller
         $user_data->area_id = $request->input('area_id');
         $user_data->save();
 
-        $roles = $request->input('roles');
+        $roles = $request->input('roles') ?? [];
         foreach ($roles as $key => $item) {
             $role_user = new RoleUser();
             $role_user->user_id = $user->id;
@@ -199,6 +199,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $allowed_roles = ['superadmin', 'admin'];
+        $allowed_user = \Auth::user()->roles->first() && 
+            in_array(\Auth::user()->roles->first()->name, $allowed_roles);
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
         
         $rules = array(
@@ -208,9 +210,10 @@ class UserController extends Controller
             'lastname'    => 'string|min:3|required',
             'mlastname'   => 'string|min:3|required',
             'phone'       => 'string|min:6',
+            'roles'       => 'sometimes|array',
             //'enabled'   => 'boolean|required',
         );
-        if (in_array(\Auth::user()->roles->first()->name, $allowed_roles)) {
+        if ($allowed_user) {
             array_push($rules, ['area_id'     => 'integer|required']);
         }
         $this->validate($request, $rules);
@@ -219,7 +222,9 @@ class UserController extends Controller
         $original_data = $user->getOriginal();
         
         $user->email = $request->input('email');
-        $user->password = bcrypt($request->input('password'));
+        if ($request->input('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
         //$user_data->enabled = $request->input('enabled');
         $user->save();
 
@@ -235,33 +240,33 @@ class UserController extends Controller
         }
         $user_data->save();
 
-        $roles = $request->input('roles');
+        $roles = $request->input('roles') ?? [];
 
-        $user_roles = Role::join('role_user', 'role_user.role_id', '=' ,'roles.id')
-                    ->where('role_user.user_id', $id)
-                    ->select('roles.*')
-                    ->get();
+        if ($roles) {
+            /*$user_roles = Role::join('role_user', 'role_user.role_id', '=' ,'roles.id')
+                        ->where('role_user.user_id', $id)
+                        ->select('roles.*')
+                        ->get();
+            foreach ($user_roles as $key => $item) {
+                if (in_array($item->id, $roles)) {
+                    unset($roles[$key]);
+                }
+            }*/
 
-        $role_user = RoleUser::where('user_id', $user->id)->delete();
-
-        /*foreach ($user_roles as $key => $item) {
-            if (in_array($item->id, $roles)) {
-                unset($roles[$key]);
+            $roles_deleted = RoleUser::where('user_id', $user->id)->delete();
+            foreach ($roles as $key => $item) {
+                $role_user = new RoleUser();
+                $role_user->user_id = $user->id;
+                $role_user->role_id = $item;
+                $role_user->save();
             }
-        }*/
-
-        foreach ($roles as $key => $item) {
-            $role_user = new RoleUser();
-            $role_user->user_id = $user->id;
-            $role_user->role_id = $item;
-            $role_user->save();
         }
 
         activitylog('users', 'update', $original_data, $user->toArray());
 
         // redirect
         \Session::flash('message', 'Successfully updated user!');
-        if (\Auth::user()->roles->first()->name == 'superadmin') {
+        if ($allowed_user) {
             return redirect('usuarios');
         }
         return redirect('home');

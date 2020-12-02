@@ -95,7 +95,7 @@ class CreateMechanicalEvaluationsTable extends Migration
 
             //$table->text('works')->nullable();
 
-            $table->boolean('approved')->default(0);
+            //$table->boolean('approved')->default(0);
 
             $table->timestamps();
         });

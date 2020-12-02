@@ -520,7 +520,7 @@ array (
             </table>
             </div>
             <div class="buttons text-center">
-                <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+                <button class="btn btn-dark btn-add-tap-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
                 <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
             </div>
             @error('works')
@@ -649,7 +649,7 @@ $(document).on('change', '.select-area', function () {
 $(document).on('click', '.card .btn-clear', function () {
   $('#table-tap .form-control').val('');
 })
-$('.btn-add-row').click(function () {
+$('.btn-add-tap-row').click(function () {
   var row_index = $('#table-tap tbody tr').length;
   var row = `<tr>
 <td class="cell-counter"><span class="number"></span></td>

@@ -1,3 +1,6 @@
+@php
+  $is_format = request()->segment(1) == 'formatos';
+@endphp
 <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
   <a href="{{ route('home')}}">
     <i class="nc-icon nc-tv-2"></i>
@@ -11,13 +14,12 @@
     <p>Ordenes de trabajo</p>
   </a>
 </li>
-
-<li class="{{ request()->segment(1) == 'formatos' ? 'active' : '' }}">
-  <a href="#" data-toggle="collapse" data-target="#collapseFormatos" aria-expanded="false">
+<li class="{{ $is_format ? 'active' : '' }}">
+  <a href="#" data-toggle="collapse" data-target="#collapseFormatos" aria-expanded="true">
     <i class="fal fa-file-check"></i>
     <p>Evaluaciones <i class="fal fa-angle-down float-right"></i></p>
   </a>
-  <ul class="collapse list-inline pl-3" id="collapseFormatos">
+  <ul class="collapse list-inline pl-3 {{$is_format ? 'show': ''}}" id="collapseFormatos">
     <li class="{{ request()->segment(2) == 'electrical' ? 'active' : '' }}">
       <a class="mr-0" href="{{route('formatos.electrical')}}">
         <i class="fas fa-charging-station"></i>
@@ -38,7 +40,7 @@
     <p>RDI</p>
   </a>
 </li>
-<li class="{{ request()->segment(1) == 'card_cost' ? 'active' : '' }}">
+<li class="{{ request()->segment(1) == 'tarjeta-costo' ? 'active' : '' }}">
   <a class="mr-0" href="{{route('card_cost.index')}}">
     <i class="fas fa-money-check-alt"></i>
     <p>Tarjeta de Costos</p>

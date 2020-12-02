@@ -137,7 +137,7 @@ class WorkshopController extends Controller
             $work_shop->save();
         }
 
-        /*$status = Status::where('id', 4)->first();
+        /*$status = Status::where('name', 'workshop')->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
@@ -191,14 +191,16 @@ class WorkshopController extends Controller
         $action = $request->input('action');
 
         $exist_status = \DB::table('status_ot')
+                        ->join('status', 'status.id', '=', 'status_ot.status_id')
+                        ->select('status.*')
                         ->where('ot_id', $id)
-                        ->where('status_id', 6)->orWhere('status_id', 7)
+                        ->where('status.name', 'workshop_a')->orWhere('status.name', 'workshop_d')
                         ->first();
         if ($exist_status) {
             return response()->json(['data'=>'Tarjeta de costo ya cambió de estado: ' . $exist_status->status_id,'success'=>false]);
         } else {
             if ($action == 1) {
-                $status = Status::where('id', 6)->first();
+                $status = Status::where('name', 'workshop_a')->first();
                 if ($status) {
                     $data = \DB::table('status_ot')->insert([
                         'status_id' => $status->id,
@@ -206,7 +208,7 @@ class WorkshopController extends Controller
                     ]);
                 }
             } else /*if($action == 2)*/ {
-                $status = Status::where('id', 7)->first();
+                $status = Status::where('name', 'workshop_d')->first();
                 if ($status) {
                     $data = \DB::table('status_ot')->insert([
                         'status_id' => $status->id,

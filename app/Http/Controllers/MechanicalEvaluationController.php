@@ -9,6 +9,7 @@ use App\Models\RotorCodRodajePt1;
 use App\Models\RotorCodRodajePt2;
 use App\Models\Ot;
 use App\Models\Status;
+use App\Models\StatusOt;
 use App\Models\Area;
 use Illuminate\Http\Request;
 
@@ -74,7 +75,33 @@ class MechanicalEvaluationController extends Controller
         return view('formatos.mechanical.evaluate', compact('ot', 'areas', 'cod_rodaje_p1', 'cod_rodaje_p2'));
     }
 
-    public function approve(Request $request, $id)
+    public function approve(Request $request, $ot_id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $action = $request->input('action');
+        $ot = Ot::findOrFail($ot_id);
+        
+        if ($action == 1) {
+            $status_name = 'me_approved';
+        } else {
+            $status_name = 'me_disapproved';
+        }
+        $ot->save();
+
+        $status = Status::where('name', $status_name)->first();
+        if ($status) {
+            $status_ot = new StatusOt();
+            $status_ot->status_id = (int)$status->id;
+            $status_ot->ot_id = $ot_id;
+            $status_ot->save();
+
+            activitylog('mechanical_evaluations_approve', 'store', null, $status_ot->toArray());
+        }
+
+        return response()->json(['data'=>json_encode($ot),'success'=>true]);
+    }
+    public function old_approve(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'aprobador_de_evaluaciones']);
 
@@ -271,7 +298,7 @@ class MechanicalEvaluationController extends Controller
             }
         }
 
-        $status = Status::where('id', 2)->first();
+        $status = Status::where('name', 'em')->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,

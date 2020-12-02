@@ -279,7 +279,7 @@ class RdiController extends Controller
             RdiServiceCost::insert($services_array);
         }*/
 
-        $status = Status::where('id', 8)->first();
+        $status = Status::where('name', 'rdi_waiting')->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
@@ -306,7 +306,7 @@ class RdiController extends Controller
             return response()->json(['data'=>'RDI ya cambió de estado', 'success'=>false]);
         } else {
             if ($action == 1) {
-                $status = Status::where('id', 9)->first();
+                $status = Status::where('name', 'rdi_approved')->first();
                 if ($status) {
                     $data = \DB::table('status_ot')->insert([
                         'status_id' => $status->id,
@@ -314,7 +314,7 @@ class RdiController extends Controller
                     ]);
                 }
             } else /*if($action == 2)*/ {
-                $status = Status::where('id', 10)->first();
+                $status = Status::where('name', 'rdi_disapproved')->first();
                 if ($status) {
                     $data = \DB::table('status_ot')->insert([
                         'status_id' => $status->id,

@@ -140,7 +140,7 @@ class CostCardController extends Controller
             $cost_card->cotizacion = $uniqueFileName;
             $cost_card->save();
 
-            $status = Status::where('id', 5)->first();
+            $status = Status::where('name', 'cc_waiting')->first();
             if ($status) {
                 \DB::table('status_ot')->insert([
                     'status_id' => $status->id,
@@ -221,7 +221,7 @@ class CostCardController extends Controller
             }
         }
 
-        $status = Status::where('id', 4)->first();
+        $status = Status::where('name', 'cc')->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
@@ -311,14 +311,16 @@ class CostCardController extends Controller
         $action = $request->input('action');
 
         $exist_status = \DB::table('status_ot')
+                        ->join('status', 'status.id', '=', 'status_ot.status_id')
+                        ->select('status_ot.*')
                         ->where('ot_id', $id)
-                        ->where('status_id', 6)->orWhere('status_id', 7)
+                        ->where('name', 'cc_approved')->orWhere('name', 'cc_disapproved')
                         ->first();
         if ($exist_status) {
             return response()->json(['data'=>'Tarjeta de costo ya cambió de estado: ' . $exist_status->status_id,'success'=>false]);
         } else {
             if ($action == 1) {
-                $status = Status::where('id', 6)->first();
+                $status = Status::where('name', 'cc_approved')->first();
                 if ($status) {
                     $data = \DB::table('status_ot')->insert([
                         'status_id' => $status->id,
@@ -326,7 +328,7 @@ class CostCardController extends Controller
                     ]);
                 }
             } else /*if($action == 2)*/ {
-                $status = Status::where('id', 7)->first();
+                $status = Status::where('name', 'cc_disapproved')->first();
                 if ($status) {
                     $data = \DB::table('status_ot')->insert([
                         'status_id' => $status->id,

@@ -14,6 +14,7 @@ use App\Models\Ot;
 use App\Models\MotorBrand;
 use App\Models\MotorModel;
 use App\Models\Status;
+use App\Models\StatusOt;
 use App\Models\Area;
 use Illuminate\Http\Request;
 
@@ -80,7 +81,33 @@ class ElectricalEvaluationController extends Controller
         return view('formatos.electrical.evaluate', compact('ot', 'marcas', 'modelos', 'areas'));
     }
 
-    public function approve(Request $request, $id)
+    public function approve(Request $request, $ot_id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $action = $request->input('action');
+        $ot = Ot::findOrFail($ot_id);
+        
+        if ($action == 1) {
+            $status_name = 'ee_approved';
+        } else {
+            $status_name = 'ee_disapproved';
+        }
+        $ot->save();
+
+        $status = Status::where('name', $status_name)->first();
+        if ($status) {
+            $status_ot = new StatusOt();
+            $status_ot->status_id = (int)$status->id;
+            $status_ot->ot_id = $ot_id;
+            $status_ot->save();
+
+            activitylog('electrical_evaluations_approve', 'store', null, $status_ot->toArray());
+        }
+
+        return response()->json(['data'=>json_encode($ot),'success'=>true]);
+    }
+    public function old_approve(Request $request, $ot_id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
@@ -90,7 +117,7 @@ class ElectricalEvaluationController extends Controller
         
         if ($action == 1) {
             $ee_val->approved = 1;
-        } else /*if($action == 2)*/ {
+        } else {
             $ee_val->approved = 2;
         }
         $ee_val->save();
@@ -282,7 +309,7 @@ class ElectricalEvaluationController extends Controller
         $eleval->diseno_nema = $request->input('diseno_nema');
         $eleval->ip = $request->input('ip');
         $eleval->peso = $request->input('peso');
-        $eleval->approved = 0;
+        //$eleval->approved = 0;
         $eleval->save();
 
         $elcheval = new ElectricalEvaluationCharacteristic();
@@ -430,7 +457,7 @@ class ElectricalEvaluationController extends Controller
             //$file->move(public_path("uploads/electrical/$id"), $uniqueFileName);
         }
 
-        $status = Status::where('id', 3)->first();
+        $status = Status::where('name', 'ee')->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
@@ -596,7 +623,7 @@ class ElectricalEvaluationController extends Controller
         $approved_by = \DB::table('logs')
                         ->join('users', 'users.id', '=', 'logs.user_id')
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
-                        ->where('logs.action', 'update')
+                        ->where('logs.action', 'store')
                         ->where('logs.section', 'electrical_evaluations_approve')
                         ->where('logs.data', 'like', '%"ot_id":'. $formato->ot_id . '%')
                         ->select('logs.*', 'users.email', 'user_data.name')

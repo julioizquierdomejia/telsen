@@ -44,4 +44,8 @@ class Ot extends Model
     public function clientes(){
     	return $this->hasOne(Client::class);
     }
+
+    public function status(){
+        return $this->belongsToMany(Status::class);
+    }
 }

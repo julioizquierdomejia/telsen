@@ -22,7 +22,7 @@
                 Motor
               </th>
               <th class="text-right">
-                Herramientas
+                Acciones
               </th>
             </thead>
             <tbody>

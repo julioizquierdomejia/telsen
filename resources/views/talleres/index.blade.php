@@ -15,7 +15,7 @@
               <th>Cliente</th>
               <th>Potencia</th>
               <th class="text-center">Fecha de entrega</th>
-              <th class="text-center">Herramientas</th>
+              <th class="text-center">Acciones</th>
             </thead>
             <tbody>
               @if($ots)

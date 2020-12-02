@@ -9,6 +9,7 @@ $ot_status = \DB::table('status_ot')
       ->where('status_ot.ot_id', '=', $formato->ot_id)
       ->select('status.id', 'status_ot.status_id', 'status.name')
       ->get();
+$statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 
 $reception_list = [
@@ -65,15 +66,15 @@ $reception_list = [
         <h4 class="card-title d-flex align-items-center justify-content-between">
           <span>Evaluación Eléctrica</span>
           <span class="card-title-buttons">
-            @if($status_last->status_id < 4)
+            @if(!in_array('ee_approved', $statuses) || !in_array('ee_disapproved', $statuses))
             <a class="btn btn-orange btn-round" href="{{route('formatos.electrical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
-            @if($formato->approved == 1)
+            @endif
+            @if(in_array('ee_approved', $statuses))
             <button type="button" class="btn btn-success mt-0">Aprobada</button>
-            @elseif($formato->approved == 2)
+            @elseif(in_array('ee_disapproved', $statuses))
             <button type="button" class="btn btn-danger mt-0">Desaprobada</button>
             @else
             <button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
-            @endif
             @endif
           </span>
         </h4>
@@ -81,7 +82,7 @@ $reception_list = [
         <p class="mb-0 mt-2 py-2 bg-light row mx-0 justify-content-between">
           <span class="col-auto">Hecho por: {{ $maded_by->{'name'} }}</span>
           @if($approved_by)
-            <span class="col-auto">{{$formato->approved == 1 ? 'Aprobado por:' : 'Desaprobado por:'}} {{ $approved_by->{'name'} }}</span>
+            <span class="col-auto">{{in_array('ee_approved', $statuses) ? 'Aprobado por:' : 'Desaprobado por:'}} {{ $approved_by->{'name'} }}</span>
             @endif
         </p>
         @endif
@@ -609,7 +610,7 @@ $reception_list = [
     </div>
   </div>
 </div>
-@if($status_last->status_id < 4 && $formato->approved == 0)
+@if(!in_array('ee_approved', $statuses) || !in_array('ee_disapproved', $statuses))
 <div class="modal fade" tabindex="-1" id="modalAprobar">
     <div class="modal-dialog confirmar_eval">
       <div class="modal-content">
@@ -653,7 +654,7 @@ $reception_list = [
       var action = $(this).data('action');
       $.ajax({
           type: "post",
-          url: "{{route('formatos.electrical.approve', $formato->id)}}",
+          url: "{{route('formatos.electrical.approve', $formato->ot_id)}}",
           data: {
             _token: '{{csrf_token()}}',
             action: action

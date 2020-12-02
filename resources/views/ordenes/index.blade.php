@@ -17,7 +17,7 @@
           <a class="nav-item nav-link" id="nav-disapprovedots-tab" data-toggle="tab" href="#nav-disapprovedots" role="tab" aria-controls="nav-disapprovedots" aria-selected="false">Ordenes desaprobadas</a>
           <a class="nav-item nav-link" id="nav-disenabledots-tab" data-toggle="tab" href="#nav-disenabledots" role="tab" aria-controls="nav-disenabledots" aria-selected="false">Ordenes eliminadas</a>
         </div>
-        <div class="tab-content card-body" id="nav-tabContent">
+        <div class="tab-content card-body px-0" id="nav-tabContent">
           <div class="tab-pane show active" id="nav-enabledots" role="tabpanel" aria-labelledby="nav-enabledots-tab">
             <div class="table-responsive">
               <table class="table table-separate data-table">
@@ -28,7 +28,7 @@
                   <th>Cliente</th>
                   <th>Potencia</th>
                   <th class="text-center">Fecha de entrega</th>
-                  <th class="text-center">Herramientas</th>
+                  <th class="text-center">Acciones</th>
                 </thead>
               </table>
             </div>
@@ -43,7 +43,7 @@
                   <th>Cliente</th>
                   <th>Potencia</th>
                   <th class="text-center">Fecha de entrega</th>
-                  <th class="text-center">Herramientas</th>
+                  <th class="text-center">Acciones</th>
                 </thead>
               </table>
             </div>
@@ -58,7 +58,7 @@
                   <th>Cliente</th>
                   <th>Potencia</th>
                   <th class="text-center">Fecha de entrega</th>
-                  <th class="text-center">Herramientas</th>
+                  <th class="text-center">Acciones</th>
                 </thead>
               </table>
             </div>

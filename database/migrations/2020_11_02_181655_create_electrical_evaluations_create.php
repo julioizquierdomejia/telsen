@@ -46,7 +46,7 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->string('diseno_nema')->nullable();
             $table->string('ip')->nullable();
             $table->string('peso')->nullable();
-            $table->boolean('approved')->default(0);
+            //$table->boolean('approved')->default(0);
 
             $table->timestamps();
         });

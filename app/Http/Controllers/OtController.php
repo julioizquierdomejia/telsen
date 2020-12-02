@@ -55,12 +55,14 @@ class OtController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where('ots.enabled', 1)->count();
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)->count();
-
-        $ots_array = [];
 
         $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -74,6 +76,7 @@ class OtController extends Controller
                     ->where('ots.enabled', 1)->get();
 
         $counter = $start;
+        $ots_array = [];
 
         foreach ($records as $key => $ot) {
             $ot_status = \DB::table('status_ot')
@@ -81,8 +84,12 @@ class OtController extends Controller
                   ->where('status_ot.ot_id', '=', $ot->id)
                   ->select('status_ot.status_id', 'status.id', 'status.name')
                   ->get();
-            $ot_status_arr = array_column($ot_status->toArray(), "status_id");
-            if (!in_array(7, $ot_status_arr) && !in_array(10, $ot_status_arr)) {
+            $ot_status_arr = array_column($ot_status->toArray(), "name");
+            if (!in_array('cc_disapproved', $ot_status_arr) && 
+                !in_array('rdi_disapproved', $ot_status_arr) && 
+                !in_array('ee_disapproved', $ot_status_arr) && 
+                !in_array('me_disapproved', $ot_status_arr)
+                ) {
                 $counter++;
 
                 $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -122,11 +129,205 @@ class OtController extends Controller
             }
         };
 
-
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
+            "iTotalRecords" => $totalRecords,
             "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $ots_array
+        );
+
+        echo json_encode($response);
+        exit;
+    }
+
+    public function disapproved_ots(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+
+        $counter = 0;
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        /*$totalRecordswithFilter = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)->count();*/
+
+        $ots_array = [];
+
+        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+
+                    ->skip($start)
+                    ->take($rowperpage)
+                    ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
+                    ->orderBy($columnName, $columnSortOrder)
+
+                    ->where('ots.enabled', 1)->get();
+
+        $counter = $start;
+
+        foreach ($records as $key => $ot) {
+            $ot_status = \DB::table('status_ot')
+                  ->join('status', 'status_ot.status_id', '=', 'status.id')
+                  ->where('status_ot.ot_id', '=', $ot->id)
+                  ->select('status_ot.status_id', 'status.id', 'status.name')
+                  ->get();
+            $ot_status_arr = array_column($ot_status->toArray(), "name");
+            if (in_array('cc_disapproved', $ot_status_arr) || 
+                in_array('rdi_disapproved', $ot_status_arr) ||
+                in_array('ee_disapproved', $ot_status_arr) ||
+                in_array('me_disapproved', $ot_status_arr)) {
+
+                $counter++;
+
+                $created_at = date('d-m-Y', strtotime($ot->created_at));
+                $status_data = self::getOTStatus($ot);
+                $fecha_entrega = '-';
+                if(isset($status_data->fecha_entrega)) {
+                    $start = strtotime($status_data->fecha_entrega);
+                    $end   = time();
+                    $days  = date($start - $end);
+                    $fecha = date('d-m-Y', $start);
+                    $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
+                    $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
+                    if($days > 0) {
+                        $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
+                    } else {
+                        $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
+                    }
+                }
+                $ot_id = zerosatleft($ot->id, 3);
+                $status = $status_data['html'];
+                $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
+                $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
+                $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                <button type="button" class="btn btn-sm btn-primary btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash-restore"></i></button>';
+
+                $ots_array[] = array(
+                  "created_at" => $created_at,
+                  "id" => $ot_id,
+                  "status" => $status,
+                  "razon_social" => $client,
+                  "numero_potencia" => $potencia ? $potencia :   '-',
+                  "fecha_entrega" => $fecha_entrega,
+                  "tools" => $tools
+                );
+            }
+        };
+
+        $totalRecords = count($ots_array);
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecords,
+            "aaData" => $ots_array
+        );
+
+        echo json_encode($response);
+        exit;
+    }
+
+    public function disabled_ots(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+
+        $counter = 0;
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        /*$totalRecordswithFilter = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 2)->count();*/
+
+        $ots_array = [];
+
+        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+
+                    ->skip($start)
+                    ->take($rowperpage)
+                    ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
+                    ->orderBy($columnName, $columnSortOrder)
+
+                    ->where('ots.enabled', 2)->get();
+
+        $counter = $start;
+
+        foreach ($records as $key => $ot) {
+            $counter++;
+            $ot_status = \DB::table('status_ot')
+                  ->join('status', 'status_ot.status_id', '=', 'status.id')
+                  ->where('status_ot.ot_id', '=', $ot->id)
+                  ->select('status_ot.status_id', 'status.id', 'status.name')
+                  ->get();
+
+                $created_at = date('d-m-Y', strtotime($ot->created_at));
+                $status_data = self::getOTStatus($ot);
+                $fecha_entrega = '-';
+                if(isset($status_data->fecha_entrega)) {
+                    $start = strtotime($status_data->fecha_entrega);
+                    $end   = time();
+                    $days  = date($start - $end);
+                    $fecha = date('d-m-Y', $start);
+                    $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
+                    $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
+                    if($days > 0) {
+                        $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
+                    } else {
+                        $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
+                    }
+                }
+                $ot_id = zerosatleft($ot->id, 3);
+                $status = $status_data['html'];
+                $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
+                $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
+                $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+                <button data-href="/ordenes/'. $ot->id .'/activar" class="btn btn-sm btn-primary btn-enablingot"><i class="far fa-trash-restore"></i> Restaurar</button>';
+
+                $ots_array[] = array(
+                  "created_at" => $created_at,
+                  "id" => $ot_id,
+                  "status" => $status,
+                  "razon_social" => $client,
+                  "numero_potencia" => $potencia ? $potencia :   '-',
+                  "fecha_entrega" => $fecha_entrega,
+                  "tools" => $tools
+                );
+        };
+
+        $totalRecords = count($ots_array);
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecords,
             "aaData" => $ots_array
         );
 
@@ -157,224 +358,24 @@ class OtController extends Controller
         return $html;
     }
 
-    public function disapproved_ots(Request $request)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
-
-        $counter = 0;
-        ## Read value
-        $draw = $request->get('draw');
-        $start = $request->get("start");
-        $rowperpage = $request->get("length"); // Rows display per page
-
-        $columnIndex_arr = $request->get('order');
-        $columnName_arr = $request->get('columns');
-        $order_arr = $request->get('order');
-        $search_arr = $request->get('search');
-
-        $columnIndex = $columnIndex_arr[0]['column']; // Column index
-        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
-        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
-        $searchValue = $search_arr['value']; // Search value
-
-        $totalRecordswithFilter = Ot::select('count(*) as allcount')
-                ->join('clients', 'ots.client_id', '=', 'clients.id')
-                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)->count();
-
-        $ots_array = [];
-
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
-                    ->orderBy($columnName, $columnSortOrder)
-
-                    ->where('ots.enabled', 1)->get();
-
-        $counter = $start;
-
-        foreach ($records as $key => $ot) {
-            $ot_status = \DB::table('status_ot')
-                  ->join('status', 'status_ot.status_id', '=', 'status.id')
-                  ->where('status_ot.ot_id', '=', $ot->id)
-                  ->select('status_ot.status_id', 'status.id', 'status.name')
-                  ->get();
-            $ot_status_arr = array_column($ot_status->toArray(), "status_id");
-            if (in_array(7, $ot_status_arr) && in_array(10, $ot_status_arr)) {
-
-                $counter++;
-
-                $created_at = date('d-m-Y', strtotime($ot->created_at));
-                $status_data = self::getOTStatus($ot);
-                $fecha_entrega = '-';
-                if(isset($status_data->fecha_entrega)) {
-                    $start = strtotime($status_data->fecha_entrega);
-                    $end   = time();
-                    $days  = date($start - $end);
-                    $fecha = date('d-m-Y', $start);
-                    $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                    $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                    if($days > 0) {
-                        $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                    } else {
-                        $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                    }
-                }
-                $ot_id = zerosatleft($ot->id, 3);
-                $status = $status_data['html'];
-                $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
-                $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-                $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
-                <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>
-                '. self::getStatusHtml($status_data, $ot);
-
-                $ots_array[] = array(
-                  "created_at" => $created_at,
-                  "id" => $ot_id,
-                  "status" => $status,
-                  "razon_social" => $client,
-                  "numero_potencia" => $potencia ? $potencia :   '-',
-                  "fecha_entrega" => $fecha_entrega,
-                  "tools" => $tools
-                );
-            }
-        };
-
-
-        $response = array(
-            "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecordswithFilter,
-            "aaData" => $ots_array
-        );
-
-        echo json_encode($response);
-        exit;
-    }
-
-    public function disabled_ots(Request $request)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
-
-        $counter = 0;
-        ## Read value
-        $draw = $request->get('draw');
-        $start = $request->get("start");
-        $rowperpage = $request->get("length"); // Rows display per page
-
-        $columnIndex_arr = $request->get('order');
-        $columnName_arr = $request->get('columns');
-        $order_arr = $request->get('order');
-        $search_arr = $request->get('search');
-
-        $columnIndex = $columnIndex_arr[0]['column']; // Column index
-        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
-        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
-        $searchValue = $search_arr['value']; // Search value
-
-        $totalRecordswithFilter = Ot::select('count(*) as allcount')
-                ->join('clients', 'ots.client_id', '=', 'clients.id')
-                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 2)->count();
-
-        $ots_array = [];
-
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
-                    ->orderBy($columnName, $columnSortOrder)
-
-                    ->where('ots.enabled', 2)->get();
-
-        $counter = $start;
-
-        foreach ($records as $key => $ot) {
-            $counter++;
-            $ot_status = \DB::table('status_ot')
-                  ->join('status', 'status_ot.status_id', '=', 'status.id')
-                  ->where('status_ot.ot_id', '=', $ot->id)
-                  ->select('status_ot.status_id', 'status.id', 'status.name')
-                  ->get();
-            $ot_status_arr = array_column($ot_status->toArray(), "status_id");
-
-                $created_at = date('d-m-Y', strtotime($ot->created_at));
-                $status_data = self::getOTStatus($ot);
-                $fecha_entrega = '-';
-                if(isset($status_data->fecha_entrega)) {
-                    $start = strtotime($status_data->fecha_entrega);
-                    $end   = time();
-                    $days  = date($start - $end);
-                    $fecha = date('d-m-Y', $start);
-                    $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                    $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                    if($days > 0) {
-                        $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                    } else {
-                        $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                    }
-                }
-                $ot_id = zerosatleft($ot->id, 3);
-                $status = $status_data['html'];
-                $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
-                $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-                $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
-                <button data-href="/ordenes/'. $ot->id .'/activar" class="btn btn-sm btn-primary btn-enablingot"><i class="fal fa-trash-restore"></i> Restaurar</button>
-                '. self::getStatusHtml($status_data, $ot);
-
-                $ots_array[] = array(
-                  "created_at" => $created_at,
-                  "id" => $ot_id,
-                  "status" => $status,
-                  "razon_social" => $client,
-                  "numero_potencia" => $potencia ? $potencia :   '-',
-                  "fecha_entrega" => $fecha_entrega,
-                  "tools" => $tools
-                );
-        };
-
-
-        $response = array(
-            "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecordswithFilter,
-            "aaData" => $ots_array
-        );
-
-        echo json_encode($response);
-        exit;
-    }
-
     protected function getOTStatus(Ot $ot)
     {
         $statuses = \DB::table('status_ot')
                   ->join('status', 'status_ot.status_id', '=', 'status.id')
                   ->where('status_ot.ot_id', '=', $ot->id)
-                  ->select('status_ot.status_id', 'status.id', 'status.name')
-                  //->latest('status_ot.id')
-                  //->first();
+                  ->select('status_ot.status_id', 'status.id', 'status.name', 'status.description')
                   ->get();
 
-        $rdi = Rdi::where('enabled', 1)
-                ->where('ot_id', $ot->id)
+        $rdi = Rdi::where('enabled', 1)->where('ot_id', $ot->id)
                 ->select('id as rdi_id')
                 ->first();
 
         $meval = MechanicalEvaluation::where('ot_id', $ot->id)
-                ->select('mechanical_evaluations.id as meval_id', 'mechanical_evaluations.approved')
+                ->select('mechanical_evaluations.id as meval_id')
                 ->first();
 
         $eeval = ElectricalEvaluation::where('ot_id', $ot->id)
-                ->select('electrical_evaluations.id as eeval_id', 'electrical_evaluations.approved')
+                ->select('electrical_evaluations.id as eeval_id')
                 ->first();
 
         $cost_card = CostCard::where('ot_id', $ot->id)
@@ -385,37 +386,15 @@ class OtController extends Controller
                 ->select('id as ws_id')
                 ->first();*/
 
-        $ee_approved = '';
-        $me_approved = '';
         $status['status'] = $statuses;
         $status['rdi'] = $rdi;
         if($meval) {
             $status['meval'] = $meval;
-            $me_status = $meval ? $meval->approved : -1;
-            $text_mestatus = '';
-            if($me_status == 0) {
-                $text_mestatus = 'Por aprobar';
-            } else if($me_status == 1) {
-                $text_mestatus = 'Aprobada';
-            } else if($me_status == 2) {
-                $text_mestatus = 'Desaprobada';
-            }
-            $me_approved = '<span class="d-block text-muted">('.$text_mestatus.')</span>';
         } else {
             $status['meval'] = '';
         }
         if($eeval) {
             $status['eeval'] = $eeval;
-            $ee_status = $eeval ? $eeval->approved : -1;
-            $text_eestatus = '';
-            if($ee_status == 0) {
-                $text_eestatus = 'Por aprobar';
-            } else if($ee_status == 1) {
-                $text_eestatus = 'Aprobada';
-            } else if($ee_status == 2) {
-                $text_eestatus = 'Desaprobada';
-            }
-            $ee_approved = '<span class="d-block text-muted">('.$text_eestatus.')</span>';
         } else {
             $status['eeval'] = '';
         }
@@ -424,21 +403,19 @@ class OtController extends Controller
 
         if ($statuses) {
             foreach ($statuses as $key => $item) {
-                if($item->status_id == 2) {
-                  $status['html'] = '<span class="d-inline-block"><span class="badge badge-secondary px-2 py-1 w-100">'.$item->name.'</span>'.$me_approved.'</span>';
-                } else if($item->status_id == 3) {
-                  $status['html'] = '<span class="d-inline-block"><span class="badge badge-secondary px-2 py-1 w-100">'.$item->name.'</span>'.$ee_approved.'</span>';
-                } else if($item->status_id == 4) {
-                  $status['html'] = '<span class="badge badge-primary px-2 py-1 w-100">'.$item->name.'</span>';
-                } else if($item->status_id == 5 || $item->status_id == 8) {
-                  $status['html'] = '<span class="badge badge-danger px-2 py-1 w-100">'.$item->name.'</span>';
-                } else if($item->status_id == 6 || $item->status_id == 9 || $item->status_id == 11) {
-                    $status['html'] = '<span class="badge badge-success px-2 py-1 w-100">'.$item->name.'</span>';
-                    if($item->status_id == 11) {
+                if($item->name == 'cc' || $item->name == 'rdi') {
+                  $status['html'] = '<span class="badge badge-primary px-2 py-1 w-100">'.$item->description.'</span>';
+                } else if(strpos($item->name, '_waiting') !== false) {
+                  $status['html'] = '<span class="badge badge-danger px-2 py-1 w-100">'.$item->description.'</span>';
+                } else if(strpos($item->name, '_disapproved') !== false) {
+                  $status['html'] = '<span class="badge badge-danger px-2 py-1 w-100">'.$item->description.'</span>';
+                } else if(strpos($item->name, '_approved') !== false || $item->name == 'delivery_generated') {
+                    $status['html'] = '<span class="badge badge-success px-2 py-1 w-100">'.$item->description.'</span>';
+                    if($item->name == 'delivery_generated') {
                         $status['fecha_entrega'] = $ot->fecha_entrega;
                     }
                 } else {
-                  $status['html'] = '<span class="badge badge-secondary px-2 py-1 w-100">'.$item->name.'</span>';
+                  $status['html'] = '<span class="badge badge-secondary px-2 py-1 w-100">'.$item->description.'</span>';
                 }
             }
         }
@@ -540,7 +517,7 @@ class OtController extends Controller
 
         $ot->save();
 
-        $status = Status::where('id', 1)->first();
+        $status = Status::where('name', 'ot_created')->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,
@@ -623,7 +600,7 @@ class OtController extends Controller
             return response()->json(['data'=>'Ya se generó la fecha de entrega: ' . $ot->fecha_entrega,'success'=>false]);
         }
 
-        $status = Status::where('id', 11)->first();
+        $status = Status::where('name', 'delivery_generated')->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,

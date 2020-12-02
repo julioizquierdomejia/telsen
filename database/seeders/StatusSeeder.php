@@ -15,68 +15,88 @@ class StatusSeeder extends Seeder
     public function run()
     {
         $status = new Status();
-        $status->name = 'OT Creada';
-        $status->description = 'Creación de OT';
+        $status->name = 'ot_created';
+        $status->description = 'OT Creada';
         $status->enabled = 1;
         $status->save();
 
         $status = new Status();
-        $status->name = 'Evaluación Mecánica';
+        $status->name = 'me';
         $status->description = 'Evaluación Mecánica';
         $status->enabled = 1;
         $status->save();
-
         $status = new Status();
-        $status->name = 'Evaluación Eléctrica';
-        $status->description = 'Evaluación Eléctrica';
+        $status->name = 'me_approved';
+        $status->description = 'Evaluación Mecánica aprobada';
+        $status->enabled = 1;
+        $status->save();
+        $status = new Status();
+        $status->name = 'me_disapproved';
+        $status->description = 'Evaluación Mecánica desaprobada';
         $status->enabled = 1;
         $status->save();
 
         $status = new Status();
-        $status->name = 'Tarjeta de Costo';
+        $status->name = 'ee';
+        $status->description = 'Evaluación Eléctrica';
+        $status->enabled = 1;
+        $status->save();
+        $status = new Status();
+        $status->name = 'ee_approved';
+        $status->description = 'Evaluación Eléctrica aprobada';
+        $status->enabled = 1;
+        $status->save();
+        $status = new Status();
+        $status->name = 'ee_disapproved';
+        $status->description = 'Evaluación Eléctrica desaprobada';
+        $status->enabled = 1;
+        $status->save();
+
+        $status = new Status();
+        $status->name = 'cc';
         $status->description = 'Tarjeta de Costo';
         $status->enabled = 1;
         $status->save();
 
         $status = new Status();
-        $status->name = 'Cotización por aprobar';
+        $status->name = 'cc_waiting';
         $status->description = 'Cotización por aprobar';
         $status->enabled = 1;
         $status->save();
 
         $status = new Status();
-        $status->name = 'Cotización aprobada';
+        $status->name = 'cc_approved';
         $status->description = 'Cotización aprobada';
         $status->enabled = 1;
         $status->save();
 
         $status = new Status();
-        $status->name = 'Cotización desaprobada';
+        $status->name = 'cc_disapproved';
         $status->description = 'Cotización desaprobada';
         $status->enabled = 1;
         $status->save();
 
         //RDI
         $status = new Status();
-        $status->name = 'RDI por aprobar';
+        $status->name = 'rdi_waiting';
         $status->description = 'RDI por aprobar';
         $status->enabled = 1;
         $status->save();
 
         $status = new Status();
-        $status->name = 'RDI aprobada';
+        $status->name = 'rdi_approved';
         $status->description = 'RDI aprobada';
         $status->enabled = 1;
         $status->save();
 
         $status = new Status();
-        $status->name = 'RDI desaprobada';
+        $status->name = 'rdi_disapproved';
         $status->description = 'RDI desaprobada';
         $status->enabled = 1;
         $status->save();
 
         $status = new Status();
-        $status->name = 'Generación de fecha de entrega';
+        $status->name = 'delivery_generated';
         $status->description = 'Generación de fecha de entrega';
         $status->enabled = 1;
         $status->save();

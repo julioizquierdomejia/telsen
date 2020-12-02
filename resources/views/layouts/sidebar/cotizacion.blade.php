@@ -5,7 +5,7 @@
   </a>
 </li>
 
-<li class="{{ request()->segment(1) == 'card_cost' ? 'active' : '' }}">
+<li class="{{ request()->segment(1) == 'tarjeta-costo' ? 'active' : '' }}">
   <a class="mr-0" href="{{route('card_cost.index')}}">
     <i class="fas fa-money-check-alt"></i>
     <p>Tarjeta de Costos</p>

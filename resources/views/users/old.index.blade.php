@@ -19,6 +19,53 @@
               <th class="text-center">Estado</th>
               <th class="text-center">Acciones</th>
             </thead>
+            {{-- <tbody>
+              @if($users)
+              @php
+                $index = 0;
+              @endphp
+              @foreach($users as $key => $user)
+              @php
+                $index++;
+              @endphp
+                <tr data-id="{{$user->id}}">
+                  <td>
+                    {{$index}}
+                  </td>
+                  <td class="user_name">
+                    {{$user->name}}
+                  </td>
+                  <td>
+                    {{$user->lastname}}
+                  </td>
+                  <td>
+                    <ul class="list-unstyled mb-0">
+                    @foreach ($user->roles as $role)
+                      <li class="my-1"><span class="badge badge-primary d-block">{{$role->name}}</span></li>
+                    @endforeach
+                    </ul>
+                  </td>
+                  <td>
+                    <span class="badge badge-light d-block">{{$user->area}}</span>
+                  </td>
+                  <td>
+                    {{$user->email}}
+                  </td>
+                  <td>
+                    {!!$user->enabled == 1 ? '<span class="badge badge-success d-block">Activo</span>' : '<span class="badge badge-secondary d-block">Inactivo</span>'!!}
+                  </td>
+                  <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-userid="{{$user->id}}" data-state="0" data-toggle="modal" data-target="#modalUser" title="Desactivar usuario"><i class="fal fa-trash"></i></button>
+                    @if ($user->enabled == 0)
+                      <button type="button" class="btn btn-sm btn-primary btn-mdelete" data-userid="{{$user->id}}" data-state="1" data-toggle="modal" data-target="#modalUser" title="Restaurar usuario"><i class="fal fa-trash-restore"></i></button>
+                    @endif
+                  </td>
+                </tr>
+              @endforeach
+              @else
+              <tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>
+              @endif
+            </tbody> --}}
           </table>
         </div>
       </div>

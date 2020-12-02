@@ -14,7 +14,7 @@
               <th>Id</th>
               <th>Cliente</th>
               <th>Equipo</th>
-              <th class="text-right">Herramientas</th>
+              <th class="text-right">Acciones</th>
             </thead>
             <tbody>
               @if($rdis)

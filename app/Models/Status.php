@@ -16,6 +16,9 @@ class Status extends Model
         'name',
         'description',
         'enabled',
-
     ];
+
+    public function ots(){
+        return $this->belongsToMany(Ot::class);
+    }
 }

@@ -738,7 +738,7 @@ $(document).on('click', '.card .btn-clear', function () {
 $('#table-tap .form-control').val('');
 })
 
-$('.btn-add-row').click(function () {
+$('.btn-add-tap-row').click(function () {
   var row_index = $('#table-tap tbody tr').length;
 var row = `<tr>
     <td class="cell-counter">

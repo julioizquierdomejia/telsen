@@ -28,7 +28,7 @@
                   <th>Cliente</th>
                   <th>Potencia</th>
                   <th class="text-center">Fecha de entrega</th>
-                  <th class="text-center">Herramientas</th>
+                  <th class="text-center">Acciones</th>
                 </thead>
                 <tbody>
                   <tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>
@@ -46,7 +46,7 @@
                   <th>Cliente</th>
                   <th>Potencia</th>
                   <th class="text-center">Fecha de entrega</th>
-                  <th class="text-center">Herramientas</th>
+                  <th class="text-center">Acciones</th>
                 </thead>
                 <tbody>
                   <tr>
@@ -66,7 +66,7 @@
                   <th>Cliente</th>
                   <th>Potencia</th>
                   <th class="text-center">Fecha de entrega</th>
-                  <th class="text-center">Herramientas</th>
+                  <th class="text-center">Acciones</th>
                 </thead>
                 <tbody>
                   <tr>

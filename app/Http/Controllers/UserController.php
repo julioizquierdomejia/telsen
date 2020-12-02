@@ -74,7 +74,7 @@ class UserController extends Controller
             $email = $record->email;
             $enabled = ($record->enabled == 1 ? '<span class="badge badge-success d-block">Activo</span>' : '<span class="badge badge-secondary d-block">Inactivo</span>');
 
-            $tools = '<button type="button" class="btn btn-sm btn-danger btn-mdelete" data-userid="'.$record->id.'" data-state="0" data-toggle="modal" data-target="#modalUser" title="Desactivar usuario"><i class="fal fa-trash"></i></button> '. ($record->enabled == 0 ? '<button type="button" class="btn btn-sm btn-primary btn-mdelete" data-userid="'.$record->id.'" data-state="1" data-toggle="modal" data-target="#modalUser" title="Restaurar usuario"><i class="fal fa-trash-restore"></i></button>' : '');
+            $tools = ($record->enabled == 1 ? '<button type="button" class="btn btn-sm btn-danger btn-mdelete" data-userid="'.$record->id.'" data-state="0" data-toggle="modal" data-target="#modalUser" title="Desactivar usuario"><i class="fal fa-trash"></i></button>' : '<button type="button" class="btn btn-sm btn-primary btn-mdelete" data-userid="'.$record->id.'" data-state="1" data-toggle="modal" data-target="#modalUser" title="Restaurar usuario"><i class="fal fa-trash-undo-alt"></i></button>');
 
             $data_arr[] = array(
               "id" => $counter,

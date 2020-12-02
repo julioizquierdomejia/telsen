@@ -30,25 +30,23 @@ class CostCardController extends Controller
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
-                        ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.conex', 'me_val.hp_kw', 'ee_val.approved as ee_approved', 'me_val.approved as me_approved'
+                        ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.conex', 'me_val.hp_kw'
                             //,'cost_cards.id as cost_card'
                         )
                         ->where('ots.enabled', 1)
                         ->where('clients.client_type_id', 2)
                         ->where('clients.enabled', 1)
-                        ->where('ee_val.approved', 1)
-                        ->where('me_val.approved', 1)
                         //->groupBy('ots.id')
                         ->get();
 
         $ots = [];
         foreach ($_ots as $key => $ot) {
-            $ot_status = \DB::table('status_ot')->where('status_ot.ot_id', '=', $ot->id)->get();
-            $array = [];
-            foreach ($ot_status as $key => $status) {
-                $array[] = $status->status_id;
-            }
-            if (in_array(2, $array) && in_array(3, $array) && !in_array(4, $array)) {
+            $ot_status = \DB::table('status_ot')
+                        ->join('status', 'status.id', '=', 'status_ot.status_id')
+                        ->select('status.*')
+                        ->where('status_ot.ot_id', '=', $ot->id)->get();
+            $array = array_column($ot_status->toArray(), "name");
+            if (in_array("me_approved", $array) && in_array("ee_approved", $array) && !in_array("cc", $array)) {
                 $ots[] = $ot;
             }
         }
@@ -77,8 +75,6 @@ class CostCardController extends Controller
                 ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
                 ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'clients.ruc', 'ee_val.nro_equipo', 'ee_val.frecuencia', 'ee_val.conex', 'ee_val.frame', 'ee_val.amperaje', 'me_val.hp_kw', 'me_val.serie', 'me_val.rpm', 'me_val.placa_caract_orig')
                 ->where('ots.enabled', 1)
-                ->where('ee_val.approved', 1)
-                ->where('me_val.approved', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
         if ($ot->client_type_id == 1) {

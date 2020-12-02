@@ -152,12 +152,12 @@ $cc_disapproved = in_array(7, $statuses);
                 @foreach($works_el as $key => $item)
                 <tr>
                   <td class="cell-counter"><span class="number"></span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->area}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->service}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->description}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->medidas}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->qty}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->personal}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->area}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->service}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->description}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->medidas}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->qty}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->personal}}</span></td>
                 </tr>
                 @endforeach
                 @else
@@ -196,23 +196,23 @@ $cc_disapproved = in_array(7, $statuses);
                 @foreach($works_mec as $key => $item)
                 <tr>
                   <td class="cell-counter"><span class="number"></span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->area}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->service}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->description}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->medidas}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->qty}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->personal}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->area}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->service}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->description}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->medidas}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->qty}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->personal}}</span></td>
                 </tr>
                 @endforeach
                 @else
                 <tr>
                   <td class="cell-counter"><span class="number"></span></td>
-                  <td><span class="form-control mt-0 h-100">-</span></td>
-                  <td><span class="form-control mt-0 h-100">-</span></td>
-                  <td><span class="form-control mt-0 h-100">-</span></td>
-                  <td><span class="form-control mt-0 h-100">-</span></td>
-                  <td><span class="form-control mt-0 h-100">-</span></td>
-                  <td><span class="form-control mt-0 h-100">-</span></td>
+                  <td><span class="form-control mt-0 h-auto">-</span></td>
+                  <td><span class="form-control mt-0 h-auto">-</span></td>
+                  <td><span class="form-control mt-0 h-auto">-</span></td>
+                  <td><span class="form-control mt-0 h-auto">-</span></td>
+                  <td><span class="form-control mt-0 h-auto">-</span></td>
+                  <td><span class="form-control mt-0 h-auto">-</span></td>
                 </tr>
                 @endif
               </tbody>
@@ -306,12 +306,12 @@ $cc_disapproved = in_array(7, $statuses);
 								@foreach($services as $key => $work)
 								<tr>
 									<td class="cell-counter"><span class="number"></span></td>
-									<td><span class="form-control">{{$work->area}}</span></td>
-									<td><span class="form-control">{{$work->service}}</span></td>
-									<td><span class="form-control">{{$work->description}}</span></td>
-									<td><span class="form-control">{{$work->medidas}}</span></td>
-									<td><span class="form-control">{{$work->qty}}</span></td>
-									<td><span class="form-control">{{$work->personal}}</span></td>
+									<td><span class="form-control h-auto">{{$work->area}}</span></td>
+									<td><span class="form-control h-auto">{{$work->service}}</span></td>
+									<td><span class="form-control h-auto">{{$work->description}}</span></td>
+									<td><span class="form-control h-auto">{{$work->medidas}}</span></td>
+									<td><span class="form-control h-auto">{{$work->qty}}</span></td>
+									<td><span class="form-control h-auto">{{$work->personal}}</span></td>
 								</tr>
 								@endforeach
 								@else

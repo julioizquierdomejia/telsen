@@ -9,7 +9,7 @@ $ot_status = \DB::table('status_ot')
       ->where('status_ot.ot_id', '=', $ot->id)
       ->select('status.id', 'status_ot.status_id', 'status.name', 'status.description')
       ->get();
-//$statuses = array_column($ot_status->toArray(), "name");
+$statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 @endphp
 <div class="row">
@@ -105,7 +105,7 @@ $status_last = $ot_status->last();
 				<hr>
 				<div class="row text-center">
 					<div class="col">
-				@if($eeval && $meval)
+				@if($eeval && $meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
 				@if ($ot->tipo_cliente_id == 1)
 					@if($rdi)
 					<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>

@@ -4,11 +4,6 @@
 @extends('layouts.app', ['title' => 'Evaluación Eléctrica de OT N° '.$ot_id])
 @section('content')
 @php
-$ot_status = \DB::table('status_ot')
-      ->join('status', 'status_ot.status_id', '=', 'status.id')
-      ->where('status_ot.ot_id', '=', $formato->ot_id)
-      ->select('status.id', 'status_ot.status_id', 'status.name')
-      ->get();
 $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 
@@ -66,7 +61,7 @@ $reception_list = [
         <h4 class="card-title d-flex align-items-center justify-content-between">
           <span>Evaluación Eléctrica</span>
           <span class="card-title-buttons">
-            @if(!in_array('ee_approved', $statuses) || !in_array('ee_disapproved', $statuses))
+            @if(!in_array('ee_approved', $statuses) && !in_array('ee_disapproved', $statuses))
             <a class="btn btn-orange btn-round" href="{{route('formatos.electrical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
             @endif
             @if(in_array('ee_approved', $statuses))

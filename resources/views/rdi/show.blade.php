@@ -1,11 +1,6 @@
 @extends('layouts.app', ['title' => 'Ver RDI'])
 @section('content')
 @php
-$ot_status = \DB::table('status_ot')
-      ->join('status', 'status_ot.status_id', '=', 'status.id')
-      ->where('status_ot.ot_id', '=', $rdi->ot_id)
-      ->select('status.id', 'status_ot.status_id', 'status.name')
-      ->get();
 $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 $rdi_forapprove = ($status_last->name == "rdi_waiting");
@@ -24,7 +19,7 @@ $rdi_fecha = $status_last->name == "delivery_generated" && $rdi->fecha_entrega !
 						@if ($rdi_fecha)
 						<p class="mb-0 mt-2">Fecha de entrega <span class="badge badge-success px-3 py-1">{{date('d-m-Y', strtotime($rdi->fecha_entrega))}}</span></p>
 						@endif
-						@if($rdi->fecha_entrega == null)
+						@if($rdi->fecha_entrega == null && $rdi_approved)
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Generar fecha de entrega</button>
 						@endif
 						@if($rdi_approved)
@@ -311,7 +306,7 @@ $rdi_fecha = $status_last->name == "delivery_generated" && $rdi->fecha_entrega !
         	@if(!$rdi_fecha && $rdi_approved)
         	<div class="row fecha_entrega text-center">
 	          	<div class="col-12">
-	          		<p><label class="col-label d-block border-bottom" for="fecha_entrega">Fecha de entrega</label></p>
+	          		<p><label class="col-label d-block" for="fecha_entrega">Fecha de entrega</label></p>
 	          		<input class="form-control" min="{{date('Y-m-d')}}" type="date" id="fecha_entrega" name="fecha_entrega">
 	          		<p class="c-ots message text-danger"></p>
 	          		<button type="button" class="btn btn-primary btn-sm px-md-5" id="btngenerateOTDate">Confirmar</button>

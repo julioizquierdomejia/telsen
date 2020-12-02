@@ -4,11 +4,7 @@
 @extends('layouts.app', ['title' => 'Ver OT N° '.$ot_id])
 @section('content')
 @php
-$ot_status = \DB::table('status_ot')
-      ->join('status', 'status_ot.status_id', '=', 'status.id')
-      ->where('status_ot.ot_id', '=', $ot->id)
-      ->select('status.id', 'status_ot.status_id', 'status.name', 'status.description')
-      ->get();
+$ot_status = $ot->statuses;
 $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 @endphp
@@ -20,7 +16,7 @@ $status_last = $ot_status->last();
 				<span>
 					Orden de Trabajo {{$ot_id}}
                     <span class="d-block">
-                    @if ($status_last)
+                    @if ($ot_status->count())
                       @if($status_last->name == 'cc')
                       <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->description }}</span>
                       @elseif($status_last->name == 'cc_waiting')

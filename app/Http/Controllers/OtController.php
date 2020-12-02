@@ -7,6 +7,7 @@ use App\Models\Client;
 use App\Models\MotorBrand;
 use App\Models\MotorModel;
 use App\Models\Status;
+use App\Models\StatusOt;
 use App\Models\ElectricalEvaluation;
 use App\Models\MechanicalEvaluation;
 use App\Models\OtGallery;
@@ -24,7 +25,7 @@ class OtController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
         
         //Listar OTs
         $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
@@ -37,7 +38,7 @@ class OtController extends Controller
 
     public function enabled_ots(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $counter = 0;
         ## Read value
@@ -79,12 +80,7 @@ class OtController extends Controller
         $ots_array = [];
 
         foreach ($records as $key => $ot) {
-            $ot_status = \DB::table('status_ot')
-                  ->join('status', 'status_ot.status_id', '=', 'status.id')
-                  ->where('status_ot.ot_id', '=', $ot->id)
-                  ->select('status_ot.status_id', 'status.id', 'status.name')
-                  ->get();
-            $ot_status_arr = array_column($ot_status->toArray(), "name");
+            $ot_status_arr = array_column($ot->statuses->toArray(), "name");
             if (!in_array('cc_disapproved', $ot_status_arr) && 
                 !in_array('rdi_disapproved', $ot_status_arr) && 
                 !in_array('ee_disapproved', $ot_status_arr) && 
@@ -142,7 +138,7 @@ class OtController extends Controller
 
     public function disapproved_ots(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $counter = 0;
         ## Read value
@@ -181,12 +177,7 @@ class OtController extends Controller
         $counter = $start;
 
         foreach ($records as $key => $ot) {
-            $ot_status = \DB::table('status_ot')
-                  ->join('status', 'status_ot.status_id', '=', 'status.id')
-                  ->where('status_ot.ot_id', '=', $ot->id)
-                  ->select('status_ot.status_id', 'status.id', 'status.name')
-                  ->get();
-            $ot_status_arr = array_column($ot_status->toArray(), "name");
+            $ot_status_arr = array_column($ot->statuses->toArray(), "name");
             if (in_array('cc_disapproved', $ot_status_arr) || 
                 in_array('rdi_disapproved', $ot_status_arr) ||
                 in_array('ee_disapproved', $ot_status_arr) ||
@@ -243,7 +234,7 @@ class OtController extends Controller
 
     public function disabled_ots(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $counter = 0;
         ## Read value
@@ -283,44 +274,38 @@ class OtController extends Controller
 
         foreach ($records as $key => $ot) {
             $counter++;
-            $ot_status = \DB::table('status_ot')
-                  ->join('status', 'status_ot.status_id', '=', 'status.id')
-                  ->where('status_ot.ot_id', '=', $ot->id)
-                  ->select('status_ot.status_id', 'status.id', 'status.name')
-                  ->get();
-
-                $created_at = date('d-m-Y', strtotime($ot->created_at));
-                $status_data = self::getOTStatus($ot);
-                $fecha_entrega = '-';
-                if(isset($status_data->fecha_entrega)) {
-                    $start = strtotime($status_data->fecha_entrega);
-                    $end   = time();
-                    $days  = date($start - $end);
-                    $fecha = date('d-m-Y', $start);
-                    $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                    $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                    if($days > 0) {
-                        $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                    } else {
-                        $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                    }
+            $created_at = date('d-m-Y', strtotime($ot->created_at));
+            $status_data = self::getOTStatus($ot);
+            $fecha_entrega = '-';
+            if(isset($status_data->fecha_entrega)) {
+                $start = strtotime($status_data->fecha_entrega);
+                $end   = time();
+                $days  = date($start - $end);
+                $fecha = date('d-m-Y', $start);
+                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
+                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
+                if($days > 0) {
+                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
+                } else {
+                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
                 }
-                $ot_id = zerosatleft($ot->id, 3);
-                $status = $status_data['html'];
-                $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
-                $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-                $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                <button data-href="/ordenes/'. $ot->id .'/activar" class="btn btn-sm btn-primary btn-enablingot"><i class="far fa-trash-restore"></i> Restaurar</button>';
+            }
+            $ot_id = zerosatleft($ot->id, 3);
+            $status = $status_data['html'];
+            $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
+            $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+            <button data-href="/ordenes/'. $ot->id .'/activar" class="btn btn-sm btn-primary btn-enablingot"><i class="far fa-trash-restore"></i> Restaurar</button>';
 
-                $ots_array[] = array(
-                  "created_at" => $created_at,
-                  "id" => $ot_id,
-                  "status" => $status,
-                  "razon_social" => $client,
-                  "numero_potencia" => $potencia ? $potencia :   '-',
-                  "fecha_entrega" => $fecha_entrega,
-                  "tools" => $tools
-                );
+            $ots_array[] = array(
+              "created_at" => $created_at,
+              "id" => $ot_id,
+              "status" => $status,
+              "razon_social" => $client,
+              "numero_potencia" => $potencia ? $potencia :   '-',
+              "fecha_entrega" => $fecha_entrega,
+              "tools" => $tools
+            );
         };
 
         $totalRecords = count($ots_array);
@@ -335,7 +320,7 @@ class OtController extends Controller
         exit;
     }
 
-    function getStatusHtml($data, $ot) {
+    protected function getStatusHtml($data, $ot) {
       $html = "";
       if(!empty($data['cost_card']) || !empty($data['rdi']) || !empty($data['meval']) || !empty($data['eeval'])) {
         $html = '<div class="dropdown d-inline-block dropleft">
@@ -360,11 +345,7 @@ class OtController extends Controller
 
     protected function getOTStatus(Ot $ot)
     {
-        $statuses = \DB::table('status_ot')
-                  ->join('status', 'status_ot.status_id', '=', 'status.id')
-                  ->where('status_ot.ot_id', '=', $ot->id)
-                  ->select('status_ot.status_id', 'status.id', 'status.name', 'status.description')
-                  ->get();
+        $statuses = $ot->statuses;
 
         $rdi = Rdi::where('enabled', 1)->where('ot_id', $ot->id)
                 ->select('id as rdi_id')
@@ -433,7 +414,7 @@ class OtController extends Controller
 
     public function list(Request $request)
     {
-        $request->user()->authorizeRoles(['client']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
         //Listar OTs
         $ordenes = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                     ->select('ots.*', 'motor_brands.name as marca')
@@ -449,7 +430,7 @@ class OtController extends Controller
      */
     public function create(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
         //
         //Revisar el ultimo numero de OT
         $totalOts = Ot::count();
@@ -474,7 +455,7 @@ class OtController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
         //
         $rules = [
             'client_id' => 'required|integer',
@@ -519,10 +500,10 @@ class OtController extends Controller
 
         $status = Status::where('name', 'ot_created')->first();
         if ($status) {
-            \DB::table('status_ot')->insert([
-                'status_id' => $status->id,
-                'ot_id' => $ot->id,
-            ]);
+            $status_ot = new StatusOt();
+            $status_ot->status_id = $status->id;
+            $status_ot->ot_id = $ot->id;
+            $status_ot->save();
         }
 
         activitylog('ots', 'store', null, $ot->toArray());
@@ -538,7 +519,7 @@ class OtController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['client']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
         
         $orden = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                     ->select('ots.*', 'motor_brands.name as marca')
@@ -556,7 +537,7 @@ class OtController extends Controller
 
     public function ot_show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         /*$validate_ot = Ot::where('ots.enabled', 1)->where('ots.id', $id)
                     ->join('clients', 'clients.id', '=', 'ots.client_id')
@@ -587,7 +568,7 @@ class OtController extends Controller
 
     public function pvirtual(Request $request)
     {
-        $request->user()->authorizeRoles(['client']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
 
         $ordenes = Ot::where('enabled', 1)->get();
         return view('procesovirtual.index', compact('ordenes'));
@@ -595,6 +576,8 @@ class OtController extends Controller
 
     public function generateOTDate(Request $request, $id)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'fecha_de_entrega']);
+
         $ot = Ot::findOrFail($id);
         if ($ot->fecha_entrega != null) {
             return response()->json(['data'=>'Ya se generó la fecha de entrega: ' . $ot->fecha_entrega,'success'=>false]);
@@ -602,10 +585,10 @@ class OtController extends Controller
 
         $status = Status::where('name', 'delivery_generated')->first();
         if ($status) {
-            \DB::table('status_ot')->insert([
-                'status_id' => $status->id,
-                'ot_id' => $id,
-            ]);
+            $status_ot = new StatusOt();
+            $status_ot->status_id = $status->id;
+            $status_ot->ot_id = $id;
+            $status_ot->save();
 
             $ot->fecha_entrega = $request->input('fecha_entrega');
             $original_data = $ot->toArray();
@@ -625,7 +608,7 @@ class OtController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $clientes = Client::where('clients.enabled', 1)
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -647,7 +630,7 @@ class OtController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'reception']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $rules = array(
             'client_id' => 'required|integer',
@@ -698,7 +681,7 @@ class OtController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $ot = Ot::findOrFail($id);
         $ot->enabled = 2;
@@ -709,7 +692,7 @@ class OtController extends Controller
 
     public function enabling_ot(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $ot = Ot::findOrFail($id);
         $ot->enabled = 1;
@@ -751,7 +734,7 @@ class OtController extends Controller
 
     public function galleryDelete(Request $request, $image_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'mechanical']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
 
         $ot_gallery = OtGallery::findOrFail($image_id);
         $ot_gallery->enabled = 0;

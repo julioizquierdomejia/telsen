@@ -54,8 +54,13 @@ class UserController extends Controller
                 ->select('users.*', 'areas.name as area', 'user_data.name', \DB::raw('CONCAT(user_data.last_name, " ", user_data.mother_last_name) AS lastname'))
                 ->skip($start)
                 ->take($rowperpage)
-                ->where('user_data.name', 'like', '%' .$searchValue . '%')
                 ->where('users.id', '<>', 1)
+                ->where(function ($query) use ($searchValue) {
+                    $query->where('user_data.name', 'like', '%' .$searchValue . '%')
+                            ->orWhere('areas.name', 'like', '%' .$searchValue . '%')
+                            ->orWhere('users.email', 'like', '%' .$searchValue . '%')
+                            ;
+                })
                 ->orderBy($columnName, $columnSortOrder)
                 ->get();
         $counter = $start;

@@ -35,11 +35,7 @@ class MechanicalEvaluationController extends Controller
 
         $ots = [];
         foreach ($_ots as $key => $ot) {
-            $ot_status = \DB::table('status_ot')
-                        ->join('status', 'status.id', '=', 'status_ot.status_id')
-                        ->select('status.*')
-                        ->where('status_ot.ot_id', '=', $ot->id)->get();
-            $array = array_column($ot_status->toArray(), "name");
+            $array = array_column($ot->statuses->toArray(), "name");
             if (!in_array("me", $array)) {
                 $ots[] = $ot;
             }
@@ -300,10 +296,10 @@ class MechanicalEvaluationController extends Controller
 
         $status = Status::where('name', 'me')->first();
         if ($status) {
-            \DB::table('status_ot')->insert([
-                'status_id' => $status->id,
-                'ot_id' => $ot_id,
-            ]);
+            $status_ot = new StatusOt();
+            $status_ot->status_id = $status->id;
+            $status_ot->ot_id = $ot_id;
+            $status_ot->save();
         }
 
         /*if ($request->file('files')) {
@@ -394,7 +390,12 @@ class MechanicalEvaluationController extends Controller
                         ->select('logs.*', 'user_data.name')
                         ->first();
 
-        return view('formatos.mechanical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by'));
+        $ot_status = StatusOt::join('status', 'status_ot.status_id', '=', 'status.id')
+                      ->where('status_ot.ot_id', '=', $formato->ot_id)
+                      ->select('status.id', 'status_ot.status_id', 'status.name')
+                      ->get();
+
+        return view('formatos.mechanical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by', 'ot_status'));
     }
 
     /**

@@ -40,12 +40,8 @@ class WorkshopController extends Controller
 
         $ots = [];
         foreach ($_ots as $key => $ot) {
-            $ot_status = \DB::table('status_ot')->where('status_ot.ot_id', '=', $ot->id)->get();
-            $array = [];
-            foreach ($ot_status as $key => $status) {
-                $array[] = $status->status_id;
-            }
-            if (in_array(11, $array)) {
+            $ot_status = array_column($ot->statuses->toArray(), "name");
+            if (in_array("delivery_generated", $ot_status)) {
                 $ots[] = $ot;
             }
         }
@@ -139,10 +135,10 @@ class WorkshopController extends Controller
 
         /*$status = Status::where('name', 'workshop')->first();
         if ($status) {
-            \DB::table('status_ot')->insert([
-                'status_id' => $status->id,
-                'ot_id' => $id,
-            ]);
+            $data = new StatusOt();
+            $data->status_id = $status->id;
+            $data->ot_id = $id;
+            $data->save();
         }*/
 
         activitylog('workshop', 'store', null, $data);
@@ -181,7 +177,12 @@ class WorkshopController extends Controller
                     ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_service_works.personal', 'cost_card_service_works.ingreso', 'cost_card_service_works.salida')
                     ->get();
 
-        return view('talleres.show', compact('ccost', 'services'));
+        $ot_status = StatusOt::join('status', 'status_ot.status_id', '=', 'status.id')
+                      ->where('status_ot.ot_id', '=', $ot_id)
+                      ->select('status.id', 'status_ot.status_id', 'status.name')
+                      ->get();
+
+        return view('talleres.show', compact('ccost', 'services', 'ot_status'));
     }
 
     public function approveTC(Request $request, $id)
@@ -190,8 +191,7 @@ class WorkshopController extends Controller
 
         $action = $request->input('action');
 
-        $exist_status = \DB::table('status_ot')
-                        ->join('status', 'status.id', '=', 'status_ot.status_id')
+        $exist_status = StatusOt::join('status', 'status.id', '=', 'status_ot.status_id')
                         ->select('status.*')
                         ->where('ot_id', $id)
                         ->where('status.name', 'workshop_a')->orWhere('status.name', 'workshop_d')
@@ -202,18 +202,18 @@ class WorkshopController extends Controller
             if ($action == 1) {
                 $status = Status::where('name', 'workshop_a')->first();
                 if ($status) {
-                    $data = \DB::table('status_ot')->insert([
-                        'status_id' => $status->id,
-                        'ot_id' => $id,
-                    ]);
+                    $data = new StatusOt();
+                    $data->status_id = $status->id;
+                    $data->ot_id = $id;
+                    $data->save();
                 }
             } else /*if($action == 2)*/ {
                 $status = Status::where('name', 'workshop_d')->first();
                 if ($status) {
-                    $data = \DB::table('status_ot')->insert([
-                        'status_id' => $status->id,
-                        'ot_id' => $id,
-                    ]);
+                    $data = new StatusOt();
+                    $data->status_id = $status->id;
+                    $data->ot_id = $id;
+                    $data->save();
                 }
             }
             return response()->json(['data'=>json_encode($data),'success'=>true]);

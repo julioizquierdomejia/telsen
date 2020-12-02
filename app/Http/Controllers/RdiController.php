@@ -12,6 +12,7 @@ use App\Models\MechanicalEvaluationWork;
 use App\Models\RdiMaintenanceType;
 use App\Models\RdiCriticalityType;
 use App\Models\Status;
+use App\Models\StatusOt;
 use App\Models\Service;
 use App\Models\Area;
 use App\Models\Client;
@@ -48,11 +49,7 @@ class RdiController extends Controller
 
         $rdis = [];
         foreach ($_ots as $key => $ot) {
-            $ot_status = \DB::table('status_ot')
-                        ->join('status', 'status.id', '=', 'status_ot.status_id')
-                        ->select('status.*')
-                        ->where('status_ot.ot_id', '=', $ot->id)->get();
-            $array = array_column($ot_status->toArray(), "name");
+            $array = array_column($ot->statuses->toArray(), "name");
             if (in_array("me", $array) && in_array("ee", $array) && !in_array("cc", $array) && !in_array("rdi_waiting", $array)) {
                 $rdis[] = $ot;
             }
@@ -279,10 +276,10 @@ class RdiController extends Controller
 
         $status = Status::where('name', 'rdi_waiting')->first();
         if ($status) {
-            \DB::table('status_ot')->insert([
-                'status_id' => $status->id,
-                'ot_id' => $rdi->ot_id,
-            ]);
+            $status_ot = new StatusOt();
+            $status_ot->status_id = $status->id;
+            $status_ot->ot_id = $rdi->ot_id;
+            $status_ot->save();
         }
 
         activitylog('rdis', 'store', null, $rdi->toArray());
@@ -296,8 +293,7 @@ class RdiController extends Controller
 
         $action = $request->input('action');
 
-        $exist_status = \DB::table('status_ot')
-                        ->join('status', 'status.id', '=', 'status_ot.status_id')
+        $exist_status = StatusOt::join('status', 'status.id', '=', 'status_ot.status_id')
                         ->select('status.*')
                         ->where('ot_id', $id)
                         ->where('name', "rdi_approved")->where('name', "rdi_disapproved")
@@ -308,18 +304,18 @@ class RdiController extends Controller
             if ($action == 1) {
                 $status = Status::where('name', 'rdi_approved')->first();
                 if ($status) {
-                    $data = \DB::table('status_ot')->insert([
-                        'status_id' => $status->id,
-                        'ot_id' => $id,
-                    ]);
+                    $data = new StatusOt();
+                    $data->status_id = $status->id;
+                    $data->ot_id = $id;
+                    $data->save();
                 }
             } else /*if($action == 2)*/ {
                 $status = Status::where('name', 'rdi_disapproved')->first();
                 if ($status) {
-                    $data = \DB::table('status_ot')->insert([
-                        'status_id' => $status->id,
-                        'ot_id' => $id,
-                    ]);
+                    $data = new StatusOt();
+                    $data->status_id = $status->id;
+                    $data->ot_id = $id;
+                    $data->save();
                 }
             }
             return response()->json(['data'=>json_encode($data),'success'=>true]);
@@ -358,15 +354,12 @@ class RdiController extends Controller
                     ->select('areas.name as area', 'areas.id as area_id','services.name as service','rdi_works.*')
                     ->get();
 
-        return view('rdi.show', compact('rdi', 'services', 'ingresos'));
-    }
-    public function cc_show(Request $request, $id)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $ot_status = StatusOt::join('status', 'status_ot.status_id', '=', 'status.id')
+                      ->where('status_ot.ot_id', '=', $rdi->ot_id)
+                      ->select('status.id', 'status_ot.status_id', 'status.name')
+                      ->get();
 
-        $rdi = Rdi::where('id', $id)->firstOrFail();
-
-        return view('rdi.show', compact('rdi'));
+        return view('rdi.show', compact('rdi', 'services', 'ingresos', 'ot_status'));
     }
 
     /**

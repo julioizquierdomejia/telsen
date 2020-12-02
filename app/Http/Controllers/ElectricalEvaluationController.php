@@ -40,11 +40,7 @@ class ElectricalEvaluationController extends Controller
 
         $ots = [];
         foreach ($_ots as $key => $ot) {
-            $ot_status = \DB::table('status_ot')
-                        ->join('status', 'status.id', '=', 'status_ot.status_id')
-                        ->select('status.*')
-                        ->where('status_ot.ot_id', '=', $ot->id)->get();
-            $array = array_column($ot_status->toArray(), "name");
+            $array = array_column($ot->statuses->toArray(), "name");
             if (!in_array("ee", $array)) {
                 $ots[] = $ot;
             }
@@ -459,10 +455,10 @@ class ElectricalEvaluationController extends Controller
 
         $status = Status::where('name', 'ee')->first();
         if ($status) {
-            \DB::table('status_ot')->insert([
-                'status_id' => $status->id,
-                'ot_id' => $ot_id,
-            ]);
+            $status_ot = new StatusOt();
+            $status_ot->status_id = $status->id;
+            $status_ot->ot_id = $ot_id;
+            $status_ot->save();
         }
 
         activitylog('electrical_evaluations', 'store', null, $eleval->toArray());
@@ -637,7 +633,13 @@ class ElectricalEvaluationController extends Controller
                         ->where('logs.data', 'like', '%"ot_id":'. $formato->ot_id . '%')
                         ->select('logs.*', 'user_data.name')
                         ->first();
-        return view('formatos.electrical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by'));
+
+        $ot_status = StatusOt::join('status', 'status_ot.status_id', '=', 'status.id')
+                      ->where('status_ot.ot_id', '=', $formato->ot_id)
+                      ->select('status.id', 'status_ot.status_id', 'status.name')
+                      ->get();
+
+        return view('formatos.electrical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by', 'ot_status'));
     }
 
     /**
@@ -756,11 +758,13 @@ class ElectricalEvaluationController extends Controller
                         'eechar.frecuencia as char_frecuencia',
                         'eechar.otros as char_otros'
                 )
-                    ->where('electrical_evaluations.id', $id)->firstOrFail();
+                ->where('electrical_evaluations.id', $id)->firstOrFail();
+
         $ot = Ot::where('ots.id', $formato->ot_id)
             ->join('clients', 'ots.client_id', '=', 'clients.id')
             ->select('ots.*', 'clients.razon_social', 'clients.client_type_id')
             ->firstOrFail();
+        
         if ($ot->client_type_id == 1) { //RDI
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
         } else {

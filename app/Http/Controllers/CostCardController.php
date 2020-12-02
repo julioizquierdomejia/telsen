@@ -9,6 +9,7 @@ use App\Models\ElectricalEvaluationWork;
 use App\Models\MechanicalEvaluationWork;
 use App\Models\Ot;
 use App\Models\Status;
+use App\Models\StatusOt;
 use App\Models\Service;
 use App\Models\Area;
 use App\Models\Client;
@@ -41,11 +42,7 @@ class CostCardController extends Controller
 
         $ots = [];
         foreach ($_ots as $key => $ot) {
-            $ot_status = \DB::table('status_ot')
-                        ->join('status', 'status.id', '=', 'status_ot.status_id')
-                        ->select('status.*')
-                        ->where('status_ot.ot_id', '=', $ot->id)->get();
-            $array = array_column($ot_status->toArray(), "name");
+            $array = array_column($ot->statuses->toArray(), "name");
             if (in_array("me_approved", $array) && in_array("ee_approved", $array) && !in_array("cc", $array)) {
                 $ots[] = $ot;
             }
@@ -123,12 +120,12 @@ class CostCardController extends Controller
         if ($request->file('upload_file')) {
             $rules = array(
                 'upload_file' => 'required|mimes:pdf|max:5000',
-                'cost_id' => 'required|exists:ots,id',
+                'ot_id' => 'required|exists:ots,id',
             );
             $this->validate($request, $rules);
 
             $file = $request->file('upload_file');
-            $cost_id = $request->get('cost_id');
+            $ot_id = $request->get('ot_id');
             $ext = $file->getClientOriginalExtension();
             $uniqueFileName = preg_replace('/\s+/', "-", $file->getClientOriginalName()) . '_' . uniqid();
 
@@ -138,10 +135,10 @@ class CostCardController extends Controller
 
             $status = Status::where('name', 'cc_waiting')->first();
             if ($status) {
-                \DB::table('status_ot')->insert([
-                    'status_id' => $status->id,
-                    'ot_id' => $cost_id,
-                ]);
+                $status_ot = new StatusOt();
+                $status_ot->status_id = $status->id;
+                $status_ot->ot_id = $ot_id;
+                $status_ot->save();
             }
 
             $file->move(public_path('uploads/cotizacion'), $uniqueFileName);
@@ -219,10 +216,10 @@ class CostCardController extends Controller
 
         $status = Status::where('name', 'cc')->first();
         if ($status) {
-            \DB::table('status_ot')->insert([
-                'status_id' => $status->id,
-                'ot_id' => $id,
-            ]);
+            $status_ot = new StatusOt();
+            $status_ot->status_id = $status->id;
+            $status_ot->ot_id = $id;
+            $status_ot->save();
         }
 
         activitylog('costos', 'store', null, $cost->toArray());
@@ -297,7 +294,12 @@ class CostCardController extends Controller
                 ->where('mechanical_evaluations.ot_id', $ot_id)
                 ->get();
 
-        return view('costos.show', compact('ccost', 'services', 'works_mec', 'works_el'));
+        $ot_status = StatusOt::join('status', 'status_ot.status_id', '=', 'status.id')
+                      ->where('status_ot.ot_id', '=', $ccost->ot_id)
+                      ->select('status.id', 'status_ot.status_id', 'status.name')
+                      ->get();
+
+        return view('costos.show', compact('ccost', 'services', 'works_mec', 'works_el', 'ot_status'));
     }
 
     public function approveTC(Request $request, $id)
@@ -306,8 +308,7 @@ class CostCardController extends Controller
 
         $action = $request->input('action');
 
-        $exist_status = \DB::table('status_ot')
-                        ->join('status', 'status.id', '=', 'status_ot.status_id')
+        $exist_status = StatusOt::join('status', 'status.id', '=', 'status_ot.status_id')
                         ->select('status_ot.*')
                         ->where('ot_id', $id)
                         ->where('name', 'cc_approved')->orWhere('name', 'cc_disapproved')
@@ -318,18 +319,18 @@ class CostCardController extends Controller
             if ($action == 1) {
                 $status = Status::where('name', 'cc_approved')->first();
                 if ($status) {
-                    $data = \DB::table('status_ot')->insert([
-                        'status_id' => $status->id,
-                        'ot_id' => $id,
-                    ]);
+                    $data = new StatusOt();
+                    $data->status_id = $status->id;
+                    $data->ot_id = $id;
+                    $data->save();
                 }
             } else /*if($action == 2)*/ {
                 $status = Status::where('name', 'cc_disapproved')->first();
                 if ($status) {
-                    $data = \DB::table('status_ot')->insert([
-                        'status_id' => $status->id,
-                        'ot_id' => $id,
-                    ]);
+                    $data = new StatusOt();
+                    $data->status_id = $status->id;
+                    $data->ot_id = $id;
+                    $data->save();
                 }
             }
             return response()->json(['data'=>json_encode($data),'success'=>true]);

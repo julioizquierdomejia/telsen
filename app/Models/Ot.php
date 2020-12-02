@@ -45,7 +45,8 @@ class Ot extends Model
     	return $this->hasOne(Client::class);
     }
 
-    public function status(){
-        return $this->belongsToMany(Status::class);
+    public function statuses(){
+        //return $this->belongsToMany(StatusOt::class);
+        return $this->belongsToMany(Status::class, 'status_ot')->withPivot('ot_id');
     }
 }

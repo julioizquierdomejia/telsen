@@ -4,11 +4,6 @@
 @extends('layouts.app', ['title' => 'Evaluación Mecánica de OT N° '.$ot_id])
 @section('content')
 @php
-$ot_status = \DB::table('status_ot')
-      ->join('status', 'status_ot.status_id', '=', 'status.id')
-      ->where('status_ot.ot_id', '=', $formato->ot_id)
-      ->select('status.id', 'status_ot.status_id', 'status.name')
-      ->get();
 $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 @endphp
@@ -19,7 +14,7 @@ $status_last = $ot_status->last();
 				<h4 class="card-title d-flex align-items-center justify-content-between">
 					<span>Evaluación Mecánica</span>
 					<span class="card-title-buttons">
-						@if(!in_array('me_approved', $statuses) || !in_array('me_disapproved', $statuses))
+						@if(!in_array('me_approved', $statuses) && !in_array('me_disapproved', $statuses))
 						<a class="btn btn-primary btn-round" href="{{route('formatos.mechanical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
 						@endif
 

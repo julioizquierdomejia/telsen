@@ -8,9 +8,9 @@
       </a>
       <!-- <div class="col">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-          <span class="navbar-toggler-bar navbar-kebab"></span>
-          <span class="navbar-toggler-bar navbar-kebab"></span>
+        <span class="navbar-toggler-bar navbar-kebab"></span>
+        <span class="navbar-toggler-bar navbar-kebab"></span>
+        <span class="navbar-toggler-bar navbar-kebab"></span>
         </button>
       </div> -->
     </div>
@@ -21,12 +21,108 @@
         <span class="icon"><img src="/assets/img/logo-small.png" width="50" height="50"></span>
       </div>
     </div>
-    </div>
+  </div>
   <div class="sidebar-wrapper pt-4">
     <ul class="nav">
-      @if (Auth::user()->roles->first())
-        @include('layouts.sidebar.'.Auth::user()->roles->first()->name)
+      @if (Auth::user()->roles->count())
+      @php
+        $roles = Auth::user()->roles;
+        $role_names = array_column($roles->toArray(), 'name');
+        $is_format = request()->segment(1) == 'formatos';
+        $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
+      @endphp
+      <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
+        <a href="{{ route('home')}}">
+          <i class="nc-icon nc-tv-2"></i>
+          <p>Dashboard</p>
+        </a>
+      </li>
+      @if ($admin || in_array("crear_ot", $role_names))
+      <li class="{{ request()->segment(1) == 'ordenes' ? 'active' : '' }}">
+        <a href="/ordenes">
+          <i class="fal fa-network-wired"></i>
+          <p>Ordenes de trabajo</p>
+        </a>
+      </li>
       @endif
-    </ul>
-  </div>
+      @if ($admin || in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names))
+      <li class="{{ $is_format ? 'active' : '' }}">
+        <a href="#" data-toggle="collapse" data-target="#collapseFormatos" aria-expanded="true">
+          <i class="fal fa-file-check"></i>
+          <p>Evaluaciones <i class="fal fa-angle-down float-right"></i></p>
+        </a>
+        <ul class="collapse list-inline pl-3 {{$is_format ? 'show': ''}}" id="collapseFormatos">
+          <li class="{{ request()->segment(2) == 'electrical' ? 'active' : '' }}">
+            <a class="mr-0" href="{{route('formatos.electrical')}}">
+              <i class="fas fa-charging-station"></i>
+              <p>F. Evaluación Eléctrica</p>
+            </a>
+          </li>
+          <li class="{{ request()->segment(2) == 'mechanical' ? 'active' : '' }}">
+            <a class="mr-0" href="{{route('formatos.mechanical')}}">
+              <i class="fas fa-wrench"></i>
+              <p>F. Evaluación Mecánica</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+      @endif
+      @if ($admin || in_array("rdi", $role_names) || in_array("aprobador_rdi", $role_names))
+      <li class="{{ request()->segment(1) == 'rdi' ? 'active' : '' }}">
+        <a href="/rdi">
+          <i class="fal fa-network-wired"></i>
+          <p>RDI</p>
+        </a>
+      </li>
+      @endif
+      @if ($admin || in_array("cotizacion", $role_names) || in_array("aprobador_cotizacion", $role_names))
+      <li class="{{ request()->segment(1) == 'tarjeta-costo' ? 'active' : '' }}">
+        <a class="mr-0" href="{{route('card_cost.index')}}">
+          <i class="fas fa-money-check-alt"></i>
+          <p>Tarjeta de Costos</p>
+        </a>
+      </li>
+      @endif
+      <li class="{{ request()->segment(1) == 'talleres' ? 'active' : '' }}">
+        <a href="/talleres">
+          <i class="fal fa-user-hard-hat"></i>
+          <p>Talleres</p>
+        </a>
+      </li>
+      @if ($admin)
+      <li class="px-3"><hr style="border-top-color: #858585;"></li>
+      <li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">
+        <a href="{{route('clientes.index')}}">
+          <i class="fal fa-handshake"></i>
+          <p>Clientes</p>
+        </a>
+      </li>
+      <li class="{{ request()->segment(1) == 'marcas' ? 'active' : '' }}">
+        <a href="{{route('marcas.index')}}">
+          <i class="fal fa-copyright"></i>
+          <p>Marca de Motores</p>
+        </a>
+      </li>
+      <li class="{{ request()->segment(1) == 'modelos' ? 'active' : '' }}">
+        <a href="{{route('modelos.index')}}">
+          <i class="fas fa-barcode"></i>
+          <p>Modelo de Motores</p>
+        </a>
+      </li>
+      <li class="{{ request()->segment(1) == 'areas' ? 'active' : '' }}">
+        <a class="mr-0" href="{{route('areas.index')}}">
+          <i class="fas fa-list-alt"></i>
+          <p>Areas</p>
+        </a>
+      </li>
+      <li class="{{ request()->segment(1) == 'servicios' ? 'active' : '' }}">
+        <a class="mr-0" href="{{route('services.index')}}">
+          <i class="fas fa-list-ul"></i>
+          <p>Servicios</p>
+        </a>
+      </li>
+      @endif
+    @endif
+  </ul>
+</div>
 </div>

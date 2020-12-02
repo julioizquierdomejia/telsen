@@ -1,12 +1,7 @@
 @extends('layouts.app', ['title' => 'Ver OT'])
 @section('content')
 @php
-$ot_status = \DB::table('status_ot')
-      ->join('status', 'status_ot.status_id', '=', 'status.id')
-      ->where('status_ot.ot_id', '=', $ot->id)
-      ->select('status.id', 'status_ot.status_id', 'status.name')
-      ->get();
-$statuses = array_column($ot_status->toArray(), "status_id");
+$statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 @endphp
 <div class="row">
@@ -18,16 +13,16 @@ $status_last = $ot_status->last();
 					Orden de Trabajo {{zerosatleft($ot->id, 3)}}
                     <span class="d-block">
                     @if ($status_last)
-                      @if($status_last->id == 4)
+                      @if($status_last->name == "cc")
                       <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->name }}</span>
-                      @elseif($status_last->id == 5)
+                      @elseif($status_last->name == "cc_waiting")
                       <span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->name }}</span>
-                      @elseif($status_last->id == 6 || $status_last->id == 9 || $status_last->id == 11)
+                      @elseif($status_last->name == "cc_approved" || $status_last->name == "rdi_approved" || $status_last->name == "delivery_generated")
                       <span class="badge badge-success px-2 py-1 w-100">{{ $status_last->name }}</span>
-                      {{-- @if ($status_last->id == 11)
+                      {{-- @if ($status_last->name == "delivery_generated")
                       	Fecha de entrega: <span class="badge badge-secondary">{{$ot->fecha_entrega}}</span>
                       @endif --}}
-                      @elseif($status_last->id == 8)
+                      @elseif($status_last->name == "rdi_waiting")
                       <span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->name }}</span>
                       @else
                       <span class="badge badge-secondary px-2 py-1 w-100">{{ $status_last->name }}</span>
@@ -106,7 +101,7 @@ $status_last = $ot_status->last();
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
 					@elseif(count($ot_status) == 2)
-						@if(in_array(2, $statuses))
+						@if(in_array("ee", $statuses))
 						<!-- Tiene mecanica: muestra electrica -->
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
 						<div class="dropdown-divider"></div>
@@ -131,10 +126,10 @@ $status_last = $ot_status->last();
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
 						<div class="dropdown-divider"></div>
 					@endif
-					@if(in_array(8, $statuses) || in_array(9, $statuses) && $ot->tipo_cliente_id == 1 && isset($rdi->id))
+					@if(in_array("rdi_waiting", $statuses) || in_array("rdi_approved", $statuses) && $ot->tipo_cliente_id == 1 && isset($rdi->id))
 					<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
 					@endif
-					@if(in_array(4, $statuses) || in_array(5, $statuses) || in_array(6, $statuses) && $ot->tipo_cliente_id == 2)
+					@if(in_array("cc", $statuses) || in_array("cc_waiting", $statuses) || in_array("cc_approved", $statuses) && $ot->tipo_cliente_id == 2)
 					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Ver Tarjeta de Costo</a>
 					@endif
 				</div>

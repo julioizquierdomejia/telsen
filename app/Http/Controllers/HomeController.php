@@ -49,12 +49,7 @@ class HomeController extends Controller
         }
 
         foreach ($ots as $key => $ot) {
-            $ot_status = \DB::table('status_ot')
-                  ->join('status', 'status_ot.status_id', '=', 'status.id')
-                  ->where('status_ot.ot_id', '=', $ot->id)
-                  ->select('status_ot.status_id', 'status.id', 'status.name')
-                  ->get();
-            $ot_status_arr = array_column($ot_status->toArray(), "name");
+            $ot_status_arr = array_column($ot->statuses->toArray(), "name");
             /*if ($ot_status->last()->status_id == 1) {
                 $pending_ots[] = $ot;
             }*/

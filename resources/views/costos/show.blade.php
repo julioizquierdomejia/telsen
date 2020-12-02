@@ -1,15 +1,10 @@
 @extends('layouts.app', ['title' => 'Ver Tarjeta Costo'])
 @section('content')
 @php
-$ot_status = \DB::table('status_ot')
-      ->join('status', 'status_ot.status_id', '=', 'status.id')
-      ->where('status_ot.ot_id', '=', $ccost->ot_id)
-      ->select('status.id', 'status_ot.status_id', 'status.name')
-      ->get();
-$statuses = array_column($ot_status->toArray(), "status_id");
+$statuses = array_column($ot_status->toArray(), "name");
 //$status_last = $ot_status->last();
-$cc_approved = in_array(6, $statuses) && $ccost->fecha_entrega != null;
-$cc_disapproved = in_array(7, $statuses);
+$cc_approved = in_array("cc_approved", $statuses) && $ccost->fecha_entrega != null;
+$cc_disapproved = in_array("cc_disapproved", $statuses);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -21,7 +16,7 @@ $cc_disapproved = in_array(7, $statuses);
 			<p><span class="badge badge-success">Fecha de entrega: {{date('d-m-Y', strtotime($ccost->fecha_entrega))}}</span></p>
 			@endif</span>
 				<span class="card-title-buttons">
-					@if($ccost->fecha_entrega == null && in_array(6, $statuses))
+					@if($ccost->fecha_entrega == null && in_array("cc_approved", $statuses))
 					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalFecha">Generar fecha de entrega</button>
 					@endif
 					@if ($ccost->cotizacion)
@@ -396,7 +391,7 @@ $cc_disapproved = in_array(7, $statuses);
 				</button>
 			</div>
 			<div class="text-center py-3">
-				@if (in_array(6, $statuses) && $ccost->fecha_entrega == null)
+				@if (in_array("cc_approved", $statuses) && $ccost->fecha_entrega == null)
 				<form class="mt-3 px-3" enctype="multipart/form-data" action="{{route('ordenes.generateotdate', $ccost->ot_id)}}" method="POST" id="generateDateForm">
 					@csrf
 					<div class="form-group">
@@ -421,7 +416,7 @@ $cc_disapproved = in_array(7, $statuses);
 			@if ($ccost->cotizacion == null)
 			<form enctype="multipart/form-data" action="{{route('card_cost.upload', $ccost->id)}}" method="POST" id="uploadForm">
 				@csrf
-				<input class="form-control d-none" type="text" name="cost_id" value="{{$ccost->ot_id}}">
+				<input class="form-control d-none" type="text" name="ot_id" value="{{$ccost->ot_id}}">
 			<div class="modal-body">
 				<p class="text-center">Subir cotización</p>
 				<div class="input-group">
@@ -440,7 +435,7 @@ $cc_disapproved = in_array(7, $statuses);
 			</div>
 			</form>
 			@endif
-			@if($ccost->cotizacion && !in_array(6, $statuses) && !in_array(7, $statuses))
+			@if($ccost->cotizacion && !in_array("cc_approved", $statuses) && !in_array("cc_disapproved", $statuses))
 			<div class="row approve_tc">
 				<div class="update ml-auto mr-auto">
             		<button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>
@@ -451,9 +446,9 @@ $cc_disapproved = in_array(7, $statuses);
 			</div>
 			@endif
 			<div class="text-center py-3">
-				@if(in_array(6, $statuses))
+				@if(in_array("cc_approved", $statuses))
 				<span class="badge badge-success px-3 py-2">Cotización Aprobada</span>
-				@elseif(in_array(7, $statuses))
+				@elseif(in_array("cc_disapproved", $statuses))
 				<span class="badge badge-secondary px-3 py-2">Cotización Desaprobada</span>
 				@endif
 			</div>

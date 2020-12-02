@@ -39,23 +39,21 @@ class RdiController extends Controller
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
-                        ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.approved as ee_approved', 'ee_val.conex', 'me_val.hp_kw', 'me_val.approved as me_approved'
+                        ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.conex', 'me_val.hp_kw'
                         )
                         ->where('ots.enabled', 1)
                         ->where('clients.client_type_id', 1)
                         ->where('clients.enabled', 1)
-                        ->where('ee_val.approved', 1)
-                        ->where('me_val.approved', 1)
                         ->get();
 
         $rdis = [];
         foreach ($_ots as $key => $ot) {
-            $ot_status = \DB::table('status_ot')->where('status_ot.ot_id', '=', $ot->id)->get();
-            $array = [];
-            foreach ($ot_status as $key => $status) {
-                $array[] = $status->status_id;
-            }
-            if (in_array(2, $array) && in_array(3, $array) && !in_array(4, $array) && !in_array(8, $array)/* && $ot->me_approved == 1 && $ot->ee_approved == 1*/) {
+            $ot_status = \DB::table('status_ot')
+                        ->join('status', 'status.id', '=', 'status_ot.status_id')
+                        ->select('status.*')
+                        ->where('status_ot.ot_id', '=', $ot->id)->get();
+            $array = array_column($ot_status->toArray(), "name");
+            if (in_array("me", $array) && in_array("ee", $array) && !in_array("cc", $array) && !in_array("rdi_waiting", $array)) {
                 $rdis[] = $ot;
             }
         }
@@ -299,8 +297,10 @@ class RdiController extends Controller
         $action = $request->input('action');
 
         $exist_status = \DB::table('status_ot')
+                        ->join('status', 'status.id', '=', 'status_ot.status_id')
+                        ->select('status.*')
                         ->where('ot_id', $id)
-                        ->where('status_id', 9)->where('status_id', 10)
+                        ->where('name', "rdi_approved")->where('name', "rdi_disapproved")
                         ->first();
         if ($exist_status) {
             return response()->json(['data'=>'RDI ya cambió de estado', 'success'=>false]);

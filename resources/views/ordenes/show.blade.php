@@ -9,7 +9,7 @@ $ot_status = \DB::table('status_ot')
       ->where('status_ot.ot_id', '=', $ot->id)
       ->select('status.id', 'status_ot.status_id', 'status.name', 'status.description')
       ->get();
-$statuses = array_column($ot_status->toArray(), "status_id");
+$statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 @endphp
 <div class="row">
@@ -105,33 +105,31 @@ $status_last = $ot_status->last();
 				<hr>
 				<div class="row text-center">
 					<div class="col">
-					@if(count($ot_status) == 3)
-						@if($ot->tipo_cliente_id == 1 && in_array('me_approved', $statuses) && in_array('ee_approved', $statuses))
-						<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
-						@elseif($ot->tipo_cliente_id == 2 && in_array('me_approved', $statuses) && in_array('ee_approved', $statuses))
-						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
-						@endif
-					@endif
-					@if(in_array('rdi_waiting', $statuses) || in_array('rdi_approved', $statuses) && $ot->tipo_cliente_id == 1 && isset($rdi->id))
+				@if($eeval && $meval)
+				@if ($ot->tipo_cliente_id == 1)
+					@if($rdi)
 					<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
+					@else
+					<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
 					@endif
-					@if(in_array('cc', $statuses) || in_array('cc_waiting', $statuses) || in_array('cc_approved', $statuses) && $ot->tipo_cliente_id == 2)
+				@else
+					@if($cost_card)
 					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Ver Tarjeta de Costo</a>
-					@endif
-					@if($meval)
-						<span class="d-inline-block">
-							<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
-						</span>
 					@else
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
+					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
 					@endif
-					@if($eeval)
-						<span class="d-inline-block">
-							<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
-						</span>
-					@else
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
-					@endif
+				@endif
+				@endif
+				@if($meval)
+					<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+				@else
+					<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
+				@endif
+				@if($eeval)
+					<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+				@else
+					<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
+				@endif
 				</div>
 				</div>
 			</div>

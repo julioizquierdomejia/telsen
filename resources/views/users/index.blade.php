@@ -113,7 +113,8 @@ $(document).ready(function() {
             { data: 'tools', class: 'text-nowrap'}
         ],
          columnDefs: [
-          { orderable: false, targets: 3 }
+          { orderable: false, targets: 3 },
+          { orderable: false, targets: 7 }
         ],
         language: dLanguage
       });

@@ -198,10 +198,11 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     var data = $.parseJSON(response.data);
-                    btn.parents('tr').remove();
-                    if ($('#nav-disenabledots tbody tr').length == 0) {
+                    //btn.parents('tr').remove();
+                    disenabledots.ajax.reload();
+                    /*if ($('#nav-disenabledots tbody tr').length == 0) {
                         $('#nav-disenabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo eliminadas.</td></tr>');
-                    }
+                    }*/
                 }
             },
             error: function(request, status, error) {
@@ -230,11 +231,12 @@ $(document).ready(function() {
                 if (response.success) {
                     var data = $.parseJSON(response.data);
                     if (data.enabled == 2) {
-                        $('.btn-mdelete[data-otid=' + btn.data('otid') + ']').parents('tr').remove();
+                        //$('.btn-mdelete[data-otid=' + btn.data('otid') + ']').parents('tr').remove();
+                        enabledots.ajax.reload();
                         $('#modalDelOT').modal('hide');
-                        if ($('#nav-enabledots tbody tr').length == 0) {
+                        /*if ($('#nav-enabledots tbody tr').length == 0) {
                             $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>');
-                        }
+                        }*/
                     }
                 }
             },

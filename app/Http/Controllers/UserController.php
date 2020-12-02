@@ -242,15 +242,13 @@ class UserController extends Controller
                     ->select('roles.*')
                     ->get();
 
-        foreach ($user_roles as $key => $item) {
+        $role_user = RoleUser::where('user_id', $user->id)->delete();
+
+        /*foreach ($user_roles as $key => $item) {
             if (in_array($item->id, $roles)) {
                 unset($roles[$key]);
             }
-            /*$role_user = new RoleUser();
-            $role_user->user_id = $user->id;
-            $role_user->role_id = $item;
-            $role_user->save();*/
-        }
+        }*/
 
         foreach ($roles as $key => $item) {
             $role_user = new RoleUser();
@@ -263,6 +261,9 @@ class UserController extends Controller
 
         // redirect
         \Session::flash('message', 'Successfully updated user!');
+        if (\Auth::user()->roles->first()->name == 'superadmin') {
+            return redirect('usuarios');
+        }
         return redirect('home');
     }
 

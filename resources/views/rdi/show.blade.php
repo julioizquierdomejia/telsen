@@ -6,11 +6,12 @@ $ot_status = \DB::table('status_ot')
       ->where('status_ot.ot_id', '=', $rdi->ot_id)
       ->select('status.id', 'status_ot.status_id', 'status.name')
       ->get();
+$statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
-$rdi_forapprove = ($status_last->status_id == 8);
-$rdi_approved = ($status_last->status_id == 9);
-$rdi_disapproved = $status_last->status_id == 10;
-$rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
+$rdi_forapprove = ($status_last->name == "rdi_waiting");
+$rdi_approved = ($status_last->name == "rdi_approved");
+$rdi_disapproved = $status_last->name == "rdi_disapproved";
+$rdi_fecha = $status_last->name == "delivery_generated" && $rdi->fecha_entrega != null;
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -23,7 +24,7 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 						@if ($rdi_fecha)
 						<p class="mb-0 mt-2">Fecha de entrega <span class="badge badge-success px-3 py-1">{{date('d-m-Y', strtotime($rdi->fecha_entrega))}}</span></p>
 						@endif
-						@if($rdi->fecha_entrega == null && $rdi_approved)
+						@if($rdi->fecha_entrega == null)
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Generar fecha de entrega</button>
 						@endif
 						@if($rdi_approved)
@@ -31,7 +32,7 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 						@elseif($rdi_disapproved)
 						<span class="badge badge-secondary px-3 py-1">Desaprobada</span>
 						@endif
-						@if($status_last->status_id <= 10 && $status_last->status_id != 9 && $status_last->status_id != 10)
+						@if(!in_array("rdi_approved", $statuses) && !in_array("rdi_disapproved", $statuses))
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
 						@endif
 						<button class="btn btn-secondary d-print-none" type="button" onclick="window.print();"><i class="fa fa-print"></i></button>
@@ -294,7 +295,7 @@ $rdi_fecha = $status_last->status_id == 11 && $rdi->fecha_entrega != null;
 	      	</div>
       	<div class="modal-body">
       		@if(!$rdi_approved && !$rdi_disapproved)
-      		@if($status_last->status_id != 9)
+      		@if($status_last->name != "rdi_approved")
         	<div class="row confirmar_ots">
       			<p class="text-center col-12">¿Confirma aprobación de {{$rdi->rdi_codigo}}?</p>
             	<div class="update ml-auto mr-auto">

@@ -35,12 +35,12 @@ class MechanicalEvaluationController extends Controller
 
         $ots = [];
         foreach ($_ots as $key => $ot) {
-            $ot_status = \DB::table('status_ot')->where('status_ot.ot_id', '=', $ot->id)->get();
-            $array = [];
-            foreach ($ot_status as $key => $status) {
-                $array[] = $status->status_id;
-            }
-            if (!in_array(2, $array)) {
+            $ot_status = \DB::table('status_ot')
+                        ->join('status', 'status.id', '=', 'status_ot.status_id')
+                        ->select('status.*')
+                        ->where('status_ot.ot_id', '=', $ot->id)->get();
+            $array = array_column($ot_status->toArray(), "name");
+            if (!in_array("me", $array)) {
                 $ots[] = $ot;
             }
         }
@@ -92,7 +92,7 @@ class MechanicalEvaluationController extends Controller
         $status = Status::where('name', $status_name)->first();
         if ($status) {
             $status_ot = new StatusOt();
-            $status_ot->status_id = (int)$status->id;
+            $status_ot->status_id = $status->id;
             $status_ot->ot_id = $ot_id;
             $status_ot->save();
 
@@ -377,11 +377,12 @@ class MechanicalEvaluationController extends Controller
                     ->where('enabled', 1)
                     ->where('eval_type', 'mechanical')->get();
 
-        $approved_by = \DB::table('logs')->where('section', 'mechanical_evaluations_approve')
+        $approved_by = \DB::table('logs')
                         ->join('users', 'users.id', '=', 'logs.user_id')
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
-                        ->where('logs.action', 'update')
-                        ->where('data', 'like', '%"ot_id":'. $formato->ot_id . '%')
+                        ->where('logs.action', 'store')
+                        ->where('logs.section', 'mechanical_evaluations_approve')
+                        ->where('logs.data', 'like', '%"ot_id":"'. $formato->ot_id . '"%')
                         ->select('logs.*', 'users.email', 'user_data.name')
                         ->first();
         $maded_by = \DB::table('logs')

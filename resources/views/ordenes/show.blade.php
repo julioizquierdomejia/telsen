@@ -9,7 +9,7 @@ $ot_status = \DB::table('status_ot')
       ->where('status_ot.ot_id', '=', $ot->id)
       ->select('status.id', 'status_ot.status_id', 'status.name', 'status.description')
       ->get();
-$statuses = array_column($ot_status->toArray(), "name");
+//$statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 @endphp
 <div class="row">

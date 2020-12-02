@@ -298,7 +298,7 @@ class MechanicalEvaluationController extends Controller
             }
         }
 
-        $status = Status::where('name', 'em')->first();
+        $status = Status::where('name', 'me')->first();
         if ($status) {
             \DB::table('status_ot')->insert([
                 'status_id' => $status->id,

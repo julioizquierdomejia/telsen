@@ -356,9 +356,6 @@ class OtController extends Controller
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
 
-                ->leftJoin('electrical_evaluations as ee', 'ee.ot_id', '=', 'ots.id')
-                ->leftJoin('mechanical_evaluations as me', 'me.ot_id', '=', 'ots.id')
-
                 /*->where(function ($query) {
                     $query->whereNull("me.id");
                     $query->whereNotNull("ee.id");
@@ -369,6 +366,14 @@ class OtController extends Controller
                 })*/
 
                 ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)
+
+                ->whereDoesntHave('statuses', function ($query) {
+                            $query->where("status.name", "=", 'ee_approved');
+                        })
+                    ->orWhereDoesntHave('statuses', function ($query) {
+                            $query->where("status.name", "=", 'me_approved');
+                        })
+                    
                 ->count();
 
         $ots_array = [];
@@ -377,13 +382,17 @@ class OtController extends Controller
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                     ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
 
-                    ->leftJoin('electrical_evaluations as ee', 'ee.ot_id', '=', 'ots.id')
-                    ->leftJoin('mechanical_evaluations as me', 'me.ot_id', '=', 'ots.id')
-
                     ->skip($start)
                     ->take($rowperpage)
                     ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
                     ->orderBy($columnName, $columnSortOrder)
+
+                    ->whereDoesntHave('statuses', function ($query) {
+                            $query->where("status.name", "=", 'ee_approved');
+                        })
+                    ->orWhereDoesntHave('statuses', function ($query) {
+                            $query->where("status.name", "=", 'me_approved');
+                        })
 
                     /*->where(function ($query) {
                         $query->whereNull("me.id");
@@ -399,9 +408,6 @@ class OtController extends Controller
         $counter = $start;
 
         foreach ($records as $key => $ot) {
-            $ot_status_arr = array_column($ot->statuses->toArray(), "name");
-            if (!in_array('ee_approved', $ot_status_arr) ||
-                !in_array('me_approved', $ot_status_arr)) {
             $counter++;
 
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -436,13 +442,12 @@ class OtController extends Controller
               "fecha_entrega" => $fecha_entrega,
               "tools" => $tools
             );
-            }
         };
 
         $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecordswithFilter,
             "iTotalDisplayRecords" => $totalRecords,
             "aaData" => $ots_array
         );

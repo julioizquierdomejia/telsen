@@ -11,6 +11,8 @@ $status_last = $ot_status->last();
 $roles = Auth::user()->roles;
 $role_names = array_column($roles->toArray(), 'name');
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
+$tarjeta_costo = in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names);
+$evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -103,12 +105,12 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 					</div>
 				</div>
 				</div>
-				@if($admin || in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names) || in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names))
+			@if($admin || $evaluador || $tarjeta_costo)
 				<div class="card-footer">
 				<hr>
 				<div class="row text-center">
 					<div class="col">
-				@if($eeval && $meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
+				@if($admin || $eeval && $meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
 				@if ($ot->tipo_cliente_id == 1)
 					@if($rdi)
 					<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
@@ -116,9 +118,9 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 					<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
 					@endif
 				@else
-					@if (in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names))
+					@if ($admin || $tarjeta_costo)
 					@if($cost_card)
-					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Ver Tarjeta de Costo</a>
+					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-money-check-alt"></i> Ver Tarjeta de Costo</a>
 					@else
 					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
 					@endif

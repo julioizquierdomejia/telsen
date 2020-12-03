@@ -115,7 +115,7 @@ class OtController extends Controller
                 $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                 $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.
                 ($admin ? '<a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>' : ' ')
-                . ($allowed_users ? self::getStatusHtml($status_data, $ot) : '');
+                . ($allowed_users ? $status_data['eval'] : '');
 
                 $ots_array[] = array(
                   "created_at" => $created_at,
@@ -324,29 +324,6 @@ class OtController extends Controller
         exit;
     }
 
-    protected function getStatusHtml($data, $ot) {
-      $html = "";
-      if(!empty($data['cost_card']) || !empty($data['rdi']) || !empty($data['meval']) || !empty($data['eeval'])) {
-        $html = '<div class="dropdown d-inline-block dropleft">
-          <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-check"></i></button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-            if($data['cost_card']) {
-              $html .= '<a class="dropdown-item" href="/tarjeta-costo/'.$ot->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>';
-            }
-            if($data['rdi']) {
-            $html .= '<a class="dropdown-item" href="/rdi/'.$data['rdi']->rdi_id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>';
-            }
-            if($data['meval']) {
-            $html .= '<a class="dropdown-item" href="/formatos/mechanical/'.$data['meval']->meval_id.'/ver"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>';
-            }
-            if($data['eeval']) {
-            $html .= '<a class="dropdown-item" href="/formatos/electrical/'.$data['eeval']->eeval_id.'/ver"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>';
-            }
-            $html .= '</div></div>';
-        }
-        return $html;
-    }
-
     protected function getOTStatus(Ot $ot)
     {
         $statuses = $ot->statuses;
@@ -372,18 +349,6 @@ class OtController extends Controller
                 ->first();*/
 
         $status['status'] = $statuses;
-        $status['rdi'] = $rdi;
-        if($meval) {
-            $status['meval'] = $meval;
-        } else {
-            $status['meval'] = '';
-        }
-        if($eeval) {
-            $status['eeval'] = $eeval;
-        } else {
-            $status['eeval'] = '';
-        }
-        $status['cost_card'] = $cost_card;
         $status['html'] = '';
 
         if ($statuses) {
@@ -404,6 +369,28 @@ class OtController extends Controller
                 }
             }
         }
+
+        $eval_html = "";
+        if($cost_card || $rdi || $meval || $eeval) {
+            $eval_html = '<div class="dropdown d-inline-block dropleft">
+            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-check"></i></button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
+            if($cost_card) {
+              $eval_html .= '<a class="dropdown-item" href="/tarjeta-costo/'.$ot->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>';
+            }
+            if($rdi) {
+            $eval_html .= '<a class="dropdown-item" href="/rdi/'.$rdi->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>';
+            }
+            if($meval) {
+            $eval_html .= '<a class="dropdown-item" href="/formatos/mechanical/'.$meval->id.'/ver"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>';
+            }
+            if($eeval) {
+            $eval_html .= '<a class="dropdown-item" href="/formatos/electrical/'.$eeval->id.'/ver"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>';
+            }
+            $eval_html .= '</div></div>';
+        }
+        $status['eval'] = $eval_html;
+
         return $status;
         /*return response()->json([
             'status' => json_encode($ot_status),

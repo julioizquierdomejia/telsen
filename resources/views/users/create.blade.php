@@ -18,15 +18,15 @@
               @enderror
             </div>
             <div class="form-group col-12 col-md-4">
-              <label class="col-form-label" for="inputlastname">Apellidos Materno</label>
-              <input type="text" class="form-control @error('lastname') is-invalid @enderror" placeholder="Apellidos Materno" value="{{old('lastname')}}" name='lastname' id="inputlastname">
+              <label class="col-form-label" for="inputlastname">Apellidos Paterno</label>
+              <input type="text" class="form-control @error('lastname') is-invalid @enderror" placeholder="Apellidos Paterno" value="{{old('lastname')}}" name='lastname' id="inputlastname">
               @error('lastname')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="form-group col-12 col-md-4">
-              <label class="col-form-label" for="inputmlastname">Apellidos Paterno</label>
-              <input type="text" class="form-control @error('mlastname') is-invalid @enderror" placeholder="Apellidos Paterno" value="{{old('mlastname')}}" name='mlastname' id="inputmlastname">
+              <label class="col-form-label" for="inputmlastname">Apellidos Materno</label>
+              <input type="text" class="form-control @error('mlastname') is-invalid @enderror" placeholder="Apellidos Materno" value="{{old('mlastname')}}" name='mlastname' id="inputmlastname">
               @error('mlastname')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror

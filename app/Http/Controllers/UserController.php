@@ -133,11 +133,11 @@ class UserController extends Controller
             'name'        => 'string|min:3|required',
             'email'       => 'email|required|unique:users,email',
             'lastname'    => 'string|min:3|required',
-            'mlastname'   => 'string|min:3|required',
-            'phone'       => 'string|min:6',
+            'mlastname'   => 'string|min:3|nullable',
+            'phone'       => 'string|min:6|nullable',
             'roles'     => 'array|min:1',
             'area_id'     => 'integer|required',
-            'password'    => 'string|min:6',
+            'password'    => 'string|min:6|nullable',
             //'enabled'   => 'boolean|required',
         );
         $this->validate($request, $rules);
@@ -213,8 +213,8 @@ class UserController extends Controller
             'email'       => 'email|required|unique:users,email,'.$id,
             'password'    => 'string|min:6|nullable',
             'lastname'    => 'string|min:3|required',
-            'mlastname'   => 'string|min:3|required',
-            'phone'       => 'string|min:6',
+            'mlastname'   => 'string|min:3|nullable',
+            'phone'       => 'string|min:6|nullable',
             'roles'       => 'sometimes|array',
             //'enabled'   => 'boolean|required',
         );

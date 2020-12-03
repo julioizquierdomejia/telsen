@@ -18,7 +18,7 @@ class CreateUserDataTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->string('name')->nullable();
+            $table->string('name');
             $table->string('last_name')->nullable();
             $table->string('mother_last_name')->nullable();
             $table->string('user_phone')->nullable();

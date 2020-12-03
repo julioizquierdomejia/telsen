@@ -17,6 +17,7 @@ class RoleSeeder extends Seeder
     {
         //\DB::table('roles')->truncate();
 
+
         $role = new Role();
         $role->name = 'superadmin';
         $role->description = 'Super administrador del sistema';

@@ -75,7 +75,7 @@ class ElectricalEvaluationController extends Controller
 
     public function approve(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_de_evaluaciones']);
 
         $action = $request->input('action');
         $ot = Ot::findOrFail($ot_id);

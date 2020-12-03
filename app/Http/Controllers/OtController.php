@@ -359,14 +359,14 @@ class OtController extends Controller
                 ->leftJoin('electrical_evaluations as ee', 'ee.ot_id', '=', 'ots.id')
                 ->leftJoin('mechanical_evaluations as me', 'me.ot_id', '=', 'ots.id')
 
-                ->where(function ($query) {
+                /*->where(function ($query) {
                     $query->whereNull("me.id");
                     $query->whereNotNull("ee.id");
                 })
                 ->where(function ($query) {
                     $query->whereNull("ee.id");
                     $query->whereNotNull("me.id");
-                })
+                })*/
 
                 ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)
                 ->count();
@@ -385,20 +385,23 @@ class OtController extends Controller
                     ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
                     ->orderBy($columnName, $columnSortOrder)
 
-                    ->where(function ($query) {
+                    /*->where(function ($query) {
                         $query->whereNull("me.id");
                         $query->whereNotNull("ee.id");
                     })
                     ->orWhere(function ($query) {
                         $query->whereNull("ee.id");
                         $query->whereNotNull("me.id");
-                    })
+                    })*/
 
                     ->where('ots.enabled', 1)->get();
 
         $counter = $start;
 
         foreach ($records as $key => $ot) {
+            $ot_status_arr = array_column($ot->statuses->toArray(), "name");
+            if (!in_array('ee_approved', $ot_status_arr) ||
+                !in_array('me_approved', $ot_status_arr)) {
             $counter++;
 
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -433,6 +436,7 @@ class OtController extends Controller
               "fecha_entrega" => $fecha_entrega,
               "tools" => $tools
             );
+            }
         };
 
         $totalRecords = count($ots_array);

@@ -82,27 +82,29 @@
         </a>
       </li>
       @endif
-      @if ($admin || in_array("cotizacion", $role_names) || in_array("aprobador_cotizacion", $role_names) || in_array("tarjeta_de_costo", $role_names) || in_array("cotizador_tarjeta_de_costo", $role_names))
+      @if ($admin || in_array("tarjeta_de_costo", $role_names) || in_array("cotizador_tarjeta_de_costo", $role_names))
       <li class="{{ $is_cc ? 'active' : '' }}">
         <a class="mr-0" href="#" data-toggle="collapse" data-target="#collapseCC" aria-expanded="true">
           <i class="fas fa-money-check-alt"></i>
           <p>Tarjeta de Costos</p>
         </a>
         <ul class="collapse list-inline pl-3 {{ $is_cc ? 'show' : '' }}" id="collapseCC">
-          @if (!in_array("tarjeta_de_costo", $role_names))
-          <li class="{{ $is_cc ? 'active' : '' }}">
+          @if ($admin || in_array("tarjeta_de_costo", $role_names))
+          <li class="{{ request()->routeIs('card_cost.index') ? 'active' : '' }}">
             <a class="mr-0" href="{{route('card_cost.index')}}">
               <i class="fas fa-money-check-alt"></i>
               <p>Generar</p>
             </a>
           </li>
           @endif
+          @if($admin || in_array("cotizador_tarjeta_de_costo", $role_names))
           <li class="{{ request()->segment(2) == 'pending' ? 'active' : '' }}">
             <a class="mr-0" href="{{route('card_cost.pending')}}">
               <i class="fas fa-charging-station"></i>
               <p>Por cotizar</p>
             </a>
           </li>
+          @endif
         </ul>
       </li>
       @endif

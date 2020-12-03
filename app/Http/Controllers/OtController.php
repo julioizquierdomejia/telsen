@@ -40,6 +40,9 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
+        $role_names = validateActionbyRole();
+        $allowed_users = in_array("superadmin", $role_names) || in_array("admin", $role_names) || in_array("evaluador", $role_names);
+
         $counter = 0;
         ## Read value
         $draw = $request->get('draw');
@@ -111,7 +114,7 @@ class OtController extends Controller
                 $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
                 <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>
                 <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>
-                '. self::getStatusHtml($status_data, $ot);
+                '. ($allowed_users ? self::getStatusHtml($status_data, $ot) : '');
 
                 $ots_array[] = array(
                   "created_at" => $created_at,

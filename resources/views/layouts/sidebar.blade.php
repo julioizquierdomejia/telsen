@@ -27,8 +27,7 @@
       @if (Auth::user()->roles->count())
       @php
         $is_format = request()->segment(1) == 'formatos';
-        $roles = Auth::user()->roles;
-        $role_names = array_column($roles->toArray(), 'name');
+        $role_names = validateActionbyRole();
         $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
       @endphp
       <li class="{{ request()->routeIs('home') ? 'active' : '' }}">

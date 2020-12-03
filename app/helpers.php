@@ -22,6 +22,18 @@ if (! function_exists('user_data')) {
     }
 }
 
+if (! function_exists('validateActionbyRole')) {
+	function validateActionbyRole()
+	{
+		if (Auth::user()) {
+			$roles = Auth::user()->roles;
+			$role_names = array_column($roles->toArray(), 'name');
+			return $role_names;
+		}
+		return [];
+	}
+}
+
 if (! function_exists('zerosatleft')) {
     function zerosatleft($value, $qty = 1)
     {

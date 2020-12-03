@@ -52,7 +52,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('ordenes/enabled', [App\Http\Controllers\OtController::class, 'enabled_ots'])->name('ordenes.enabled_ots');
 	Route::get('ordenes/disabled', [App\Http\Controllers\OtController::class, 'disabled_ots'])->name('ordenes.disabled_ots');
 	Route::get('formatos/pending', [App\Http\Controllers\OtController::class, 'pending_ots'])->name('formatos.pending_ots');
-	Route::get('formatos/pedientes', [App\Http\Controllers\OtController::class, 'list_pending'])->name('formatos.list_pending');
+	Route::get('formatos/pending_list', [App\Http\Controllers\OtController::class, 'list_pending'])->name('formatos.list_pending');
 	Route::post('ordenes/{orden}/activar', [App\Http\Controllers\OtController::class, 'enabling_ot'])->name('ordenes.enabling_ot');
 	Route::post('ordenes/{orden}/eliminar', [App\Http\Controllers\OtController::class, 'destroy'])->name('ordenes.destroy');
 	Route::get('ordenes/{orden}/status', [App\Http\Controllers\OtController::class, 'getOTStatus'])->name('ordenes.status');
@@ -111,6 +111,9 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('tarjeta-costo/{cost}/editar', [App\Http\Controllers\CostCardController::class, 'update'])->name('card_cost.update');
 	Route::post('tarjeta-costo/{id}/cotizacion', [App\Http\Controllers\CostCardController::class, 'upload'])->name('card_cost.upload');
 	Route::post('tarjeta-costo/{cost}/aprobar', [App\Http\Controllers\CostCardController::class, 'approveTC'])->name('card_cost.approve');
+
+	Route::get('tarjeta-costo/pending', [App\Http\Controllers\OtController::class, 'pending_cc_ots'])->name('card_cost.pending');
+	Route::get('tarjeta-costo/pending_list', [App\Http\Controllers\OtController::class, 'list_cc_pending'])->name('card_cost.list_pending');
 
 	//rutas para Areas
 	Route::get('areas', [App\Http\Controllers\AreaController::class, 'index'])->name('areas.index');

@@ -329,19 +329,19 @@ class OtController extends Controller
         $statuses = $ot->statuses;
 
         $rdi = Rdi::where('enabled', 1)->where('ot_id', $ot->id)
-                ->select('id as rdi_id')
+                ->select('id')
                 ->first();
 
         $meval = MechanicalEvaluation::where('ot_id', $ot->id)
-                ->select('mechanical_evaluations.id as meval_id')
+                ->select('mechanical_evaluations.id')
                 ->first();
 
         $eeval = ElectricalEvaluation::where('ot_id', $ot->id)
-                ->select('electrical_evaluations.id as eeval_id')
+                ->select('electrical_evaluations.id')
                 ->first();
 
         $cost_card = CostCard::where('ot_id', $ot->id)
-                ->select('cost_cards.id as cc_id')
+                ->select('cost_cards.id')
                 ->first();
 
         /*$work_shop = WorkShop::where('ot_id', $ot->id)

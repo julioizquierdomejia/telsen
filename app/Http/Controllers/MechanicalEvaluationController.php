@@ -69,7 +69,7 @@ class MechanicalEvaluationController extends Controller
 
     public function approve(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_de_evaluaciones']);
 
         $action = $request->input('action');
         $ot = Ot::findOrFail($ot_id);
@@ -95,7 +95,7 @@ class MechanicalEvaluationController extends Controller
     }
     public function old_approve(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'aprobador_de_evaluaciones']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
         $action = $request->input('action');
         $me_val = MechanicalEvaluation::findOrFail($id);

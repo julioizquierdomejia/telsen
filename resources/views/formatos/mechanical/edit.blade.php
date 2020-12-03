@@ -97,7 +97,7 @@
             </div>
             <div class="col-6 col-md-6 mb-2">
               <label class="col-form-label">Marca</label>
-              <input type="text" class="form-control" readonly="" placeholder="Marca" value="{{$ot->marca->name}}">
+              <input type="text" class="form-control" readonly="" placeholder="Marca" value="{{$ot->marca ? $ot->marca->name : ''}}">
             </div>
             <div class="col-6 col-md-6 mb-2">
               <label class="col-form-label">HP/KW</label>

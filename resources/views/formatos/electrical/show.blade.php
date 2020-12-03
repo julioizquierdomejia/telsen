@@ -8,8 +8,9 @@ $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 
 $role_names = validateActionbyRole();
+$admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $evaluador = in_array("evaluador", $role_names);
-//$aprobador = in_array("aprobador_de_evaluaciones", $role_names);
+$aprobador = in_array("aprobador_de_evaluaciones", $role_names);
 
 $reception_list = [
   array (
@@ -65,11 +66,12 @@ $reception_list = [
         <h4 class="card-title d-flex align-items-center justify-content-between">
           <span>Evaluación Eléctrica</span>
           <span class="card-title-buttons">
-          @if($evaluador)
+          @if($admin || $evaluador)
             @if(!in_array('ee_approved', $statuses) && !in_array('ee_disapproved', $statuses))
             <a class="btn btn-orange btn-round" href="{{route('formatos.electrical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
             @endif
           @endif
+          @if ($admin || $aprobador)
             @if(in_array('ee_approved', $statuses))
             <button type="button" class="btn btn-success mt-0">Aprobada</button>
             @elseif(in_array('ee_disapproved', $statuses))
@@ -77,6 +79,7 @@ $reception_list = [
             @else
             <button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
             @endif
+          @endif
           </span>
         </h4>
         @if($maded_by)

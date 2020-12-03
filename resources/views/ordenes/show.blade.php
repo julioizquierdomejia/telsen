@@ -101,7 +101,7 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 					</div>
 				</div>
 				</div>
-				@if($admin || in_array("evaluador", $role_names))
+				@if($admin || in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names))
 				<div class="card-footer">
 				<hr>
 				<div class="row text-center">

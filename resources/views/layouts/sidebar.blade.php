@@ -36,7 +36,7 @@
           <p>Dashboard</p>
         </a>
       </li>
-      @if ($admin || in_array("crear_ot", $role_names) || in_array("evaluador", $role_names))
+      @if ($admin || in_array("crear_ot", $role_names) || in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names))
       <li class="{{ request()->segment(1) == 'ordenes' ? 'active' : '' }}">
         <a href="/ordenes">
           <i class="fal fa-network-wired"></i>

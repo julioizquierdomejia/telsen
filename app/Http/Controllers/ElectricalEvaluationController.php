@@ -35,16 +35,12 @@ class ElectricalEvaluationController extends Controller
                         ->where('ots.enabled', '=', 1)
                         ->where('clients.enabled', '=', 1)
                         //->where('status_ot.status_id', '=', 1)
-                        ->groupBy('ots.id')
+                        //->groupBy('ots.id')
+                        ->whereDoesntHave('statuses', function ($query) {
+                            $query->where("status.name", "=", 'ee');
+                        })
                         ->get();
 
-        $ots = [];
-        foreach ($_ots as $key => $ot) {
-            $array = array_column($ot->statuses->toArray(), "name");
-            if (!in_array("ee", $array)) {
-                $ots[] = $ot;
-            }
-        }
         return view('formatos.electrical.index', compact('ots'));
     }
 

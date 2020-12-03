@@ -334,7 +334,7 @@ class OtController extends Controller
 
     public function list_pending(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_de_evaluaciones']);
 
         $counter = 0;
         ## Read value

@@ -24,7 +24,7 @@ class CostCardController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
         
         $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -63,7 +63,7 @@ class CostCardController extends Controller
     }*/
     public function calculate(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo']);
 
         $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                 ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
@@ -157,7 +157,7 @@ class CostCardController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo']);
 
         $rules = array(
             //'ot_id'       => 'integer|required|exists:ots,id',
@@ -243,7 +243,7 @@ class CostCardController extends Controller
     }
     public function cc_show(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
 
         $ccost = CostCard::where('ot_id', $ot_id)
                 ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')

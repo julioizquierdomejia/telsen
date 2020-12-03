@@ -1,5 +1,9 @@
 @extends('layouts.app', ['body_class' => 'ots', 'title' => 'OTS'])
 @section('content')
+@php
+$role_names = validateActionbyRole();
+$allowed_users = in_array("superadmin", $role_names) || in_array("admin", $role_names) || in_array("crear_ot", $role_names);
+@endphp
 <div class="row">
   <div class="col">
     <a href="/ordenes/crear" class="btn btn-primary">Crear Orden de Trabajo</a>
@@ -14,8 +18,10 @@
       <div class="card-body">
         <div class="nav nav-tabs ml-auto" id="nav-tab" role="tablist">
           <a class="nav-item nav-link active" id="nav-enabledots-tab" data-toggle="tab" href="#nav-enabledots" role="tab" aria-controls="nav-enabledots" aria-selected="true">Órdenes de trabajo</a>
+          @if ($allowed_users)
           <a class="nav-item nav-link" id="nav-disapprovedots-tab" data-toggle="tab" href="#nav-disapprovedots" role="tab" aria-controls="nav-disapprovedots" aria-selected="false">Ordenes desaprobadas</a>
           <a class="nav-item nav-link" id="nav-disenabledots-tab" data-toggle="tab" href="#nav-disenabledots" role="tab" aria-controls="nav-disenabledots" aria-selected="false">Ordenes eliminadas</a>
+          @endif
         </div>
         <div class="tab-content card-body px-0" id="nav-tabContent">
           <div class="tab-pane show active" id="nav-enabledots" role="tabpanel" aria-labelledby="nav-enabledots-tab">
@@ -33,6 +39,7 @@
               </table>
             </div>
           </div>
+          @if ($allowed_users)
           <div class="tab-pane" id="nav-disapprovedots" role="tabpanel" aria-labelledby="nav-disapprovedots-tab">
             <div class="table-responsive">
               <table class="table table-separate data-table">
@@ -63,6 +70,7 @@
               </table>
             </div>
           </div>
+          @endif
         </div>
       </div>
     </div>
@@ -120,7 +128,7 @@ $(document).ready(function() {
       });
     }
     });
-
+    @if ($allowed_users)
     $('#nav-disapprovedots-tab').click(function() {
       if(disapprovedots) {
         disapprovedots.ajax.reload();
@@ -176,11 +184,6 @@ $(document).ready(function() {
       });
       }
     });
-
-    $(document).on("click", ".btn-mdelete", function(event) {
-        $('#modalDelOT .body-title strong').text($(this).parents('tr').find('.otid').text());
-        $('.btn-delete-confirm').data('otid', $(this).data('otid'));
-    })
 
     $(document).on("click", ".btn-enablingot", function(event) {
         event.preventDefault();
@@ -245,6 +248,12 @@ $(document).ready(function() {
                 console.log(data);
             }
         });
+    })
+    @endif
+
+    $(document).on("click", ".btn-mdelete", function(event) {
+        $('#modalDelOT .body-title strong').text($(this).parents('tr').find('.otid').text());
+        $('.btn-delete-confirm').data('otid', $(this).data('otid'));
     })
 
     //Renderizar lista de ordenes:

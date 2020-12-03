@@ -26,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        //$role_names = validateActionbyRole();
+        //$admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
     }
 }

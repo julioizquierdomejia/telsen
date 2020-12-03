@@ -25,7 +25,7 @@ class OtController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot']);
         
         //Listar OTs
         $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
@@ -38,11 +38,12 @@ class OtController extends Controller
 
     public function enabled_ots(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot']);
 
         $role_names = validateActionbyRole();
         $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
-        $allowed_users = $admin || in_array("evaluador", $role_names);
+        $evaluador = in_array("evaluador", $role_names);
+        $allowed_users = $admin || $evaluador;
 
         $counter = 0;
         ## Read value
@@ -112,9 +113,8 @@ class OtController extends Controller
                 $status = $status_data['html'];
                 $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
                 $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-                $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a>'.
-                ($admin ? '<button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>' : '')
+                $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.
+                ($admin ? '<a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>' : ' ')
                 . ($allowed_users ? self::getStatusHtml($status_data, $ot) : '');
 
                 $ots_array[] = array(
@@ -541,7 +541,7 @@ class OtController extends Controller
 
     public function ot_show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot']);
 
         /*$validate_ot = Ot::where('ots.enabled', 1)->where('ots.id', $id)
                     ->join('clients', 'clients.id', '=', 'ots.client_id')

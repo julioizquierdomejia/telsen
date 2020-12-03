@@ -74,7 +74,7 @@
         </a>
       </li>
       @endif
-      @if ($admin || in_array("cotizacion", $role_names) || in_array("aprobador_cotizacion", $role_names) || in_array("tarjeta_de_costo", $role_names))
+      @if ($admin || in_array("cotizacion", $role_names) || in_array("aprobador_cotizacion", $role_names) || in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names))
       <li class="{{ request()->segment(1) == 'tarjeta-costo' ? 'active' : '' }}">
         <a class="mr-0" href="{{route('card_cost.index')}}">
           <i class="fas fa-money-check-alt"></i>

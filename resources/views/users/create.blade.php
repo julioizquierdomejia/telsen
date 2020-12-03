@@ -54,7 +54,7 @@
             </div>
             <div class="form-group col-md-6">
               <label class="col-form-label" for="selectRol">Roles</label>
-              <ul class="form-check-list list-inline m-0 form-control h-auto">
+              <ul class="form-check-list list-inline m-0 form-control h-auto @error('roles') is-invalid @enderror">
                 @foreach($roles as $key => $role)
                 <li class="form-check" id="role_{{$key}}">
                   <label class="form-check-label">

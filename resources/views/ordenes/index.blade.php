@@ -5,9 +5,11 @@ $role_names = validateActionbyRole();
 $allowed_users = in_array("superadmin", $role_names) || in_array("admin", $role_names) || in_array("crear_ot", $role_names);
 @endphp
 <div class="row">
+  @if ($allowed_users)
   <div class="col">
     <a href="/ordenes/crear" class="btn btn-primary">Crear Orden de Trabajo</a>
   </div>
+  @endif
 </div>
 <div class="row">
   <div class="col-md-12">

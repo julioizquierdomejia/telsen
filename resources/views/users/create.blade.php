@@ -58,7 +58,7 @@
                 @foreach($roles as $key => $role)
                 <li class="form-check" id="role_{{$key}}">
                   <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input align-middle" value="{{$role->id}}" {{in_array($role->id, old('roles')) ? 'checked' : ''}} name="roles[]"><span class="align-middle">{{$role->description}}</span>
+                    <input type="checkbox" class="form-check-input align-middle" value="{{$role->id}}" {{in_array($role->id, old('roles', [])) ? 'checked' : ''}} name="roles[]"><span class="align-middle">{{$role->description}}</span>
                   </label>
                 </li>
                 @endforeach

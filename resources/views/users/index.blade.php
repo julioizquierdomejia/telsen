@@ -1,6 +1,9 @@
 @extends('layouts.app', ['body_class' => 'users', 'title' => 'Usuarios'])
 @section('content')
 <div class="row">
+  <div class="col">
+    <a href="{{route('users.create')}}" class="btn btn-primary">Crear Usuario</a>
+  </div>
   <div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">

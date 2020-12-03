@@ -528,7 +528,7 @@ class OtController extends Controller
 
     public function ot_show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot']);
 
         /*$validate_ot = Ot::where('ots.enabled', 1)->where('ots.id', $id)
                     ->join('clients', 'clients.id', '=', 'ots.client_id')

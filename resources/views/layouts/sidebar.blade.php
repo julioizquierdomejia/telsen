@@ -54,7 +54,7 @@
           <li class="{{ request()->segment(2) == 'pending' ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.pending_ots')}}">
               <i class="fas fa-charging-station"></i>
-              <p>Pendientes</p>
+              <p>Por aprobar</p>
             </a>
           </li>
           <li class="{{ request()->segment(2) == 'electrical' ? 'active' : '' }}">

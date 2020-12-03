@@ -373,7 +373,7 @@ class OtController extends Controller
                     ->orWhereDoesntHave('statuses', function ($query) {
                             $query->where("status.name", "=", 'me_approved');
                         })
-                    
+
                 ->count();
 
         $ots_array = [];
@@ -430,8 +430,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-            <button type="button" class="btn btn-sm btn-primary btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash-restore"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
 
             $ots_array[] = array(
               "created_at" => $created_at,

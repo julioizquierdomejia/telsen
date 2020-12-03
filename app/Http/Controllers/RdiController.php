@@ -73,6 +73,8 @@ class RdiController extends Controller
         }
         $ot = Ot::where('ots.enabled', 1)
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
+                ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
+                ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
                 ->select('ots.*', 'clients.razon_social')
                 ->where('ots.id', $ot_id)
                 ->firstOrFail();

@@ -1,5 +1,5 @@
 @php
-	$ot_id = zerosatleft($ot->id, 3);
+$ot_id = zerosatleft($ot->id, 3);
 @endphp
 @extends('layouts.app', ['title' => 'Ver OT N° '.$ot_id])
 @section('content')
@@ -7,11 +7,11 @@
 $ot_status = $ot->statuses;
 $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
-
 $role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $tarjeta_costo = in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names);
 $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);
+$rol_rdi = in_array("rdi", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -20,32 +20,32 @@ $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evalua
 				<h5 class="card-title d-flex justify-content-between align-items-center">
 				<span>
 					Orden de Trabajo {{$ot_id}}
-                    <span class="d-block">
-                    @if ($ot_status->count())
-                      @if($status_last->name == 'cc')
-                      <span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->description }}</span>
-                      @elseif($status_last->name == 'cc_waiting')
-                      <span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->description }}</span>
-                      @elseif(strpos($status_last->name, '_approved') !== false || $status_last->name == 'delivery_generated')
-                      <span class="badge badge-success px-2 py-1 w-100">{{ $status_last->description }}</span>
-                      {{-- @if ($status_last->name == 11)
-                      	Fecha de entrega: <span class="badge badge-secondary">{{$ot->fecha_entrega}}</span>
-                      @endif --}}
-                      @elseif($status_last->name == 'rdi_waiting')
-                      <span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->description }}</span>
-                      @else
-                      <span class="badge badge-secondary px-2 py-1 w-100">{{ $status_last->description }}</span>
-                      @endif
-                    @endif
-                    </span>
+					<span class="d-block">
+						@if ($ot_status->count())
+						@if($status_last->name == 'cc')
+						<span class="badge badge-primary px-2 py-1 w-100">{{ $status_last->description }}</span>
+						@elseif($status_last->name == 'cc_waiting')
+						<span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->description }}</span>
+						@elseif(strpos($status_last->name, '_approved') !== false || $status_last->name == 'delivery_generated')
+						<span class="badge badge-success px-2 py-1 w-100">{{ $status_last->description }}</span>
+						{{-- @if ($status_last->name == 11)
+						Fecha de entrega: <span class="badge badge-secondary">{{$ot->fecha_entrega}}</span>
+						@endif --}}
+						@elseif($status_last->name == 'rdi_waiting')
+						<span class="badge badge-danger px-2 py-1 w-100">{{ $status_last->description }}</span>
+						@else
+						<span class="badge badge-secondary px-2 py-1 w-100">{{ $status_last->description }}</span>
+						@endif
+						@endif
+					</span>
 				</span>
 				<span class="card-title-buttons">
 					@if ($admin || in_array("crear_ot", $role_names))
 					<a class="btn btn-primary btn-round" href="{{ route('ordenes.edit', $ot) }}"><i class="fa fa-edit"></i> Editar</a>
 					@endif
-                    @if ($ot->cotizacion)
-                    	<a class="btn btn-primary btn-round" target="_new" href="/uploads/cotizacion/{{$ot->cotizacion}}"><i class="fa fa-eye"></i> Ver Cotización</a>
-                    @endif
+					@if ($ot->cotizacion)
+					<a class="btn btn-primary btn-round" target="_new" href="/uploads/cotizacion/{{$ot->cotizacion}}"><i class="fa fa-eye"></i> Ver Cotización</a>
+					@endif
 				</span>
 				</h5>
 			</div>
@@ -103,40 +103,40 @@ $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evalua
 						<p class="mb-1">{{$ot->velocidad ?? '-'}}</p>
 					</div>
 				</div>
-				</div>
-			@if($admin || $evaluador || $tarjeta_costo)
-				<div class="card-footer">
+			</div>
+			@if($admin || $evaluador || $tarjeta_costo || $rol_rdi)
+			<div class="card-footer">
 				<hr>
 				<div class="row text-center">
 					<div class="col">
-				@if($admin || $eeval && $meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
-				@if ($ot->tipo_cliente_id == 1)
-					@if($rdi)
-					<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
+				@if($eeval && $meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
+					@if ($ot->tipo_cliente_id == 1)
+						@if($rdi)
+						<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
+						@else
+						<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
+						@endif
 					@else
-					<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
-					@endif
-				@else
-					@if ($admin || $tarjeta_costo)
-					@if($cost_card)
-					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-money-check-alt"></i> Ver Tarjeta de Costo</a>
-					@else
-					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
-					@endif
+						@if ($admin || $tarjeta_costo)
+						@if($cost_card)
+						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-money-check-alt"></i> Ver Tarjeta de Costo</a>
+						@else
+						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
+						@endif
+						@endif
 					@endif
 				@endif
-				@endif
-				@if($meval)
-					<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
-				@else
-					<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
-				@endif
-				@if($eeval)
-					<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
-				@else
-					<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
-				@endif
-				</div>
+						@if($meval)
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+						@else
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
+						@endif
+						@if($eeval)
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+						@else
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
+						@endif
+					</div>
 				</div>
 			</div>
 			@endif

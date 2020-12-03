@@ -7,6 +7,10 @@
 $ot_status = $ot->statuses;
 $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
+
+$roles = Auth::user()->roles;
+$role_names = array_column($roles->toArray(), 'name');
+$admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -97,6 +101,7 @@ $status_last = $ot_status->last();
 					</div>
 				</div>
 				</div>
+				@if($admin || in_array("evaluador", $role_names))
 				<div class="card-footer">
 				<hr>
 				<div class="row text-center">
@@ -129,6 +134,7 @@ $status_last = $ot_status->last();
 				</div>
 				</div>
 			</div>
+			@endif
 		</div>
 	</div>
 </div>

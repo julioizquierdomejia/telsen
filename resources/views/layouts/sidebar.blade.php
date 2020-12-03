@@ -26,9 +26,9 @@
     <ul class="nav">
       @if (Auth::user()->roles->count())
       @php
+        $is_format = request()->segment(1) == 'formatos';
         $roles = Auth::user()->roles;
         $role_names = array_column($roles->toArray(), 'name');
-        $is_format = request()->segment(1) == 'formatos';
         $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
       @endphp
       <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
@@ -83,12 +83,14 @@
         </a>
       </li>
       @endif
+      @if ($admin)
       <li class="{{ request()->segment(1) == 'talleres' ? 'active' : '' }}">
         <a href="/talleres">
           <i class="fal fa-user-hard-hat"></i>
           <p>Talleres</p>
         </a>
       </li>
+      @endif
       @if ($admin)
       <li class="px-3"><hr style="border-top-color: #858585;"></li>
       <li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">

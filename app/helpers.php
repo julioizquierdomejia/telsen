@@ -44,6 +44,9 @@ if (! function_exists('zerosatleft')) {
 if (! function_exists('abreviateTotalCount')) {
 	function abreviateTotalCount($value) 
 	{
+		if ($value <= 0) {
+			return $value;
+		}
 	    $abbreviations = array(12 => 'T', 9 => 'B', 6 => 'M', 3 => 'K', 0 => '');
 
 	    foreach($abbreviations as $exponent => $abbreviation) 

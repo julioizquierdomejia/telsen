@@ -25,7 +25,7 @@ class OtController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'crear_ot']);
         
         //Listar OTs
         $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
@@ -38,11 +38,11 @@ class OtController extends Controller
 
     public function enabled_ots(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'crear_ot']);
 
         $role_names = validateActionbyRole();
         $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
-        $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);
+        $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names) || in_array("tarjeta_de_costo", $role_names);
         $allowed_users = $admin || $evaluador;
 
         $counter = 0;

@@ -12,6 +12,7 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $tarjeta_costo = in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names);
 $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);
 $rol_rdi = in_array("rdi", $role_names);
+$cotizador_tarjeta = in_array("cotizador_tarjeta_de_costo", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -104,20 +105,21 @@ $rol_rdi = in_array("rdi", $role_names);
 					</div>
 				</div>
 			</div>
-			@if($admin || $evaluador || $tarjeta_costo || $rol_rdi)
 			<div class="card-footer">
 				<hr>
 				<div class="row text-center">
 					<div class="col">
 				@if($eeval && $meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
 					@if ($ot->tipo_cliente_id == 1)
-						@if($rdi)
-						<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
-						@else
-						<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
+						@if ($admin || $rol_rdi)
+							@if($rdi)
+							<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
+							@else
+							<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
+							@endif
 						@endif
 					@else
-						@if ($admin || $tarjeta_costo)
+						@if ($admin || $tarjeta_costo || $cotizador_tarjeta)
 						@if($cost_card)
 						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-money-check-alt"></i> Ver Tarjeta de Costo</a>
 						@else
@@ -126,6 +128,7 @@ $rol_rdi = in_array("rdi", $role_names);
 						@endif
 					@endif
 				@endif
+				@if ($admin || $evaluador)
 						@if($meval)
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
 						@else
@@ -136,10 +139,10 @@ $rol_rdi = in_array("rdi", $role_names);
 						@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
 						@endif
+				@endif
 					</div>
 				</div>
 			</div>
-			@endif
 		</div>
 	</div>
 </div>

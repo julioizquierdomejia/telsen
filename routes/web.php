@@ -51,8 +51,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('ordenes/disapproved', [App\Http\Controllers\OtController::class, 'disapproved_ots'])->name('ordenes.disapproved_ots');
 	Route::get('ordenes/enabled', [App\Http\Controllers\OtController::class, 'enabled_ots'])->name('ordenes.enabled_ots');
 	Route::get('ordenes/disabled', [App\Http\Controllers\OtController::class, 'disabled_ots'])->name('ordenes.disabled_ots');
-	Route::get('formatos/pending', [App\Http\Controllers\OtController::class, 'pending_ots'])->name('formatos.pending_ots');
-	Route::get('formatos/pending_list', [App\Http\Controllers\OtController::class, 'list_pending'])->name('formatos.list_pending');
+	Route::get('formatos/pending', [App\Http\Controllers\OtController::class, 'pending_eval_ots'])->name('formatos.pending_ots');
+	Route::get('formatos/pending_list', [App\Http\Controllers\OtController::class, 'list_eval_pending'])->name('formatos.list_pending');
 	Route::post('ordenes/{orden}/activar', [App\Http\Controllers\OtController::class, 'enabling_ot'])->name('ordenes.enabling_ot');
 	Route::post('ordenes/{orden}/eliminar', [App\Http\Controllers\OtController::class, 'destroy'])->name('ordenes.destroy');
 	Route::get('ordenes/{orden}/status', [App\Http\Controllers\OtController::class, 'getOTStatus'])->name('ordenes.status');

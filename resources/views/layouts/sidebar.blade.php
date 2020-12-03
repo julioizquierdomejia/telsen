@@ -53,7 +53,7 @@
           <p>Evaluaciones <i class="fal fa-angle-down float-right"></i></p>
         </a>
         <ul class="collapse list-inline pl-3 {{$is_format ? 'show': ''}}" id="collapseFormatos">
-          <li class="{{ request()->segment(2) == 'pending' ? 'active' : '' }}">
+          <li class="{{ request()->routeIs('formatos.pending_ots') ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.pending_ots')}}">
               <i class="fas fa-charging-station"></i>
               <p>Por aprobar</p>
@@ -86,7 +86,7 @@
       <li class="{{ $is_cc ? 'active' : '' }}">
         <a class="mr-0" href="#" data-toggle="collapse" data-target="#collapseCC" aria-expanded="true">
           <i class="fas fa-money-check-alt"></i>
-          <p>Tarjeta de Costos</p>
+          <p>Tarjeta de Costos <i class="fal fa-angle-down float-right"></i></p>
         </a>
         <ul class="collapse list-inline pl-3 {{ $is_cc ? 'show' : '' }}" id="collapseCC">
           @if ($admin || in_array("tarjeta_de_costo", $role_names))

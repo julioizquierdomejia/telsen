@@ -325,14 +325,14 @@ class OtController extends Controller
         exit;
     }
 
-    public function pending_ots(Request $request)
+    public function pending_eval_ots(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_de_evaluaciones']);
 
         return view('ordenes.pending');
     }
 
-    public function list_pending(Request $request)
+    public function list_eval_pending(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_de_evaluaciones']);
 
@@ -760,7 +760,7 @@ class OtController extends Controller
 
     public function ot_show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot', 'tarjeta_de_costo', 'aprobador_de_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_de_tarjeta_de_costo']);
 
         /*$validate_ot = Ot::where('ots.enabled', 1)->where('ots.id', $id)
                     ->join('clients', 'clients.id', '=', 'ots.client_id')

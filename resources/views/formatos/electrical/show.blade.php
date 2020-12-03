@@ -9,7 +9,7 @@ $status_last = $ot_status->last();
 
 $role_names = validateActionbyRole();
 $evaluador = in_array("evaluador", $role_names);
-$aprobador = in_array("aprobador_de_evaluaciones", $role_names);
+//$aprobador = in_array("aprobador_de_evaluaciones", $role_names);
 
 $reception_list = [
   array (
@@ -70,7 +70,6 @@ $reception_list = [
             <a class="btn btn-orange btn-round" href="{{route('formatos.electrical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
             @endif
           @endif
-          @if ($aprobador)
             @if(in_array('ee_approved', $statuses))
             <button type="button" class="btn btn-success mt-0">Aprobada</button>
             @elseif(in_array('ee_disapproved', $statuses))
@@ -78,7 +77,6 @@ $reception_list = [
             @else
             <button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
             @endif
-          @endif
           </span>
         </h4>
         @if($maded_by)

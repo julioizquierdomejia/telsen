@@ -6,6 +6,10 @@
 @php
 $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
+
+$role_names = validateActionbyRole();
+$evaluador = in_array("evaluador", $role_names);
+//$aprobador = in_array("aprobador_de_evaluaciones", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -14,10 +18,11 @@ $status_last = $ot_status->last();
 				<h4 class="card-title d-flex align-items-center justify-content-between">
 					<span>Evaluación Mecánica</span>
 					<span class="card-title-buttons">
+					@if($evaluador)
 						@if(!in_array('me_approved', $statuses) && !in_array('me_disapproved', $statuses))
 						<a class="btn btn-primary btn-round" href="{{route('formatos.mechanical.edit', $formato->id)}}">Editar <i class="fa fa-edit"></i></a>
 						@endif
-
+					@endif
 						@if(in_array('me_approved', $statuses))
 			            <button type="button" class="btn btn-success mt-0">Aprobada</button>
 			            @elseif(in_array('me_disapproved', $statuses))

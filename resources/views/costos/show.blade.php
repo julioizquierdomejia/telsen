@@ -5,6 +5,13 @@ $statuses = array_column($ot_status->toArray(), "name");
 //$status_last = $ot_status->last();
 $cc_approved = in_array("cc_approved", $statuses) && $ccost->fecha_entrega != null;
 $cc_disapproved = in_array("cc_disapproved", $statuses);
+
+$role_names = validateActionbyRole();
+$admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
+$tarjeta_costo = in_array("tarjeta_de_costo", $role_names);
+$cotizador_tarjeta = in_array("cotizador_tarjeta_de_costo", $role_names);
+$aprobador_cotizacion = in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names);
+$rol_fecha = in_array("fecha_de_entrega", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -16,14 +23,18 @@ $cc_disapproved = in_array("cc_disapproved", $statuses);
 			<p><span class="badge badge-success">Fecha de entrega: {{date('d-m-Y', strtotime($ccost->fecha_entrega))}}</span></p>
 			@endif</span>
 				<span class="card-title-buttons">
+				@if ($admin || $rol_fecha)
 					@if($ccost->fecha_entrega == null && in_array("cc_approved", $statuses))
 					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalFecha">Generar fecha de entrega</button>
 					@endif
+				@endif
+				@if ($admin || $cotizador_tarjeta)
 					@if ($ccost->cotizacion)
 					<button type="button" class="btn btn-success mt-0" data-toggle="modal" data-target="#modalCotizar"><i class="fa fa-eye"></i> Ver Cotización</button>
 					@else
 					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalCotizar">Cotizar</button>
 					@endif
+				@endif
 				</span>
 				</h5>
 			</div>
@@ -381,11 +392,12 @@ $cc_disapproved = in_array("cc_disapproved", $statuses);
 		</div>
 	</div>
 </div>
+@if ($admin || $rol_fecha)
 <div class="modal fade" tabindex="-1" id="modalFecha">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Cotización de Tarjeta de Costo</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Fecha de entrega</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 				</button>
@@ -396,7 +408,7 @@ $cc_disapproved = in_array("cc_disapproved", $statuses);
 					@csrf
 					<div class="form-group">
 						<input class="form-control" type="date" min="{{date('Y-m-d')}}" name="fecha_entrega" required="">
-					<button type="submit" class="btn btn-primary btn-sm px-md-5 btn-fecha_entrega">Generar fecha</button>
+					<button type="submit" class="btn btn-primary btn-sm px-md-5 btn-fecha_entrega">Confirmar</button>
 					</div>
 				</form>
 				@endif
@@ -404,6 +416,7 @@ $cc_disapproved = in_array("cc_disapproved", $statuses);
 		</div>
 	</div>
 </div>
+@endif
 <div class="modal fade" tabindex="-1" id="modalCotizar">
 	<div class="modal-dialog @if($ccost->cotizacion) modal-lg @endif">
 		<div class="modal-content">
@@ -435,7 +448,7 @@ $cc_disapproved = in_array("cc_disapproved", $statuses);
 			</div>
 			</form>
 			@endif
-			@if($ccost->cotizacion && !in_array("cc_approved", $statuses) && !in_array("cc_disapproved", $statuses))
+			@if($ccost->cotizacion && !in_array("cc_approved", $statuses) && !in_array("cc_disapproved", $statuses) && ($admin || $aprobador_cotizacion))
 			<div class="row approve_tc">
 				<div class="update ml-auto mr-auto">
             		<button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>

@@ -8,8 +8,7 @@ $ot_status = $ot->statuses;
 $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 
-$roles = Auth::user()->roles;
-$role_names = array_column($roles->toArray(), 'name');
+$role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $tarjeta_costo = in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names);
 $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);

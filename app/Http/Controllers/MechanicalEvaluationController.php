@@ -338,7 +338,7 @@ class MechanicalEvaluationController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'aprobador_de_tarjeta_de_costo']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)->first();
@@ -348,7 +348,7 @@ class MechanicalEvaluationController extends Controller
     
     public function format_show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'aprobador_de_tarjeta_de_costo']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)

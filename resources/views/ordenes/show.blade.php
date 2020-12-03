@@ -103,7 +103,7 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 					</div>
 				</div>
 				</div>
-				@if($admin || in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names))
+				@if($admin || in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names) || in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names))
 				<div class="card-footer">
 				<hr>
 				<div class="row text-center">
@@ -116,10 +116,12 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 					<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
 					@endif
 				@else
+					@if (in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names))
 					@if($cost_card)
 					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Ver Tarjeta de Costo</a>
 					@else
 					<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
+					@endif
 					@endif
 				@endif
 				@endif

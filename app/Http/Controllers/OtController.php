@@ -327,7 +327,7 @@ class OtController extends Controller
 
     public function pending_ots(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_de_evaluaciones']);
 
         return view('ordenes.pending');
     }

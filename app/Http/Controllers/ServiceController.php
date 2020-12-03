@@ -145,7 +145,7 @@ class ServiceController extends Controller
 
     public function filterareas(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'evaluador', 'aprobador_de_evaluaciones']);
+        //$request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'evaluador', 'aprobador_de_evaluaciones']);
 
         $id = $request->input('id');
         $services = Service::where('area_id', $id)

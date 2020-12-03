@@ -224,8 +224,7 @@ class CostCardController extends Controller
 
         activitylog('costos', 'store', null, $cost->toArray());
 
-        $costos = CostCard::where('enabled', 1)->get();
-        return redirect('tarjeta-costo')->with('costos');
+        return redirect('tarjeta-costo');
     }
 
     /**
@@ -244,7 +243,7 @@ class CostCardController extends Controller
     }
     public function cc_show(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'tarjeta_de_costo', 'aprobador_de_tarjeta_de_costo']);
 
         $ccost = CostCard::where('ot_id', $ot_id)
                 ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')

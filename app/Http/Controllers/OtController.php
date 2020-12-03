@@ -42,8 +42,9 @@ class OtController extends Controller
 
         $role_names = validateActionbyRole();
         $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
-        $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names) || in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names);
-        $allowed_users = $admin || $evaluador;
+        $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);
+        $tarjeta_costo = in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names);
+        $rdi = in_array("rdi", $role_names) || in_array("aprobador_rdi", $role_names);
 
         $counter = 0;
         ## Read value
@@ -94,7 +95,7 @@ class OtController extends Controller
                 $counter++;
 
                 $created_at = date('d-m-Y', strtotime($ot->created_at));
-                $status_data = self::getOTStatus($ot);
+                $status_data = self::getOTStatus($ot, $admin, $tarjeta_costo, $evaluador, $rdi);
                 $fecha_entrega = '-';
                 if(isset($status_data['fecha_entrega'])) {
                     $start = strtotime($status_data['fecha_entrega']);
@@ -115,7 +116,7 @@ class OtController extends Controller
                 $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                 $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.
                 ($admin ? '<a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>' : ' ')
-                . ($allowed_users ? $status_data['eval'] : '');
+                . $status_data['eval'];
 
                 $ots_array[] = array(
                   "created_at" => $created_at,
@@ -190,7 +191,7 @@ class OtController extends Controller
                 $counter++;
 
                 $created_at = date('d-m-Y', strtotime($ot->created_at));
-                $status_data = self::getOTStatus($ot);
+                $status_data = self::getOTStatus($ot, false, false, false, false);
                 $fecha_entrega = '-';
                 if(isset($status_data->fecha_entrega)) {
                     $start = strtotime($status_data->fecha_entrega);
@@ -279,7 +280,7 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $counter++;
             $created_at = date('d-m-Y', strtotime($ot->created_at));
-            $status_data = self::getOTStatus($ot);
+            $status_data = self::getOTStatus($ot, false, false, false, false);
             $fecha_entrega = '-';
             if(isset($status_data->fecha_entrega)) {
                 $start = strtotime($status_data->fecha_entrega);
@@ -324,7 +325,7 @@ class OtController extends Controller
         exit;
     }
 
-    protected function getOTStatus(Ot $ot)
+    protected function getOTStatus(Ot $ot, $role_admin, $role_cc, $role_eval, $role_rdi)
     {
         $statuses = $ot->statuses;
 
@@ -371,20 +372,24 @@ class OtController extends Controller
         }
 
         $eval_html = "";
-        if($cost_card || $rdi || $meval || $eeval) {
+        if (($role_admin && ($cost_card || $rdi || $meval || $eeval)) ||
+            ($role_cc && $cost_card) ||
+            ($role_rdi && $rdi) ||
+            ($role_eval && ($eeval || $meval))
+        ) {
             $eval_html = '<div class="dropdown d-inline-block dropleft">
             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-check"></i></button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-            if($cost_card) {
+            if($cost_card && ($role_admin || $role_cc)) {
               $eval_html .= '<a class="dropdown-item" href="/tarjeta-costo/'.$ot->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>';
             }
-            if($rdi) {
+            if($rdi && ($role_admin || $role_rdi)) {
             $eval_html .= '<a class="dropdown-item" href="/rdi/'.$rdi->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>';
             }
-            if($meval) {
+            if($meval && ($role_admin || $role_eval)) {
             $eval_html .= '<a class="dropdown-item" href="/formatos/mechanical/'.$meval->id.'/ver"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>';
             }
-            if($eeval) {
+            if($eeval && ($role_admin || $role_eval)) {
             $eval_html .= '<a class="dropdown-item" href="/formatos/electrical/'.$eeval->id.'/ver"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>';
             }
             $eval_html .= '</div></div>';

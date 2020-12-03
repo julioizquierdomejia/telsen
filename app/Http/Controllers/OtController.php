@@ -453,14 +453,14 @@ class OtController extends Controller
 
     public function pending_cc_ots(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_cotizacion_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
 
         return view('costos.pending');
     }
 
     public function list_cc_pending(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_cotizacion_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
 
         ## Read value
         $draw = $request->get('draw');

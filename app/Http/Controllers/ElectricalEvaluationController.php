@@ -481,7 +481,7 @@ class ElectricalEvaluationController extends Controller
 
     public function format_show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'tarjeta_de_costo']);
 
         $formato = ElectricalEvaluation::
                     join('ots', 'ots.id', '=', 'electrical_evaluations.ot_id')

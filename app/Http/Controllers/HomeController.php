@@ -53,7 +53,7 @@ class HomeController extends Controller
             /*if ($ot_status->last()->status_id == 1) {
                 $pending_ots[] = $ot;
             }*/
-            if (count($ot_status_arr) > 1 && !in_array("cc_disapproved", $ot_status_arr) && !in_array("rdi_disapproved", $ot_status_arr)) {
+            if (count($ot_status_arr) > 1) {
                 $enabled_ots[] = $ot;
             } else {
               $pending_ots[] = $ot;

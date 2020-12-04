@@ -14,6 +14,7 @@ $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evalua
 $rol_rdi = in_array("rdi", $role_names);
 $role_ap_rdi = in_array("aprobador_rdi", $role_names);
 $cotizador_tarjeta = in_array("cotizador_tarjeta_de_costo", $role_names);
+$rol_fentrega = in_array("fecha_de_entrega", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -112,7 +113,7 @@ $cotizador_tarjeta = in_array("cotizador_tarjeta_de_costo", $role_names);
 					<div class="col">
 				@if($eeval && $meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
 					@if ($ot->tipo_cliente_id == 1)
-						@if ($admin || $rol_rdi || $role_ap_rdi)
+						@if ($admin || $rol_rdi || $role_ap_rdi || $rol_fentrega)
 							@if($rdi)
 							<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
 							@else
@@ -122,11 +123,13 @@ $cotizador_tarjeta = in_array("cotizador_tarjeta_de_costo", $role_names);
 							@endif
 						@endif
 					@else
-						@if ($admin || $tarjeta_costo || $cotizador_tarjeta)
+						@if ($admin || $tarjeta_costo || $cotizador_tarjeta || $rol_fentrega)
 						@if($cost_card)
 						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-money-check-alt"></i> Ver Tarjeta de Costo</a>
 						@else
+						@if ($admin || $tarjeta_costo)
 						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
+						@endif
 						@endif
 						@endif
 					@endif

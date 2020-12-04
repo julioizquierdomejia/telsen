@@ -151,9 +151,9 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('rdi/list_waiting', [App\Http\Controllers\OtController::class, 'list_rdi_waiting'])->name('rdi.list_waiting');
 	Route::get('rdi/list_approved', [App\Http\Controllers\OtController::class, 'list_rdi_approved'])->name('rdi.list_approved');
 
-	Route::get('fecha_entrega', [App\Http\Controllers\OtController::class, 'delivery_date'])->name('delivery_date.index');
-	Route::get('fecha_entrega/list_delivery_pending', [App\Http\Controllers\OtController::class, 'list_delivery_pending'])->name('delivery_date.pending');
-	Route::get('fecha_entrega/list_delivery_generated', [App\Http\Controllers\OtController::class, 'list_delivery_generated'])->name('delivery_date.generated');
+	Route::get('fecha-entrega', [App\Http\Controllers\OtController::class, 'delivery_date'])->name('delivery_date.index');
+	Route::get('fecha-entrega/list_delivery_pending', [App\Http\Controllers\OtController::class, 'list_delivery_pending'])->name('delivery_date.pending');
+	Route::get('fecha-entrega/list_delivery_generated', [App\Http\Controllers\OtController::class, 'list_delivery_generated'])->name('delivery_date.generated');
 
 	//rutas para Talleres
 	Route::get('talleres', [App\Http\Controllers\WorkshopController::class, 'index'])->name('workshop.index');

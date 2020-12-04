@@ -1041,7 +1041,11 @@ class OtController extends Controller
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%');
+                    })
+                ->where('ots.enabled', 1)
 
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'rdi_approved');
@@ -1061,7 +1065,10 @@ class OtController extends Controller
 
                 ->skip($start)
                 ->take($rowperpage)
-                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%');
+                    })
                 ->orderBy($columnName, $columnSortOrder)
 
                 ->whereHas('statuses', function ($query) {

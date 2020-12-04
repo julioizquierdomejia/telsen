@@ -118,9 +118,9 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//dentro de cotizaciones
 	Route::get('cotizaciones', [App\Http\Controllers\OtController::class, 'cc_ots'])->name('card_cost.cz');
-	Route::get('cotizaciones/waiting_list', [App\Http\Controllers\OtController::class, 'list_cc_waiting'])->name('card_cost.list_waiting');
+	Route::get('cotizaciones/list_waiting', [App\Http\Controllers\OtController::class, 'list_cc_waiting'])->name('card_cost.list_waiting');
 
-	Route::get('cotizaciones/approved_list', [App\Http\Controllers\OtController::class, 'list_cc_approved'])->name('card_cost.list_approved');
+	Route::get('cotizaciones/list_approved', [App\Http\Controllers\OtController::class, 'list_cc_approved'])->name('card_cost.list_approved');
 
 	//rutas para Areas
 	Route::get('areas', [App\Http\Controllers\AreaController::class, 'index'])->name('areas.index');
@@ -146,6 +146,10 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('rdi/{ot}/editar', [App\Http\Controllers\RdiController::class, 'edit'])->name('rdi.edit');
 	Route::post('rdi/{ot}/editar', [App\Http\Controllers\RdiController::class, 'update'])->name('rdi.update');
 	Route::post('rdi/{ot}/aprobarrdi', [App\Http\Controllers\RdiController::class, 'approveRDI'])->name('rdi.approve');
+
+	Route::get('rdi/list', [App\Http\Controllers\RdiController::class, 'list'])->name('rdi.list');
+	Route::get('rdi/list_waiting', [App\Http\Controllers\OtController::class, 'list_rdi_waiting'])->name('rdi.list_waiting');
+	Route::get('rdi/list_approved', [App\Http\Controllers\OtController::class, 'list_rdi_approved'])->name('rdi.list_approved');
 
 	//rutas para Talleres
 	Route::get('talleres', [App\Http\Controllers\WorkshopController::class, 'index'])->name('workshop.index');

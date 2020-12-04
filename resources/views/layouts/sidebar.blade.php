@@ -35,40 +35,40 @@
       @endphp
       <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
         <a href="{{ route('home')}}">
-          <i class="nc-icon nc-tv-2"></i>
+          <i class="nc-icon nc-tv-2 mr-1"></i>
           <p>Dashboard</p>
         </a>
       </li>
       <li class="{{ request()->segment(1) == 'ordenes' ? 'active' : '' }}">
         <a href="/ordenes">
-          <i class="fal fa-network-wired"></i>
+          <i class="fal fa-network-wired mr-1"></i>
           <p>Ordenes de trabajo</p>
         </a>
       </li>
       @if ($admin || in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names))
       <li class="{{ $is_format ? 'active' : '' }}">
         <a href="#" data-toggle="collapse" data-target="#collapseFormatos" aria-expanded="true">
-          <i class="fal fa-file-check"></i>
+          <i class="fal fa-file-check mr-1"></i>
           <p>Evaluaciones <i class="fal fa-angle-down float-right"></i></p>
         </a>
         <ul class="collapse list-inline pl-3 {{$is_format ? 'show': ''}}" id="collapseFormatos">
           @if (!in_array("evaluador", $role_names))
           <li class="{{ request()->routeIs('formatos.pending_ots') ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.pending_ots')}}">
-              <i class="fas fa-charging-station"></i>
+              <i class="fas fa-charging-station mr-1"></i>
               <p>Por aprobar</p>
             </a>
           </li>
           @endif
           <li class="{{ request()->segment(2) == 'electrical' ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.electrical')}}">
-              <i class="fas fa-charging-station"></i>
+              <i class="fas fa-charging-station mr-1"></i>
               <p>F. Evaluación Eléctrica</p>
             </a>
           </li>
           <li class="{{ request()->segment(2) == 'mechanical' ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.mechanical')}}">
-              <i class="fas fa-wrench"></i>
+              <i class="fas fa-wrench mr-1"></i>
               <p>F. Evaluación Mecánica</p>
             </a>
           </li>
@@ -77,23 +77,41 @@
       @endif
       @if ($admin || in_array("rdi", $role_names) || in_array("aprobador_rdi", $role_names))
       <li class="{{ request()->segment(1) == 'rdi' ? 'active' : '' }}">
-        <a href="/rdi">
-          <i class="fal fa-network-wired"></i>
-          <p>RDI</p>
+        <a class="mr-0" href="#" data-toggle="collapse" data-target="#collapseRDI" aria-expanded="true">
+          <i class="fal fa-network-wired mr-1"></i>
+          <p>RDI <i class="fal fa-angle-down float-right"></i></p>
         </a>
+        <ul class="collapse list-inline pl-3 {{ request()->segment(1) == 'rdi' ? 'show' : '' }}" id="collapseRDI">
+          @if ($admin || in_array("rdi", $role_names))
+          <li class="{{ request()->routeIs('rdi.index') ? 'active' : '' }}">
+            <a class="mr-0" href="{{route('rdi.index')}}">
+              <i class="fas fa-money-check-alt mr-1"></i>
+              <p>Generar</p>
+            </a>
+          </li>
+          @endif
+          @if($admin || in_array("aprobador_rdi", $role_names))
+          <li class="{{ request()->routeIs('rdi.list') ? 'active' : '' }}">
+            <a class="mr-0" href="{{route('rdi.list')}}">
+              <i class="fas fa-charging-station mr-1"></i>
+              <p>Aprobar RDI</p>
+            </a>
+          </li>
+          @endif
+        </ul>
       </li>
       @endif
       @if ($admin || in_array("tarjeta_de_costo", $role_names) || in_array("cotizador_tarjeta_de_costo", $role_names))
       <li class="{{ $is_cc ? 'active' : '' }}">
         <a class="mr-0" href="#" data-toggle="collapse" data-target="#collapseCC" aria-expanded="true">
-          <i class="fas fa-money-check-alt"></i>
+          <i class="fas fa-money-check-alt mr-1"></i>
           <p>Tarjeta de Costos <i class="fal fa-angle-down float-right"></i></p>
         </a>
         <ul class="collapse list-inline pl-3 {{ $is_cc ? 'show' : '' }}" id="collapseCC">
           @if ($admin || in_array("tarjeta_de_costo", $role_names))
           <li class="{{ request()->routeIs('card_cost.index') ? 'active' : '' }}">
             <a class="mr-0" href="{{route('card_cost.index')}}">
-              <i class="fas fa-money-check-alt"></i>
+              <i class="fas fa-money-check-alt mr-1"></i>
               <p>Generar</p>
             </a>
           </li>
@@ -101,7 +119,7 @@
           @if($admin || in_array("cotizador_tarjeta_de_costo", $role_names))
           <li class="{{ request()->segment(2) == 'pending' ? 'active' : '' }}">
             <a class="mr-0" href="{{route('card_cost.pending')}}">
-              <i class="fas fa-charging-station"></i>
+              <i class="fas fa-charging-station mr-1"></i>
               <p>Por cotizar</p>
             </a>
           </li>
@@ -112,7 +130,7 @@
       @if ($admin || in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names))
       <li class="{{ $is_cz ? 'active' : '' }}">
         <a class="mr-0" href="{{route('card_cost.cz')}}">
-          <i class="fas fa-money-check-alt"></i>
+          <i class="fas fa-money-check-alt mr-1"></i>
           <p>Cotizaciones</p>
         </a>
       </li>
@@ -120,7 +138,7 @@
       @if ($admin)
       <li class="{{ request()->segment(1) == 'talleres' ? 'active' : '' }}">
         <a href="/talleres">
-          <i class="fal fa-user-hard-hat"></i>
+          <i class="fal fa-user-hard-hat mr-1"></i>
           <p>Talleres</p>
         </a>
       </li>
@@ -129,31 +147,31 @@
       <li class="px-3"><hr style="border-top-color: #858585;"></li>
       <li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">
         <a href="{{route('clientes.index')}}">
-          <i class="fal fa-handshake"></i>
+          <i class="fal fa-handshake mr-1"></i>
           <p>Clientes</p>
         </a>
       </li>
       <li class="{{ request()->segment(1) == 'marcas' ? 'active' : '' }}">
         <a href="{{route('marcas.index')}}">
-          <i class="fal fa-copyright"></i>
+          <i class="fal fa-copyright mr-1"></i>
           <p>Marca de Motores</p>
         </a>
       </li>
       <li class="{{ request()->segment(1) == 'modelos' ? 'active' : '' }}">
         <a href="{{route('modelos.index')}}">
-          <i class="fas fa-barcode"></i>
+          <i class="fas fa-barcode mr-1"></i>
           <p>Modelo de Motores</p>
         </a>
       </li>
       <li class="{{ request()->segment(1) == 'areas' ? 'active' : '' }}">
         <a class="mr-0" href="{{route('areas.index')}}">
-          <i class="fas fa-list-alt"></i>
+          <i class="fas fa-list-alt mr-1"></i>
           <p>Areas</p>
         </a>
       </li>
       <li class="{{ request()->segment(1) == 'servicios' ? 'active' : '' }}">
         <a class="mr-0" href="{{route('services.index')}}">
-          <i class="fas fa-list-ul"></i>
+          <i class="fas fa-list-ul mr-1"></i>
           <p>Servicios</p>
         </a>
       </li>

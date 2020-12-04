@@ -58,6 +58,13 @@ class RdiController extends Controller
         return view('rdi.index', compact('rdis'));
     }
 
+    public function list(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_rdi']);
+        
+        return view('rdi.list');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

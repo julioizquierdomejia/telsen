@@ -2953,7 +2953,7 @@ License - nucleoapp.com/license/
     .off-canvas-sidebar .nav i {
       font-size: 20px;
       float: left;
-      margin-right: 12px;
+      margin-right: 0;
       line-height: 30px;
       width: 34px;
       text-align: center;

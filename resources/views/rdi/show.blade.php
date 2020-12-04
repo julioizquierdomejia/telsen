@@ -12,6 +12,7 @@ $role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $role_rdi = in_array("rdi", $role_names);
 $role_ap_rdi = in_array("aprobador_rdi", $role_names);
+$role_fentrega = in_array("fecha_de_entrega", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -24,8 +25,10 @@ $role_ap_rdi = in_array("aprobador_rdi", $role_names);
 						@if ($rdi_fecha)
 						<p class="mb-0 mt-2">Fecha de entrega <span class="badge badge-success px-3 py-1">{{date('d-m-Y', strtotime($rdi->fecha_entrega))}}</span></p>
 						@endif
+						@if ($admin || $role_fentrega)
 						@if($rdi->fecha_entrega == null && $rdi_approved)
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Generar fecha de entrega</button>
+						@endif
 						@endif
 						@if($rdi_approved)
 						<span class="badge badge-success px-3 py-1">Aprobada</span>
@@ -374,7 +377,7 @@ $role_ap_rdi = in_array("aprobador_rdi", $role_names);
 	        }
 	    });
     })
-    @if(!$rdi_fecha)
+    @if(($admin || $role_fentrega) && (!$rdi_fecha))
     $('.fecha_entrega #btngenerateOTDate').click(function () {
     	var fentrega = $('#fecha_entrega').val();
     	if(fentrega.length == 0) {

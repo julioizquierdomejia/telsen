@@ -243,7 +243,7 @@ class CostCardController extends Controller
     }
     public function cc_show(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo', 'fecha_de_entrega']);
 
         $ccost = CostCard::where('ot_id', $ot_id)
                 ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')

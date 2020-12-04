@@ -462,23 +462,15 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 			@endif
 			@if(in_array("cc_approved", $statuses))
 				<div class="text-center py-3 row">
-					@if ($maded_by)
-					<div class="col">Hecha por: {{$maded_by->name}}</div>
-					@endif
+					<div class="col">@if ($maded_by)Hecha por: {{$maded_by->name}} @endif</div>
 					<span class="badge badge-success px-3 py-2">Cotización Aprobada</span>
-					@if ($approved_by)
-					<div class="col ml-auto">Aprobada por: {{$approved_by->name}}</div>
-					@endif
+					<div class="col">@if ($approved_by)Aprobada por: {{$approved_by->name}}@endif</div>
 				</div>
 				@elseif(in_array("cc_disapproved", $statuses))
 				<div class="text-center py-3 row">
-					@if ($maded_by)
-					<div class="col">Hecha por: {{$maded_by->name}}</div>
-					@endif
+					<div class="col">@if ($maded_by)Hecha por: {{$maded_by->name}} @endif</div>
 					<span class="badge badge-success px-3 py-2">Cotización Desaprobada</span>
-					@if ($approved_by)
-					<div class="col ml-auto">Desaprobada por: {{$approved_by->name}}</div>
-					@endif
+					<div class="col">@if ($approved_by)Aprobada por: {{$approved_by->name}}@endif</div>
 				</div>
 				@endif
 			<embed class="w-100" src="/uploads/cotizacion/{{$ccost->cotizacion}}" width="500" height="375" style="height: calc(100vh - 140px)" type="application/pdf">

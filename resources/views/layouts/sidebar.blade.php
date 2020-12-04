@@ -32,6 +32,7 @@
 
         $is_cc = request()->segment(1) == 'tarjeta-costo';
         $is_cz = request()->segment(1) == 'cotizaciones';
+        $is_delivery = request()->segment(1) == 'fecha_entrega';
       @endphp
       <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
         <a href="{{ route('home')}}">
@@ -127,6 +128,14 @@
         </ul>
       </li>
       @endif
+      @if ($admin)
+      <li class="{{ request()->segment(1) == 'talleres' ? 'active' : '' }}">
+        <a href="/talleres">
+          <i class="fal fa-user-hard-hat mr-1"></i>
+          <p>Talleres</p>
+        </a>
+      </li>
+      @endif
       @if ($admin || in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names))
       <li class="{{ $is_cz ? 'active' : '' }}">
         <a class="mr-0" href="{{route('card_cost.cz')}}">
@@ -135,11 +144,11 @@
         </a>
       </li>
       @endif
-      @if ($admin)
-      <li class="{{ request()->segment(1) == 'talleres' ? 'active' : '' }}">
-        <a href="/talleres">
-          <i class="fal fa-user-hard-hat mr-1"></i>
-          <p>Talleres</p>
+      @if ($admin || in_array("fecha_entrega", $role_names))
+      <li class="{{ $is_delivery ? 'active' : '' }}">
+        <a class="mr-0" href="{{route('delivery_date.index')}}">
+          <i class="fas fa-calendar-week mr-1"></i>
+          <p>Fecha de entrega</p>
         </a>
       </li>
       @endif

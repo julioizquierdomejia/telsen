@@ -29,31 +29,32 @@ class RdiController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'rdi']);
         
         /*$rdis = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->select('rdi.*', 'clients.razon_social')
                 ->where('rdi.enabled', 1)->get();*/
-        $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+        $rdis = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
-                        ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.conex', 'me_val.hp_kw'
-                        )
-                        ->where('ots.enabled', 1)
-                        ->where('clients.client_type_id', 1)
-                        ->where('clients.enabled', 1)
-                        ->get();
+                ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.conex', 'me_val.hp_kw'
+                )
+                ->where('clients.client_type_id', 1)
+                ->where('clients.enabled', 1)
+                ->where('ots.enabled', 1)
 
-        $rdis = [];
-        foreach ($_ots as $key => $ot) {
-            $array = array_column($ot->statuses->toArray(), "name");
-            if (in_array("me", $array) && in_array("ee", $array) && !in_array("cc", $array) && !in_array("rdi_waiting", $array)) {
-                $rdis[] = $ot;
-            }
-        }
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me');
+                    $query->where("status.name", "=", 'ee');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                    $query->where("status.name", "=", 'rdi_waiting');
+                })
+                ->get();
 
         return view('rdi.index', compact('rdis'));
     }
@@ -65,7 +66,7 @@ class RdiController extends Controller
      */
     public function calculate(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'rdi']);
 
         $rdi = Rdi::where('ot_id', $ot_id)->first();
         if ($rdi) {
@@ -137,7 +138,7 @@ class RdiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'rdi']);
 
         $rules = array(
             'rdi_codigo' => 'required|string',
@@ -291,7 +292,7 @@ class RdiController extends Controller
 
     public function approveRDI(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'rdi']);
 
         $action = $request->input('action');
 
@@ -372,7 +373,7 @@ class RdiController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'rdi']);
 
         $rdi = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
@@ -414,7 +415,7 @@ class RdiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'rdi']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation

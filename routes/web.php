@@ -112,14 +112,15 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('tarjeta-costo/{id}/cotizacion', [App\Http\Controllers\CostCardController::class, 'upload'])->name('card_cost.upload');
 	Route::post('tarjeta-costo/{cost}/aprobar', [App\Http\Controllers\CostCardController::class, 'approveTC'])->name('card_cost.approve');
 
-	Route::get('tarjeta-costo/pending', [App\Http\Controllers\OtController::class, 'pending_cc_ots'])->name('card_cost.pending');
-	Route::get('tarjeta-costo/pending_list', [App\Http\Controllers\OtController::class, 'list_cc_pending'])->name('card_cost.list_pending');
+	//dentro de formatos
+	Route::get('cotizaciones/pending', [App\Http\Controllers\OtController::class, 'pending_cc_ots'])->name('card_cost.pending');
+	Route::get('cotizaciones/pending_list', [App\Http\Controllers\OtController::class, 'list_cc_pending'])->name('card_cost.list_pending');
 
-	Route::get('tarjeta-costo/waiting', [App\Http\Controllers\OtController::class, 'waiting_cc_ots'])->name('card_cost.waiting');
-	Route::get('tarjeta-costo/waiting_list', [App\Http\Controllers\OtController::class, 'list_cc_waiting'])->name('card_cost.list_waiting');
+	//dentro de cotizaciones
+	Route::get('cotizaciones', [App\Http\Controllers\OtController::class, 'cc_ots'])->name('card_cost.cz');
+	Route::get('cotizaciones/waiting_list', [App\Http\Controllers\OtController::class, 'list_cc_waiting'])->name('card_cost.list_waiting');
 
-	Route::get('tarjeta-costo/approved', [App\Http\Controllers\OtController::class, 'approved_cc_ots'])->name('card_cost.approved');
-	Route::get('tarjeta-costo/approved_list', [App\Http\Controllers\OtController::class, 'list_cc_approved'])->name('card_cost.list_approved');
+	Route::get('cotizaciones/approved_list', [App\Http\Controllers\OtController::class, 'list_cc_approved'])->name('card_cost.list_approved');
 
 	//rutas para Areas
 	Route::get('areas', [App\Http\Controllers\AreaController::class, 'index'])->name('areas.index');

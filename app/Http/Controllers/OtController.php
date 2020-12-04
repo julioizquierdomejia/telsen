@@ -534,11 +534,11 @@ class OtController extends Controller
         exit;
     }
 
-    public function waiting_cc_ots(Request $request)
+    public function cc_ots(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
 
-        return view('costos.waiting');
+        return view('cotizaciones.index');
     }
 
     // OT con tarjeta de costo, con cotizacion y sin aprobacion
@@ -638,13 +638,6 @@ class OtController extends Controller
 
         echo json_encode($response);
         exit;
-    }
-
-    public function approved_cc_ots(Request $request)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
-
-        return view('costos.approved');
     }
 
     // OT con tarjeta de costo, con cotizacion y con aprobacion

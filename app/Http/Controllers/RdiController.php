@@ -370,7 +370,25 @@ class RdiController extends Controller
                       ->select('status.id', 'status_ot.status_id', 'status.name')
                       ->get();
 
-        return view('rdi.show', compact('rdi', 'services', 'ingresos', 'ot_status'));
+        $maded_by = \DB::table('logs')
+                        ->join('users', 'users.id', '=', 'logs.user_id')
+                        ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                        ->where('logs.section', 'rdis')
+                        ->where('logs.action', 'store')
+                        ->where('logs.data', 'like', '%"ot_id":"'. $rdi->ot_id . '"%')
+                        ->select('logs.*', 'user_data.name')
+                        ->first();
+
+        $approved_by = \DB::table('logs')
+                        ->join('users', 'users.id', '=', 'logs.user_id')
+                        ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                        ->where('logs.action', 'store')
+                        ->where('logs.section', 'rdi_approved')
+                        ->where('logs.data', 'like', '%"ot_id":"'. $rdi->ot_id . '"%')
+                        ->select('logs.*', 'users.email', 'user_data.name')
+                        ->first();
+
+        return view('rdi.show', compact('rdi', 'services', 'ingresos', 'ot_status', 'maded_by', 'approved_by'));
     }
 
     /**

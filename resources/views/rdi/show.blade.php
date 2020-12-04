@@ -43,6 +43,14 @@ $role_fentrega = in_array("fecha_de_entrega", $role_names);
 						<button class="btn btn-secondary d-print-none" type="button" onclick="window.print();"><i class="fa fa-print"></i></button>
 					</span>
 				</h5>
+				@if($maded_by)
+		        <p class="mb-0 mt-2 py-2 bg-light row mx-0 justify-content-between">
+		          <span class="col-auto">Hecho por: {{ $maded_by->{'name'} }}</span>
+		          @if($approved_by)
+		            <span class="col-auto">{{in_array('ee_approved', $statuses) ? 'Aprobado por:' : 'Desaprobado por:'}} {{ $approved_by->{'name'} }}</span>
+		            @endif
+		        </p>
+		        @endif
 			</div>
 			<div class="card-body">
 				<input type="text" class="form-control d-none @error('ot_id') is-invalid @enderror" placeholder="" value="{{$rdi->id}}" name='ot_id' id="ot_id" readonly="">

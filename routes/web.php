@@ -115,6 +115,12 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('tarjeta-costo/pending', [App\Http\Controllers\OtController::class, 'pending_cc_ots'])->name('card_cost.pending');
 	Route::get('tarjeta-costo/pending_list', [App\Http\Controllers\OtController::class, 'list_cc_pending'])->name('card_cost.list_pending');
 
+	Route::get('tarjeta-costo/waiting', [App\Http\Controllers\OtController::class, 'waiting_cc_ots'])->name('card_cost.waiting');
+	Route::get('tarjeta-costo/waiting_list', [App\Http\Controllers\OtController::class, 'list_cc_waiting'])->name('card_cost.list_waiting');
+
+	Route::get('tarjeta-costo/approved', [App\Http\Controllers\OtController::class, 'approved_cc_ots'])->name('card_cost.approved');
+	Route::get('tarjeta-costo/approved_list', [App\Http\Controllers\OtController::class, 'list_cc_approved'])->name('card_cost.list_approved');
+
 	//rutas para Areas
 	Route::get('areas', [App\Http\Controllers\AreaController::class, 'index'])->name('areas.index');
 	Route::get('areas/crear', [App\Http\Controllers\AreaController::class, 'create'])->name('areas.create');

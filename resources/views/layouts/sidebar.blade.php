@@ -53,12 +53,14 @@
           <p>Evaluaciones <i class="fal fa-angle-down float-right"></i></p>
         </a>
         <ul class="collapse list-inline pl-3 {{$is_format ? 'show': ''}}" id="collapseFormatos">
+          @if (!in_array("evaluador", $role_names))
           <li class="{{ request()->routeIs('formatos.pending_ots') ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.pending_ots')}}">
               <i class="fas fa-charging-station"></i>
               <p>Por aprobar</p>
             </a>
           </li>
+          @endif
           <li class="{{ request()->segment(2) == 'electrical' ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.electrical')}}">
               <i class="fas fa-charging-station"></i>
@@ -82,7 +84,7 @@
         </a>
       </li>
       @endif
-      @if ($admin || in_array("tarjeta_de_costo", $role_names) || in_array("cotizador_tarjeta_de_costo", $role_names))
+      @if ($admin || in_array("tarjeta_de_costo", $role_names) || in_array("cotizador_tarjeta_de_costo", $role_names) || in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names))
       <li class="{{ $is_cc ? 'active' : '' }}">
         <a class="mr-0" href="#" data-toggle="collapse" data-target="#collapseCC" aria-expanded="true">
           <i class="fas fa-money-check-alt"></i>
@@ -102,6 +104,20 @@
             <a class="mr-0" href="{{route('card_cost.pending')}}">
               <i class="fas fa-charging-station"></i>
               <p>Por cotizar</p>
+            </a>
+          </li>
+          @endif
+          @if ($admin || in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names))
+          <li class="{{ request()->routeIs('card_cost.waiting') ? 'active' : '' }}">
+            <a class="mr-0" href="{{route('card_cost.waiting')}}">
+              <i class="fas fa-money-check-alt"></i>
+              <p>Cotizaciones Por aprobar</p>
+            </a>
+          </li>
+          <li class="{{ request()->routeIs('card_cost.approved') ? 'active' : '' }}">
+            <a class="mr-0" href="{{route('card_cost.approved')}}">
+              <i class="fas fa-charging-station"></i>
+              <p>Cotizaciones Aprobadas</p>
             </a>
           </li>
           @endif

@@ -1,10 +1,10 @@
-@extends('layouts.app', ['body_class' => 'ots', 'title' => 'OTS Pendientes de cotización'])
+@extends('layouts.app', ['body_class' => 'ots', 'title' => 'Cotizaciones pendientes de aprobar'])
 @section('content')
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title">Órdenes Pendientes de cotización</h4>
+        <h4 class="card-title">Órdenes con cotización pendientes de aprobar</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -31,7 +31,7 @@ $(document).ready(function() {
   pendingots = $('.data-table').DataTable({
      processing: true,
      serverSide: true,
-     ajax: "{{route('card_cost.list_pending')}}",
+     ajax: "{{route('card_cost.list_waiting')}}",
      pageLength: 5,
      lengthMenu: [ 5, 25, 50 ],
      columns: [

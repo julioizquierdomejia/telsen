@@ -333,7 +333,7 @@ class RdiController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'rdi']);
 
         $rdi = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')

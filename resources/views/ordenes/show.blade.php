@@ -12,6 +12,7 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $tarjeta_costo = in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names);
 $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);
 $rol_rdi = in_array("rdi", $role_names);
+$role_ap_rdi = in_array("aprobador_rdi", $role_names);
 $cotizador_tarjeta = in_array("cotizador_tarjeta_de_costo", $role_names);
 @endphp
 <div class="row">
@@ -111,11 +112,13 @@ $cotizador_tarjeta = in_array("cotizador_tarjeta_de_costo", $role_names);
 					<div class="col">
 				@if($eeval && $meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
 					@if ($ot->tipo_cliente_id == 1)
-						@if ($admin || $rol_rdi)
+						@if ($admin || $rol_rdi || $role_ap_rdi)
 							@if($rdi)
 							<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
 							@else
+							@if ($admin || $rol_rdi)
 							<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
+							@endif
 							@endif
 						@endif
 					@else

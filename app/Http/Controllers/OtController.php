@@ -866,7 +866,7 @@ class OtController extends Controller
                     })
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'rdi_approved');
-                        $query->where("status.name", "=", 'rdi_disapproved');
+                        $query->orWhere("status.name", "=", 'rdi_disapproved');
                     })
                     ->where('ots.enabled', 1)->get();
 

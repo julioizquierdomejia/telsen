@@ -129,20 +129,20 @@ class CostCardController extends Controller
             $ext = $file->getClientOriginalExtension();
             $uniqueFileName = preg_replace('/\s+/', "-", uniqid().'_'.$file->getClientOriginalName());
 
-            $cost_card = CostCard::findOrFail($id);
-            $cost_card->cotizacion = $uniqueFileName;
-            $cost_card->save();
-
             $status = Status::where('name', 'cc_waiting')->first();
             if ($status) {
+                $cost_card = CostCard::find($id);
+                $cost_card->cotizacion = $uniqueFileName;
+                $cost_card->save();
+
                 $status_ot = new StatusOt();
                 $status_ot->status_id = $status->id;
                 $status_ot->ot_id = $ot_id;
                 $status_ot->save();
-            }
 
-            $file->move(public_path('uploads/cotizacion'), $uniqueFileName);
-            if (isset($cost_card->id)) {
+                activitylog('cc_upload', 'store', null, $status_ot->getOriginal());
+
+                $file->move(public_path('uploads/cotizacion'), $uniqueFileName);
                 return response()->json(['data'=>json_encode($cost_card->id),'success'=>true]);
             }
         }
@@ -298,7 +298,25 @@ class CostCardController extends Controller
                       ->select('status.id', 'status_ot.status_id', 'status.name')
                       ->get();
 
-        return view('costos.show', compact('ccost', 'services', 'works_mec', 'works_el', 'ot_status'));
+        $approved_by = \DB::table('logs')
+                        ->join('users', 'users.id', '=', 'logs.user_id')
+                        ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                        ->where('logs.action', 'store')
+                        ->where('logs.section', 'cc_approved')
+                        ->where('logs.data', 'like', '%"ot_id":"'. $ccost->ot_id . '"%')
+                        ->select('logs.*', 'users.email', 'user_data.name')
+                        ->first();
+
+        $maded_by = \DB::table('logs')
+                        ->join('users', 'users.id', '=', 'logs.user_id')
+                        ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                        ->where('logs.section', 'cc_upload')
+                        ->where('logs.action', 'store')
+                        ->where('logs.data', 'like', '%"ot_id":"'. $ot_id . '"%')
+                        ->select('logs.*', 'user_data.name')
+                        ->first();
+
+        return view('costos.show', compact('ccost', 'services', 'works_mec', 'works_el', 'ot_status', 'approved_by', 'maded_by'));
     }
 
     public function approveTC(Request $request, $id)
@@ -330,8 +348,11 @@ class CostCardController extends Controller
                     $data->status_id = $status->id;
                     $data->ot_id = $id;
                     $data->save();
+
                 }
             }
+            activitylog('cc_approved', 'store', null, $data->getOriginal());
+
             return response()->json(['data'=>json_encode($data),'success'=>true]);
         }
         return response()->json(['success'=>false]);

@@ -449,8 +449,8 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 				<button id="btnUpload" type="submit" class="btn btn-primary btn-sm px-md-5">Enviar</button>
 			</div>
 			</form>
-			@endif
-			@if($ccost->cotizacion && !in_array("cc_approved", $statuses) && !in_array("cc_disapproved", $statuses) && ($admin || $aprobador_cotizacion))
+			@else
+			@if(($admin || $aprobador_cotizacion) && (!in_array("cc_approved", $statuses) && !in_array("cc_disapproved", $statuses)))
 			<div class="row approve_tc">
 				<div class="update ml-auto mr-auto">
             		<button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>
@@ -460,14 +460,19 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
             	</div>
 			</div>
 			@endif
-			<div class="text-center py-3">
-				@if(in_array("cc_approved", $statuses))
-				<span class="badge badge-success px-3 py-2">Cotización Aprobada</span>
+			@if(in_array("cc_approved", $statuses))
+				<div class="text-center py-3 row">
+					<div class="col">Hecha por: {{$maded_by->name}}</div>
+					<span class="badge badge-success px-3 py-2">Cotización Aprobada</span>
+					<div class="col ml-auto">Aprobada por: {{$approved_by->name}}</div>
+				</div>
 				@elseif(in_array("cc_disapproved", $statuses))
-				<span class="badge badge-secondary px-3 py-2">Cotización Desaprobada</span>
+				<div class="text-center py-3 row">
+					<div class="col">Hecha por: {{$maded_by->name}}</div>
+					<span class="badge badge-success px-3 py-2">Cotización Desaprobada</span>
+					<div class="col ml-auto">Desaprobada por: {{$approved_by->name}}</div>
+				</div>
 				@endif
-			</div>
-			@if($ccost->cotizacion)
 			<embed class="w-100" src="/uploads/cotizacion/{{$ccost->cotizacion}}" width="500" height="375" style="height: calc(100vh - 140px)" type="application/pdf">
 			@endif
 		</div>

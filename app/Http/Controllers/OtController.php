@@ -25,7 +25,7 @@ class OtController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'aprobador_de_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
         
         //Listar OTs
         $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
@@ -38,12 +38,12 @@ class OtController extends Controller
 
     public function enabled_ots(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'aprobador_de_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
 
         $role_names = validateActionbyRole();
         $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
         $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);
-        $tarjeta_costo = in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_de_tarjeta_de_costo", $role_names);
+        $tarjeta_costo = in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names);
         $rdi = in_array("rdi", $role_names) || in_array("aprobador_rdi", $role_names);
 
         $counter = 0;
@@ -940,7 +940,7 @@ class OtController extends Controller
 
     public function ot_show(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_de_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
 
         /*$validate_ot = Ot::where('ots.enabled', 1)->where('ots.id', $id)
                     ->join('clients', 'clients.id', '=', 'ots.client_id')

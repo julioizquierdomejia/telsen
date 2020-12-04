@@ -482,12 +482,13 @@ class OtController extends Controller
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)
 
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
                 ->whereDoesntHave('statuses', function ($query) {
-                            $query->where("status.name", "=", 'ee_approved');
-                        })
-                    ->orWhereDoesntHave('statuses', function ($query) {
-                            $query->where("status.name", "=", 'me_approved');
-                        })
+                    $query->where("status.name", "=", 'cc_waiting');
+                })
+
                 ->count();
 
         $ots_array = [];
@@ -502,8 +503,11 @@ class OtController extends Controller
                     ->orderBy($columnName, $columnSortOrder)
 
                     ->whereHas('statuses', function ($query) {
-                            $query->where("status.name", "=", 'cc_waiting');
-                        })
+                        $query->where("status.name", "=", 'cc');
+                    })
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'cc_waiting');
+                    })
                     ->where('ots.enabled', 1)->get();
 
         foreach ($records as $key => $ot) {

@@ -144,7 +144,7 @@
         </a>
       </li>
       @endif
-      @if ($admin || in_array("fecha_entrega", $role_names))
+      @if ($admin || in_array("fecha_de_entrega", $role_names))
       <li class="{{ $is_delivery ? 'active' : '' }}">
         <a class="mr-0" href="{{route('delivery_date.index')}}">
           <i class="fas fa-calendar-week mr-1"></i>

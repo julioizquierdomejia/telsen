@@ -1013,7 +1013,7 @@ class OtController extends Controller
     // Vista de OTs con/sin fecha de entrega
     public function delivery_date(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'fecha_entrega']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'fecha_de_entrega']);
         
         return view('fechaentrega.index');
     }
@@ -1021,7 +1021,7 @@ class OtController extends Controller
     // OT sin fecha de entrega
     public function list_delivery_pending(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'fecha_entrega']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'fecha_de_entrega']);
 
         ## Read value
         $draw = $request->get('draw');
@@ -1121,7 +1121,7 @@ class OtController extends Controller
     // OT con fecha de entrega
     public function list_delivery_generated(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'fecha_entrega']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'fecha_de_entrega']);
 
         ## Read value
         $draw = $request->get('draw');

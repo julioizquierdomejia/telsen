@@ -39,14 +39,12 @@
           <p>Dashboard</p>
         </a>
       </li>
-      @if ($admin || in_array("crear_ot", $role_names) || in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names) || in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names))
       <li class="{{ request()->segment(1) == 'ordenes' ? 'active' : '' }}">
         <a href="/ordenes">
           <i class="fal fa-network-wired"></i>
           <p>Ordenes de trabajo</p>
         </a>
       </li>
-      @endif
       @if ($admin || in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names))
       <li class="{{ $is_format ? 'active' : '' }}">
         <a href="#" data-toggle="collapse" data-target="#collapseFormatos" aria-expanded="true">

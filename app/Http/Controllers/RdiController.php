@@ -291,7 +291,7 @@ class RdiController extends Controller
 
     public function approveRDI(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'rdi']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_rdi']);
 
         $action = $request->input('action');
 

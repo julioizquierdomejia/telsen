@@ -96,20 +96,6 @@ class OtController extends Controller
 
                 $created_at = date('d-m-Y', strtotime($ot->created_at));
                 $status_data = self::getOTStatus($ot, $admin, $tarjeta_costo, $evaluador, $rdi);
-                $fecha_entrega = '-';
-                if(isset($status_data['fecha_entrega'])) {
-                    $start = strtotime($status_data['fecha_entrega']);
-                    $end   = strtotime(date('d-m-Y'));
-                    $days  = date('d', $start - $end);
-                    $fecha = date('d-m-Y', $start);
-                    $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                    $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                    if($days > 0) {
-                        $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                    } else {
-                        $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                    }
-                }
                 $ot_id = 'OT-'.zerosatleft($ot->id, 3);
                 $status = $status_data['html'];
                 $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -124,7 +110,7 @@ class OtController extends Controller
                   "status" => $status,
                   "razon_social" => $client,
                   "numero_potencia" => $potencia ? $potencia :   '-',
-                  "fecha_entrega" => $fecha_entrega,
+                  "fecha_entrega" => $status_data['fecha_entrega'],
                   "tools" => $tools
                 );
             }
@@ -192,20 +178,6 @@ class OtController extends Controller
 
                 $created_at = date('d-m-Y', strtotime($ot->created_at));
                 $status_data = self::getOTStatus($ot, false, false, false, false);
-                $fecha_entrega = '-';
-                if(isset($status_data->fecha_entrega)) {
-                    $start = strtotime($status_data->fecha_entrega);
-                    $end   = time();
-                    $days  = date($start - $end);
-                    $fecha = date('d-m-Y', $start);
-                    $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                    $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                    if($days > 0) {
-                        $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                    } else {
-                        $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                    }
-                }
                 $ot_id = zerosatleft($ot->id, 3);
                 $status = $status_data['html'];
                 $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -219,7 +191,7 @@ class OtController extends Controller
                   "status" => $status,
                   "razon_social" => $client,
                   "numero_potencia" => $potencia ? $potencia :   '-',
-                  "fecha_entrega" => $fecha_entrega,
+                  "fecha_entrega" => $status_data['fecha_entrega'],
                   "tools" => $tools
                 );
             }
@@ -281,20 +253,6 @@ class OtController extends Controller
             $counter++;
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $fecha_entrega = '-';
-            if(isset($status_data->fecha_entrega)) {
-                $start = strtotime($status_data->fecha_entrega);
-                $end   = time();
-                $days  = date($start - $end);
-                $fecha = date('d-m-Y', $start);
-                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                if($days > 0) {
-                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                } else {
-                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                }
-            }
             $ot_id = zerosatleft($ot->id, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -308,7 +266,7 @@ class OtController extends Controller
               "status" => $status,
               "razon_social" => $client,
               "numero_potencia" => $potencia ? $potencia :   '-',
-              "fecha_entrega" => $fecha_entrega,
+              "fecha_entrega" => $status_data['fecha_entrega'],
               "tools" => $tools
             );
         };
@@ -385,20 +343,6 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $fecha_entrega = '-';
-            if(isset($status_data->fecha_entrega)) {
-                $start = strtotime($status_data->fecha_entrega);
-                $end   = time();
-                $days  = date($start - $end);
-                $fecha = date('d-m-Y', $start);
-                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                if($days > 0) {
-                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                } else {
-                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                }
-            }
             $ot_id = zerosatleft($ot->id, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -411,7 +355,7 @@ class OtController extends Controller
               "status" => $status,
               "razon_social" => $client,
               "numero_potencia" => $potencia ? $potencia :   '-',
-              "fecha_entrega" => $fecha_entrega,
+              "fecha_entrega" => $status_data['fecha_entrega'],
               "tools" => $tools
             );
         };
@@ -491,20 +435,6 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $fecha_entrega = '-';
-            if(isset($status_data->fecha_entrega)) {
-                $start = strtotime($status_data->fecha_entrega);
-                $end   = time();
-                $days  = date($start - $end);
-                $fecha = date('d-m-Y', $start);
-                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                if($days > 0) {
-                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                } else {
-                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                }
-            }
             $ot_id = zerosatleft($ot->id, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -517,7 +447,7 @@ class OtController extends Controller
               "status" => $status,
               "razon_social" => $client,
               "numero_potencia" => $potencia ? $potencia : '-',
-              "fecha_entrega" => $fecha_entrega,
+              "fecha_entrega" => $status_data['fecha_entrega'],
               "tools" => $tools
             );
         };
@@ -597,20 +527,6 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $fecha_entrega = '-';
-            if(isset($status_data->fecha_entrega)) {
-                $start = strtotime($status_data->fecha_entrega);
-                $end   = time();
-                $days  = date($start - $end);
-                $fecha = date('d-m-Y', $start);
-                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                if($days > 0) {
-                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                } else {
-                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                }
-            }
             $ot_id = zerosatleft($ot->id, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -623,7 +539,7 @@ class OtController extends Controller
               "status" => $status,
               "razon_social" => $client,
               "numero_potencia" => $potencia ? $potencia : '-',
-              "fecha_entrega" => $fecha_entrega,
+              "fecha_entrega" => $status_data['fecha_entrega'],
               "tools" => $tools
             );
         };
@@ -689,20 +605,6 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $fecha_entrega = '-';
-            if(isset($status_data->fecha_entrega)) {
-                $start = strtotime($status_data->fecha_entrega);
-                $end   = time();
-                $days  = date($start - $end);
-                $fecha = date('d-m-Y', $start);
-                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                if($days > 0) {
-                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                } else {
-                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                }
-            }
             $ot_id = zerosatleft($ot->id, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -715,7 +617,7 @@ class OtController extends Controller
               "status" => $status,
               "razon_social" => $client,
               "numero_potencia" => $potencia ? $potencia : '-',
-              "fecha_entrega" => $fecha_entrega,
+              "fecha_entrega" => $status_data['fecha_entrega'],
               "tools" => $tools
             );
         };
@@ -758,6 +660,7 @@ class OtController extends Controller
 
         $status['status'] = $statuses;
         $status['html'] = '';
+        $status['fecha_entrega'] = '-';
 
         if ($statuses) {
             foreach ($statuses as $key => $item) {
@@ -770,7 +673,21 @@ class OtController extends Controller
                 } else if(strpos($item->name, '_approved') !== false || $item->name == 'delivery_generated') {
                     $status['html'] = '<span class="badge badge-success px-2 py-1 w-100">'.$item->description.'</span>';
                     if($item->name == 'delivery_generated') {
-                        $status['fecha_entrega'] = $ot->fecha_entrega;
+                        $fecha_entrega = '';
+                        if($ot->fecha_entrega) {
+                            $start = strtotime($ot->fecha_entrega);
+                            $end   = strtotime(date('d-m-Y'));
+                            $days  = date('d', $start - $end);
+                            $fecha = date('d-m-Y', $start);
+                            $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
+                            $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
+                            if($days > 0) {
+                                $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
+                            } else {
+                                $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
+                            }
+                        }
+                        $status['fecha_entrega'] = $fecha_entrega;
                     }
                 } else {
                   $status['html'] = '<span class="badge badge-secondary px-2 py-1 w-100">'.$item->description.'</span>';
@@ -873,20 +790,6 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $fecha_entrega = '-';
-            if(isset($status_data->fecha_entrega)) {
-                $start = strtotime($status_data->fecha_entrega);
-                $end   = time();
-                $days  = date($start - $end);
-                $fecha = date('d-m-Y', $start);
-                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                if($days > 0) {
-                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                } else {
-                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                }
-            }
             $ot_id = zerosatleft($ot->id, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -899,7 +802,7 @@ class OtController extends Controller
               "status" => $status,
               "razon_social" => $client,
               "numero_potencia" => $potencia ? $potencia : '-',
-              "fecha_entrega" => $fecha_entrega,
+              "fecha_entrega" => $status_data['fecha_entrega'],
               "tools" => $tools
             );
         };
@@ -967,20 +870,6 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $fecha_entrega = '-';
-            if(isset($status_data->fecha_entrega)) {
-                $start = strtotime($status_data->fecha_entrega);
-                $end   = time();
-                $days  = date($start - $end);
-                $fecha = date('d-m-Y', $start);
-                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                if($days > 0) {
-                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                } else {
-                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                }
-            }
             $ot_id = zerosatleft($ot->id, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -993,7 +882,7 @@ class OtController extends Controller
               "status" => $status,
               "razon_social" => $client,
               "numero_potencia" => $potencia ? $potencia : '-',
-              "fecha_entrega" => $fecha_entrega,
+              "fecha_entrega" => $status_data['fecha_entrega'],
               "tools" => $tools
             );
         };
@@ -1083,20 +972,6 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $fecha_entrega = '-';
-            if(isset($status_data->fecha_entrega)) {
-                $start = strtotime($status_data->fecha_entrega);
-                $end   = time();
-                $days  = date($start - $end);
-                $fecha = date('d-m-Y', $start);
-                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                if($days > 0) {
-                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                } else {
-                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                }
-            }
             $ot_id = zerosatleft($ot->id, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -1109,7 +984,7 @@ class OtController extends Controller
               "status" => $status,
               "razon_social" => $client,
               "numero_potencia" => $potencia ? $potencia : '-',
-              "fecha_entrega" => $fecha_entrega,
+              "fecha_entrega" => $status_data['fecha_entrega'],
               "tools" => $tools
             );
         };
@@ -1173,21 +1048,7 @@ class OtController extends Controller
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
-            $status_data = self::getOTStatus($ot, false, false, false, false);
-            $fecha_entrega = '-';
-            if(isset($status_data->fecha_entrega)) {
-                $start = strtotime($status_data->fecha_entrega);
-                $end   = time();
-                $days  = date($start - $end);
-                $fecha = date('d-m-Y', $start);
-                $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                if($days > 0) {
-                    $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                } else {
-                    $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                }
-            }
+            $status_data = self::getOTStatus($ot, true, true, true, true);
             $ot_id = zerosatleft($ot->id, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
@@ -1200,7 +1061,7 @@ class OtController extends Controller
               "status" => $status,
               "razon_social" => $client,
               "numero_potencia" => $potencia ? $potencia : '-',
-              "fecha_entrega" => $fecha_entrega,
+              "fecha_entrega" => $status_data['fecha_entrega'],
               "tools" => $tools
             );
         };

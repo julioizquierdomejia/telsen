@@ -320,6 +320,8 @@ class RdiController extends Controller
                     $data->save();
                 }
             }
+            activitylog('rdi_approved', 'store', null, $data->getOriginal());
+
             return response()->json(['data'=>json_encode($data),'success'=>true]);
         }
         return response()->json(['success'=>false]);

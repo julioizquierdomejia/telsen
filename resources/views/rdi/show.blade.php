@@ -7,6 +7,11 @@ $rdi_forapprove = ($status_last->name == "rdi_waiting");
 $rdi_approved = ($status_last->name == "rdi_approved");
 $rdi_disapproved = $status_last->name == "rdi_disapproved";
 $rdi_fecha = $status_last->name == "delivery_generated" && $rdi->fecha_entrega != null;
+
+$role_names = validateActionbyRole();
+$admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
+$role_rdi = in_array("rdi", $role_names);
+$role_ap_rdi = in_array("aprobador_rdi", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
@@ -27,8 +32,10 @@ $rdi_fecha = $status_last->name == "delivery_generated" && $rdi->fecha_entrega !
 						@elseif($rdi_disapproved)
 						<span class="badge badge-secondary px-3 py-1">Desaprobada</span>
 						@endif
+						@if ($admin || $role_ap_rdi)
 						@if(!in_array("rdi_approved", $statuses) && !in_array("rdi_disapproved", $statuses))
 						<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
+						@endif
 						@endif
 						<button class="btn btn-secondary d-print-none" type="button" onclick="window.print();"><i class="fa fa-print"></i></button>
 					</span>

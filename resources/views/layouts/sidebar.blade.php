@@ -54,12 +54,14 @@
           <p>Evaluaciones <i class="fal fa-angle-down float-right"></i></p>
         </a>
         <ul class="collapse list-inline pl-3 {{$is_format ? 'show': ''}}" id="collapseFormatos">
+          @if (!in_array("evaluador", $role_names))
           <li class="{{ request()->routeIs('formatos.pending_ots') ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.pending_ots')}}">
               <i class="fas fa-charging-station"></i>
               <p>Por aprobar</p>
             </a>
           </li>
+          @endif
           <li class="{{ request()->segment(2) == 'electrical' ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.electrical')}}">
               <i class="fas fa-charging-station"></i>

@@ -23,9 +23,9 @@ class WorkshopController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
         
-        $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+        $ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
@@ -33,18 +33,14 @@ class WorkshopController extends Controller
                         ->select('ots.*', 'clients.razon_social', 'clients.id as client_type_id', 'client_types.name as client_type', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw'
                             //,'cost_cards.id as cost_card'
                         )
+                        ->whereHas('statuses', function ($query) {
+                            $query->where("status.name", "=", 'delivery_generated');
+                        })
                         ->where('ots.enabled', 1)
                         ->where('clients.enabled', 1)
                         //->groupBy('ots.id')
                         ->get();
 
-        $ots = [];
-        foreach ($_ots as $key => $ot) {
-            $ot_status = array_column($ot->statuses->toArray(), "name");
-            if (in_array("delivery_generated", $ot_status)) {
-                $ots[] = $ot;
-            }
-        }
         return view('talleres.index', compact('ots'));
     }
 
@@ -61,7 +57,7 @@ class WorkshopController extends Controller
     }*/
     public function calculate(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
 
         $users = User::join('user_data', 'user_data.user_id', 'users.id')
                 ->join('areas', 'areas.id', 'user_data.area_id')
@@ -85,9 +81,9 @@ class WorkshopController extends Controller
         if ($ot->client_type_id == 1) { //RDI
             $rdi = Rdi::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
-                    ->join('rdi_service_costs', 'rdi_service_costs.service_id', 'services.id')
-                    ->where('rdi_service_costs.rdi_id', $rdi->id)
-                    ->select('areas.name as area', 'rdi_service_costs.id', 'services.area_id', 'services.name as service', 'rdi_service_costs.subtotal')
+                    ->join('rdi_works', 'rdi_works.service_id', 'services.id')
+                    ->where('rdi_works.rdi_id', $rdi->id)
+                    ->select('areas.name as area', 'rdi_works.id', 'services.area_id', 'services.name as service')
                     ->get();
         } else { //No afiliado
             $cost_card = CostCard::where('ot_id', $ot->id)->firstOrFail();
@@ -113,7 +109,7 @@ class WorkshopController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
         /*$rules = array(
             'user_id'      => 'required|array|min:1',
             'area_id'      => 'required|array|min:1',
@@ -152,17 +148,9 @@ class WorkshopController extends Controller
      * @param  \App\Models\Workshop  $cost
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
-
-        $ccost = Workshop::findOrFail($id);
-
-        return view('talleres.show', compact('ccost'));
-    }
-    public function cc_show(Request $request, $ot_id)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
 
         $ccost = Workshop::where('ot_id', $ot_id)
                 ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')
@@ -187,7 +175,7 @@ class WorkshopController extends Controller
 
     public function approveTC(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
 
         $action = $request->input('action');
 
@@ -229,7 +217,7 @@ class WorkshopController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
 
         $cost = Workshop::findOrFail($id);
         return view('talleres.edit', compact('cost'));
@@ -244,7 +232,7 @@ class WorkshopController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
         
         // validate
         // read more on validation at http://laravel.com/docs/validation

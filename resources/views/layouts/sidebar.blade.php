@@ -29,6 +29,7 @@
         $is_format = request()->segment(1) == 'formatos';
         $role_names = validateActionbyRole();
         $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
+        $supervisor = in_array("supervisor", $role_names);
 
         $is_cc = request()->segment(1) == 'tarjeta-costo';
         $is_cz = request()->segment(1) == 'cotizaciones';
@@ -128,7 +129,7 @@
         </ul>
       </li>
       @endif
-      @if ($admin)
+      @if ($admin || $supervisor)
       <li class="{{ request()->segment(1) == 'talleres' ? 'active' : '' }}">
         <a href="/talleres">
           <i class="fal fa-user-hard-hat mr-1"></i>

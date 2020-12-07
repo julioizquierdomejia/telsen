@@ -41,6 +41,9 @@ $role_fentrega = in_array("fecha_de_entrega", $role_names);
 						@endif
 						@endif
 						<button class="btn btn-secondary d-print-none" type="button" onclick="window.print();"><i class="fa fa-print"></i></button>
+						@if($rdi_forapprove)
+						<a class="btn btn-primary" href="{{route('rdi.edit', $rdi->id)}}">Editar <i class="fa fa-edit"></i></a>
+						@endif
 					</span>
 				</h5>
 				@if($maded_by)

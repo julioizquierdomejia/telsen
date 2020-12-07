@@ -25,7 +25,7 @@
                     {{date('d-m-Y', strtotime($ot->created_at))}}
                   </td>
                   <td>
-                    OT-{{zerosatleft($ot->id, 3)}}
+                    OT-{{zerosatleft($ot->code, 3)}}
                   </td>
                   <td>
                     <span class="align-middle">{{$ot->razon_social}}</span>

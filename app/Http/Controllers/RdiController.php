@@ -296,7 +296,7 @@ class RdiController extends Controller
         return redirect('rdi');
     }
 
-    public function approveRDI(Request $request, $id)
+    public function approveRDI(Request $request, $ot_id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_rdi']);
 
@@ -304,7 +304,7 @@ class RdiController extends Controller
 
         $exist_status = StatusOt::join('status', 'status.id', '=', 'status_ot.status_id')
                         ->select('status.*')
-                        ->where('ot_id', $id)
+                        ->where('ot_id', $ot_id)
                         ->where('name', "rdi_approved")->where('name', "rdi_disapproved")
                         ->first();
         if ($exist_status) {
@@ -315,7 +315,7 @@ class RdiController extends Controller
                 if ($status) {
                     $data = new StatusOt();
                     $data->status_id = $status->id;
-                    $data->ot_id = $id;
+                    $data->ot_id = $ot_id;
                     $data->save();
                 }
             } else /*if($action == 2)*/ {
@@ -323,7 +323,7 @@ class RdiController extends Controller
                 if ($status) {
                     $data = new StatusOt();
                     $data->status_id = $status->id;
-                    $data->ot_id = $id;
+                    $data->ot_id = $ot_id;
                     $data->save();
                 }
             }
@@ -409,6 +409,7 @@ class RdiController extends Controller
                 ->join('rdi_ingresos', 'rdi_ingresos.rdi_id', '=', 'rdi.id')
                 ->select('rdi.*', 'clients.razon_social', 'motor_brands.name as marca', 'rdi_maintenance_types.id as maintenancetype', 'rdi_criticality_types.id as criticalitytype', 'ots.fecha_entrega',
                     'rdi_ingresos.placa_caracteristicas',
+                    'ots.code as ot_code',
                     'rdi_ingresos.caja_conexion',
                     'rdi_ingresos.bornera',
                     'rdi_ingresos.escudos',
@@ -424,12 +425,20 @@ class RdiController extends Controller
         $marcas = MotorBrand::where('enabled', 1)->get();
         $maintenancetype = RdiMaintenanceType::where('enabled', 1)->get();
         $criticalitytype = RdiCriticalityType::where('enabled', 1)->get();
-        $services = RdiServiceCost::where('rdi_id', $id)
+        /*$services = RdiServiceCost::where('rdi_id', $id)
                     ->join('rdi_services', 'rdi_services.id', '=', 'rdi_service_costs.service_id')
                     ->select('rdi_services.id', 'rdi_services.name', 'rdi_service_costs.subtotal')
                     ->where('rdi_services.enabled', 1)
+                    ->get();*/
+        $services = RdiWork::where('rdi_id', $id)
+                    ->leftJoin('services', 'services.id', '=', 'rdi_works.service_id')
+                    ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
+                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','rdi_works.*')
                     ->get();
-        return view('rdi.edit', compact('rdi', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype'));
+
+        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 6)->get();
+
+        return view('rdi.edit', compact('rdi', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype', 'areas'));
     }
 
     /**
@@ -453,7 +462,7 @@ class RdiController extends Controller
             'area' => 'string|nullable',
             'equipo' => 'string|nullable',
             'codigo' => 'string|nullable',
-            //'ot_id' => 'integer|exists:ots,id',
+            'ot_id' => 'integer|exists:ots,id',
             'fecha_ingreso' => 'required|date_format:Y-m-d',
             'tiempo_entrega' => 'integer|required',
             'orden_servicio' => 'string|nullable',
@@ -480,15 +489,17 @@ class RdiController extends Controller
             'acople' => 'boolean|nullable',
             'chaveta' => 'boolean|nullable',
 
-            'services' => 'array|required',
+            //'services' => 'array|required',
             'diagnostico_actual' => 'string|required',
             'aislamiento_masa_ingreso' => 'string|required',
 
             'rdi_maintenance_type_id' => 'required|integer|exists:rdi_maintenance_types,id',
             'rdi_criticality_type_id' => 'required|integer|exists:rdi_criticality_types,id',
             'hecho_por' => 'string|nullable',
-            'cost' => 'required||regex:/^\d+(\.\d{1,2})?$/|gt:0',
+            //'cost' => 'required||regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'enabled' => 'boolean|required',
+
+            'works' => 'array',
         );
         $this->validate($request, $rules);
 

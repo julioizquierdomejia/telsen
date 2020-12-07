@@ -1,5 +1,5 @@
 @php
-  $ot_id = zerosatleft($formato->ot_id, 3);
+  $ot_id = zerosatleft($formato->ot_code, 3);
 @endphp
 @extends('layouts.app', ['title' => 'Evaluación Mecánica de OT N° '.$ot_id])
 @section('content')

@@ -2,9 +2,14 @@
 @section('css')
 @endsection
 @section('content')
+@php
+$role_names = validateActionbyRole();
+$admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
+$supervisor = in_array("supervisor", $role_names);
+@endphp
 <div class="row">
   <div class="col-md-12">
-    <h5 class="h5">Taller para OT-{{zerosatleft($ot->id, 3)}}</h5>
+    <h5 class="h5">Taller para OT-{{zerosatleft($ot->code, 3)}}</h5>
     <form class="form-group" method="POST" action="{{route('workshop.store', $ot)}}" enctype="multipart/form-data">
       @csrf
       <div class="row">
@@ -12,6 +17,7 @@
       @php
       $first = reset($service_item);
       @endphp
+      @if ($admin || ($first['area_id'] == $user_area_id))
       <div class="col-12 col-sm-6 mb-4">
       <div class="card form-card h-100" data-id="{{$first['area_id']}}">
         <div class="card-header">
@@ -40,6 +46,7 @@
         </div>
       </div>
       </div>
+      @endif
       @endforeach
       </div>
       <div class="buttons text-center">

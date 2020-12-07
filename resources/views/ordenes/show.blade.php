@@ -1,5 +1,5 @@
 @php
-$ot_id = zerosatleft($ot->id, 3);
+$ot_id = zerosatleft($ot->code, 3);
 @endphp
 @extends('layouts.app', ['title' => 'Ver OT N° '.$ot_id])
 @section('content')
@@ -43,11 +43,11 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 					</span>
 				</span>
 				<span class="card-title-buttons">
-					@if ($admin || in_array("crear_ot", $role_names))
-					<a class="btn btn-primary btn-round" href="{{ route('ordenes.edit', $ot) }}"><i class="fa fa-edit"></i> Editar</a>
-					@endif
 					@if ($ot->cotizacion)
 					<a class="btn btn-primary btn-round" target="_new" href="/uploads/cotizacion/{{$ot->cotizacion}}"><i class="fa fa-eye"></i> Ver Cotización</a>
+					@endif
+					@if ($admin || in_array("crear_ot", $role_names))
+					<a class="btn btn-primary btn-round" href="{{ route('ordenes.edit', $ot) }}"><i class="fa fa-edit"></i> Editar</a>
 					@endif
 				</span>
 				</h5>

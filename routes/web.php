@@ -143,8 +143,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('rdi/{ot}/ver', [App\Http\Controllers\RdiController::class, 'show'])->name('rdi.show');
 	Route::get('rdi/{ot}/calcular', [App\Http\Controllers\RdiController::class, 'calculate'])->name('rdi.calculate');
 	Route::post('rdi', [App\Http\Controllers\RdiController::class, 'store'])->name('rdi.store');
-	Route::get('rdi/{ot}/editar', [App\Http\Controllers\RdiController::class, 'edit'])->name('rdi.edit');
-	Route::post('rdi/{ot}/editar', [App\Http\Controllers\RdiController::class, 'update'])->name('rdi.update');
+	Route::get('rdi/{id}/editar', [App\Http\Controllers\RdiController::class, 'edit'])->name('rdi.edit');
+	Route::post('rdi/{id}/editar', [App\Http\Controllers\RdiController::class, 'update'])->name('rdi.update');
 	Route::post('rdi/{ot}/aprobarrdi', [App\Http\Controllers\RdiController::class, 'approveRDI'])->name('rdi.approve');
 
 	Route::get('rdi/list', [App\Http\Controllers\RdiController::class, 'list'])->name('rdi.list');

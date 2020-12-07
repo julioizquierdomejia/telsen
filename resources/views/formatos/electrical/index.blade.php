@@ -29,7 +29,7 @@
             	@foreach($ots as $ot)
 	              <tr>
 	                <td>
-	                  OT-{{zerosatleft($ot->id, 3)}}
+	                  OT-{{zerosatleft($ot->code, 3)}}
 	                </td>
 	                <td>
 	                  {{$ot->razon_social}}

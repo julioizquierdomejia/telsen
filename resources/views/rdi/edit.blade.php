@@ -1,11 +1,14 @@
-@extends('layouts.app', ['title' => 'RDI | '. $rdi->rdi_codigo])
+@php
+  $ot_id = zerosatleft($rdi->ot_code, 3);
+@endphp
+@extends('layouts.app', ['title' => 'Editar RDI de OT-'. $ot_id])
 
 @section('content')
 <div class="row">
   <div class="col-md-12">
     <div class="card card-user form-card">
       <div class="card-header">
-        <h5 class="card-title">Editar RDI "<strong>{{$rdi->rdi_codigo}}</strong>"</h5>
+        <h5 class="card-title">Editar RDI de OT-<strong>{{$ot_id}}</strong></h5>
       </div>
       <div class="card-body">
         <form class="form-group" method="POST" action="/rdi" enctype="multipart/form-data">
@@ -214,22 +217,101 @@
             </div>
             </div>
             <div class="row">
-              <div class="col-12 col-md-6 mb-4">
-                <label class="col-form-label">ACTIVIDADES POR REALIZAR</label>
-                <div class="form-control h-100">
-                  <ul class="form-check-list list-inline m-0">
-                    @foreach($services as $service)
-                    <li class="row my-1 align-items-center">
-                      <label class="form-label col-10 mb-0" for="service_{{$service->id}}"><span class="align-middle">{{$service->name}}</span></label>
-                      <span class="col-2 d-inline-block"><input type="text" class="form-control service_input" value="{{$service->subtotal}}" style="margin-top: 0" id="service_{{$service->id}}" name="services[][{{$service->id}}]"></span>
-                    </li>
-                    @endforeach
-                  </ul>
-                  <label class="col-form-label">Total</label>
-                  <input class="form-control" type="text" readonly="" name="cost" value="0">
-                </div>
+              <div class="col-12 mb-4">
+                <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
+          <div class="table-responsive">
+            <table class="table table-tap table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
+              <thead>
+                <tr>
+                  <th class="text-center py-1">Item</th>
+                  <th class="text-center py-1">Área</th>
+                  <th class="text-center py-1">Tarea</th>
+                  <th class="text-center py-1">Descripción</th>
+                  <th class="text-center py-1">Medidas</th>
+                  <th class="text-center py-1">Cantidad</th>
+                  <th class="text-center py-1">Personal</th>
+                  <th class="text-center py-1"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @if($works = old('works'))
+                @foreach($works as $key => $item)
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td>
+                    <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
+                      <option value="">Seleccionar area</option>
+                      @foreach($areas as $area)
+                      <option value="{{$area->id}}" {{ old('works'.$key.'area', $item['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td>
+                    <select class="dropdown2 form-control select-service" data-value="{{$item['service_id'] ?? ''}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                      <option value="">Seleccionar servicio</option>
+                    </select>
+                  </td>
+                  <td width="120">
+                    <input type="text" class="form-control mt-0
+                    @error("works[{{$key}}][description]") is-invalid @enderror"
+                    placeholder="Descripción" value="{{old('works.$key.description', $item['description'])}}" name="works[{{$key}}][description]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control mt-0 @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works.$key.medidas', $item['medidas'])}}" name="works[{{$key}}][medidas]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control mt-0 @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.$key.qty', $item['qty'])}}" name="works[{{$key}}][qty]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control mt-0 @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works.$key.personal', $item['personal'])}}" name="works[{{$key}}][personal]">
+                  </td>
+                  <td>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                    </td>
+                </tr>
+                @endforeach
+                @else
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                    <td>
+                      <select class="dropdown2 form-control select-area" name="works[0][area]" style="width: 100%">
+                        <option value="">Seleccionar area</option>
+                        @foreach($areas as $area)
+                        <option value="{{$area->id}}">{{$area->name}}</option>
+                        @endforeach
+                      </select>
+                    </td>
+                    <td>
+                      <select class="dropdown2 form-control select-service" name="works[0][service_id]" style="width: 100%"  disabled="">
+                        <option value="">Seleccionar servicio</option>
+                      </select>
+                    </td>
+                    <td width="120">
+                      <input type="text" class="form-control mt-0 @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control mt-0 @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control mt-0 @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
+                    </td>
+                    <td width="100">
+                      <input type="text" class="form-control mt-0 @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
+                    </td>
+                    <td>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                    </td>
+                </tr>
+                @endif
+              </tbody>
+            </table>
+          </div>
+          <div class="buttons text-center">
+              <button class="btn btn-dark btn-add-row btn-sm my-1" type="button">Agregar fila <i class="far ml-1 fa-plus"></i></button>
+              <button class="btn btn-secondary btn-clear btn-sm my-1" type="button">Limpiar <i class="far ml-1 fa-eraser"></i></button>
+          </div>
               </div>
-              <div class="col-12 col-md-6 mb-4">
+              <div class="col-12 mb-4">
                 <label class="col-form-label" for="diagnostico_actual">DIAGNOSTICO ACTUAL</label>
                 <textarea class="form-control h-100 @error('diagnostico_actual') is-invalid @enderror" placeholder="(Indique causa raiz y recomendaciones)" name="diagnostico_actual" id="diagnostico_actual">{{old('diagnostico_actual', $rdi->diagnostico_actual)}}</textarea>
               </div>
@@ -306,6 +388,83 @@
     $('.service_input').on('keyup mouseup', function (event) {
       servicesTotal();
     })
+
+    $(document).on('change', '.select-area', function () {
+  var $this = $(this), area = $this.val();
+  var service = $(this).parents('tr').find('.select-service');
+  if($(this).val().length) {
+    $.ajax({
+          type: "GET",
+          url: "/servicios/filterareas",
+          data: {id: area, _token:'{{csrf_token()}}'},
+          beforeSend: function() {
+            service.attr('disabled', true);
+          },
+          success: function (response) {
+            service.attr('disabled', false).focus();
+            service.find('option').remove();
+            if (response.success) {
+              var services = $.parseJSON(response.data), s_length = services.length;
+              if (services.length) {
+                $.each(services, function (id, item) {
+                  service.append('<option value="'+item.id+'">'+item.name+'</option>');
+                })
+              }
+              if(service.data('value')) {
+                service.find('option[value='+service.data('value')+']').prop('selected', true);
+              }
+            }
+          },
+          error: function (request, status, error) {
+            
+          }
+      });
+
+
+  } else {
+    service.attr('disabled', true);
+  }
+})
+
+    $('.btn-add-row').click(function () {
+  var row_index = $('#table-works tbody tr').length;
+var row = `<tr>
+    <td class="cell-counter"><span class="number"></span></td>
+    <td>
+      <select class="dropdown2 form-control select-area" name="works[`+row_index+`][area]" style="width: 100%">
+        <option value="">Seleccionar area</option>
+        @foreach($areas as $area)
+        <option value="{{$area->id}}">{{$area->name}}</option>
+        @endforeach
+      </select>
+    </td>
+    <td>
+      <select class="dropdown2 form-control select-service" name="works[`+row_index+`][service_id]" style="width: 100%"  disabled="">
+        <option value="">Seleccionar servicio</option>
+      </select>
+    </td>
+    <td width="120">
+      <input type="text" class="form-control mt-0" placeholder="Descripción" value="" name="works[`+row_index+`][description]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control mt-0" placeholder="Medida" value="" name="works[`+row_index+`][medidas]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control mt-0" placeholder="Cantidad" value="" name="works[`+row_index+`][qty]">
+    </td>
+    <td width="100">
+      <input type="text" class="form-control mt-0" placeholder="Personal" value="" name="works[`+row_index+`][personal]">
+    </td>
+    <td>
+      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+    </td>
+  </tr>`;
+$('#table-works tbody').append(row);
+$('#table-works .dropdown2').select2();
+//createJSON();
+})
+
+    $('.select-area').trigger('change');
   })
 </script>
 @endsection

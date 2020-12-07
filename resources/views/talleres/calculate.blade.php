@@ -17,6 +17,7 @@ $supervisor = in_array("supervisor", $role_names);
       @php
       $first = reset($service_item);
       @endphp
+      @if ($admin || ($first['area_id'] == $user_area_id))
       <div class="col-12 col-sm-6 mb-4">
       <div class="card form-card h-100" data-id="{{$first['area_id']}}">
         <div class="card-header">
@@ -45,6 +46,7 @@ $supervisor = in_array("supervisor", $role_names);
         </div>
       </div>
       </div>
+      @endif
       @endforeach
       </div>
       <div class="buttons text-center">

@@ -79,17 +79,22 @@ class WorkshopController extends Controller
                 ->firstOrFail();
 
         $user_id = \Auth::user()->id;
-        $user_area_id = User::join('user_data', 'user_data.user_id', 'users.id')
+        $u_area_id = User::join('user_data', 'user_data.user_id', 'users.id')
                         ->join('areas', 'areas.id', 'user_data.area_id')
                         ->where('users.id', $user_id)
                         ->select('areas.id')->first();
+        if ($u_area_id) {
+            $user_area_id = $u_area_id->id;
+        } else {
+            $user_area_id = 0;
+        }
         $services = [];
         if ($ot->client_type_id == 1) { //RDI
             $rdi = Rdi::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
                     ->join('rdi_works', 'rdi_works.service_id', 'services.id')
                     ->where('rdi_works.rdi_id', $rdi->id)
-                    ->where('services.area_id', $user_area_id->id)
+                    //->where('services.area_id', $user_area_id->id)
                     ->select('areas.name as area', 'areas.id', 'rdi_works.id', 'services.area_id', 'services.name as service')
                     ->get();
         } else { //No afiliado
@@ -97,7 +102,7 @@ class WorkshopController extends Controller
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
                     ->join('cost_card_service_works', 'cost_card_service_works.service_id', 'services.id')
                     ->where('cost_card_service_works.cc_id', $cost_card->id)
-                    ->where('services.area_id', $user_area_id->id)
+                    //->where('services.area_id', $user_area_id->id)
                     ->select('areas.name as area', 'areas.id', 'cost_card_service_works.id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal')
                     ->get();
         }
@@ -106,7 +111,7 @@ class WorkshopController extends Controller
         }
         //$clientes = Client::where('enabled', 1)->get();
 
-        return view('talleres.calculate', compact('ot', 'services', 'users'));
+        return view('talleres.calculate', compact('ot', 'services', 'users', 'user_area_id'));
     }
 
     /**
@@ -118,16 +123,22 @@ class WorkshopController extends Controller
     public function store(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
-        /*$rules = array(
-            'user_id'      => 'required|array|min:1',
-            'area_id'      => 'required|array|min:1',
-        );*/
-        foreach($request->get('data') as $key => $val){
-            $rules['data.'.$key.'.user_id'] = 'required';
-            $rules['data.'.$key.'.area_id'] = 'required';
+        
+        $data = $request->input('data');
+        if ($data) {
+            foreach($request->input('data') as $key => $val){
+                $rules['data.'.$key.'.user_id'] = 'required';
+                $rules['data.'.$key.'.area_id'] = 'required';
+                $this->validate($request, $rules);
+            }
+        } else {
+            $rules = array(
+                'user_id'      => 'required|array|min:1',
+                'area_id'      => 'required|array|min:1',
+            );
             $this->validate($request, $rules);
         }
-        $data = $request->input('data');
+
         //$data_count = count($data);
         foreach ($data as $key => $item) {
             $work_shop = new Workshop();

@@ -177,7 +177,7 @@
             @foreach($ots as $ot)
             <tr>
               <td>{{$ot->razon_social}}</td>
-              <td class="text-center">OT-{{zerosatleft($ot->id, 3)}}</td>
+              <td class="text-center">OT-{{zerosatleft($ot->code, 3)}}</td>
               <td class="text-center">
                 <ul class="list-steps list-unstyled mb-0 step-{{$ot['progress']}}">
                   @for($i=1;$i<=4;$i++)

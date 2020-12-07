@@ -15,6 +15,7 @@ class CreateOtsTable extends Migration
     {
         Schema::create('ots', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->nullable();
 
             $table->bigInteger('client_id')->unsigned();
             $table->foreign('client_id')->references('id')->on('clients');

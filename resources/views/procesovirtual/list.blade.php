@@ -32,7 +32,7 @@
               @foreach($ordenes as $ot)
                 <tr>
                   <td>
-                    O.T. {{ zerosatleft($ot->id, 3) }} | {{ $ot->marca }}
+                    O.T. {{ zerosatleft($ot->code, 3) }} | {{ $ot->marca }}
                   </td>
                   <td>
                     <ul class="list-inline d-flex steps mb-0">

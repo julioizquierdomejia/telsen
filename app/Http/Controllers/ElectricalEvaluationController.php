@@ -494,6 +494,7 @@ class ElectricalEvaluationController extends Controller
                     ->select(
                         'electrical_evaluations.*',
 
+                        'ots.code as ot_code',
                         'ots.descripcion_motor',
                         'ots.codigo_motor',
                         'ots.numero_potencia',

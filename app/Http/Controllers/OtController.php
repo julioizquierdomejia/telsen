@@ -96,7 +96,8 @@ class OtController extends Controller
 
                 $created_at = date('d-m-Y', strtotime($ot->created_at));
                 $status_data = self::getOTStatus($ot, $admin, $tarjeta_costo, $evaluador, $rdi);
-                $ot_id = 'OT-'.zerosatleft($ot->id, 3);
+                //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+                $ot_id = 'OT-'.zerosatleft($ot->code, 3);
                 $status = $status_data['html'];
                 $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
                 $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -178,7 +179,8 @@ class OtController extends Controller
 
                 $created_at = date('d-m-Y', strtotime($ot->created_at));
                 $status_data = self::getOTStatus($ot, false, false, false, false);
-                $ot_id = zerosatleft($ot->id, 3);
+                //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+                $ot_id = 'OT-'.zerosatleft($ot->code, 3);
                 $status = $status_data['html'];
                 $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
                 $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -253,7 +255,8 @@ class OtController extends Controller
             $counter++;
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $ot_id = zerosatleft($ot->id, 3);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -343,7 +346,8 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $ot_id = zerosatleft($ot->id, 3);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -435,7 +439,8 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $ot_id = zerosatleft($ot->id, 3);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -527,7 +532,8 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $ot_id = zerosatleft($ot->id, 3);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -605,7 +611,8 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $ot_id = zerosatleft($ot->id, 3);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -790,7 +797,8 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $ot_id = zerosatleft($ot->id, 3);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -870,7 +878,8 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $ot_id = zerosatleft($ot->id, 3);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -972,7 +981,8 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
-            $ot_id = zerosatleft($ot->id, 3);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -1049,7 +1059,8 @@ class OtController extends Controller
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, true, true, true, true);
-            $ot_id = zerosatleft($ot->id, 3);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -1099,8 +1110,12 @@ class OtController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
         //
         //Revisar el ultimo numero de OT
-        $totalOts = Ot::count();
-        $ot_numero = $totalOts + 1;
+        $totalOts = Ot::select('code')->orderBy('id', 'desc')->first();
+        if ($totalOts) {
+            $ot_numero = $totalOts->code + 1;
+        } else {
+            $ot_numero = env('OT_CODE') + 1;
+        }
 
         $clientes = Client::where('clients.enabled', 1)
                     /*->where('client_type_id', 2)*/
@@ -1122,6 +1137,13 @@ class OtController extends Controller
     public function store(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
+
+        $totalOts = Ot::select('code')->orderBy('id', 'desc')->first();
+        if ($totalOts) {
+            $ot_numero = $totalOts->code + 1;
+        } else {
+            $ot_numero = env('OT_CODE') + 1;
+        }
         //
         $rules = [
             'client_id' => 'required|integer',
@@ -1149,7 +1171,7 @@ class OtController extends Controller
         $ot = new Ot();
         
         $ot->client_id = $request->input('client_id');
-        //$ot->fecha_creacion = $request->input('fecha_creacion');
+        $ot->code = $ot_numero;
         $ot->guia_cliente = $request->input('guia_cliente');
         $ot->solped = $request->input('solped');
         $ot->descripcion_motor = $request->input('descripcion_motor');

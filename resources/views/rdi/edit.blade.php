@@ -1,5 +1,5 @@
 @php
-  $ot_id = zerosatleft($rdi->ot_id, 3);
+  $ot_id = zerosatleft($rdi->ot_code, 3);
 @endphp
 @extends('layouts.app', ['title' => 'Editar RDI de OT-'. $ot_id])
 

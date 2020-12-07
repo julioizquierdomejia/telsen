@@ -1,5 +1,5 @@
 @php
-  $ot_id = zerosatleft($formato->ot_id, 3);
+  $ot_id = zerosatleft($formato->ot_code, 3);
 @endphp
 @extends('layouts.app', ['title' => 'Evaluación Eléctrica de OT N° '.$ot_id])
 @section('content')
@@ -625,7 +625,7 @@ $reception_list = [
             </button>
           </div>
         <div class="modal-body">
-            <p class="text-center my-3">¿Confirma aprobación de evaluación eléctrica  para OT-{{zerosatleft($formato->ot_id, 3)}}?</p>
+            <p class="text-center my-3">¿Confirma aprobación de evaluación eléctrica  para OT-{{$ot_id}}?</p>
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>

@@ -409,6 +409,7 @@ class RdiController extends Controller
                 ->join('rdi_ingresos', 'rdi_ingresos.rdi_id', '=', 'rdi.id')
                 ->select('rdi.*', 'clients.razon_social', 'motor_brands.name as marca', 'rdi_maintenance_types.id as maintenancetype', 'rdi_criticality_types.id as criticalitytype', 'ots.fecha_entrega',
                     'rdi_ingresos.placa_caracteristicas',
+                    'ots.code as ot_code',
                     'rdi_ingresos.caja_conexion',
                     'rdi_ingresos.bornera',
                     'rdi_ingresos.escudos',

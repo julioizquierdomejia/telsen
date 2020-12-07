@@ -1,5 +1,5 @@
 @php
-$ot_id = zerosatleft($ot->id, 3);
+$ot_id = zerosatleft($ot->code, 3);
 @endphp
 @extends('layouts.app', ['title' => 'Ver OT N° '.$ot_id])
 @section('content')

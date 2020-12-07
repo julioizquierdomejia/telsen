@@ -21,7 +21,7 @@
             	@foreach($rdis as $rdi)
 	              <tr>
 	                <td>
-	                  OT-{{zerosatleft($rdi->id, 3)}}
+	                  OT-{{zerosatleft($rdi->code, 3)}}
 	                </td>
 	                <td>
                     {{$rdi->razon_social}}

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Editar "O.T. ' . zerosatleft($orden->id, 3) .' | '. $orden->marca . '"' ])
+@extends('layouts.app', ['title' => 'Editar "O.T. ' . zerosatleft($orden->code, 3) .' | '. $orden->marca . '"' ])
 @section('content')
 <div class="row">
   
@@ -13,7 +13,7 @@
           <div class="row">
             <div class="col-md-5 form-group">
               <label class="col-form-label">Número de Orden</label>
-              <input type="text" class="form-control" disabled="" placeholder="Company" value="0T-{{zerosatleft($orden->id, 3)}}" name="id">
+              <input type="text" class="form-control" disabled="" placeholder="Company" value="0T-{{zerosatleft($orden->code, 3)}}" name="id">
             </div>
             <div class="col-md-4 form-group">
               <label class="col-form-label">Fecha de creación <span class="text-danger">(*)</span></label>

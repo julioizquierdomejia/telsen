@@ -12,7 +12,7 @@
           <div class="row">
             <div class="col-md-2 form-group">
               <label class="col-form-label">Número de Orden</label>
-              <input type="text" class="form-control" disabled="" value="OT-{{zerosatleft($ot->id, 3)}}">
+              <input type="text" class="form-control" disabled="" value="OT-{{zerosatleft($ot->code, 3)}}">
             </div>
             <div class="col-md-5 form-group">
               <label class="col-form-label">Razón social</label>

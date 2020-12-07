@@ -9,7 +9,7 @@ $supervisor = in_array("supervisor", $role_names);
 @endphp
 <div class="row">
   <div class="col-md-12">
-    <h5 class="h5">Taller para OT-{{zerosatleft($ot->id, 3)}}</h5>
+    <h5 class="h5">Taller para OT-{{zerosatleft($ot->code, 3)}}</h5>
     <form class="form-group" method="POST" action="{{route('workshop.store', $ot)}}" enctype="multipart/form-data">
       @csrf
       <div class="row">

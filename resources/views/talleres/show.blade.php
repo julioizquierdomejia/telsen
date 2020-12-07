@@ -10,7 +10,7 @@ $status_last = $ot_status->last();
 			<div class="card-header">
 				<h5 class="card-title d-flex justify-content-between align-items-center">
 				<span>
-					Orden de Trabajo {{zerosatleft($ot->id, 3)}}
+					Orden de Trabajo {{zerosatleft($ot->code, 3)}}
                     <span class="d-block">
                     @if ($status_last)
                       @if($status_last->name == "cc")

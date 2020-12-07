@@ -69,7 +69,7 @@ array (
             </div>
             <div class="col-6 col-md-3 mb-2">
               <label class="col-form-label">OT</label>
-              <input type="text" class="form-control" readonly="" value="OT-{{zerosatleft($ot->id, 3)}}">
+              <input type="text" class="form-control" readonly="" value="OT-{{zerosatleft($ot->code, 3)}}">
             </div>
             <div class="col-6 col-md-3 mb-2">
               <label class="col-form-label">Fecha de creación</label>

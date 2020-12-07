@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         //
         //colocamos en variables roles para poder relacionarlos
         $role_superadmin = Role::where('name', 'superadmin')->first();
-        $role_admin = Role::where('name', 'admin')->first();
+        /*$role_admin = Role::where('name', 'admin')->first();
         $role_user = Role::where('name', 'user')->first();
         $role_coordinator = Role::where('name', 'supervisor')->first();
         $role_worker = Role::where('name', 'worker')->first();
@@ -33,183 +33,11 @@ class UserSeeder extends Seeder
         $aprobador_cotizacion_tarjeta_de_costo = Role::where('name', 'aprobador_cotizacion_tarjeta_de_costo')->first();
         $rdi = Role::where('name', 'rdi')->first();
         $aprobador_rdi = Role::where('name', 'aprobador_rdi')->first();
-        $fecha_de_entrega = Role::where('name', 'fecha_de_entrega')->first();
-        
-
-
-        /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-        /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-        $user = new User();
-        $user->email = 'crear@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'crear';
-        $user_data->last_name = 'crear';
-        $user_data->mother_last_name = 'crear';
-        $user_data->user_phone = 912345678;
-        $user_data->area_id = 1;
-        $user_data->save();
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($crear_ot);
-
-
-        $user = new User();
-        $user->email = 'evaluar@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'evaluar';
-        $user_data->last_name = 'evaluar';
-        $user_data->mother_last_name = 'evaluar';
-        $user_data->user_phone = 912345678;
-        $user_data->area_id = 1;
-        $user_data->save();
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($evaluador);
-
-        $user = new User();
-        $user->email = 'aprobarevaluaciones@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'aprobarevaluaciones';
-        $user_data->last_name = 'aprobarevaluaciones';
-        $user_data->mother_last_name = 'aprobarevaluaciones';
-        $user_data->user_phone = 912345678;
-        $user_data->area_id = 1;
-        $user_data->save();
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($aprobador_de_evaluaciones);
-
-        $user = new User();
-        $user->email = 'tarjeta@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'tarjeta';
-        $user_data->last_name = 'tarjeta';
-        $user_data->mother_last_name = 'tarjeta';
-        $user_data->user_phone = 912345678;
-        $user_data->area_id = 1;
-        $user_data->save();
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($tarjeta_de_costo);
-
-        $user = new User();
-        $user->email = 'cotizar_tarjeta@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'cotizar_tarjeta';
-        $user_data->last_name = 'cotizar_tarjeta';
-        $user_data->mother_last_name = 'cotizar_tarjeta';
-        $user_data->user_phone = 912345678;
-        $user_data->area_id = 1;
-        $user_data->save();
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($cotizador_tarjeta_de_costo);
-
-        $user = new User();
-        $user->email = 'aprobarcotizacion@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'aprobarcotizacion';
-        $user_data->last_name = 'aprobarcotizacion';
-        $user_data->mother_last_name = 'aprobarcotizacion';
-        $user_data->user_phone = 912345678;
-        $user_data->area_id = 1;
-        $user_data->save();
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($aprobador_cotizacion_tarjeta_de_costo);
-
-        $user = new User();
-        $user->email = 'rdi@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'rdi';
-        $user_data->last_name = 'rdi';
-        $user_data->mother_last_name = 'rdi';
-        $user_data->user_phone = 912345678;
-        $user_data->area_id = 1;
-        $user_data->save();
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($rdi);
-
-        $user = new User();
-        $user->email = 'aprobarrdi@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'aprobarrdi';
-        $user_data->last_name = 'aprobarrdi';
-        $user_data->mother_last_name = 'aprobarrdi';
-        $user_data->user_phone = 912345678;
-        $user_data->area_id = 1;
-        $user_data->save();
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($aprobador_rdi);
-
-
-        $user = new User();
-        $user->email = 'fecha@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'fecha';
-        $user_data->last_name = 'fecha';
-        $user_data->mother_last_name = 'fecha';
-        $user_data->user_phone = 912345678;
-        $user_data->area_id = 1;
-        $user_data->save();
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($fecha_de_entrega);
-
-
-        
-
-        /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-        /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
-
-        /*$user = new User();
-        $user->email = 'julio.izquierdo.mejia@gmail.com';
-        $user->password = bcrypt('M4r14Jul14123456');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->user_id = $user->id;
-        $user_data->name = 'julio';
-        $user_data->last_name = 'izquierdo';
-        $user_data->mother_last_name = 'mejia';
-        $user_data->user_phone = 912345678;
-        $user_data->save();
-
-        //vamos a relacionar roles con usuarios
-        $user->roles()->attach($role_superadmin);*/
+        $fecha_de_entrega = Role::where('name', 'fecha_de_entrega')->first();*/
 
         $user = new User();
         $user->email = 'admin@gmail.com';
-        $user->password = bcrypt('admin');
+        $user->password = bcrypt('B<eWB$J@');
         $user->enabled = 1;
         $user->save();
         $user_data = new UserData();
@@ -225,7 +53,7 @@ class UserSeeder extends Seeder
 
         //-------------------
         //ADMINISTRADOR
-        $user = new User();
+        /*$user = new User();
         $user->email = 'omer.caro.rios@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
@@ -594,21 +422,6 @@ class UserSeeder extends Seeder
         $user_data->save();
         $user->roles()->attach($role_worker);
 
-        /*$user = new User();
-        $user->email = 'andre.ayasta.ibanez@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->name = 'ANDRE ALBERTO';
-        $user_data->last_name = 'AYASTA';
-        $user_data->mother_last_name = 'IBAÑEZ';
-        $user_data->user_phone = 912345678;
-        $user_data->user_id = $user->id;
-        $user_data->area_id = 12;
-        $user_data->save();
-        $user->roles()->attach($role_worker);*/
-
         $user = new User();
         $user->email = 'felix.puse.herrera@gmail.com';
         $user->password = bcrypt('12345678');
@@ -745,23 +558,6 @@ class UserSeeder extends Seeder
         $user_data->save();
         $user->roles()->attach($role_worker);
 
-        //Coordinador
-        /*$user = new User();
-        $user->email = 'takechi.gutarra.arias@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->name = 'TAKECHI DARIO';
-        $user_data->last_name = 'GUTARRA';
-        $user_data->mother_last_name = 'ARIAS';
-        $user_data->area_id = 14;
-        $user_data->user_phone = 912345678;
-        $user_data->user_id = $user->id;
-        $user_data->user_id = $user->id;
-        $user_data->save();
-        $user->roles()->attach($role_coordinator);*/
-
         $user = new User();
         $user->email = 'mario.ramos.mora@gmail.com';
         $user->password = bcrypt('12345678');
@@ -789,82 +585,6 @@ class UserSeeder extends Seeder
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
         $user_data->area_id = 11;
-        $user_data->save();
-        $user->roles()->attach($role_worker);
-
-        //Coordinador
-        /*$user = new User();
-        $user->email = 'ricardo.zafra.rengifo@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->name = 'RICARDO ARTURO';
-        $user_data->last_name = 'ZAFRA';
-        $user_data->mother_last_name = 'RENGIFO';
-        $user_data->user_phone = 912345678;
-        $user_data->user_id = $user->id;
-        $user_data->area_id = 3;
-        $user_data->save();
-        $user->roles()->attach($role_coordinator);
-
-        $user = new User();
-        $user->email = 'francisco.toribio.vergara@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->name = 'FRANCISCO ALFONSO';
-        $user_data->last_name = 'TORIBIO';
-        $user_data->mother_last_name = 'VERGARA';
-        $user_data->user_phone = 912345678;
-        $user_data->user_id = $user->id;
-        $user_data->area_id = 4;
-        $user_data->save();
-        $user->roles()->attach($role_worker);
-
-        $user = new User();
-        $user->email = 'carlos.tume.diaz@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->name = 'CARLOS WALTHER';
-        $user_data->last_name = 'TUME';
-        $user_data->mother_last_name = 'DIAZ';
-        $user_data->user_phone = 912345678;
-        $user_data->user_id = $user->id;
-        $user_data->area_id = 4;
-        $user_data->save();
-        $user->roles()->attach($role_worker);
-
-        $user = new User();
-        $user->email = 'manuel.renjifo.torres@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->name = 'MANUEL FERNANDO';
-        $user_data->last_name = 'RENJIFO';
-        $user_data->mother_last_name = 'TORRES';
-        $user_data->user_phone = 912345678;
-        $user_data->user_id = $user->id;
-        $user_data->area_id = 5;
-        $user_data->save();
-        $user->roles()->attach($role_worker);
-
-        $user = new User();
-        $user->email = 'edward.romero.pasion@gmail.com';
-        $user->password = bcrypt('12345678');
-        $user->enabled = 1;
-        $user->save();
-        $user_data = new UserData();
-        $user_data->name = 'EDWARD ENRIQUE';
-        $user_data->last_name = 'ROMERO';
-        $user_data->mother_last_name = 'PASION';
-        $user_data->user_phone = 912345678;
-        $user_data->user_id = $user->id;
-        $user_data->area_id = 5;
         $user_data->save();
         $user->roles()->attach($role_worker);*/
 

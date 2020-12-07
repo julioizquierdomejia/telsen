@@ -6,7 +6,6 @@
 $role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $supervisor = in_array("supervisor", $role_names);
-var_dump(Auth::user()->toArray());
 @endphp
 <div class="row">
   <div class="col-md-12">

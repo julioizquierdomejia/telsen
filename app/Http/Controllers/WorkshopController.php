@@ -77,20 +77,28 @@ class WorkshopController extends Controller
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
+
+        $user_id = \Auth::user()->id;
+        $user_area_id = User::join('user_data', 'user_data.user_id', 'users.id')
+                        ->join('areas', 'areas.id', 'user_data.area_id')
+                        ->where('users.id', $user_id)
+                        ->select('areas.id')->first();
         $services = [];
         if ($ot->client_type_id == 1) { //RDI
             $rdi = Rdi::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
                     ->join('rdi_works', 'rdi_works.service_id', 'services.id')
                     ->where('rdi_works.rdi_id', $rdi->id)
-                    ->select('areas.name as area', 'rdi_works.id', 'services.area_id', 'services.name as service')
+                    ->where('services.area_id', $user_area_id->id)
+                    ->select('areas.name as area', 'areas.id', 'rdi_works.id', 'services.area_id', 'services.name as service')
                     ->get();
         } else { //No afiliado
             $cost_card = CostCard::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
                     ->join('cost_card_service_works', 'cost_card_service_works.service_id', 'services.id')
                     ->where('cost_card_service_works.cc_id', $cost_card->id)
-                    ->select('areas.name as area', 'cost_card_service_works.id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal')
+                    ->where('services.area_id', $user_area_id->id)
+                    ->select('areas.name as area', 'areas.id', 'cost_card_service_works.id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal')
                     ->get();
         }
         foreach($services_list as $key => $item) {

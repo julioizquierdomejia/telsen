@@ -1243,7 +1243,7 @@ class OtController extends Controller
             $ot_id = 'OT-'.zerosatleft($ot->code, 3);
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/formatos/electrical/'.$ot->id.'/evaluar" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a>';
+            $tools = '<a href="/formatos/mechanical/'.$ot->id.'/evaluar" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a>';
 
             $ots_array[] = array(
               "created_at" => $created_at,

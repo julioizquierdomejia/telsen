@@ -16,8 +16,73 @@ class RotorCodRodajePt2Controller extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
         
-        $cods = RotorCodRodajePt2::where('enabled', 1)->get();
-        return view('cods.index', compact('cods'));
+        //$codes = RotorCodRodajePt2::where('enabled', 1)->get();
+        return view('rotorcoderpt.2.index'
+            //, compact('codes')
+        );
+    }
+
+    public function list(Request $request)
+    {
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = RotorCodRodajePt2::select('count(*) as allcount')
+                ->where('enabled', 1)->count();
+        $totalRecordswithFilter = RotorCodRodajePt2::select('count(*) as allcount')
+                ->where(function($query) use ($searchValue) {
+                    $query->where('asiento_rodaje', 'like', '%'.$searchValue.'%')
+                        ->orWhere('alojamiento_rodaje', 'like', '%'.$searchValue.'%');
+                })
+                ->where('enabled', 1)
+                ->count();
+
+        $records = RotorCodRodajePt2::select('*')
+                    ->skip($start)
+                    ->take($rowperpage)
+                    ->where(function($query) use ($searchValue) {
+                        $query->where('asiento_rodaje', 'like', '%'.$searchValue.'%')
+                            ->orWhere('alojamiento_rodaje', 'like', '%'.$searchValue.'%');
+                    })
+                    ->orderBy($columnName, $columnSortOrder)
+
+                    ->where('enabled', 1)->get();
+
+        $items_array = [];
+
+        foreach ($records as $key => $item) {
+            $status = $item->enabled == 1 ? '<span class="badge badge-success py-2 px-3">Activo</span>' : '<span class="badge badge-danger py-2 px-3">Inactivo</span>';
+            $tools = '<a href="/rotorcoderodajept/1/'.$item->id.'/editar" class="btn btn-warning"><i class="fal fa-edit"></i></a>';
+
+            $items_array[] = array(
+              "id" => $item->id,
+              "asiento_rodaje" => $item->asiento_rodaje,
+              "alojamiento_rodaje" => $item->alojamiento_rodaje,
+              "enabled" => $status,
+              "tools" => $tools
+            );
+        };
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $items_array
+        );
+
+        echo json_encode($response);
+        exit;
     }
 
     /**
@@ -29,7 +94,7 @@ class RotorCodRodajePt2Controller extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        return view('clientes.create');
+        return view('rotorcoderpt.2.create');
     }
 
     /**
@@ -61,9 +126,9 @@ class RotorCodRodajePt2Controller extends Controller
 
         $rotor_cod->save();
 
-        activitylog('rotor cod rodaje pt2', 'store', null, $rotor_cod->toArray());
+        activitylog('rotorcoderpt2', 'store', null, $rotor_cod->toArray());
 
-        return redirect('rotores');
+        return redirect('rotorcoderpt2');
     }
 
     /**
@@ -74,8 +139,8 @@ class RotorCodRodajePt2Controller extends Controller
      */
     public function show(Request $request, $id)
     {
-        $cods = RotorCodRodajePt2::where('enabled', 1)->findOrFail($id);
-        return $cods;
+        $code = RotorCodRodajePt2::where('enabled', 1)->findOrFail($id);
+        return $code;
 
         //return view('clientes.show', compact('cliente'));
         
@@ -91,8 +156,8 @@ class RotorCodRodajePt2Controller extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
 
-        $cods = RotorCodRodajePt2::where('enabled', 1)->findOrFail($id);
-        return view('clientes.edit', compact('cods'));
+        $code = RotorCodRodajePt2::where('enabled', 1)->findOrFail($id);
+        return view('rotorcoderpt.2.edit', compact('code'));
     }
 
     /**
@@ -125,11 +190,11 @@ class RotorCodRodajePt2Controller extends Controller
 
         $rotor_cod->save();
 
-        activitylog('rotor cod rodaje pt2', 'update', $original_data, $client->toArray());
+        activitylog('rotorcoderpt2', 'update', $original_data, $client->toArray());
 
         // redirect
         \Session::flash('message', 'Successfully updated model!');
-        return redirect('clientes');
+        return redirect('rotorcoderpt2');
     }
 
     /**

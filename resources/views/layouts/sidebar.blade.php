@@ -34,6 +34,8 @@
         $is_cc = request()->segment(1) == 'tarjeta-costo';
         $is_cz = request()->segment(1) == 'cotizaciones';
         $is_delivery = request()->segment(1) == 'fecha_entrega';
+
+        $is_rotorcode = request()->segment(1) == 'rotorcoderodajept';
       @endphp
       <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
         <a href="{{ route('home')}}">
@@ -184,6 +186,27 @@
           <i class="fas fa-list-ul mr-1"></i>
           <p>Servicios</p>
         </a>
+      </li>
+
+      <li class="{{ $is_rotorcode ? 'active' : '' }}">
+        <a class="mr-0" href="#" data-toggle="collapse" data-target="#collapseCC" aria-expanded="true">
+          <i class="fas fa-barcode mr-1"></i>
+          <p>Código Rotor Pt <i class="fal fa-angle-down float-right"></i></p>
+        </a>
+        <ul class="collapse list-inline pl-3 {{ $is_rotorcode ? 'show' : '' }}" id="collapseCC">
+          <li class="{{ request()->routeIs('rotorcoderpt1.index') ? 'active' : '' }}">
+            <a class="mr-0" href="{{route('rotorcoderpt1.index')}}">
+              <i class="fas fa-barcode mr-1"></i>
+              <p>1</p>
+            </a>
+          </li>
+          <li class="{{ request()->routeIs('rotorcoderpt2.index') ? 'active' : '' }}">
+            <a class="mr-0" href="{{route('rotorcoderpt2.index')}}">
+              <i class="fas fa-barcode mr-1"></i>
+              <p>2</p>
+            </a>
+          </li>
+        </ul>
       </li>
       @endif
     @endif

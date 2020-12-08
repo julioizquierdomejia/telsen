@@ -63,7 +63,7 @@ class RotorCodRodajePt2Controller extends Controller
 
         foreach ($records as $key => $item) {
             $status = $item->enabled == 1 ? '<span class="badge badge-success py-2 px-3">Activo</span>' : '<span class="badge badge-danger py-2 px-3">Inactivo</span>';
-            $tools = '<a href="/rotorcoderodajept/1/'.$item->id.'/editar" class="btn btn-warning"><i class="fal fa-edit"></i></a>';
+            $tools = '<a href="/rotorcoderodajept/2/'.$item->id.'/editar" class="btn btn-warning"><i class="fal fa-edit"></i></a>';
 
             $items_array[] = array(
               "id" => $item->id,

@@ -65,11 +65,29 @@ class OtController extends Controller
         $totalRecords = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                ->where('ots.enabled', 1)->count();
+                ->where('ots.enabled', 1)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved');
+                    $query->orWhere("status.name", "=", 'rdi_disapproved');
+                })
+                ->count();
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)->count();
+                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved');
+                    $query->orWhere("status.name", "=", 'rdi_disapproved');
+                })
+                ->count();
 
         $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -80,41 +98,40 @@ class OtController extends Controller
                     ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
                     ->orderBy($columnName, $columnSortOrder)
 
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'ee_disapproved');
+                        $query->orWhere("status.name", "=", 'me_disapproved');
+                    })
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'cc_disapproved');
+                        $query->orWhere("status.name", "=", 'rdi_disapproved');
+                    })
+
                     ->where('ots.enabled', 1)->get();
 
-        $counter = $start;
         $ots_array = [];
 
         foreach ($records as $key => $ot) {
-            $ot_status_arr = array_column($ot->statuses->toArray(), "name");
-            if (!in_array('cc_disapproved', $ot_status_arr) && 
-                !in_array('rdi_disapproved', $ot_status_arr) && 
-                !in_array('ee_disapproved', $ot_status_arr) && 
-                !in_array('me_disapproved', $ot_status_arr)
-                ) {
-                $counter++;
+            $created_at = date('d-m-Y', strtotime($ot->created_at));
+            $status_data = self::getOTStatus($ot, $admin, $tarjeta_costo, $evaluador, $rdi);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
+            $status = $status_data['html'];
+            $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
+            $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.
+            ($admin ? '<a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>' : ' ')
+            . $status_data['eval'];
 
-                $created_at = date('d-m-Y', strtotime($ot->created_at));
-                $status_data = self::getOTStatus($ot, $admin, $tarjeta_costo, $evaluador, $rdi);
-                //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
-                $ot_id = 'OT-'.zerosatleft($ot->code, 3);
-                $status = $status_data['html'];
-                $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
-                $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-                $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.
-                ($admin ? '<a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>' : ' ')
-                . $status_data['eval'];
-
-                $ots_array[] = array(
-                  "created_at" => $created_at,
-                  "id" => $ot_id,
-                  "status" => $status,
-                  "razon_social" => $client,
-                  "numero_potencia" => $potencia ? $potencia :   '-',
-                  "fecha_entrega" => $status_data['fecha_entrega'],
-                  "tools" => $tools
-                );
-            }
+            $ots_array[] = array(
+              "created_at" => $created_at,
+              "id" => $ot_id,
+              "status" => $status,
+              "razon_social" => $client,
+              "numero_potencia" => $potencia ? $potencia :   '-',
+              "fecha_entrega" => $status_data['fecha_entrega'],
+              "tools" => $tools
+            );
         };
 
         $response = array(
@@ -1089,6 +1106,165 @@ class OtController extends Controller
         exit;
     }
 
+    //Eval. Electrica
+    public function ee_list(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where('ots.enabled', 1)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee');
+                })
+                ->count();
+        $totalRecordswithFilter = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee');
+                })
+                ->count();
+
+        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+
+                    ->skip($start)
+                    ->take($rowperpage)
+                    ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
+                    ->orderBy($columnName, $columnSortOrder)
+
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'ee');
+                    })
+
+                    ->where('ots.enabled', 1)->get();
+
+        $ots_array = [];
+
+        foreach ($records as $key => $ot) {
+            $created_at = date('d-m-Y', strtotime($ot->created_at));
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
+            $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
+            $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
+            $tools = '<a href="/formatos/electrical/'.$ot->id.'/evaluar" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a>';
+
+            $ots_array[] = array(
+              "created_at" => $created_at,
+              "id" => $ot_id,
+              "razon_social" => $client,
+              "numero_potencia" => $potencia ? $potencia :   '-',
+              "tools" => $tools
+            );
+        };
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $ots_array
+        );
+
+        echo json_encode($response);
+        exit;
+    }
+    //Eval. Mecánica
+    public function me_list(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where('ots.enabled', 1)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me');
+                })
+                ->count();
+        $totalRecordswithFilter = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where('clients.razon_social', 'like', '%' .$searchValue . '%')->where('ots.enabled', 1)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me');
+                })
+                ->count();
+
+        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+
+                    ->skip($start)
+                    ->take($rowperpage)
+                    ->where('clients.razon_social', 'like', '%' .$searchValue . '%')
+                    ->orderBy($columnName, $columnSortOrder)
+
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'me');
+                    })
+
+                    ->where('ots.enabled', 1)->get();
+
+        $ots_array = [];
+
+        foreach ($records as $key => $ot) {
+            $created_at = date('d-m-Y', strtotime($ot->created_at));
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
+            $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
+            $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
+            $tools = '<a href="/formatos/electrical/'.$ot->id.'/evaluar" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a>';
+
+            $ots_array[] = array(
+              "created_at" => $created_at,
+              "id" => $ot_id,
+              "razon_social" => $client,
+              "numero_potencia" => $potencia ? $potencia :   '-',
+              "tools" => $tools
+            );
+        };
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $ots_array
+        );
+
+        echo json_encode($response);
+        exit;
+    }
+
     public function list(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
@@ -1111,8 +1287,8 @@ class OtController extends Controller
         //
         //Revisar el ultimo numero de OT
         $totalOts = Ot::select('code')->orderBy('id', 'desc')->first();
-        if (empty($totalOts->code) !== false) {
-            $ot_numero = ($totalOts->code != 0 ?? 0) + 1;
+        if (empty($totalOts->code) === false) {
+            $ot_numero = $totalOts->code + 1;
         } else {
             $ot_numero = env('OT_CODE') + 1;
         }
@@ -1139,7 +1315,7 @@ class OtController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $totalOts = Ot::select('code')->orderBy('id', 'desc')->first();
-        if (empty($totalOts->code) !== false) {
+        if (empty($totalOts->code) === false) {
             $ot_numero = $totalOts->code + 1;
         } else {
             $ot_numero = env('OT_CODE') + 1;

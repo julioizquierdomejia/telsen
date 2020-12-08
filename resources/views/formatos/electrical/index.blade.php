@@ -10,10 +10,13 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-separate" id="tablas">
+          <table class="table table-separate data-table ee-table">
             <thead class="text-primary">
               <th>
-                OT Id
+                Fecha OT
+              </th>
+              <th>
+                N° de OT
               </th>
               <th>
                 Cliente
@@ -26,7 +29,7 @@
               </th>
             </thead>
             <tbody>
-            	@foreach($ots as $ot)
+            	{{-- @foreach($ots as $ot)
 	              <tr>
 	                <td>
 	                  OT-{{zerosatleft($ot->code, 3)}}
@@ -41,7 +44,7 @@
 	                	<a href="{{ route('formatos.electrical.evaluate', $ot) }}" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a>
 	                </td>
 	              </tr>
-              @endforeach
+              @endforeach --}}
             </tbody>
           </table>
         </div>
@@ -49,5 +52,28 @@
     </div>
   </div>
 </div>
-
+@endsection
+@section('javascript')
+<script>
+  $(document).ready(function () {
+    $('.ee-table').DataTable({
+       processing: true,
+       serverSide: true,
+       ajax: "{{route('ordenes.ee_ots')}}",
+       pageLength: 5,
+       lengthMenu: [ 5, 25, 50 ],
+       columns: [
+          { data: 'created_at', class: 'text-nowrap' },
+          { data: 'id', class: 'otid' },
+          { data: 'razon_social' },
+          { data: 'numero_potencia', class: 'text-left' },
+          { data: 'tools', class: 'text-left text-nowrap'}
+      ],
+       columnDefs: [
+        { orderable: false, targets: 4 }
+      ],
+      language: dLanguage
+    });
+  })
+</script>
 @endsection

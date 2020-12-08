@@ -29,8 +29,7 @@ class ElectricalEvaluationController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
 
-        //$ots = Ot::join('status_ot', 'status_ot.ot_id', '=', 'status_ot.ot_id')
-        $ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+        /*$ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                         ->select('ots.*', 'clients.razon_social')
                         ->where('ots.enabled', '=', 1)
                         ->where('clients.enabled', '=', 1)
@@ -39,9 +38,11 @@ class ElectricalEvaluationController extends Controller
                         ->whereDoesntHave('statuses', function ($query) {
                             $query->where("status.name", "=", 'ee');
                         })
-                        ->get();
+                        ->get();*/
 
-        return view('formatos.electrical.index', compact('ots'));
+        return view('formatos.electrical.index'
+            /*, compact('ots')*/
+        );
     }
 
     /**

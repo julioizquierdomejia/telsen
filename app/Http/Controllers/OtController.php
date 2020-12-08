@@ -1139,7 +1139,7 @@ class OtController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $totalOts = Ot::select('code')->orderBy('id', 'desc')->first();
-        if ($totalOts) {
+        if (!empty($totalOts->code)) {
             $ot_numero = $totalOts->code + 1;
         } else {
             $ot_numero = env('OT_CODE') + 1;

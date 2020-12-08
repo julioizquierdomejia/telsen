@@ -26,7 +26,7 @@ class CostCardController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
         
-        $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+        $ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
@@ -38,15 +38,22 @@ class CostCardController extends Controller
                         ->where('clients.client_type_id', 2)
                         ->where('clients.enabled', 1)
                         //->groupBy('ots.id')
+                        ->whereHas('statuses', function ($query) {
+                            $query->where("status.name", "=", 'me_approved');
+                            $query->where("status.name", "=", 'ee_approved');
+                        })
+                        ->whereDoesntHave('statuses', function ($query) {
+                            $query->where("status.name", "=", 'cc');
+                        })
                         ->get();
 
-        $ots = [];
+        /*$ots = [];
         foreach ($_ots as $key => $ot) {
             $array = array_column($ot->statuses->toArray(), "name");
             if (in_array("me_approved", $array) && in_array("ee_approved", $array) && !in_array("cc", $array)) {
                 $ots[] = $ot;
             }
-        }
+        }*/
         return view('costos.index', compact('ots'));
     }
 

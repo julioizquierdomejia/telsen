@@ -8,6 +8,8 @@ use App\Models\Status;
 use App\Models\Service;
 use App\Models\Rdi;
 use App\Models\RdiServiceCost;
+use App\Models\MechanicalEvaluationWork;
+use App\Models\ElectricalEvaluationWork;
 use App\Models\CostCard;
 use App\Models\Area;
 use App\Models\Client;
@@ -88,6 +90,38 @@ class WorkshopController extends Controller
         } else {
             $user_area_id = 0;
         }
+
+        $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
+                ->select(
+                    'electrical_evaluation_works.description',
+                    'electrical_evaluation_works.medidas',
+                    'electrical_evaluation_works.qty',
+                    'electrical_evaluation_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('electrical_evaluations.ot_id', $ot->id)
+                ->get();
+
+        $works_mec = MechanicalEvaluationWork::join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
+                ->select(
+                    'mechanical_evaluation_works.description',
+                    'mechanical_evaluation_works.medidas',
+                    'mechanical_evaluation_works.qty',
+                    'mechanical_evaluation_works.personal',
+                    'services.name as service',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('mechanical_evaluations.ot_id', $ot->id)
+                ->get();
+
         $services = [];
         if ($ot->client_type_id == 1) { //RDI
             $rdi = Rdi::where('ot_id', $ot->id)->firstOrFail();
@@ -107,6 +141,12 @@ class WorkshopController extends Controller
                     ->get();
         }
         foreach($services_list as $key => $item) {
+            $services[$item->area_id][$key] = $item->toArray();
+        }
+        foreach($works_el as $key => $item) {
+            $services[$item->area_id][$key] = $item->toArray();
+        }
+        foreach($works_mec as $key => $item) {
             $services[$item->area_id][$key] = $item->toArray();
         }
         //$clientes = Client::where('enabled', 1)->get();

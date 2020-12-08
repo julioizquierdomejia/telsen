@@ -314,12 +314,12 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 								@foreach($services as $key => $work)
 								<tr>
 									<td class="cell-counter"><span class="number"></span></td>
-									<td><span class="form-control h-auto">{{$work->area}}</span></td>
-									<td><span class="form-control h-auto">{{$work->service}}</span></td>
-									<td><span class="form-control h-auto">{{$work->description}}</span></td>
-									<td><span class="form-control h-auto">{{$work->medidas}}</span></td>
-									<td><span class="form-control h-auto">{{$work->qty}}</span></td>
-									<td><span class="form-control h-auto">{{$work->personal}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->area}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->service}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->description}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->medidas}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->qty}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->personal}}</span></td>
 								</tr>
 								@endforeach
 								@else

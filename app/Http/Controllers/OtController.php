@@ -1111,7 +1111,7 @@ class OtController extends Controller
         //
         //Revisar el ultimo numero de OT
         $totalOts = Ot::select('code')->orderBy('id', 'desc')->first();
-        if ($totalOts) {
+        if (!empty($totalOts->code)) {
             $ot_numero = ($totalOts->code != 0 ?? 0) + 1;
         } else {
             $ot_numero = env('OT_CODE') + 1;

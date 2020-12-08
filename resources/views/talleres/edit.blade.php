@@ -132,29 +132,3 @@
   </div>
 </div>
 @endsection
-@section('javascript')
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script> -->
-<script type="text/javascript">
-$(document).ready(function(){
-//$('.dropdown2').select2();
-$.ajax({
-url: "/clientes/<?= $orden->client_id ?>/ver",
-data: {},
-type: 'GET',
-beforeSend: function () {
-},
-complete: function () {
-},
-success: function (response) {
-$('.razon_social').val(response.razon_social);
-$('.direccion').val(response.direccion);
-$('.telefono').val(response.telefono);
-$('.celular').val(response.celular);
-$('.telefono_contacto').val(response.telefono_contacto);
-},
-error: function (request, status, error) { // if error occured
-}
-});
-})
-</script>
-@endsection

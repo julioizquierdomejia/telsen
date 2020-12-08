@@ -166,6 +166,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('talleres/{area}/editar', [App\Http\Controllers\WorkshopController::class, 'update'])->name('workshop.update');
 	Route::get('talleres/{ot}/calcular', [App\Http\Controllers\WorkshopController::class, 'calculate'])->name('workshop.calculate');
 
+	Route::get('talleres/list', [App\Http\Controllers\OtController::class, 'list_workshop'])->name('talleres.list_workshop');
+
 
 	//Codigos Rotor
 	//1

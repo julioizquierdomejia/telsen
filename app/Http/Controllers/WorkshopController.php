@@ -27,23 +27,23 @@ class WorkshopController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
         
-        $ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+        /*$ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
-                        ->select('ots.*', 'clients.razon_social', 'clients.id as client_type_id', 'client_types.name as client_type', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw'
-                            //,'cost_cards.id as cost_card'
-                        )
-                        ->whereHas('statuses', function ($query) {
-                            $query->where("status.name", "=", 'delivery_generated');
-                        })
-                        ->where('ots.enabled', 1)
-                        ->where('clients.enabled', 1)
-                        //->groupBy('ots.id')
-                        ->get();
+                ->select('ots.*', 'clients.razon_social', 'clients.id as client_type_id', 'client_types.name as client_type', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.conex', 'mechanical_evaluations.hp_kw'
+                )
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->where('ots.enabled', 1)
+                ->where('clients.enabled', 1)
+                ->get();*/
 
-        return view('talleres.index', compact('ots'));
+        return view('talleres.index'
+            //, compact('ots')
+        );
     }
 
     /**

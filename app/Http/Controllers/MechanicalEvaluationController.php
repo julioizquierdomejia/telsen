@@ -352,7 +352,7 @@ class MechanicalEvaluationController extends Controller
 
         $formato = MechanicalEvaluation::
                 join('ots', 'ots.id', '=', 'mechanical_evaluations.ot_id')
-                ->select('mechanical_evaluations*', 'ots.code as ot_code')
+                ->select('mechanical_evaluations.*', 'ots.code as ot_code')
                 ->where('mechanical_evaluations.id', $id)
                 ->firstOrFail();
         $works = MechanicalEvaluationWork::where('me_id', $formato->id)

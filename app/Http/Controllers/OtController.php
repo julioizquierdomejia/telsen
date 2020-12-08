@@ -304,8 +304,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-            <button data-href="/ordenes/'. $ot->id .'/activar" class="btn btn-sm btn-primary btn-enablingot"><i class="far fa-trash-restore"></i> Restaurar</button>';
+            $tools = '<button data-href="/ordenes/'. $ot->id .'/activar" class="btn btn-sm btn-primary btn-enablingot"><i class="far fa-trash-restore"></i> Restaurar</button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,

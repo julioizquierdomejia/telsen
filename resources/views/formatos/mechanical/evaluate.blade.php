@@ -464,17 +464,17 @@ array (
                   </td>
                   <td width="120">
                     <input type="text" class="form-control mt-0
-                    @error("works[{{$key}}][description]") is-invalid @enderror"
+                    @error("works.".$key.".description") is-invalid @enderror"
                     placeholder="Descripción" value="{{old('works')[$key]['description']}}" name="works[{{$key}}][description]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control mt-0 @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[$key]['medidas']}}" name="works[{{$key}}][medidas]">
+                    <input type="text" class="form-control mt-0 @error("works.".$key.".medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[$key]['medidas']}}" name="works[{{$key}}][medidas]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control mt-0 @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[$key]['qty']}}" name="works[{{$key}}][qty]">
+                    <input type="text" class="form-control mt-0 @error("works.".$key.".qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[$key]['qty']}}" name="works[{{$key}}][qty]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control mt-0 @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[$key]['personal']}}" name="works[{{$key}}][personal]">
+                    <input type="text" class="form-control mt-0 @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{old('works')[$key]['personal']}}" name="works[{{$key}}][personal]">
                   </td>
                   <td>
                     <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>

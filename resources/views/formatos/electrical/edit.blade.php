@@ -107,7 +107,7 @@
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Voltaje</label>
-              <input type="number" min="1" class="form-control @error('ot_voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('ot_voltaje', $ot->voltaje)}}" name="ot_voltaje">
+              <input type="text" class="form-control @error('ot_voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('ot_voltaje', $ot->voltaje)}}" name="ot_voltaje">
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Velocidad</label>

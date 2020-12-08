@@ -376,17 +376,17 @@
                   </td>
                   <td width="120">
                     <input type="text" class="form-control
-                    @error("works[{{$key}}][description]") is-invalid @enderror"
+                    @error("works.".$key.".description") is-invalid @enderror"
                     placeholder="Descripción" value="{{old('works.$key.description', $item['description'])}}" name="works[{{$key}}][description]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[{{$key}}][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works.$key.medidas', $item['medidas'])}}" name="works[{{$key}}][medidas]">
+                    <input type="text" class="form-control @error("works.".$key.".medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works.'.$key.'.medidas', $item['medidas'])}}" name="works[{{$key}}][medidas]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[{{$key}}][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.$key.qty', $item['qty'])}}" name="works[{{$key}}][qty]">
+                    <input type="text" class="form-control @error("works".$key.".qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.'.$key.'.qty', $item['qty'])}}" name="works[{{$key}}][qty]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control @error("works[{{$key}}][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works.$key.personal', $item['personal'])}}" name="works[{{$key}}][personal]">
+                    <input type="text" class="form-control @error("works".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.'.$key.'.personal', $item['personal'])}}" name="works[{{$key}}][personal]">
                   </td>
                   <td>
                       <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
@@ -410,16 +410,16 @@
                       </select>
                     </td>
                     <td width="120">
-                      <input type="text" class="form-control mt-0 @error("works[0][description]") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
+                      <input type="text" class="form-control mt-0 @error("works.0.description") is-invalid @enderror" placeholder="Descripción" value="{{old('works')[0]["description"]}}" name="works[0][description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control mt-0 @error("works[0][medidas]") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
+                      <input type="text" class="form-control mt-0 @error("works.0.medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works')[0]["medidas"]}}" name="works[0][medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control mt-0 @error("works[0][qty]") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
+                      <input type="text" class="form-control mt-0 @error("works.0.qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works')[0]["qty"]}}" name="works[0][qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control mt-0 @error("works[0][personal]") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
+                      <input type="text" class="form-control mt-0 @error("works.0.personal") is-invalid @enderror" placeholder="Personal" value="{{old('works')[0]["personal"]}}" name="works[0][personal]">
                     </td>
                     <td>
                       <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>

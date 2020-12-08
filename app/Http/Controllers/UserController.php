@@ -46,7 +46,17 @@ class UserController extends Controller
         $searchValue = $search_arr['value']; // Search value
 
         // Total records
-        $totalRecordswithFilter = User::select('count(*) as allcount')->join('user_data', 'user_data.user_id', '=', 'users.id')->where('name', 'like', '%' .$searchValue . '%')->where('users.id', '<>', 1)->count();
+        $totalRecordswithFilter = User::select('count(*) as allcount')
+                ->join('user_data', 'user_data.user_id', '=', 'users.id')
+                ->join('areas', 'areas.id', '=' ,'user_data.area_id')
+                //->where('user_data.name', 'like', '%' .$searchValue . '%')
+                ->where(function ($query) use ($searchValue) {
+                    $query->where('user_data.name', 'like', '%' .$searchValue . '%')
+                            ->orWhere('areas.name', 'like', '%' .$searchValue . '%')
+                            ->orWhere('users.email', 'like', '%' .$searchValue . '%')
+                            ;
+                })
+                ->where('users.id', '<>', 1)->count();
 
         // Fetch records
         $records = User::leftJoin('user_data', 'user_data.user_id', '=', 'users.id')
@@ -187,9 +197,14 @@ class UserController extends Controller
                     ->where('role_user.user_id', $id)
                     ->select('roles.*')
                     ->get();
+        $superadmin = in_array("superadmin", array_column($user_roles->toArray(), "name"));
 
         $areas = Area::where('enabled', 1)->get();
-        $roles = Role::all();
+        if ($superadmin) {
+            $roles = Role::where('name', '<>', 'superadmin')->get();
+        } else {
+            $roles = Role::all();
+        }
 
         return view('users.edit', compact('user', 'areas', 'roles', 'user_roles'));
     }

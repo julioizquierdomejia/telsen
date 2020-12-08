@@ -189,11 +189,11 @@
       </li>
 
       <li class="{{ $is_rotorcode ? 'active' : '' }}">
-        <a class="mr-0" href="#" data-toggle="collapse" data-target="#collapseCC" aria-expanded="true">
+        <a class="mr-0" href="#" data-toggle="collapse" data-target="#collapseCRPt" aria-expanded="true">
           <i class="fas fa-barcode mr-1"></i>
           <p>Código Rotor Pt <i class="fal fa-angle-down float-right"></i></p>
         </a>
-        <ul class="collapse list-inline pl-3 {{ $is_rotorcode ? 'show' : '' }}" id="collapseCC">
+        <ul class="collapse list-inline pl-3 {{ $is_rotorcode ? 'show' : '' }}" id="collapseCRPt">
           <li class="{{ request()->routeIs('rotorcoderpt1.index') ? 'active' : '' }}">
             <a class="mr-0" href="{{route('rotorcoderpt1.index')}}">
               <i class="fas fa-barcode mr-1"></i>

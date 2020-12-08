@@ -31,7 +31,7 @@ class HomeController extends Controller
         $enabled_ots = [];
         $pending_ots = [];
 
-        $users = User::all();
+        $users = User::where('id', '<>', 1)->get();
         $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                     ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')

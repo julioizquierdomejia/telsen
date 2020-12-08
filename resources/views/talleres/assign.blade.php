@@ -1,4 +1,7 @@
-@extends('layouts.app', ['title' => 'Crear Taller'])
+@php
+  $ot_id = zerosatleft($ot->code, 3);
+@endphp
+@extends('layouts.app', ['title' => 'Taller para OT-'.$ot_id])
 @section('css')
 @endsection
 @section('content')
@@ -9,7 +12,7 @@ $supervisor = in_array("supervisor", $role_names);
 @endphp
 <div class="row">
   <div class="col-md-12">
-    <h5 class="h5">Taller para OT-{{zerosatleft($ot->code, 3)}}</h5>
+    <h5 class="h5">Taller para OT-{{$ot_id}}</h5>
     <form class="form-group" method="POST" action="{{route('workshop.store', $ot)}}" enctype="multipart/form-data">
       @csrf
       <div class="row">
@@ -28,20 +31,20 @@ $supervisor = in_array("supervisor", $role_names);
           <h5 class="small text-dark">Servicios</h5>
           <ul class="list-group mb-3">
             @foreach($service_item as $service)
-            <li class="list-group-item">
-              <h6 class="subtitle mb-0">{{$service['service']}}</h6>
-              {{-- <p class="mb-0">Subtotal: <span class="badge badge-secondary badge-pill px-3">{{number_format($service['subtotal'], 2)}}</span></p> --}}
+            @php
+              $service_personal = old("personal_name_".$service['service_id']);
+            @endphp
+            <li class="list-group-item" data-service="{{$service['service_id']}}">
+              <h6 class="subtitle mb-0">{{$service['service']}} <button type="button" class="btn btn-primary btn-sm btn-personal my-0" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['service_id']}}" data-toggle="modal" data-target="#modalPersonal">Asignar Personal</button></h6>
+            <div class="mt-auto text-center form-control h-auto mt-0 service-personal @error("data.".$service['service_id'].".user_id") d-block is-invalid @enderror"{{($service_personal == null) ? 'style="display: none;"' : ''}}>
+                <label class="col-form-label mb-0">Personal asignado:</label>
+                <input class="form-control personal_name" name="personal_name_{{$service['service_id']}}" value="{{ $service_personal }}" readonly="" type="text" placeholder="No asignado">
+                <input class="form-control user_id d-none" type="text" name="data[{{$service['service_id']}}][user_id]" value="{{ old('data.'.$service['service_id'].'.user_id') }}">
+                <input class="form-control d-none" type="text" name="data[{{$service['service_id']}}][service_id]" value="{{ old('data.'.$service['service_id'].'.service_id',  $service['service_id']) }}">
+              </div>
             </li>
             @endforeach
           </ul>
-          <div class="mt-auto text-center form-control @error("data.$service_key.user_id") is-invalid @enderror" style="height: auto; margin-top: 0">
-              <label class="col-form-label mb-0">Personal asignado:</label>
-              <input class="form-control personal_name" name="personal_name_{{$service_key}}" value="{{old("personal_name_$service_key")}}" readonly="" type="text" placeholder="No asignado">
-              <input class="form-control user_id d-none" type="text" name="data[{{$service_key}}][user_id]" value="">
-              <input class="form-control d-none" type="text" name="data[{{$service_key}}][area_id]" value="{{$first['area_id']}}">
-
-              <button type="button" class="btn btn-primary btn-sm btn-personal" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-toggle="modal" data-target="#modalPersonal">Asignar Personal</button>
-            </div>
           </div>
         </div>
       </div>
@@ -73,7 +76,7 @@ $supervisor = in_array("supervisor", $role_names);
         </div>
         <div class="modal-footer">
           <div class="update ml-auto mr-auto">
-            <button type="button" id="btnPersonal" disabled="" class="btn btn-primary btn-round px-md-5" data-dismiss="modal">Confirmar personal</button>
+            <button type="button" id="btnPersonal" data-service="" class="btn btn-primary btn-round px-md-5" data-dismiss="modal">Confirmar personal</button>
           </div>
         </div>
     </div>
@@ -82,13 +85,6 @@ $supervisor = in_array("supervisor", $role_names);
 @endsection
 @section('javascript')
 <script>
-  $('.btn-personal').click(function () {
-    var btn = $(this), area_id = btn.data('areaid');
-    $('#modalPersonal .modal-title span').text(" de "+btn.data('area'));
-    $('#modalPersonal .list-group-item').hide();
-    $('#modalPersonal .list-group-item[data-areaid="'+area_id+'"]').show();
-  })
-
   $('#modalPersonal .list-group-item').click(function () {
     $('#modalPersonal .list-group-item').removeClass('active');
     $(this).addClass('active');
@@ -96,17 +92,26 @@ $supervisor = in_array("supervisor", $role_names);
   })
 
   $('#btnPersonal').click(function () {
-    var item = $('#modalPersonal .list-group-item.active'),
+    var $this = $(this),
+        item = $('#modalPersonal .list-group-item.active'),
         userid = item.data('userid'),
         areaid = item.data('areaid'),
         personal = item.find('.personal').text();
-        console.log(userid)
-        console.log(areaid)
-    $('.form-card[data-id="'+areaid+'"] .personal_name').val(personal);
-    $('.form-card[data-id="'+areaid+'"] .user_id').val(userid);
+    /*$('.form-card[data-id="'+areaid+'"] .personal_name').val(personal);
+    $('.form-card[data-id="'+areaid+'"] .user_id').val(userid);*/
+
+    var service_item = $('.list-group-item[data-service="'+$this.data('service')+'"] .service-personal');
+    service_item.show();
+    service_item.find('.personal_name').val(personal);
+    service_item.find('.user_id').val(userid);
   })
 
-  $('#modalPersonal').on('show.bs.modal', function () {
+  $('#modalPersonal').on('show.bs.modal', function (event) {
+    var btn = $(event.relatedTarget), area_id = btn.data('areaid');
+    $('#modalPersonal .modal-title span').text(" de "+btn.data('area'));
+    $('#modalPersonal .list-group-item').hide();
+    $('#modalPersonal #btnPersonal').data('service', btn.data('service'));
+    $('#modalPersonal .list-group-item[data-areaid="'+area_id+'"]').show();
     $('#modalPersonal .list-group-item.active').removeClass('active');
     $('#btnPersonal').prop('disabled', true);
   })

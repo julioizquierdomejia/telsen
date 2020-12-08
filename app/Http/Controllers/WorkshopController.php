@@ -57,7 +57,7 @@ class WorkshopController extends Controller
 
         return view('talleres.create');
     }*/
-    public function calculate(Request $request, $id)
+    public function assign(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
 
@@ -99,7 +99,6 @@ class WorkshopController extends Controller
                     //'electrical_evaluation_works.medidas',
                     //'electrical_evaluation_works.qty',
                     'areas.name as area',
-                    'areas.id',
                     'services.id as service_id',
                     'services.area_id',
                     'services.name as service',
@@ -116,7 +115,6 @@ class WorkshopController extends Controller
                     //'mechanical_evaluation_works.medidas',
                     //'mechanical_evaluation_works.qty',
                     'areas.name as area',
-                    'areas.id',
                     'services.id as service_id',
                     'services.area_id',
                     'services.name as service',
@@ -132,7 +130,7 @@ class WorkshopController extends Controller
                     ->join('rdi_works', 'rdi_works.service_id', 'services.id')
                     ->where('rdi_works.rdi_id', $rdi->id)
                     //->where('services.area_id', $user_area_id->id)
-                    ->select('areas.name as area', 'areas.id', 'rdi_works.id', 'services.area_id', 'services.name as service')
+                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service')
                     ->get();
         } else { //No afiliado
             $cost_card = CostCard::where('ot_id', $ot->id)->firstOrFail();
@@ -140,7 +138,7 @@ class WorkshopController extends Controller
                     ->join('cost_card_service_works', 'cost_card_service_works.service_id', 'services.id')
                     ->where('cost_card_service_works.cc_id', $cost_card->id)
                     //->where('services.area_id', $user_area_id->id)
-                    ->select('areas.name as area', 'areas.id', 'cost_card_service_works.id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal')
+                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal')
                     ->get();
         }
         foreach($services_list as $key => $item) {
@@ -154,7 +152,7 @@ class WorkshopController extends Controller
         }
         //$clientes = Client::where('enabled', 1)->get();
 
-        return view('talleres.calculate', compact('ot', 'services', 'users', 'user_area_id'));
+        return view('talleres.assign', compact('ot', 'services', 'users', 'user_area_id'));
     }
 
     /**
@@ -168,16 +166,17 @@ class WorkshopController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
         
         $data = $request->input('data');
+        
         if ($data) {
             foreach($request->input('data') as $key => $val){
                 $rules['data.'.$key.'.user_id'] = 'required';
-                $rules['data.'.$key.'.area_id'] = 'required';
+                $rules['data.'.$key.'.service_id'] = 'required';
                 $this->validate($request, $rules);
             }
         } else {
             $rules = array(
                 'user_id'      => 'required|array|min:1',
-                'area_id'      => 'required|array|min:1',
+                'service_id'      => 'required|array|min:1',
             );
             $this->validate($request, $rules);
         }
@@ -186,7 +185,7 @@ class WorkshopController extends Controller
         foreach ($data as $key => $item) {
             $work_shop = new Workshop();
             $work_shop->ot_id = $id;
-            $work_shop->area_id = $item['area_id'];
+            $work_shop->service_id = $item['service_id'];
             $work_shop->user_id = $item['user_id'];
             $work_shop->save();
         }

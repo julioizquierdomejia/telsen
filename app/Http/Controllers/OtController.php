@@ -1319,7 +1319,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/talleres/'.$ot->id.'/asignar" class="btn btn-sm btn-primary">Ver tareas <i class="fal fa-eye"></i></a>';
 
             $ots_array[] = array(
               "created_at" => $created_at,

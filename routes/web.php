@@ -164,7 +164,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('talleres/{ot}/store', [App\Http\Controllers\WorkshopController::class, 'store'])->name('workshop.store');
 	Route::get('talleres/{area}/editar', [App\Http\Controllers\WorkshopController::class, 'edit'])->name('workshop.edit');
 	Route::post('talleres/{area}/editar', [App\Http\Controllers\WorkshopController::class, 'update'])->name('workshop.update');
-	Route::get('talleres/{ot}/calcular', [App\Http\Controllers\WorkshopController::class, 'calculate'])->name('workshop.calculate');
+	Route::get('talleres/{ot}/asignar', [App\Http\Controllers\WorkshopController::class, 'assign'])->name('workshop.assign');
 
 	Route::get('talleres/list', [App\Http\Controllers\OtController::class, 'list_workshop'])->name('talleres.list_workshop');
 

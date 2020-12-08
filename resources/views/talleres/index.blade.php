@@ -1,10 +1,10 @@
-@extends('layouts.app', ['body_class' => 'ots', 'title' => 'OTS'])
+@extends('layouts.app', ['body_class' => 'ots', 'title' => 'Talleres en OTS'])
 @section('content')
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title">Talleres de OT</h4>
+        <h4 class="card-title">Talleres en OTS</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">

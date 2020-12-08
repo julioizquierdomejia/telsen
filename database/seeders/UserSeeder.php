@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         //
         //colocamos en variables roles para poder relacionarlos
         $role_superadmin = Role::where('name', 'superadmin')->first();
-        /*$role_admin = Role::where('name', 'admin')->first();
+        $role_admin = Role::where('name', 'admin')->first();
         $role_user = Role::where('name', 'user')->first();
         $role_coordinator = Role::where('name', 'supervisor')->first();
         $role_worker = Role::where('name', 'worker')->first();
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
         $aprobador_cotizacion_tarjeta_de_costo = Role::where('name', 'aprobador_cotizacion_tarjeta_de_costo')->first();
         $rdi = Role::where('name', 'rdi')->first();
         $aprobador_rdi = Role::where('name', 'aprobador_rdi')->first();
-        $fecha_de_entrega = Role::where('name', 'fecha_de_entrega')->first();*/
+        $fecha_de_entrega = Role::where('name', 'fecha_de_entrega')->first();
 
         $user = new User();
         $user->email = 'admin@gmail.com';
@@ -69,7 +69,7 @@ class UserSeeder extends Seeder
 
         //-------------------
         //ADMINISTRADOR
-        /*$user = new User();
+        $user = new User();
         $user->email = 'omer.caro.rios@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
@@ -602,7 +602,7 @@ class UserSeeder extends Seeder
         $user_data->user_id = $user->id;
         $user_data->area_id = 11;
         $user_data->save();
-        $user->roles()->attach($role_worker);*/
+        $user->roles()->attach($role_worker);
 
     }
 }

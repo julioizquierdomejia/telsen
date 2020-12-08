@@ -159,7 +159,7 @@ class ClientController extends Controller
             'razon_social' => 'required',
             'client_type_id' => 'integer|required',
             'enabled' => 'boolean',
-            'correo' => 'required|email|unique:clients,correo,'.$id,
+            'correo' => 'required|email|unique:clients,email,'.$id,
         );
         $this->validate($request, $rules);
 
@@ -174,7 +174,7 @@ class ClientController extends Controller
         $client->celular = $request->input('celular');
         $client->contacto = $request->input('contacto');
         $client->telefono_contacto = $request->input('telefono_contacto');
-        $client->correo = $request->input('correo');
+        $client->email = $request->input('correo');
         $client->info = $request->input('info');
         $client->client_type_id = $request->input('client_type_id');
         $client->enabled = $request->input('enabled');

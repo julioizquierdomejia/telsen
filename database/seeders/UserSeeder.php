@@ -37,6 +37,22 @@ class UserSeeder extends Seeder
 
         $user = new User();
         $user->email = 'admin@gmail.com';
+        $user->password = bcrypt('_a$m&<x2o;#');
+        $user->enabled = 1;
+        $user->save();
+        $user_data = new UserData();
+        $user_data->user_id = $user->id;
+        $user_data->name = 'admin';
+        $user_data->last_name = 'admin';
+        $user_data->mother_last_name = 'admin';
+        $user_data->user_phone = 912345678;
+        $user_data->area_id = 1;
+        $user_data->save();
+        //vamos a relacionar roles con usuarios
+        $user->roles()->attach($role_superadmin);
+
+        $user = new User();
+        $user->email = 'ponds98@hotmail.com';
         $user->password = bcrypt('B<eWB$J@');
         $user->enabled = 1;
         $user->save();

@@ -87,7 +87,7 @@ class ClientController extends Controller
             $user = new User();
             $user->email = $client->email;
             $user->password = bcrypt('123456');
-            $user->status = 1;
+            $user->enabled = 1;
             $user->save();
 
             $user_data = new UserData();

@@ -1111,7 +1111,7 @@ class OtController extends Controller
         //
         //Revisar el ultimo numero de OT
         $totalOts = Ot::select('code')->orderBy('id', 'desc')->first();
-        if (!empty($totalOts->code)) {
+        if (empty($totalOts->code) !== false) {
             $ot_numero = ($totalOts->code != 0 ?? 0) + 1;
         } else {
             $ot_numero = env('OT_CODE') + 1;
@@ -1139,7 +1139,7 @@ class OtController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $totalOts = Ot::select('code')->orderBy('id', 'desc')->first();
-        if (!empty($totalOts->code)) {
+        if (empty($totalOts->code) !== false) {
             $ot_numero = $totalOts->code + 1;
         } else {
             $ot_numero = env('OT_CODE') + 1;

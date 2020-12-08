@@ -95,14 +95,15 @@ class WorkshopController extends Controller
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
                 ->select(
-                    'electrical_evaluation_works.description',
-                    'electrical_evaluation_works.medidas',
-                    'electrical_evaluation_works.qty',
-                    'electrical_evaluation_works.personal',
-                    'services.name as service',
-                    'services.id as service_id',
+                    //'electrical_evaluation_works.description',
+                    //'electrical_evaluation_works.medidas',
+                    //'electrical_evaluation_works.qty',
                     'areas.name as area',
-                    'areas.id as area_id'
+                    'areas.id',
+                    'services.id as service_id',
+                    'services.area_id',
+                    'services.name as service',
+                    'electrical_evaluation_works.personal'
                 )
                 ->where('electrical_evaluations.ot_id', $ot->id)
                 ->get();
@@ -111,13 +112,15 @@ class WorkshopController extends Controller
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
                 ->select(
-                    'mechanical_evaluation_works.description',
-                    'mechanical_evaluation_works.medidas',
-                    'mechanical_evaluation_works.qty',
-                    'mechanical_evaluation_works.personal',
-                    'services.name as service',
+                    //'mechanical_evaluation_works.description',
+                    //'mechanical_evaluation_works.medidas',
+                    //'mechanical_evaluation_works.qty',
                     'areas.name as area',
-                    'areas.id as area_id'
+                    'areas.id',
+                    'services.id as service_id',
+                    'services.area_id',
+                    'services.name as service',
+                    'mechanical_evaluation_works.personal'
                 )
                 ->where('mechanical_evaluations.ot_id', $ot->id)
                 ->get();

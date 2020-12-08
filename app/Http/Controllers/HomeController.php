@@ -28,14 +28,32 @@ class HomeController extends Controller
     {
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'mechanical', 'electrical']);
 
-        $enabled_ots = [];
-        $pending_ots = [];
-
         $users = User::where('id', '<>', 1)->get();
         $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                     ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-                    ->where('ots.enabled', 1)->get();
+                    ->where('ots.enabled', 1)
+                    ->get();
+
+        $attended_ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                    ->whereHas('statuses', function ($query) {
+                            $query->where("status.name", "=", 'delivery_generated');
+                        })
+                    ->where('ots.enabled', 1)
+                    ->get()
+                    ->count();
+
+        $pending_ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                    ->whereDoesntHave('statuses', function ($query) {
+                            $query->where("status.name", "=", 'delivery_generated');
+                        })
+                    ->where('ots.enabled', 1)
+                    ->get()
+                    ->count();
 
         $avarage_ots = \DB::select( 'SELECT AVG( ots_num ) ot_prom FROM (
                         SELECT created_at, COUNT( DISTINCT id ) ots_num
@@ -48,26 +66,12 @@ class HomeController extends Controller
           $avarage = 0;
         }
 
-        foreach ($ots as $key => $ot) {
-            $ot_status_arr = array_column($ot->statuses->toArray(), "name");
-            /*if ($ot_status->last()->status_id == 1) {
-                $pending_ots[] = $ot;
-            }*/
-            if (count($ot_status_arr) > 1) {
-                $enabled_ots[] = $ot;
-            } else {
-              $pending_ots[] = $ot;
-            }
-        }
-
-        $enabled_ots = count($enabled_ots);
-        $pending_ots = count($pending_ots);
-        $ots_count = count($ots);
+        $ots_count = $ots->count();
 
         $greetings = self::Greetings();
 
         //$areas = Area::where('areas.enabled', 1)->where('areas.id', '<>', 1)->get();
-        return view('home', compact('users', 'ots', 'ots_count', 'pending_ots', 'enabled_ots', 'avarage', 'greetings'));
+        return view('home', compact('users', 'ots', 'ots_count', 'pending_ots', 'attended_ots', 'avarage', 'greetings'));
     }
 
     function Greetings() {

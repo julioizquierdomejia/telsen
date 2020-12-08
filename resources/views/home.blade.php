@@ -84,7 +84,7 @@
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <p class="card-title numbers">{{abreviateTotalCount($enabled_ots)}}</p>
+            <p class="card-title numbers">{{abreviateTotalCount($attended_ots)}}</p>
             <p class="card-category"><br>OT Atendidas</p>
           </div>
         </div>
@@ -278,7 +278,7 @@
         "label":"Resumen de Progreso",
         "data":[
           {{$pending_ots}},
-          {{$enabled_ots}},
+          {{$attended_ots}},
           {{ $ots_count }},
           //50
         ],

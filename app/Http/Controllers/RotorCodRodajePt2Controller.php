@@ -134,7 +134,7 @@ class RotorCodRodajePt2Controller extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Client  $client
+     * @param  \App\Models\Client  $code
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id)
@@ -142,14 +142,14 @@ class RotorCodRodajePt2Controller extends Controller
         $code = RotorCodRodajePt2::where('enabled', 1)->findOrFail($id);
         return $code;
 
-        //return view('clientes.show', compact('cliente'));
+        //return view('codees.show', compact('codee'));
         
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Client  $client
+     * @param  \App\Models\Client  $code
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
@@ -164,7 +164,7 @@ class RotorCodRodajePt2Controller extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Client  $client
+     * @param  \App\Models\Client  $code
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -190,20 +190,20 @@ class RotorCodRodajePt2Controller extends Controller
 
         $rotor_cod->save();
 
-        activitylog('rotorcoderpt2', 'update', $original_data, $client->toArray());
+        activitylog('rotorcoderpt2', 'update', $original_data, $rotor_cod->toArray());
 
         // redirect
         \Session::flash('message', 'Successfully updated model!');
-        return redirect('rotorcoderpt2');
+        return redirect('rotorcoderodajept/2');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Client  $client
+     * @param  \App\Models\Client  $code
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Client $client)
+    public function destroy(Request $request, Client $code)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
     }

@@ -42,7 +42,7 @@
                     <span class="btn btn-success btn-sm">{{date('d-m-Y', strtotime($ot->fecha_entrega))}}</span>
                   </td>
                   <td class="text-right">
-                    <a href="{{ route('workshop.calculate', $ot) }}" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a>
+                    <a href="{{ route('workshop.calculate', $ot) }}" class="btn btn-orange btn-sm">Ver tareas <i class="fal fa-edit ml-2"></i></a>
                   </td>
                 </tr>
               @endforeach

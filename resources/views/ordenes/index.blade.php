@@ -235,9 +235,10 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.success) {
                     var data = $.parseJSON(response.data);
-                    if (data.enabled == 2) {
+                    if (data.enabled == 0) {
                         //$('.btn-mdelete[data-otid=' + btn.data('otid') + ']').parents('tr').remove();
                         enabledots.ajax.reload();
+                        disapprovedots.ajax.reload();
                         $('#modalDelOT').modal('hide');
                         /*if ($('#nav-enabledots tbody tr').length == 0) {
                             $('#nav-enabledots tbody').html('<tr><td class="text-center" colspan="7">No hay órdenes de trabajo.</td></tr>');

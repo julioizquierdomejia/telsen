@@ -182,6 +182,12 @@ class OtController extends Controller
                         ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                         ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                 })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved')
+                        ->orWhere("status.name", "=", 'rdi_disapproved')
+                        ->orWhere("status.name", "=", 'ee_disapproved')
+                        ->orWhere("status.name", "=", 'me_disapproved');
+                })
                 ->where('ots.enabled', 1)->count();
 
         $ots_array = [];
@@ -197,41 +203,36 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
+                    ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved')
+                        ->orWhere("status.name", "=", 'rdi_disapproved')
+                        ->orWhere("status.name", "=", 'ee_disapproved')
+                        ->orWhere("status.name", "=", 'me_disapproved');
+                    })
                     ->orderBy($columnName, $columnSortOrder)
 
                     ->where('ots.enabled', 1)->get();
 
-        $counter = $start;
-
         foreach ($records as $key => $ot) {
-            $ot_status_arr = array_column($ot->statuses->toArray(), "name");
-            if (in_array('cc_disapproved', $ot_status_arr) || 
-                in_array('rdi_disapproved', $ot_status_arr) ||
-                in_array('ee_disapproved', $ot_status_arr) ||
-                in_array('me_disapproved', $ot_status_arr)) {
+            $created_at = date('d-m-Y', strtotime($ot->created_at));
+            $status_data = self::getOTStatus($ot, false, false, false, false);
+            //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
+            $ot_id = 'OT-'.zerosatleft($ot->code, 3);
+            $status = $status_data['html'];
+            $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
+            $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+            <button type="button" class="btn btn-sm btn-primary btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>';
 
-                $counter++;
-
-                $created_at = date('d-m-Y', strtotime($ot->created_at));
-                $status_data = self::getOTStatus($ot, false, false, false, false);
-                //$ot_id = 'OT-'.zerosatleft($ot->id, 3);
-                $ot_id = 'OT-'.zerosatleft($ot->code, 3);
-                $status = $status_data['html'];
-                $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
-                $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-                $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
-                <button type="button" class="btn btn-sm btn-primary btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash-restore"></i></button>';
-
-                $ots_array[] = array(
-                  "created_at" => $created_at,
-                  "id" => $ot_id,
-                  "status" => $status,
-                  "razon_social" => $client,
-                  "numero_potencia" => $potencia ? $potencia :   '-',
-                  "fecha_entrega" => $status_data['fecha_entrega'],
-                  "tools" => $tools
-                );
-            }
+            $ots_array[] = array(
+              "created_at" => $created_at,
+              "id" => $ot_id,
+              "status" => $status,
+              "razon_social" => $client,
+              "numero_potencia" => $potencia ? $potencia :   '-',
+              "fecha_entrega" => $status_data['fecha_entrega'],
+              "tools" => $tools
+            );
         };
 
         $totalRecords = count($ots_array);
@@ -1745,7 +1746,7 @@ class OtController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
         $ot = Ot::findOrFail($id);
-        $ot->enabled = 2;
+        $ot->enabled = 0;
         $ot->save();
 
         return response()->json(['data'=>json_encode($ot), 'success'=>true]);

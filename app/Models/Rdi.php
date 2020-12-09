@@ -49,7 +49,6 @@ class Rdi extends Model
 
     protected $dates = [
         'fecha_ingreso',
-        'tiempo_entrega',
         'orden_servicio',
 
         'created_at',

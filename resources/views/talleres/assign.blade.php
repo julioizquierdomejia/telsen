@@ -9,7 +9,6 @@ $ot_id = "OT-".zerosatleft($ot->code, 3);
 $role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $supervisor = in_array("supervisor", $role_names);
-
 $ot_date = date('d-m-Y', strtotime($ot->created_at));
 $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
 @endphp
@@ -28,46 +27,44 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
           <h5 class="card-title">{{$first['area']}}</h5>
         </div>
         <div class="card-body">
-            <h5 class="small text-dark">Servicios</h5>
-            <ul class="list-unstyled mb-3">
-              @foreach($service_item as $service)
-              @php
-              $service_personal = old("personal_name_".$service['service_id']);
-              @endphp
-              <li class="list-item mb-3" data-service="{{$service['service_id']}}">
-                <div class="table-responsive pb-0">
-                <table class="table table-separate data-table mb-0">
-                  <thead class=" text-primary">
-                    <th class="text-nowrap px-2">Fecha OT</th>
-                    <th class="text-nowrap">N° de OT</th>
-                    <th>Potencia</th>
-                    <th class="text-nowrap">Servicio</th>
-                    <th class="text-center">Personal</th>
-                    <th class="text-center">Acciones</th>
-                  </thead>
-                  <tr>
-                    <td class="px-2 text-nowrap">{{$ot_date}}</td>
-                    <td>{{$ot_id}}</td>
-                    <td>{{$potencia}}</td>
-                    <td width="250">
-                      <h6 class="subtitle mb-0">{{$service['service']}}</h6>
-                    </td>
-                    <td>
-                      <div class="text-center service-personal @error("data.".$service['service_id'].".user_id") d-block is-invalid @enderror"{{($service_personal == null) ? 'style="display: none;"' : ''}}>
+          <h5 class="small text-dark">Servicios</h5>
+          <div class="table-responsive pb-0">
+            <table class="table table-separate data-table mb-0">
+              <thead class=" text-primary">
+                <th class="text-nowrap px-2">Fecha OT</th>
+                <th class="text-nowrap">N° de OT</th>
+                <th>Potencia</th>
+                <th class="text-nowrap">Servicio</th>
+                <th class="text-center">Personal</th>
+                <th class="text-center">Acciones</th>
+              </thead>
+              <tbody>
+                @foreach($service_item as $service)
+                @php
+                $service_personal = old("personal_name_".$service['service_id']);
+                @endphp
+                <tr class="list-item" data-service="{{$service['service_id']}}">
+                  <td class="px-2 text-nowrap">{{$ot_date}}</td>
+                  <td>{{$ot_id}}</td>
+                  <td>{{$potencia}}</td>
+                  <td width="250">
+                    <h6 class="subtitle mb-0">{{$service['service']}}</h6>
+                  </td>
+                  <td>
+                    <div class="text-center service-personal @error("data.".$service['service_id'].".user_id") d-block is-invalid @enderror"{{($service_personal == null) ? 'style="display: none;"' : ''}}>
                       <input class="form-control mt-0 personal_name" name="personal_name_{{$service['service_id']}}" value="{{ $service_personal }}" readonly="" type="text" placeholder="No asignado">
                       <input class="form-control user_id d-none" type="text" name="data[{{$service['service_id']}}][user_id]" value="{{ old('data.'.$service['service_id'].'.user_id') }}">
                       <input class="form-control d-none" type="text" name="data[{{$service['service_id']}}][service_id]" value="{{ old('data.'.$service['service_id'].'.service_id',  $service['service_id']) }}">
                     </div>
-                    </td>
-                    <td>
-                      <button type="button" class="btn btn-primary btn-sm btn-personal my-0" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['service_id']}}" data-toggle="modal" data-target="#modalPersonal"><i class="fal fa-user-hard-hat mr-1"></i> Asignar Personal</button>
-                    </td>
-                  </tr>
-                </table>
-                </div>
-              </li>
-              @endforeach
-            </ul>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-primary btn-sm btn-personal my-0" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['service_id']}}" data-toggle="modal" data-target="#modalPersonal"><i class="fal fa-user-hard-hat mr-1"></i> Asignar Personal</button>
+                  </td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       @endif
@@ -120,7 +117,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
     /*$('.form-card[data-id="'+areaid+'"] .personal_name').val(personal);
     $('.form-card[data-id="'+areaid+'"] .user_id').val(userid);*/
 
-    var service_item = $('.list-group-item[data-service="'+$this.data('service')+'"] .service-personal');
+    var service_item = $('.list-item[data-service="'+$this.data('service')+'"] .service-personal');
     service_item.show();
     service_item.find('.personal_name').val(personal);
     service_item.find('.user_id').val(userid);

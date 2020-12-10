@@ -41,7 +41,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
               <tbody>
                 @foreach($service_item as $service)
                 @php
-                $service_personal = old("personal_name_".$service['service_id']);
+                $service_personal = old("personal_name_".$service['service_id'], $service['user_name']);
                 @endphp
                 <tr class="list-item" data-service="{{$service['service_id']}}">
                   <td class="px-2 text-nowrap">{{$ot_date}}</td>
@@ -53,12 +53,12 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                   <td>
                     <div class="text-center service-personal @error("data.".$service['service_id'].".user_id") d-block is-invalid @enderror"{{($service_personal == null) ? 'style="display: none;"' : ''}}>
                       <input class="form-control mt-0 personal_name" name="personal_name_{{$service['service_id']}}" value="{{ $service_personal }}" readonly="" type="text" placeholder="No asignado">
-                      <input class="form-control user_id d-none" type="text" name="data[{{$service['service_id']}}][user_id]" value="{{ old('data.'.$service['service_id'].'.user_id') }}">
+                      <input class="form-control user_id d-none" type="text" name="data[{{$service['service_id']}}][user_id]" value="{{ old('data.'.$service['service_id'].'.user_id', $service['user_id']) }}">
                       <input class="form-control d-none" type="text" name="data[{{$service['service_id']}}][service_id]" value="{{ old('data.'.$service['service_id'].'.service_id',  $service['service_id']) }}">
                     </div>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-primary btn-sm btn-personal my-0" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['service_id']}}" data-toggle="modal" data-target="#modalPersonal"><i class="fal fa-user-hard-hat mr-1"></i> Asignar Personal</button>
+                    <button type="button" class="btn btn-primary btn-sm btn-personal my-0" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['service_id']}}" data-toggle="modal" data-target="#modalPersonal"><i class="fal fa-user-hard-hat mr-1"></i> {{$service_personal ? 'Cambiar Personal': 'Asignar Personal'}}</button>
                   </td>
                 </tr>
                 @endforeach

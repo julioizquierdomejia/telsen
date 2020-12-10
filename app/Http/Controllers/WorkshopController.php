@@ -94,6 +94,8 @@ class WorkshopController extends Controller
         $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
+                ->leftJoin('workshops', 'services.id', '=', 'workshops.service_id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->select(
                     //'electrical_evaluation_works.description',
                     //'electrical_evaluation_works.medidas',
@@ -102,14 +104,17 @@ class WorkshopController extends Controller
                     'services.id as service_id',
                     'services.area_id',
                     'services.name as service',
-                    'electrical_evaluation_works.personal'
+                    'electrical_evaluation_works.personal',
+                    'user_data.name as user_name',
+                    'user_data.user_id'
                 )
                 ->where('electrical_evaluations.ot_id', $ot->id)
                 ->get();
-
         $works_mec = MechanicalEvaluationWork::join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
+                ->leftJoin('workshops', 'services.id', '=', 'workshops.service_id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->select(
                     //'mechanical_evaluation_works.description',
                     //'mechanical_evaluation_works.medidas',
@@ -118,7 +123,9 @@ class WorkshopController extends Controller
                     'services.id as service_id',
                     'services.area_id',
                     'services.name as service',
-                    'mechanical_evaluation_works.personal'
+                    'mechanical_evaluation_works.personal',
+                    'user_data.name as user_name',
+                    'user_data.user_id'
                 )
                 ->where('mechanical_evaluations.ot_id', $ot->id)
                 ->get();
@@ -128,17 +135,21 @@ class WorkshopController extends Controller
             $rdi = Rdi::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
                     ->join('rdi_works', 'rdi_works.service_id', 'services.id')
+                    ->leftJoin('workshops', 'services.id', '=', 'workshops.service_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->where('rdi_works.rdi_id', $rdi->id)
                     //->where('services.area_id', $user_area_id->id)
-                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service')
+                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', 'user_data.name as user_name', 'user_data.user_id')
                     ->get();
         } else { //No afiliado
             $cost_card = CostCard::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
                     ->join('cost_card_service_works', 'cost_card_service_works.service_id', 'services.id')
+                    ->leftJoin('workshops', 'services.id', '=', 'workshops.service_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->where('cost_card_service_works.cc_id', $cost_card->id)
                     //->where('services.area_id', $user_area_id->id)
-                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal')
+                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal', 'user_data.name as user_name', 'user_data.user_id')
                     ->get();
         }
         foreach($services_list as $key => $item) {
@@ -150,6 +161,11 @@ class WorkshopController extends Controller
         foreach($works_mec as $key => $item) {
             $services[$item->area_id][$key] = $item->toArray();
         }
+        /*$workshop = Workshop::join('services', 'services.id', '=', 'workshops.service_id')
+                    ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->select('workshops.id', 'services.name as service', 'user_data.name as user')
+                    ->get();
+                    dd($workshop);*/
         //$clientes = Client::where('enabled', 1)->get();
 
         return view('talleres.assign', compact('ot', 'services', 'users', 'user_area_id'));
@@ -180,6 +196,7 @@ class WorkshopController extends Controller
             );
             $this->validate($request, $rules);
         }
+        Workshop::where('ot_id', $id)->delete();
 
         //$data_count = count($data);
         foreach ($data as $key => $item) {

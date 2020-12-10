@@ -182,8 +182,14 @@ class WorkshopController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
         
         $data = $request->input('data');
-        
-        if ($data) {
+        if (!is_array($data)) {
+            $rules = array(
+                'user_id'      => 'required|array|min:1',
+                'service_id'      => 'required|array|min:1',
+            );
+            $this->validate($request, $rules);
+        }
+        /*if ($data) {
             foreach($request->input('data') as $key => $val){
                 $rules['data.'.$key.'.user_id'] = 'required';
                 $rules['data.'.$key.'.service_id'] = 'required';
@@ -195,16 +201,18 @@ class WorkshopController extends Controller
                 'service_id'      => 'required|array|min:1',
             );
             $this->validate($request, $rules);
-        }
+        }*/
         Workshop::where('ot_id', $id)->delete();
 
         //$data_count = count($data);
         foreach ($data as $key => $item) {
-            $work_shop = new Workshop();
-            $work_shop->ot_id = $id;
-            $work_shop->service_id = $item['service_id'];
-            $work_shop->user_id = $item['user_id'];
-            $work_shop->save();
+            if ($item['user_id']) {
+                $work_shop = new Workshop();
+                $work_shop->ot_id = $id;
+                $work_shop->service_id = $item['service_id'];
+                $work_shop->user_id = $item['user_id'];
+                $work_shop->save();
+            }
         }
 
         /*$status = Status::where('name', 'workshop')->first();

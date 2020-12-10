@@ -81,7 +81,7 @@ class WorkshopController extends Controller
         $users = User::join('user_data', 'user_data.user_id', 'users.id')
                 ->join('areas', 'areas.id', 'user_data.area_id')
                 ->select('users.id', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.area_id','areas.name as area')
-                ->where('enabled', 1)
+                ->where('users.enabled', 1)
                 ->get()
                 ;
 

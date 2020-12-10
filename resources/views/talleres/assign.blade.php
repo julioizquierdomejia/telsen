@@ -52,7 +52,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                   </td>
                   <td>
                     <div class="text-center service-personal @error("data.".$service['service_id'].".user_id") d-block is-invalid @enderror"{{($service_personal == null) ? 'style="display: none;"' : ''}}>
-                      <input class="form-control mt-0 personal_name" name="personal_name_{{$service['service_id']}}" value="{{ $service_personal }}" readonly="" type="text" placeholder="No asignado">
+                      <span class="form-control mt-0 h-auto personal_name" name="personal_name_{{$service['service_id']}}"> {{ $service_personal }}</span>
                       <input class="form-control user_id d-none" type="text" name="data[{{$service['service_id']}}][user_id]" value="{{ old('data.'.$service['service_id'].'.user_id', $service['user_id']) }}">
                       <input class="form-control d-none" type="text" name="data[{{$service['service_id']}}][service_id]" value="{{ old('data.'.$service['service_id'].'.service_id',  $service['service_id']) }}">
                     </div>
@@ -119,7 +119,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
 
     var service_item = $('.list-item[data-service="'+$this.data('service')+'"] .service-personal');
     service_item.show();
-    service_item.find('.personal_name').val(personal);
+    service_item.find('.personal_name').text(personal);
     service_item.find('.user_id').val(userid);
   })
 

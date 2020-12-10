@@ -46,6 +46,23 @@ class WorkshopController extends Controller
         );
     }
 
+    public function services_list(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
+
+        $user_id = \Auth::user()->id;
+        $services = Workshop::join('services', 'services.id', '=', 'workshops.service_id')
+                    ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->join('ots', 'ots.id', '=', 'workshops.ot_id')
+                    ->select('ots.created_at', 'services.id', 'services.name as service', 'ots.code', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->where('workshops.user_id', $user_id)
+                    ->get();
+
+        return view('talleres.services'
+            , compact('services')
+        );
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -64,6 +81,7 @@ class WorkshopController extends Controller
         $users = User::join('user_data', 'user_data.user_id', 'users.id')
                 ->join('areas', 'areas.id', 'user_data.area_id')
                 ->select('users.id', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.area_id','areas.name as area')
+                ->where('enabled', 1)
                 ->get()
                 ;
 
@@ -105,7 +123,7 @@ class WorkshopController extends Controller
                     'services.area_id',
                     'services.name as service',
                     'electrical_evaluation_works.personal',
-                    'user_data.name as user_name',
+                    \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
                     'user_data.user_id'
                 )
                 ->where('electrical_evaluations.ot_id', $ot->id)
@@ -124,7 +142,7 @@ class WorkshopController extends Controller
                     'services.area_id',
                     'services.name as service',
                     'mechanical_evaluation_works.personal',
-                    'user_data.name as user_name',
+                    \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
                     'user_data.user_id'
                 )
                 ->where('mechanical_evaluations.ot_id', $ot->id)
@@ -139,7 +157,7 @@ class WorkshopController extends Controller
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->where('rdi_works.rdi_id', $rdi->id)
                     //->where('services.area_id', $user_area_id->id)
-                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', 'user_data.name as user_name', 'user_data.user_id')
+                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'), 'user_data.user_id')
                     ->get();
         } else { //No afiliado
             $cost_card = CostCard::where('ot_id', $ot->id)->firstOrFail();
@@ -149,7 +167,7 @@ class WorkshopController extends Controller
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->where('cost_card_service_works.cc_id', $cost_card->id)
                     //->where('services.area_id', $user_area_id->id)
-                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal', 'user_data.name as user_name', 'user_data.user_id')
+                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal', \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'), 'user_data.user_id')
                     ->get();
         }
         foreach($services_list as $key => $item) {

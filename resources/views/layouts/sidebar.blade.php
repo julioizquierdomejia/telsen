@@ -155,6 +155,14 @@
         </a>
       </li>
       @endif
+      @if ($admin || $supervisor || in_array("worker", $role_names))
+      <li class="{{ request()->routeIs('workshop.services') ? 'active' : '' }}">
+        <a class="mr-0" href="{{route('workshop.services')}}">
+          <i class="fas fa-cogs mr-1"></i>
+          <p>Mis servicios</p>
+        </a>
+      </li>
+      @endif
       @if ($admin)
       <li class="px-3"><hr style="border-top-color: #858585;"></li>
       <li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">
@@ -187,7 +195,6 @@
           <p>Servicios</p>
         </a>
       </li>
-
       <li class="{{ $is_rotorcode ? 'active' : '' }}">
         <a class="mr-0" href="#" data-toggle="collapse" data-target="#collapseCRPt" aria-expanded="true">
           <i class="fas fa-barcode mr-1"></i>

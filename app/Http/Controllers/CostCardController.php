@@ -72,6 +72,11 @@ class CostCardController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo']);
 
+        $cc = CostCard::where('ot_id', $id)->first();
+        if ($cc) {
+            return redirect('tarjeta-costo/'.$cc->ot_id.'/ver');
+        }
+
         $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                 ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')

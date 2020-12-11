@@ -159,7 +159,7 @@
       <li class="{{ request()->routeIs('workshop.services') ? 'active' : '' }}">
         <a class="mr-0" href="{{route('workshop.services')}}">
           <i class="fas fa-cogs mr-1"></i>
-          <p>Mis servicios</p>
+          <p>Mis tareas</p>
         </a>
       </li>
       @endif

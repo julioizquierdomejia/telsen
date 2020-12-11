@@ -41,7 +41,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
               <tbody>
                 @foreach($service_item as $service)
                 @php
-                $service_personal = old("personal_name_".$service['service_id'], $service['user_name']);
+                $service_personal = old("personal_name_".$service['service_id'], $service['user_name'] ? $service['user_name'] : '-');
                 @endphp
                 <tr class="list-item" data-service="{{$service['service_id']}}">
                   <td class="px-2 text-nowrap">{{$ot_date}}</td>

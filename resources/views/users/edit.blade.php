@@ -58,10 +58,10 @@
             </div>
             <div class="form-group col-md-6">
               @php
-                $userRoles = array_column($user_roles->toArray(), 'id');
+                $userRoles = array_column($user->roles->toArray(), 'id');
               @endphp
               <label class="col-form-label" for="selectRol">Roles</label>
-              @if (in_array(Auth::user()->roles->first()->name, $allowed_roles))
+              @if (in_array($user->roles->first()->name, $allowed_roles))
               <ul class="form-check-list list-inline m-0 form-control h-auto">
                 @foreach($roles as $key => $role)
                 <li class="form-check" id="role_{{$key}}">
@@ -87,7 +87,7 @@
               @enderror
             </div>
             <div class="form-group col-md-4">
-            @if (in_array(Auth::user()->roles->first()->name, $allowed_roles))
+            @if (in_array($user->roles->first()->name, $allowed_roles))
               <label class="col-form-label" for="selectArea">Area</label>
               <select name="area_id" class="form-control dropdown2 @error('area_id') is-invalid @enderror" id="selectArea" data-placeholder="Selecciona el area">
                 <option value="">Selecciona el area</option>

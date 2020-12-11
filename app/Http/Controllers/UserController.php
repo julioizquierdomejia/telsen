@@ -193,11 +193,7 @@ class UserController extends Controller
                 ->select('users.id', 'users.email', 'users.password', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id', 'areas.name as area')
                 ->where('users.id', $id)
                 ->firstOrFail();
-        $user_roles = Role::join('role_user', 'role_user.role_id', '=' ,'roles.id')
-                    ->where('role_user.user_id', $id)
-                    ->select('roles.*')
-                    ->get();
-        $superadmin = in_array("superadmin", array_column($user_roles->toArray(), "name"));
+        $superadmin = in_array("superadmin", array_column($user->roles->toArray(), "name"));
 
         $areas = Area::where('enabled', 1)->get();
         if ($superadmin) {
@@ -206,7 +202,7 @@ class UserController extends Controller
             $roles = Role::all();
         }
 
-        return view('users.edit', compact('user', 'areas', 'roles', 'user_roles'));
+        return view('users.edit', compact('user', 'areas', 'roles'));
     }
 
     /**

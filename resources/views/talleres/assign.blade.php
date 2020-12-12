@@ -106,32 +106,29 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
 @endsection
 @section('javascript')
 <script>
-  $('[data-toggle="tooltip"]').tooltip();
-
-  $('#modalPersonal .list-group-item').click(function () {
+  $('#modalPersonal .list-group-item').on('click dblclick', function () {
     $('#modalPersonal .list-group-item').removeClass('active');
     $(this).addClass('active');
     $('#btnPersonal').prop('disabled', false);
   })
 
-  $('#btnPersonal').click(function () {
+  $('#modalPersonal .list-group-item').bind('dblclick', function () {
+    $('#btnPersonal').trigger('click');
+  })
+
+  $('#btnPersonal').on('click', function () {
     var $this = $(this),
         item = $('#modalPersonal .list-group-item.active'),
         userid = item.data('userid'),
         areaid = item.data('areaid'),
         personal = item.find('.personal').text();
-    /*$('.form-card[data-id="'+areaid+'"] .personal_name').val(personal);
-    $('.form-card[data-id="'+areaid+'"] .user_id').val(userid);*/
 
     var service_item = $('.list-item[data-service="'+$this.data('service')+'"] .service-personal');
     service_item.show();
     service_item.find('.personal_name').text(personal).attr({
       'title': personal,
-    }).tooltip('dispose');
+    });
     service_item.find('.user_id').val(userid);
-    setTimeout(function () {
-      service_item.find('.personal_name').tooltip()
-    }, 50)
   })
 
   $('#modalPersonal').on('show.bs.modal', function (event) {

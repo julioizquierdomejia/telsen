@@ -43,7 +43,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
               <tbody>
                 @foreach($service_item as $service)
                 @php
-                $service_personal = old("personal_name_".$service['ot_work_id'], $service['user_name'] ? $service['user_name'] : '-');
+                $service_personal = old("personal_name_".$service['ot_work_id'], $service['user_name']);
                 @endphp
                 <tr class="list-item" data-service="{{$service['ot_work_id']}}">
                   {{-- <td>{{$service['id']}}</td> --}}
@@ -55,14 +55,14 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                   </td>
                   <td>{{$service['description']}}</td>
                   <td>
-                    <div class="text-center service-personal @error("data.".$service['ot_work_id'].".user_id") d-block is-invalid @enderror"{{($service_personal == null) ? 'style="display: none;"' : ''}}>
-                      <span class="form-control mt-0 h-auto personal_name" name="personal_name_{{$service['ot_work_id']}}"> {{ $service_personal }}</span>
+                    <div class="text-center service-personal @error("data.".$service['ot_work_id'].".user_id") d-block is-invalid @enderror">
+                      <span class="form-control mt-0 h-auto personal_name" name="personal_name_{{$service['ot_work_id']}}" style="white-space: nowrap;text-overflow: ellipsis;width: 120px;overflow: hidden;" title="{{$service_personal}}" data-toggle="tooltip"> {{ $service_personal ?? '-' }}</span>
                       <input class="form-control user_id d-none" type="text" name="data[{{$service['ot_work_id']}}][user_id]" value="{{ old('data.'.$service['ot_work_id'].'.user_id', $service['user_id']) }}">
                       <input class="form-control d-none" type="text" name="data[{{$service['ot_work_id']}}][ot_work_id]" value="{{ old('data.'.$service['ot_work_id'].'.ot_work_id',  $service['ot_work_id']) }}">
                     </div>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-primary btn-sm btn-personal my-0" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['ot_work_id']}}" data-toggle="modal" data-target="#modalPersonal"><i class="fal fa-user-hard-hat mr-1"></i> {{$service_personal ? 'Cambiar Personal': 'Asignar Personal'}}</button>
+                    <button type="button" class="btn btn-primary btn-sm btn-personal my-0 d-flex align-items-center" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['ot_work_id']}}" data-toggle="modal" data-target="#modalPersonal"><i class="fal fa-user-hard-hat mr-2"></i> {{$service_personal ? 'Cambiar Personal': 'Asignar Personal'}}</button>
                   </td>
                 </tr>
                 @endforeach
@@ -106,6 +106,8 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
 @endsection
 @section('javascript')
 <script>
+  $('[data-toggle="tooltip"]').tooltip();
+  
   $('#modalPersonal .list-group-item').click(function () {
     $('#modalPersonal .list-group-item').removeClass('active');
     $(this).addClass('active');

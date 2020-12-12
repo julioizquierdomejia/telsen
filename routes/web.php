@@ -136,10 +136,13 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('servicios', [App\Http\Controllers\ServiceController::class, 'index'])->name('services.index');
 	Route::get('servicios/crear', [App\Http\Controllers\ServiceController::class, 'create'])->name('services.create');
 	Route::post('servicios', [App\Http\Controllers\ServiceController::class, 'store'])->name('services.store');
-	Route::post('servicios/{servicio}/eliminar', [App\Http\Controllers\ServiceController::class, 'store'])->name('services.destroy');
+	Route::post('servicios/{servicio}/eliminar', [App\Http\Controllers\ServiceController::class, 'destroy'])->name('services.destroy');
+	Route::post('servicios/{servicio}/status', [App\Http\Controllers\ServiceController::class, 'changeStatus'])->name('services.status');
 	Route::get('servicios/{servicio}/editar', [App\Http\Controllers\ServiceController::class, 'edit'])->name('services.edit');
 	Route::post('servicios/{servicio}/editar', [App\Http\Controllers\ServiceController::class, 'update'])->name('services.update');
 	Route::get('servicios/filterareas', [App\Http\Controllers\ServiceController::class, 'filterareas']);
+
+	Route::get('servicios.lista', [App\Http\Controllers\ServiceController::class, 'services_list'])->name('services.list');
 
 	//rutas para RDI
 	Route::get('rdi', [App\Http\Controllers\RdiController::class, 'index'])->name('rdi.index');

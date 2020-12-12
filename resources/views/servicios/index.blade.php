@@ -14,7 +14,7 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-separate" id="tablas">
+          <table class="table table-separate" id="services-table">
             <thead class="text-primary">
               <th>
                 Id
@@ -32,32 +32,7 @@
                 Acciones
               </th>
             </thead>
-            <tbody>
-            	@foreach($services as $servicio)
-	              <tr>
-	                <td>
-	                  {{$servicio->id}}
-	                </td>
-	                <td>
-	                  {{$servicio->name}}
-	                </td>
-                  <td>
-                    <span class="badge badge-dark px-3 py-1">{{$servicio->area}}</span>
-                  </td>
-                  <td>
-                    @if($servicio->enabled == 1)
-                    <span class="badge badge-success px-3 py-1">Activo</span>
-                    @else
-                    <span class="badge badge-dark px-3 py-1">Inactivo</span>
-                    @endif
-                  </td>
-	                <td class="text-right">
-	                	<a href="{{ route('services.edit', $servicio) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
-	                	<button class="btn btn-danger btn-delete" data-toggle="modal" data-target="#modalServices" type="button" data-id="{{$servicio->id}}"><i class="fal fa-minus-circle"></i></button>
-	                </td>
-	              </tr>
-              @endforeach
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
       </div>
@@ -74,13 +49,13 @@
         </button>
       </div>
       <div class="modal-body text-center">
-        <h6 class="body-title">¿Seguro desea eliminar servicio?</h6>
+        <h6 class="body-title">¿Seguro desea <span class="m-status">eliminar</span> servicio <br> <strong></strong>?</h6>
         <p class="service-name"></p>
         <p class="service-area"></p>
       </div>
       <div class="modal-footer justify-content-center">
           <button class="btn btn-secondary btn-cancel" data-dismiss="modal">Cancelar</button>
-          <button class="btn btn-dark btn-confirm" data-id="">Confirmar</button>
+          <button class="btn btn-dark btn-status-confirm" data-id="">Confirmar</button>
       </div>
     </div>
   </div>
@@ -88,31 +63,61 @@
 @endsection
 @section('javascript')
 <script>
-  $(".btn-confirm").click(function (e) {
-    e.preventDefault();
-    var btn = $(this), id = $(this).data('id');
-    $.ajax({
-        type: "post",
-        url: '/servicios/'+id+'/eliminar',
-        data: data,
-        success: function (data) {
-          btn.parents('tr').remove();
-        },
-        error: function (request, status, error) {
-          var data = jQuery.parseJSON(request.responseText);
-          if (data.errors) {
-            if (data.errors.name) {
-              $('.name_message').text(data.errors.name);
-            }
-            if (data.errors.enabled) {
-              $('.enabled_message').text(data.errors.enabled);
-            }
-            /*if (data.errors.area_id) {
-              $('.area_message').text(data.errors.area_id);
-            }*/
-          }
-        }
+  $(document).ready(function () {
+    var services_table = $('#services-table').DataTable({
+       processing: true,
+       serverSide: true,
+       ajax: "{{route('services.list')}}",
+       pageLength: 5,
+       lengthMenu: [ 5, 25, 50 ],
+       columns: [
+          { data: 'id', class: 'text-nowrap' },
+          { data: 'name', class: 'service' },
+          { data: 'area' },
+          { data: 'status', class: 'text-left' },
+          { data: 'tools', class: 'text-left text-nowrap'}
+      ],
+       columnDefs: [
+        { orderable: false, targets: 4 }
+      ],
+      language: dLanguage
     });
-});
+
+    $(".btn-status-confirm").click(function (e) {
+      e.preventDefault();
+      var btn = $(this), id = $(this).data('id');
+      $.ajax({
+          type: "post",
+          url: '/servicios/'+id+'/status',
+          data: {
+            _token: '{{csrf_token()}}',
+            status: btn.data('status')
+          },
+          success: function (response) {
+            if (response.success) {
+                var data = $.parseJSON(response.data);
+                services_table.ajax.reload();
+                $('#modalServices').modal('hide');
+            }
+          },
+          error: function (request, status, error) {
+            
+          }
+      });
+    });
+    $(document).on("click", ".btn-changestatus", function(event) {
+      var $this = $(this), status = $this.data('status');
+      if(status == 0) {
+        $('.modal-title').text('Eliminar Servicio');
+        $('.m-status').text('eliminar');
+      } else {
+        $('.modal-title').text('Activar Servicio');
+        $('.m-status').text('activar');
+      }
+      $('#modalServices .body-title strong').text($(this).parents('tr').find('.service').text());
+      $('.btn-status-confirm').data('id', $(this).data('id'));
+      $('.btn-status-confirm').data('status', $(this).data('status'));
+    })
+  })
 </script>
 @endsection

@@ -18,9 +18,76 @@ class ServiceController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
         
-        $services = Service::join('areas', 'areas.id', '=', 'services.area_id')
-                    ->select('services.*', 'areas.name as area')->get();
-        return view('servicios.index', compact('services'));
+        /*$services = Service::join('areas', 'areas.id', '=', 'services.area_id')
+                    ->select('services.*', 'areas.name as area')->get();*/
+        return view('servicios.index'
+            /*, compact('services')*/
+        );
+    }
+
+    public function services_list(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Service::join('areas', 'areas.id', '=', 'services.area_id')
+            ->select('services.*', 'areas.name as area')->get()->count();
+        $totalRecordswithFilter = Service::join('areas', 'areas.id', '=', 'services.area_id')
+            ->where(function($query) use ($searchValue) {
+                $query->where('services.name', 'like', '%'.$searchValue.'%')
+                    ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
+            })
+            ->select('services.*', 'areas.name as area')->get();
+
+        $records = Service::join('areas', 'areas.id', '=', 'services.area_id')
+            ->skip($start)
+            ->take($rowperpage)
+            ->where(function($query) use ($searchValue) {
+                $query->where('services.name', 'like', '%'.$searchValue.'%')
+                    ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
+            })
+            ->orderBy($columnName, $columnSortOrder)
+            ->select('services.*', 'areas.name as area')
+            ->get();
+
+        $items_array = [];
+
+        foreach ($records as $key => $item) {
+            $status = $item->enabled == 1 ? '<span class="badge badge-success px-3 py-1">Activo</span>' : '<span class="badge badge-secondary px-3 py-1">Inactivo</span>';
+
+            $tools = '<a href="/servicios'.$item->id.'/editar" class="btn btn-warning"><i class="fal fa-edit"></i></a> '. ($item->enabled == 1 ? '<button class="btn btn-danger btn-changestatus" data-toggle="modal" data-target="#modalServices" data-status="0" type="button" data-id="'.$item->id.'"><i class="fal fa-minus-circle"></i></button>' : '<button class="btn btn-primary btn-changestatus" data-toggle="modal" data-target="#modalServices" data-status="1" type="button" data-id="'.$item->id.'"><i class="fal fa-trash-restore"></i></button>');
+
+            $items_array[] = array(
+              "id" => $item->id,
+              "name" => $item->name,
+              "area" => $item->area,
+              "status" => $status,
+              "tools" => $tools
+            );
+        };
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $items_array
+        );
+
+        echo json_encode($response);
+        exit;
     }
 
     /**
@@ -156,6 +223,24 @@ class ServiceController extends Controller
             return response()->json(['data'=>json_encode($services),'success'=>true]);
         }
         return response()->json(['success'=>false]);
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $rules = array(
+            'status'      => 'required|in:0,1',
+        );
+        $this->validate($request, $rules);
+
+        $status = $request->input('status');
+
+        $service = Service::findOrFail($id);
+        $service->enabled = $status;
+        $service->save();
+
+        return response()->json(['success'=>true, 'data'=>json_encode($service)]);
     }
 
     /**

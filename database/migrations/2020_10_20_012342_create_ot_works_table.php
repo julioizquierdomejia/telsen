@@ -17,7 +17,7 @@ class CreateOtWorksTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('ot_id');
-            $table->foreign('ot_id')->references('id')->on('electrical_evaluations');
+            $table->foreign('ot_id')->references('id')->on('ots');
 
             $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');

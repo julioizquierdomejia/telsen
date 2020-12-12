@@ -10,6 +10,7 @@
         <div class="table-responsive">
           <table class="table table-separate data-table" id="workshop-table">
             <thead class=" text-primary">
+              {{-- <th class="text-nowrap">ID</th> --}}
               <th class="text-nowrap">Fecha OT</th>
               <th class="text-nowrap">N° de OT</th>
               <th>Potencia</th>
@@ -20,6 +21,7 @@
             <tbody>
               @foreach ($services as $item)
               <tr id="service-{{$item->id}}">
+                {{-- <td>{{$item->id}}</td> --}}
                 <td>{{date('d-m-Y', strtotime($item->created_at))}}</td>
                 <td>OT-{{$item->code}}</td>
                 <td>{{$item->potencia}}</td>
@@ -33,9 +35,9 @@
                 <td class="p-0" colspan="6">
                   <div class="t-details px-2 py-3 mb-3" style="border-left: 10px solid #efefef;border-right: 10px solid #efefef;background-color: #f9f9f9;margin-top: -6px;">
                     <div class="buttons mb-3">
-                      <button class="btn btn-success" type="button">Empezar <i class="far fa-play ml-2"></i></button>
-                      <button class="btn btn-warning" type="button">Pausar <i class="far fa-pause"></i></button>
-                      <button class="btn btn-primary" type="button">Continuar <i class="far fa-play"></i></button>
+                      <button class="btn btn-success" data-id="{{$item->id}}" type="button">Empezar <i class="far fa-play ml-2"></i></button>
+                      <button class="btn btn-warning" data-id="{{$item->id}}" type="button">Pausar <i class="far fa-pause ml-2"></i></button>
+                      <button class="btn btn-primary" data-id="{{$item->id}}" type="button">Continuar <i class="far fa-play ml-2"></i></button>
                     </div>
                     <div class="history bg-dark text-white pt-3">
                       <h5 class="h6 px-3">Historial</h5>

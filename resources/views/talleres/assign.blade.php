@@ -107,7 +107,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
 @section('javascript')
 <script>
   $('[data-toggle="tooltip"]').tooltip();
-  
+
   $('#modalPersonal .list-group-item').click(function () {
     $('#modalPersonal .list-group-item').removeClass('active');
     $(this).addClass('active');
@@ -125,8 +125,13 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
 
     var service_item = $('.list-item[data-service="'+$this.data('service')+'"] .service-personal');
     service_item.show();
-    service_item.find('.personal_name').text(personal);
+    service_item.find('.personal_name').text(personal).attr({
+      'title': personal,
+    }).tooltip('dispose');
     service_item.find('.user_id').val(userid);
+    setTimeout(function () {
+      service_item.find('.personal_name').tooltip()
+    }, 50)
   })
 
   $('#modalPersonal').on('show.bs.modal', function (event) {

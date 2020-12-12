@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\CostCard;
-use App\Models\CostCardService;
-use App\Models\CostCardServiceWork;
-use App\Models\ElectricalEvaluationWork;
-use App\Models\MechanicalEvaluationWork;
+//use App\Models\CostCardService;
+use App\Models\OtWork;
+//use App\Models\CostCardServiceWork;
+//use App\Models\ElectricalEvaluationWork;
+//use App\Models\MechanicalEvaluationWork;
 use App\Models\Ot;
 use App\Models\Status;
 use App\Models\StatusOt;
@@ -92,35 +93,37 @@ class CostCardController extends Controller
             $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 6)->get();
         }
 
-        $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+        $works_el = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
-                ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                 ->select(
-                    'electrical_evaluation_works.description',
-                    'electrical_evaluation_works.medidas',
-                    'electrical_evaluation_works.qty',
-                    'electrical_evaluation_works.personal',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
                     'services.id as service_id',
                     'areas.name as area',
                     'areas.id as area_id'
                 )
-                ->where('electrical_evaluations.ot_id', $ot->id)
+                ->where('ot_works.type', 'electrical')
+                ->where('ots.id', $ot->id)
                 ->get();
-
-        $works_mec = MechanicalEvaluationWork::join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+        $works_mec = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
-                ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                 ->select(
-                    'mechanical_evaluation_works.description',
-                    'mechanical_evaluation_works.medidas',
-                    'mechanical_evaluation_works.qty',
-                    'mechanical_evaluation_works.personal',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
+                    'services.id as service_id',
                     'areas.name as area',
                     'areas.id as area_id'
                 )
-                ->where('mechanical_evaluations.ot_id', $ot->id)
+                ->where('ot_works.type', 'mechanical')
+                ->where('ots.id', $ot->id)
                 ->get();
         //$clientes = Client::where('enabled', 1)->get();
 
@@ -215,8 +218,9 @@ class CostCardController extends Controller
         $services = [];
         foreach ($works as $key => $item) {
             if (isset($item['service_id'])) {
-                $cc_work = new CostCardServiceWork();
-                $cc_work->cc_id = $cost->id;
+                $cc_work = new OtWork();
+                $cc_work->ot_id = $cost->ot_id;
+                $cc_work->type = "cc";
                 $cc_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
                 $cc_work->description = isset($item['description']) ? $item['description'] : '';
                 $cc_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
@@ -269,40 +273,43 @@ class CostCardController extends Controller
                     ->leftJoin('areas', 'areas.id', '=', 'cost_card_services.area_id')
                     ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_services.personal', 'cost_card_services.ingreso', 'cost_card_services.salida', 'cost_card_services.subtotal')
                     ->get();*/
-        $services = CostCardServiceWork::where('cc_id', $ccost->id)
-                    ->leftJoin('services', 'services.id', '=', 'cost_card_service_works.service_id')
+        $services = OtWork::where('ot_id', $ccost->ot_id)
+                    ->where('type', 'cc')
+                    ->leftJoin('services', 'services.id', '=', 'ot_works.service_id')
                     ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
-                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_service_works.*')
+                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','ot_works.*')
                     ->get();
-        $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+        $works_el = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
-                ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                 ->select(
-                    'electrical_evaluation_works.description',
-                    'electrical_evaluation_works.medidas',
-                    'electrical_evaluation_works.qty',
-                    'electrical_evaluation_works.personal',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
                     'services.id as service_id',
                     'areas.name as area',
                     'areas.id as area_id'
                 )
-                ->where('electrical_evaluations.ot_id', $ot_id)
+                ->where('ot_works.type', 'electrical')
+                ->where('ots.id', $ot_id)
                 ->get();
-
-        $works_mec = MechanicalEvaluationWork::join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+        $works_mec = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
-                ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                 ->select(
-                    'mechanical_evaluation_works.description',
-                    'mechanical_evaluation_works.medidas',
-                    'mechanical_evaluation_works.qty',
-                    'mechanical_evaluation_works.personal',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
+                    'services.id as service_id',
                     'areas.name as area',
                     'areas.id as area_id'
                 )
-                ->where('mechanical_evaluations.ot_id', $ot_id)
+                ->where('ot_works.type', 'mechanical')
+                ->where('ots.id', $ot_id)
                 ->get();
 
         $ot_status = StatusOt::join('status', 'status_ot.status_id', '=', 'status.id')

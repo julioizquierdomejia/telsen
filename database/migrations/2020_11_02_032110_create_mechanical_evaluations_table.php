@@ -100,7 +100,7 @@ class CreateMechanicalEvaluationsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('mechanical_evaluation_works', function (Blueprint $table) {
+        /*Schema::create('mechanical_evaluation_works', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('me_id');
@@ -115,7 +115,7 @@ class CreateMechanicalEvaluationsTable extends Migration
             $table->string('personal')->nullable();
 
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -128,11 +128,11 @@ class CreateMechanicalEvaluationsTable extends Migration
         Schema::table('mechanical_evaluations', function (Blueprint $table) {
             $table->dropForeign('mechanical_evaluations_ot_id_foreign');
         });
-        Schema::table('mechanical_evaluation_works', function (Blueprint $table) {
+        /*Schema::table('mechanical_evaluation_works', function (Blueprint $table) {
             $table->dropForeign('mechanical_evaluation_works_me_id_foreign');
             $table->dropForeign('mechanical_evaluation_works_service_id_foreign');
-        });
+        });*/
         Schema::dropIfExists('mechanical_evaluations');
-        Schema::dropIfExists('mechanical_evaluation_works');
+        //Schema::dropIfExists('mechanical_evaluation_works');
     }
 }

@@ -8,8 +8,9 @@ use App\Models\Status;
 use App\Models\Service;
 use App\Models\Rdi;
 use App\Models\RdiServiceCost;
-use App\Models\MechanicalEvaluationWork;
-use App\Models\ElectricalEvaluationWork;
+use App\Models\OtWork;
+//use App\Models\MechanicalEvaluationWork;
+//use App\Models\ElectricalEvaluationWork;
 use App\Models\CostCard;
 use App\Models\Area;
 use App\Models\Client;
@@ -109,74 +110,71 @@ class WorkshopController extends Controller
             $user_area_id = 0;
         }
 
-        $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
-                ->join('areas', 'areas.id', '=', 'services.area_id')
-                ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
-                ->leftJoin('workshops', 'services.id', '=', 'workshops.service_id')
-                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
-                ->select(
-                    //'electrical_evaluation_works.description',
-                    //'electrical_evaluation_works.medidas',
-                    //'electrical_evaluation_works.qty',
-                    'areas.name as area',
-                    'services.id as service_id',
-                    'services.area_id',
-                    'services.name as service',
-                    'electrical_evaluation_works.personal',
-                    \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
-                    'user_data.user_id'
-                )
-                ->where('electrical_evaluations.ot_id', $ot->id)
-                ->get();
-        $works_mec = MechanicalEvaluationWork::join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
-                ->join('areas', 'areas.id', '=', 'services.area_id')
-                ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
-                ->leftJoin('workshops', 'services.id', '=', 'workshops.service_id')
-                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
-                ->select(
-                    //'mechanical_evaluation_works.description',
-                    //'mechanical_evaluation_works.medidas',
-                    //'mechanical_evaluation_works.qty',
-                    'areas.name as area',
-                    'services.id as service_id',
-                    'services.area_id',
-                    'services.name as service',
-                    'mechanical_evaluation_works.personal',
-                    \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
-                    'user_data.user_id'
-                )
-                ->where('mechanical_evaluations.ot_id', $ot->id)
-                ->get();
+        $works = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
+            ->join('areas', 'areas.id', '=', 'services.area_id')
+            ->leftJoin('workshops', 'workshops.ot_work_id', '=', 'ot_works.id')
+            ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+            ->select(
+                'ot_works.id',
+                'services.id as service_id',
+                'ot_works.description',
+                'ot_works.id as ot_work_id',
+                'areas.name as area',
+                'services.area_id',
+                'services.name as service',
+                'ot_works.personal',
+                \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
+                'user_data.user_id'
+            )
+            ->where('ot_works.ot_id', $ot->id)
+            ->get();
 
-        $services = [];
-        if ($ot->client_type_id == 1) { //RDI
+        //$services = [];
+        /*if ($ot->client_type_id == 1) { //RDI
             $rdi = Rdi::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
-                    ->join('rdi_works', 'rdi_works.service_id', 'services.id')
+                    ->join('ot_works', 'ot_works.service_id', 'services.id')
                     ->leftJoin('workshops', 'services.id', '=', 'workshops.service_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
-                    ->where('rdi_works.rdi_id', $rdi->id)
+                    ->where('ot_works.ot_id', $rdi->ot_id)
                     //->where('services.area_id', $user_area_id->id)
-                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'), 'user_data.user_id')
+                    ->select(
+                        'areas.name as area',
+                        'services.id as service_id',
+                        'ot_works.description',
+                        'services.area_id',
+                        'services.name as service',
+                        \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
+                        'user_data.user_id'
+                    )
                     ->get();
         } else { //No afiliado
             $cost_card = CostCard::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')
-                    ->join('cost_card_service_works', 'cost_card_service_works.service_id', 'services.id')
+                    ->join('ot_works', 'ot_works.service_id', 'services.id')
                     ->leftJoin('workshops', 'services.id', '=', 'workshops.service_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
-                    ->where('cost_card_service_works.cc_id', $cost_card->id)
+                    ->where('ot_works.ot_id', $cost_card->ot_id)
                     //->where('services.area_id', $user_area_id->id)
-                    ->select('areas.name as area', 'services.id as service_id', 'services.area_id', 'services.name as service', 'cost_card_service_works.personal', \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'), 'user_data.user_id')
+                    ->select(
+                        'areas.name as area',
+                        'services.id as service_id',
+                        'ot_works.description',
+                        'services.area_id',
+                        'services.name as service',
+                        'ot_works.personal',
+                        \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
+                        'user_data.user_id'
+                    )
                     ->get();
-        }
-        foreach($services_list as $key => $item) {
-            $services[$item->area_id][$key] = $item->toArray();
-        }
-        foreach($works_el as $key => $item) {
+        }*/
+        /*foreach($services_list as $key => $item) {
             $services[$item->area_id][$key] = $item->toArray();
         }
         foreach($works_mec as $key => $item) {
+            $services[$item->area_id][$key] = $item->toArray();
+        }*/
+        foreach($works as $key => $item) {
             $services[$item->area_id][$key] = $item->toArray();
         }
         /*$workshop = Workshop::join('services', 'services.id', '=', 'workshops.service_id')
@@ -203,31 +201,33 @@ class WorkshopController extends Controller
         if (!is_array($data)) {
             $rules = array(
                 'user_id'      => 'required|array|min:1',
-                'service_id'      => 'required|array|min:1',
+                'ot_work_id'      => 'required|array|min:1',
             );
             $this->validate($request, $rules);
         }
         /*if ($data) {
             foreach($request->input('data') as $key => $val){
                 $rules['data.'.$key.'.user_id'] = 'required';
-                $rules['data.'.$key.'.service_id'] = 'required';
+                $rules['data.'.$key.'.ot_work_id'] = 'required';
                 $this->validate($request, $rules);
             }
         } else {
             $rules = array(
                 'user_id'      => 'required|array|min:1',
-                'service_id'      => 'required|array|min:1',
+                'ot_work_id'      => 'required|array|min:1',
             );
             $this->validate($request, $rules);
         }*/
-        Workshop::where('ot_id', $id)->delete();
+        Workshop::join('ot_works', 'ot_works.id', '=', 'workshops.ot_work_id')
+                ->where('ot_works.ot_id', $id)
+                ->delete();
 
         //$data_count = count($data);
         foreach ($data as $key => $item) {
             if ($item['user_id']) {
                 $work_shop = new Workshop();
-                $work_shop->ot_id = $id;
-                $work_shop->service_id = $item['service_id'];
+                //$work_shop->ot_id = $id;
+                $work_shop->ot_work_id = $item['ot_work_id'];
                 $work_shop->user_id = $item['user_id'];
                 $work_shop->save();
             }

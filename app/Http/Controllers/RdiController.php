@@ -6,7 +6,8 @@ use App\Models\Rdi;
 use App\Models\RdiService;
 use App\Models\RdiIngreso;
 //use App\Models\RdiServiceCost;
-use App\Models\RdiWork;
+//use App\Models\RdiWork;
+use App\Models\OtWork;
 use App\Models\ElectricalEvaluationWork;
 use App\Models\MechanicalEvaluationWork;
 use App\Models\RdiMaintenanceType;
@@ -255,7 +256,7 @@ class RdiController extends Controller
         $works = $request->input('works');
         foreach ($works as $key => $item) {
             if (isset($item['service_id'])) {
-                $rdi_work = new RdiWork();
+                $rdi_work = new OtWork();
                 $rdi_work->rdi_id = $rdi->id;
                 $rdi_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
                 $rdi_work->description = isset($item['description']) ? $item['description'] : '';
@@ -359,7 +360,8 @@ class RdiController extends Controller
                     ->join('services', 'services.id', '=', 'rdi_service_costs.service_id')
                     ->select('services.id', 'services.name', 'rdi_service_costs.subtotal')
                     ->get();*/
-        $services = RdiWork::where('rdi_id', $id)
+        $services = OtWork::where('ot_id', $rdi->ot_id)
+                    ->where('type', 'rdi')
                     ->leftJoin('services', 'services.id', '=', 'rdi_works.service_id')
                     ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
                     ->select('areas.name as area', 'areas.id as area_id','services.name as service','rdi_works.*')
@@ -430,7 +432,8 @@ class RdiController extends Controller
                     ->select('rdi_services.id', 'rdi_services.name', 'rdi_service_costs.subtotal')
                     ->where('rdi_services.enabled', 1)
                     ->get();*/
-        $services = RdiWork::where('rdi_id', $id)
+        $services = OtWork::where('ot_id', $rdi->ot_id)
+                    ->where('type', 'rdi')
                     ->leftJoin('services', 'services.id', '=', 'rdi_works.service_id')
                     ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
                     ->select('areas.name as area', 'areas.id as area_id','services.name as service','rdi_works.*')

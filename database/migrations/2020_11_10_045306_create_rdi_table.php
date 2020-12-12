@@ -126,7 +126,7 @@ class CreateRdiTable extends Migration
             $table->timestamps();
         });*/
 
-        Schema::create('rdi_works', function (Blueprint $table) {
+        /*Schema::create('rdi_works', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('rdi_id');
@@ -141,7 +141,7 @@ class CreateRdiTable extends Migration
             $table->string('personal')->nullable();
 
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -166,16 +166,16 @@ class CreateRdiTable extends Migration
             //$table->dropForeign('rdi_service_costs_rdi_service_id_foreign');
             $table->dropForeign('rdi_service_costs_service_id_foreign');
         });*/
-        Schema::table('rdi_works', function (Blueprint $table) {
+        /*Schema::table('rdi_works', function (Blueprint $table) {
             $table->dropForeign('rdi_works_rdi_id_foreign');
             $table->dropForeign('rdi_works_service_id_foreign');
-        });
+        });*/
         Schema::dropIfExists('rdi_maintenance_types');
         Schema::dropIfExists('rdi_criticality_types');
         Schema::dropIfExists('rdi_ingresos');
         Schema::dropIfExists('rdi_services');
         //Schema::dropIfExists('rdi_service_costs');
-        Schema::dropIfExists('rdi_works');
+        //Schema::dropIfExists('rdi_works');
         Schema::dropIfExists('rdi');
     }
 }

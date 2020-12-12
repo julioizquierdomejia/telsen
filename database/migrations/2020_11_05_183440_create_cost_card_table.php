@@ -60,7 +60,7 @@ class CreateCostCardTable extends Migration
             $table->timestamps();
         });*/
 
-        Schema::create('cost_card_service_works', function (Blueprint $table) {
+        /*Schema::create('cost_card_service_works', function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('cc_id');
@@ -75,7 +75,7 @@ class CreateCostCardTable extends Migration
             $table->string('personal')->nullable();
 
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
@@ -93,12 +93,12 @@ class CreateCostCardTable extends Migration
             $table->dropForeign('cost_card_services_area_id_foreign');
             $table->dropForeign('cost_card_services_service_id_foreign');
         });*/
-        Schema::table('cost_card_service_works', function (Blueprint $table) {
+        /*Schema::table('cost_card_service_works', function (Blueprint $table) {
             $table->dropForeign('cost_card_service_works_cc_id_foreign');
             $table->dropForeign('cost_card_service_works_service_id_foreign');
-        });
+        });*/
+        //Schema::dropIfExists('cost_card_service_works');
         Schema::dropIfExists('cost_cards');
         //Schema::dropIfExists('cost_card_services');
-        Schema::dropIfExists('cost_card_service_works');
     }
 }

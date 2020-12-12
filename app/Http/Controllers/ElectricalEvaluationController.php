@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\ElectricalEvaluation;
-use App\Models\ElectricalEvaluationWork;
+//use App\Models\ElectricalEvaluationWork;
+use App\Models\OtWork;
 use App\Models\ElectricalEvaluationCharacteristic;
 use App\Models\ElectricalEvaluationReception;
 use App\Models\ElectricalEvaluationTestIn;
@@ -407,14 +408,15 @@ class ElectricalEvaluationController extends Controller
         $services = [];
         foreach ($works as $key => $item) {
             if (isset($item['service_id'])) {
-                $ee_work = new ElectricalEvaluationWork();
-                $ee_work->me_id = $eleval->id;
-                $ee_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
-                $ee_work->description = isset($item['description']) ? $item['description'] : '';
-                $ee_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
-                $ee_work->qty = isset($item['qty']) ? $item['qty'] : '';
-                $ee_work->personal = isset($item['personal']) ? $item['personal'] : '';
-                $ee_work->save();
+                $ot_work = new OtWork();
+                $ot_work->ot_id = $ot_id;
+                $ot_work->type = "electrical";
+                $ot_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                $ot_work->description = isset($item['description']) ? $item['description'] : '';
+                $ot_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                $ot_work->qty = isset($item['qty']) ? $item['qty'] : '';
+                $ot_work->personal = isset($item['personal']) ? $item['personal'] : '';
+                $ot_work->save();
             }
         }
 
@@ -594,15 +596,16 @@ class ElectricalEvaluationController extends Controller
                     //->where('electrical_evaluations.ot_id', $ot_id)
                     ->findOrFail($id);
 
-        $works = ElectricalEvaluationWork::where('me_id', $formato->id)
-                ->join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+        $works = OtWork::where('type', "electrical")
+                ->where('ot_id', $formato->ot_id)
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
-                    'electrical_evaluation_works.id',
-                    'electrical_evaluation_works.description',
-                    'electrical_evaluation_works.medidas',
-                    'electrical_evaluation_works.qty',
-                    'electrical_evaluation_works.personal',
+                    'ot_works.id',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
                     'services.id as service_id',
                     'areas.name as area',
@@ -775,15 +778,16 @@ class ElectricalEvaluationController extends Controller
                     ->where('enabled', 1)
                     ->where('eval_type', 'evaluador', 'aprobador_de_evaluaciones')->get();
 
-        $works = ElectricalEvaluationWork::where('me_id', $formato->id)
-                ->join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+        $works = OtWork::where('type', "electrical")
+                ->where('ot_id', $formato->ot_id)
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
-                    'electrical_evaluation_works.id',
-                    'electrical_evaluation_works.description',
-                    'electrical_evaluation_works.medidas',
-                    'electrical_evaluation_works.qty',
-                    'electrical_evaluation_works.personal',
+                    'ot_works.id',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
                     'services.id as service_id',
                     'areas.name as area',
@@ -1077,11 +1081,11 @@ class ElectricalEvaluationController extends Controller
         //$update_works = ElectricalEvaluationWork::where('me_id', $eleval->id)->delete();
         foreach ($works as $key => $item) {
             if (isset($item['id'])) {
-                $work = ElectricalEvaluationWork::find($item['id']);
+                $work = OtWork::find($item['id']);
                 if (isset($item['status']) && $item['status'] == 0) {
                     $work->delete();
                 } else {
-                    $work->me_id = $eleval->id;
+                    //$work->ot_id = $ot->id;
                     $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
                     $work->description = isset($item['description']) ? $item['description'] : '';
                     $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
@@ -1090,8 +1094,9 @@ class ElectricalEvaluationController extends Controller
                     $work->save();
                 }
             } else {
-                $work = new ElectricalEvaluationWork();
-                $work->me_id = $eleval->id;
+                $work = new OtWork();
+                $work->ot_id = $ot->id;
+                $work->type = 'electrical';
                 $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
                 $work->description = isset($item['description']) ? $item['description'] : '';
                 $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';

@@ -31,34 +31,38 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
           <div class="table-responsive pb-0">
             <table class="table table-separate data-table mb-0">
               <thead class=" text-primary">
+                {{-- <th class="text-nowrap px-2">ID</th> --}}
                 <th class="text-nowrap px-2">Fecha OT</th>
                 <th class="text-nowrap">N° de OT</th>
                 <th>Potencia</th>
                 <th class="text-nowrap">Servicio</th>
+                <th class="text-nowrap">Descripción</th>
                 <th class="text-center">Personal</th>
                 <th class="text-center">Acciones</th>
               </thead>
               <tbody>
                 @foreach($service_item as $service)
                 @php
-                $service_personal = old("personal_name_".$service['service_id'], $service['user_name'] ? $service['user_name'] : '-');
+                $service_personal = old("personal_name_".$service['ot_work_id'], $service['user_name'] ? $service['user_name'] : '-');
                 @endphp
-                <tr class="list-item" data-service="{{$service['service_id']}}">
+                <tr class="list-item" data-service="{{$service['ot_work_id']}}">
+                  {{-- <td>{{$service['id']}}</td> --}}
                   <td class="px-2 text-nowrap">{{$ot_date}}</td>
                   <td>{{$ot_id}}</td>
                   <td>{{$potencia}}</td>
                   <td width="250">
                     <h6 class="subtitle mb-0">{{$service['service']}}</h6>
                   </td>
+                  <td>{{$service['description']}}</td>
                   <td>
-                    <div class="text-center service-personal @error("data.".$service['service_id'].".user_id") d-block is-invalid @enderror"{{($service_personal == null) ? 'style="display: none;"' : ''}}>
-                      <span class="form-control mt-0 h-auto personal_name" name="personal_name_{{$service['service_id']}}"> {{ $service_personal }}</span>
-                      <input class="form-control user_id d-none" type="text" name="data[{{$service['service_id']}}][user_id]" value="{{ old('data.'.$service['service_id'].'.user_id', $service['user_id']) }}">
-                      <input class="form-control d-none" type="text" name="data[{{$service['service_id']}}][service_id]" value="{{ old('data.'.$service['service_id'].'.service_id',  $service['service_id']) }}">
+                    <div class="text-center service-personal @error("data.".$service['ot_work_id'].".user_id") d-block is-invalid @enderror"{{($service_personal == null) ? 'style="display: none;"' : ''}}>
+                      <span class="form-control mt-0 h-auto personal_name" name="personal_name_{{$service['ot_work_id']}}"> {{ $service_personal }}</span>
+                      <input class="form-control user_id d-none" type="text" name="data[{{$service['ot_work_id']}}][user_id]" value="{{ old('data.'.$service['ot_work_id'].'.user_id', $service['user_id']) }}">
+                      <input class="form-control d-none" type="text" name="data[{{$service['ot_work_id']}}][ot_work_id]" value="{{ old('data.'.$service['ot_work_id'].'.ot_work_id',  $service['ot_work_id']) }}">
                     </div>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-primary btn-sm btn-personal my-0" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['service_id']}}" data-toggle="modal" data-target="#modalPersonal"><i class="fal fa-user-hard-hat mr-1"></i> {{$service_personal ? 'Cambiar Personal': 'Asignar Personal'}}</button>
+                    <button type="button" class="btn btn-primary btn-sm btn-personal my-0" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['ot_work_id']}}" data-toggle="modal" data-target="#modalPersonal"><i class="fal fa-user-hard-hat mr-1"></i> {{$service_personal ? 'Cambiar Personal': 'Asignar Personal'}}</button>
                   </td>
                 </tr>
                 @endforeach

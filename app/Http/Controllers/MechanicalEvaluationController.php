@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\MechanicalEvaluation;
-use App\Models\MechanicalEvaluationWork;
+//use App\Models\MechanicalEvaluationWork;
+use App\Models\OtWork;
 use App\Models\OtGallery;
 use App\Models\RotorCodRodajePt1;
 use App\Models\RotorCodRodajePt2;
@@ -280,8 +281,9 @@ class MechanicalEvaluationController extends Controller
         $works = $request->input('works');
         foreach ($works as $key => $item) {
             if (isset($item['service_id'])) {
-                $me_work = new MechanicalEvaluationWork();
-                $me_work->me_id = $meval->id;
+                $me_work = new OtWork();
+                $me_work->ot_id = $ot_id;
+                $me_work->type = "mechanical";
                 $me_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
                 $me_work->description = isset($item['description']) ? $item['description'] : '';
                 $me_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
@@ -342,7 +344,7 @@ class MechanicalEvaluationController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
 
         $formato = MechanicalEvaluation::findOrFail($id);
-        $works = MechanicalEvaluationWork::where('me_id', $formato->id)->first();
+        $works = OtWork::where('ot_id', $formato->ot_id)->first();
 
         return view('formatos.mechanical.show', compact('formato', 'works'));
     }
@@ -356,15 +358,16 @@ class MechanicalEvaluationController extends Controller
                 ->select('mechanical_evaluations.*', 'ots.code as ot_code')
                 ->where('mechanical_evaluations.id', $id)
                 ->firstOrFail();
-        $works = MechanicalEvaluationWork::where('me_id', $formato->id)
-                ->leftJoin('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+        $works = OtWork::where('type', "mechanical")
+                ->where('ot_id', $formato->ot_id)
+                ->leftJoin('services', 'services.id', '=', 'ot_works.service_id')
                 ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
-                    'mechanical_evaluation_works.id',
-                    'mechanical_evaluation_works.description',
-                    'mechanical_evaluation_works.medidas',
-                    'mechanical_evaluation_works.qty',
-                    'mechanical_evaluation_works.personal',
+                    'ot_works.id',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
                     'areas.name as area',
                     'services.area_id'
@@ -428,15 +431,16 @@ class MechanicalEvaluationController extends Controller
                     ->where('enabled', 1)
                     ->where('eval_type', 'mechanical')->get();
 
-        $works = MechanicalEvaluationWork::where('me_id', $formato->id)
-                ->join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+        $works = OtWork::where('type', 'mechanical')
+                ->where('ot_id', $formato->ot_id)
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->select(
-                    'mechanical_evaluation_works.id',
-                    'mechanical_evaluation_works.description',
-                    'mechanical_evaluation_works.medidas',
-                    'mechanical_evaluation_works.qty',
-                    'mechanical_evaluation_works.personal',
+                    'ot_works.id',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
                     'services.id as service_id',
                     'areas.name as area',
@@ -617,11 +621,11 @@ class MechanicalEvaluationController extends Controller
         $services = [];
         foreach ($works as $key => $item) {
             if (isset($item['id'])) {
-                $work = MechanicalEvaluationWork::find($item['id']);
+                $work = OtWork::find($item['id']);
                 if (isset($item['status']) && $item['status'] == 0) {
                     $work->delete();
                 } else {
-                    $work->me_id = $meval->id;
+                    //$work->ot_id = $meval->ot_id;
                     $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
                     $work->description = isset($item['description']) ? $item['description'] : '';
                     $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
@@ -630,8 +634,9 @@ class MechanicalEvaluationController extends Controller
                     $work->save();
                 }
             } else {
-                $work = new MechanicalEvaluationWork();
-                $work->me_id = $meval->id;
+                $work = new OtWork();
+                $work->ot_id = $meval->ot_id;
+                $work->type = 'mechanical';
                 $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
                 $work->description = isset($item['description']) ? $item['description'] : '';
                 $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';

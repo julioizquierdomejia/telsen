@@ -89,9 +89,12 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
         </button>
       </div>
       <div class="modal-body">
-        <ul class="list-group" style="max-height: 380px;max-height: calc(100vh - 240px); overflow-y: auto">
+        <div class="search bg-white">
+          <input class="form-control p-search" type="text" placeholder="Buscar personal">
+        </div>
+        <ul class="list-group user-select-none" style="max-height: 380px;max-height: calc(100vh - 240px); overflow-y: auto">
           @foreach ($users as $user)
-          <li type="button" data-userid="{{$user->id}}" data-areaid="{{$user->area_id}}" class="list-group-item list-group-item-action" style="display: none;"><span class="align-middle personal">{{$user->name .' '.$user->last_name.' '.$user->mother_last_name}} {{-- - {{$user->area}} --}}</span> <span class="badge badge-dark align-middle">Seleccionar</span></li>
+          <li type="button" data-userid="{{$user->id}}" data-areaid="{{$user->area_id}}" class="list-group-item list-group-item-action d-none"><span class="align-middle personal">{{$user->name .' '.$user->last_name.' '.$user->mother_last_name}} {{-- - {{$user->area}} --}}</span> <span class="badge badge-dark align-middle">Seleccionar</span></li>
           @endforeach
         </ul>
       </div>
@@ -131,14 +134,29 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
     service_item.find('.user_id').val(userid);
   })
 
+  $('#modalPersonal').on('hide.bs.modal', function (event) {
+    $('.p-search').val('').trigger('keyup');
+  })
+
   $('#modalPersonal').on('show.bs.modal', function (event) {
     var btn = $(event.relatedTarget), area_id = btn.data('areaid');
     $('#modalPersonal .modal-title span').text(" de "+btn.data('area'));
-    $('#modalPersonal .list-group-item').hide();
+    $('#modalPersonal .list-group-item').addClass('d-none');
     $('#modalPersonal #btnPersonal').data('service', btn.data('service'));
-    $('#modalPersonal .list-group-item[data-areaid="'+area_id+'"]').show();
+    $('#modalPersonal .list-group-item[data-areaid="'+area_id+'"]').removeClass('d-none');
     $('#modalPersonal .list-group-item.active').removeClass('active');
     $('#btnPersonal').prop('disabled', true);
   })
+
+  $('.p-search').on('keyup', function() {
+        var filter = $(this).val();
+        $(".list-group li:not(.d-none)").each(function () {
+            if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                $(this).hide();
+            } else {
+                $(this).show()
+            }
+        });
+    })
 </script>
 @endsection

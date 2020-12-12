@@ -193,4 +193,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('rotorcoderodajept/2/{id}/editar', [App\Http\Controllers\RotorCodRodajePt2Controller::class, 'edit'])->name('rotorcoderpt2.edit');
 	Route::post('rotorcoderodajept/2/{id}/editar', [App\Http\Controllers\RotorCodRodajePt2Controller::class, 'update'])->name('rotorcoderpt2.update');
 
+	//Work Log
+	Route::post('worklog/store', [App\Http\Controllers\WorkLogController::class, 'store'])->name('worklog.store');
+
 });

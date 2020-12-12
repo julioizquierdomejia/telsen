@@ -52,7 +52,7 @@ class WorkshopController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
         $user_id = \Auth::user()->id;
-        $services = Workshop::join('ot_works', 'ot_works.id', '=', 'workshops.ot_work_id')
+        $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
                 ->join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')

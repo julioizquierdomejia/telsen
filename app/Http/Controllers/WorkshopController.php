@@ -57,7 +57,7 @@ class WorkshopController extends Controller
                 ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                 ->select('ots.created_at', 'ot_works.id', 'services.name as service', 'ots.code', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
-                //->where('workshops.user_id', $user_id)
+                ->where('workshops.user_id', $user_id)
                 ->get();
 
         return view('talleres.services'

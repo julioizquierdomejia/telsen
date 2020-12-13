@@ -26,6 +26,6 @@ class OtWork extends Model
 
     public function work_logs()
     {
-        return $this->hasMany(WorkLog::class, 'work_id');
+        return $this->hasMany(WorkLog::class, 'work_id')->orderBy('id');
     }
 }

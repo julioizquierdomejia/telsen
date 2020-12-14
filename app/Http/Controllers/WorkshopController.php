@@ -51,14 +51,25 @@ class WorkshopController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
-        $user_id = \Auth::user()->id;
-        $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+        $roles = validateActionbyRole();
+        if (in_array("superadmin", $roles) || in_array("admin", $roles)) {
+            $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
                 ->join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                ->select('ots.created_at', 'ot_works.id', 'services.name as service', 'ots.code', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                ->select('ots.created_at', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                ->get();
+        } else {
+            $user_id = \Auth::user()->id;
+
+            $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                ->select('ots.created_at', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                 ->where('workshops.user_id', $user_id)
                 ->get();
+        }
 
         return view('talleres.services'
             , compact('services')

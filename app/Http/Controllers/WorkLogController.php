@@ -55,7 +55,7 @@ class WorkLogController extends Controller
         } elseif ($type == 'continue') {
             $description = "Continuó la tarea.";
         } elseif ($type == 'stop') {
-            $description = "Terminó la tarea.";
+            $description = "Finalizó la tarea.";
         }
 
         $work_log = new WorkLog();
@@ -64,9 +64,11 @@ class WorkLogController extends Controller
         $work_log->user_id = $user_id;
         $work_log->type = $type;
         $work_log->description = $description;
+        $work_log->reason = $request->input('reason');
         $work_log->save();
 
         $work_logs = WorkLog::where('user_id', $user_id)
+                    ->where('work_id', $work_log->work_id)
                     ->orderBy('id', 'desc')
                     ->get();
 

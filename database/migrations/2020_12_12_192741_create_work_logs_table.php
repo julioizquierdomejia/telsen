@@ -21,6 +21,7 @@ class CreateWorkLogsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('type');
             $table->string('description')->nullable();
+            $table->string('reason')->nullable();
             $table->timestamps();
         });
     }

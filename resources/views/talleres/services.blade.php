@@ -137,7 +137,6 @@
 
     $('.reason').on('focus', function (event) {
       clearRadios();
-      $('.reason').val('')
 
       $('.btn-confirm').data('reason', $('.reason').val()).attr('disabled', false)
     })
@@ -151,6 +150,7 @@
 
     $('#modalReason').on('show.bs.modal', function (event) {
       clearRadios();
+      $('.reason').val('')
       actualBtn = $(event.relatedTarget);
       if(actualBtn.data('type') == 'pause') {
         $('.btn-confirm').attr('disabled', true)

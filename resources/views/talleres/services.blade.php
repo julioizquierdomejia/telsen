@@ -137,8 +137,12 @@
 
     $('.reason').on('focus', function (event) {
       clearRadios();
+      $('.reason').val('')
 
       $('.btn-confirm').data('reason', $('.reason').val()).attr('disabled', false)
+    })
+    $('.reason').on('keyup', function (event) {
+      $('.btn-confirm').data('reason', $('.reason').val())
     })
 
     $('.btn-group-toggle [name="reason"]').on('change', function (event) {

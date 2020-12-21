@@ -30,26 +30,27 @@
 <script>
 $(document).ready(function() {
     $('#workshop-table').DataTable({
-         processing: true,
-         serverSide: true,
-         ajax: "{{route('talleres.list_workshop')}}",
-         pageLength: 5,
-         lengthMenu: [ 5, 25, 50 ],
-         columns: [
-            { data: 'created_at', class: 'text-nowrap' },
-            { data: 'id', class: 'otid' },
-            { data: 'status', class: 'text-center' },
-            { data: 'razon_social' },
-            { data: 'numero_potencia', class: 'text-left' },
-            { data: 'fecha_entrega', class: 'text-center bg-light' },
-            { data: 'tools', class: 'text-left text-nowrap'}
-        ],
-         columnDefs: [
-          { orderable: false, targets: 2 },
-          { orderable: false, targets: 6 }
-        ],
-        language: dLanguage
-      });
+     processing: true,
+     serverSide: true,
+     ajax: "{{route('talleres.list_workshop')}}",
+     pageLength: 5,
+     lengthMenu: [ 5, 25, 50 ],
+     columns: [
+        { data: 'created_at', class: 'text-nowrap' },
+        { data: 'id', class: 'otid' },
+        { data: 'status', class: 'text-center' },
+        { data: 'razon_social' },
+        { data: 'numero_potencia', class: 'text-left' },
+        { data: 'fecha_entrega', class: 'text-center bg-light' },
+        { data: 'tools', class: 'text-left text-nowrap'}
+    ],
+     columnDefs: [
+      { orderable: false, targets: 2 },
+      { orderable: false, targets: 6 }
+    ],
+    order: [[ 0, "desc" ]],
+    language: dLanguage
+  });
 });
 </script>
 @endsection

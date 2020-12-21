@@ -72,6 +72,7 @@
        columnDefs: [
         { orderable: false, targets: 4 }
       ],
+      order: [[ 0, "desc" ]],
       language: dLanguage
     });
   })

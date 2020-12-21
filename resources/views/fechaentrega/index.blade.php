@@ -75,6 +75,7 @@ $(document).ready(function() {
           { orderable: false, targets: 2 },
           { orderable: false, targets: 6 }
         ],
+        order: [[ 0, "desc" ]],
         language: dLanguage
       });
     }
@@ -103,6 +104,7 @@ $(document).ready(function() {
           { orderable: false, targets: 2 },
           { orderable: false, targets: 6 }
         ],
+        order: [[ 0, "desc" ]],
         language: dLanguage
       });
       }

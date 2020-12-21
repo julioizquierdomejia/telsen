@@ -32,38 +32,46 @@ class RdiController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'rdi']);
         
-        /*$rdis = Rdi::join('ots', 'ots.id', '=', 'rdi.ot_id')
-                ->join('clients', 'clients.id', '=', 'ots.client_id')
-                ->select('rdi.*', 'clients.razon_social')
-                ->where('rdi.enabled', 1)->get();*/
-        $_ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+        /*$rdis = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
-                        ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.conex', 'me_val.hp_kw'
-                        )
-                        ->where('ots.enabled', 1)
-                        ->where('clients.client_type_id', 1)
-                        ->where('clients.enabled', 1)
-                        ->get();
+                ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.conex', 'me_val.hp_kw'
+                )
+                ->where('ots.enabled', 1)
+                ->where('clients.client_type_id', 1)
+                ->where('clients.enabled', 1)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_waiting');
+                })
+                ->get();*/
 
-        $rdis = [];
+        /*$rdis = [];
         foreach ($_ots as $key => $ot) {
             $array = array_column($ot->statuses->toArray(), "name");
             if (in_array("me", $array) && in_array("ee", $array) && !in_array("cc", $array) && !in_array("rdi_waiting", $array)) {
                 $rdis[] = $ot;
             }
-        }
+        }*/
 
-        return view('rdi.index', compact('rdis'));
+        return view('rdi.index'/*, compact('rdis')*/);
     }
 
-    public function list(Request $request)
+    public function list_group(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'aprobador_rdi']);
         
-        return view('rdi.list');
+        return view('rdi.list_group');
     }
 
     /**

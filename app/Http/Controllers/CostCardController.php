@@ -27,28 +27,28 @@ class CostCardController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
         
-        $ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+        /*$ots = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 //->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
-                        ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.conex', 'me_val.hp_kw'
-                            //,'cost_cards.id as cost_card'
-                        )
-                        ->where('ots.enabled', 1)
-                        ->where('clients.client_type_id', 2)
-                        ->where('clients.enabled', 1)
-                        //->groupBy('ots.id')
-                        ->whereHas('statuses', function ($query) {
-                            $query->where("status.name", "=", 'ee_approved');
-                        })
-                        ->whereHas('statuses', function ($query) {
-                            $query->where("status.name", "=", 'me_approved');
-                        })
-                        ->whereDoesntHave('statuses', function ($query) {
-                            $query->where("status.name", "=", 'cc');
-                        })
-                        ->get();
+                ->select('ots.*', 'clients.razon_social', 'ee_val.nro_equipo', 'ee_val.conex', 'me_val.hp_kw'
+                    //,'cost_cards.id as cost_card'
+                )
+                ->where('ots.enabled', 1)
+                ->where('clients.client_type_id', 2)
+                ->where('clients.enabled', 1)
+                //->groupBy('ots.id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->get();*/
 
         /*$ots = [];
         foreach ($_ots as $key => $ot) {
@@ -57,7 +57,7 @@ class CostCardController extends Controller
                 $ots[] = $ot;
             }
         }*/
-        return view('costos.index', compact('ots'));
+        return view('costos.index'/*, compact('ots')*/);
     }
 
     /**
@@ -65,12 +65,6 @@ class CostCardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    /*public function create(Request $request)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
-
-        return view('costos.create');
-    }*/
     public function calculate(Request $request, $id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo']);
@@ -127,7 +121,6 @@ class CostCardController extends Controller
                 ->where('ot_works.type', 'mechanical')
                 ->where('ots.id', $ot->id)
                 ->get();
-        //$clientes = Client::where('enabled', 1)->get();
 
         return view('costos.calculate', compact('ot', 'areas', 'works_el', 'works_mec'));
     }

@@ -95,8 +95,8 @@
           </li>
           @endif
           @if($admin || in_array("aprobador_rdi", $role_names))
-          <li class="{{ request()->routeIs('rdi.list') ? 'active' : '' }}">
-            <a class="mr-0" href="{{route('rdi.list')}}">
+          <li class="{{ request()->routeIs('rdi.list_group') ? 'active' : '' }}">
+            <a class="mr-0" href="{{route('rdi.list_group')}}">
               <i class="fas fa-charging-station mr-1"></i>
               <p>Aprobar RDI</p>
             </a>

@@ -107,6 +107,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//rutas para Tarjeta Costos
 	Route::get('tarjeta-costo', [App\Http\Controllers\CostCardController::class, 'index'])->name('card_cost.index');
+	Route::get('tarjeta-costo/list', [App\Http\Controllers\OtController::class, 'cc_list'])->name('card_cost.list');
 	Route::get('tarjeta-costo/{id}/ver', [App\Http\Controllers\CostCardController::class, 'cc_show'])->name('card_cost.cc_show');
 	Route::get('tarjeta-costo/{id}/calcular', [App\Http\Controllers\CostCardController::class, 'calculate'])->name('card_cost.calculate');
 	Route::post('tarjeta-costo/{id}/store', [App\Http\Controllers\CostCardController::class, 'store'])->name('card_cost.store');
@@ -146,6 +147,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//rutas para RDI
 	Route::get('rdi', [App\Http\Controllers\RdiController::class, 'index'])->name('rdi.index');
+	Route::get('rdi/list', [App\Http\Controllers\OtController::class, 'rdi_list'])->name('rdi.list');
 	Route::get('rdi/{ot}/ver', [App\Http\Controllers\RdiController::class, 'show'])->name('rdi.show');
 	Route::get('rdi/{ot}/calcular', [App\Http\Controllers\RdiController::class, 'calculate'])->name('rdi.calculate');
 	Route::post('rdi', [App\Http\Controllers\RdiController::class, 'store'])->name('rdi.store');
@@ -153,7 +155,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('rdi/{id}/editar', [App\Http\Controllers\RdiController::class, 'update'])->name('rdi.update');
 	Route::post('rdi/{ot}/aprobarrdi', [App\Http\Controllers\RdiController::class, 'approveRDI'])->name('rdi.approve');
 
-	Route::get('rdi/list', [App\Http\Controllers\RdiController::class, 'list'])->name('rdi.list');
+	Route::get('rdi/list-group', [App\Http\Controllers\RdiController::class, 'list_group'])->name('rdi.list_group');
 	Route::get('rdi/list_waiting', [App\Http\Controllers\OtController::class, 'list_rdi_waiting'])->name('rdi.list_waiting');
 	Route::get('rdi/list_approved', [App\Http\Controllers\OtController::class, 'list_rdi_approved'])->name('rdi.list_approved');
 

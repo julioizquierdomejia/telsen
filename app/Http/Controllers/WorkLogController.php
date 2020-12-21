@@ -64,11 +64,13 @@ class WorkLogController extends Controller
         $work_log->user_id = $user_id;
         $work_log->type = $type;
         $work_log->description = $description;
-        $work_log->reason = $request->input('reason');
+        $work_log->reason_id = $request->input('reason');
         $work_log->save();
 
-        $work_logs = WorkLog::where('user_id', $user_id)
+        $work_logs = WorkLog::leftJoin('ot_work_reasons', 'ot_work_reasons.id', '=', 'work_logs.reason_id')
+                    ->where('user_id', $user_id)
                     ->where('work_id', $work_log->work_id)
+                    ->select('work_logs.*', 'ot_work_reasons.name as reason')
                     ->orderBy('id', 'desc')
                     ->get();
 

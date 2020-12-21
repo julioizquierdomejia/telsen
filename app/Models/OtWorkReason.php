@@ -5,23 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkLog extends Model
+class OtWorkReason extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'work_id',
-        'user_id',
-        'type'
+        'code',
+        'name',
     ];
 
     protected $dates = [
         'created_at',
         'updated_at'
     ];
-
-    public function reason()
-    {
-        return $this->hasOne(OtWorkReason::class);
-    }
 }

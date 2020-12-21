@@ -8,6 +8,7 @@ use App\Models\Status;
 use App\Models\Service;
 use App\Models\Rdi;
 use App\Models\RdiServiceCost;
+use App\Models\OtWorkReason;
 use App\Models\OtWork;
 //use App\Models\MechanicalEvaluationWork;
 //use App\Models\ElectricalEvaluationWork;
@@ -51,6 +52,8 @@ class WorkshopController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
+        $work_reasons = OtWorkReason::all();
+
         $roles = validateActionbyRole();
         if (in_array("superadmin", $roles) || in_array("admin", $roles)) {
             $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
@@ -71,8 +74,7 @@ class WorkshopController extends Controller
                 ->get();
         }
 
-        return view('talleres.services'
-            , compact('services')
+        return view('talleres.services', compact('services', 'work_reasons')
         );
     }
 

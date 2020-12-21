@@ -21,7 +21,8 @@ class CreateWorkLogsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('type');
             $table->string('description')->nullable();
-            $table->string('reason')->nullable();
+            $table->unsignedBigInteger('reason_id')->nullable();
+            $table->foreign('reason_id')->references('id')->on('ot_work_reasons');
             $table->timestamps();
         });
     }
@@ -36,6 +37,7 @@ class CreateWorkLogsTable extends Migration
         Schema::table('work_logs', function (Blueprint $table) {
             $table->dropForeign('work_logs_work_id_foreign');
             $table->dropForeign('work_logs_user_id_foreign');
+            $table->dropForeign('work_logs_reason_id_foreign');
         });
         Schema::dropIfExists('work_logs');
     }

@@ -97,21 +97,19 @@
         </button>
       </div>
       <div class="modal-body text-center">
-        <p class="text my-3 body-title">¿Confirmas la actividad?</p>
+        <p class="text my-2 body-title">¿Confirmas la actividad?</p>
         <div class="pause-list" style="display: none;">
           <p class="text mb-0">Selecciona el motivo</p>
-          <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+          <div class="p-list-content" style="max-height: calc(100vh - 252px);min-height: 100px;overflow-y: auto;">
+          <div class="btn-group flex-column btn-group-toggle mb-3" data-toggle="buttons">
+            @foreach ($work_reasons as $key => $item)
             <label class="btn btn-outline-primary">
-              <input type="radio" name="reason" id="option1" value="Comida"> Comida
+              <input type="radio" name="reason" id="option{{$key}}" value="{{$item->id}}"> {{$item->name}}
             </label>
-            <label class="btn btn-outline-primary">
-              <input type="radio" name="reason" id="option2" value="Término de jornada"> Término de jornada
-            </label>
-            <label class="btn btn-outline-primary">
-              <input type="radio" name="reason" id="option3" value="Salud"> Salud
-            </label>
+            @endforeach
           </div>
-          <div class="item pt-2"><input class="form-control reason" type="text" name="" placeholder="o escribe el motivo"></div>
+          {{-- <div class="item pt-2"><input class="form-control reason" type="text" name="" placeholder="o escribe el motivo"></div> --}}
+          </div>
         </div>
       </div>
       <div class="modal-footer justify-content-center">

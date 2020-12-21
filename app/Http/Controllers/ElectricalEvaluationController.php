@@ -163,7 +163,7 @@ class ElectricalEvaluationController extends Controller
             'codigo_motor' => 'string',
             'solped' => 'string',
             'marca_id' => 'integer',
-            'modelo_id' => 'integer',
+            'modelo_id' => 'integer|nullable',
             'numero_potencia' => 'string',
             'medida_potencia' => 'string',
             'ot_voltaje' => 'string',

@@ -40,8 +40,10 @@ class CostCardController extends Controller
                         ->where('clients.enabled', 1)
                         //->groupBy('ots.id')
                         ->whereHas('statuses', function ($query) {
-                            $query->where("status.name", "=", 'me_approved');
                             $query->where("status.name", "=", 'ee_approved');
+                        })
+                        ->whereHas('statuses', function ($query) {
+                            $query->where("status.name", "=", 'me_approved');
                         })
                         ->whereDoesntHave('statuses', function ($query) {
                             $query->where("status.name", "=", 'cc');

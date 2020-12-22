@@ -4,8 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\OtWorkReason;
+use App\Models\WorkStatus;
 
-class OtWorkReasonSeeder extends Seeder
+class OtWorkSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +18,12 @@ class OtWorkReasonSeeder extends Seeder
     	$code = 1;
         $reason = new OtWorkReason();
         $reason->name = "En Proceso";
-        $reason->code = $code++;
+        $reason->code = "start";
+        $reason->save();
+
+        $reason = new OtWorkReason();
+        $reason->name = "En Proceso";
+        $reason->code = "continue";
         $reason->save();
 
         $reason = new OtWorkReason();
@@ -52,7 +58,23 @@ class OtWorkReasonSeeder extends Seeder
 
         $reason = new OtWorkReason();
         $reason->name = "Terminado";
-        $reason->code = 99;
+        $reason->code = "end";
         $reason->save();
+
+        $reason = new OtWorkReason();
+        $reason->name = "Reanudado";
+        $reason->code = "restart";
+        $reason->save();
+
+        //Estados para revisar trabajos por el supervisor
+        $work_status = new WorkStatus();
+        $work_status->name = "approved";
+        $work_status->save();
+        $work_status = new WorkStatus();
+        $work_status->name = "disapproved";
+        $work_status->save();
+        /*$work_status = new WorkStatus();
+        $work_status->name = "finished";
+        $work_status->save();*/
     }
 }

@@ -174,6 +174,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('talleres/list', [App\Http\Controllers\OtController::class, 'list_workshop'])->name('talleres.list_workshop');
 	Route::get('talleres/tareas', [App\Http\Controllers\WorkshopController::class, 'services_list'])->name('workshop.services');
 
+	Route::post('talleres/aprobartarea', [App\Http\Controllers\WorkshopController::class, 'approveWork'])->name('workshop.approvework');
 
 	//Codigos Rotor
 	//1

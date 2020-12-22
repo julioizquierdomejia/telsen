@@ -5,23 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkLog extends Model
+class OtWorkStatus extends Model
 {
     use HasFactory;
 
+    protected $table = 'ot_work_status';
+
     protected $fillable = [
-        'work_id',
-        'user_id',
-        'type'
+        'work_status_id',
+        'ot_work_id',
     ];
 
     protected $dates = [
         'created_at',
         'updated_at'
     ];
-
-    public function reason()
-    {
-        return $this->hasOne(OtWorkReason::class, 'id' ,'reason_id');
-    }
 }

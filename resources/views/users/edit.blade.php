@@ -73,7 +73,7 @@
               </ul>
               @else
               <ul class="form-check-list list-inline m-0 form-control h-auto">
-                @foreach($user_roles as $key => $role)
+                @foreach($user->roles as $key => $role)
                 <li class="check-item">
                   <label class="form-check-label">
                     <span class="badge badge-primary">{{$role->description}}</span>

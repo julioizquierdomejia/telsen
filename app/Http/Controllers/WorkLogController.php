@@ -47,14 +47,18 @@ class WorkLogController extends Controller
 
         $user_id = \Auth::user()->id;
         $type = $request->input('type');
+        $reason = $request->input('reason');
 
         if ($type == 'start') {
+            $reason = 1; //En proceso
             $description = "Empezó la tarea.";
         } elseif ($type == 'pause') {
             $description = "Pausó la tarea.";
         } elseif ($type == 'continue') {
+            $reason = 2; //En proceso
             $description = "Continuó la tarea.";
-        } elseif ($type == 'stop') {
+        } elseif ($type == 'end') {
+            $reason = 8;
             $description = "Finalizó la tarea.";
         }
 
@@ -64,13 +68,13 @@ class WorkLogController extends Controller
         $work_log->user_id = $user_id;
         $work_log->type = $type;
         $work_log->description = $description;
-        $work_log->reason_id = $request->input('reason');
+        $work_log->reason_id = $reason;
         $work_log->save();
 
-        $work_logs = WorkLog::leftJoin('ot_work_reasons', 'ot_work_reasons.id', '=', 'work_logs.reason_id')
+        $work_logs = WorkLog::join('ot_work_reasons', 'ot_work_reasons.id', '=', 'work_logs.reason_id')
+                    ->select('work_logs.*', 'ot_work_reasons.name as reason')
                     ->where('user_id', $user_id)
                     ->where('work_id', $work_log->work_id)
-                    ->select('work_logs.*', 'ot_work_reasons.name as reason')
                     ->orderBy('id', 'desc')
                     ->get();
 

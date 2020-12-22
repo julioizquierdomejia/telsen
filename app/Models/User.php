@@ -49,6 +49,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Log::class);
     }
 
+    public function data(){
+        return $this->hasOne(UserData::class);
+    }
+
     //Auth
     public function authorizeRoles($roles)
     {

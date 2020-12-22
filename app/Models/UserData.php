@@ -33,4 +33,9 @@ class UserData extends Model
         'updated_at',
     ];
 
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'area_id');
+    }
+
 }

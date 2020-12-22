@@ -23,6 +23,7 @@
               @php
                 $work_logs = $item->work_logs;
                 $wl_count = $work_logs->count();
+                //$work_type = $work_logs->first() ? $work_logs->first()->type == 'end' : null;
               @endphp
               <tr id="service-{{$item->id}}">
                 {{-- <td>{{$item->id}}</td> --}}
@@ -46,7 +47,7 @@
                         @foreach ($work_logs as $key => $worklog)
                         <li class="item">{{$worklog->description ?? '-'}}
                           @if ($worklog->type == 'pause')
-                            <span> | {{$worklog->reason}}</span>
+                            <span> | {{$worklog->reason->name}}</span>
                           @endif
                           <span> | {{date('d-m-Y h:i a', strtotime($worklog->created_at))}}</span>
                           <hr class="my-1" style="border-top-color: #444">
@@ -58,21 +59,27 @@
                       </ul>
                     </div>
                     <div class="work-buttons py-3 col-12 col-md-4 col-xl-2">
+                  @if (!in_array('supervisor', $roles))
                     @if ($wl_count == 0)
                       <button class="btn btn-success my-1" data-type="start" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Empezar <i class="far fa-play ml-2"></i></button>
                     @else
                       @if($work_logs->first()->type == 'start')
                         <button class="btn btn-pause btn-warning my-1" data-type="pause" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
-                        <button class="btn btn-danger my-1" data-type="stop" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
+                        <button class="btn btn-danger my-1" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
                       @elseif($work_logs->first()->type == 'pause')
                         <button class="btn btn-primary my-1" data-type="continue" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button>
-                        <button class="btn btn-danger my-1" data-type="stop" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
+                        <button class="btn btn-danger my-1" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
                       @elseif($work_logs->first()->type == 'continue')
                         <button class="btn btn-pause btn-warning my-1" data-type="pause" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
-                        <button class="btn btn-danger my-1" data-type="stop" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
-                      @elseif($work_logs->first()->type == 'stop')
+                        <button class="btn btn-danger my-1" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
+                      @elseif($work_logs->first()->type == 'end')
                         Finalizó la tarea.
                       @endif
+                      @endif
+                    @else
+                    @if($work_logs->first() && $work_logs->first()->type == 'end')
+                      <button class="btn btn-primary my-1" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalApprove">Aprobar <i class="far fa-check ml-2"></i></button>
+                    @endif
                     @endif
                     </div>
                     </div>
@@ -114,11 +121,41 @@
       </div>
       <div class="modal-footer justify-content-center">
         <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancelar</button>
-        <button class="btn btn-primary btn-confirm" data-dismiss="modal" type="button" disabled=""><i class="fal fa-check"></i> Confirmar</button>
+        <button class="btn btn-primary btn-wconfirm" data-dismiss="modal" type="button" disabled=""><i class="fal fa-check"></i> Confirmar</button>
       </div>
     </div>
   </div>
 </div>
+@if (in_array('supervisor', $roles))
+<div class="modal fade" tabindex="-1" id="modalApprove">
+  <div class="modal-dialog">
+    <form class="modal-content" action="/talleres/aprobartarea" method="POST">
+      <div class="modal-header">
+        @csrf
+        <input type="text" hidden="" name="work_id" value="">
+        <h5 class="modal-title">Aprobar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text my-2 body-title">¿Aprueba la tarea?</p>
+        <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+          <label class="btn btn-outline-secondary px-4">
+            <input type="radio" name="status_id" id="approve0" value="2"><i class="far fa-times"></i> No
+          </label>
+          <label class="btn btn-outline-success px-4">
+            <input type="radio" name="status_id" id="approve1" value="1"><i class="far fa-check"></i> Sí
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button class="btn btn-primary px-5" type="submit">Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
+@endif
 @endsection
 @section('javascript')
 <script>
@@ -129,54 +166,68 @@
     })
 
     function clearRadios() {
-      $('.btn-group-toggle [name="reason"]').attr('checked', false)
-      $('.btn-group-toggle .btn').removeClass('active focus')
+      $('#modalReason [name="reason"]').attr('checked', false)
+      $('#modalReason .btn').removeClass('active focus')
     }
 
     $('.reason').on('focus', function (event) {
       clearRadios();
 
-      $('.btn-confirm').data('reason', $('.reason').val()).attr('disabled', false)
+      $('.btn-wconfirm').data('reason', $('.reason').val()).attr('disabled', false)
     })
     $('.reason').on('keyup', function (event) {
-      $('.btn-confirm').data('reason', $('.reason').val())
+      $('.btn-wconfirm').data('reason', $('.reason').val())
     })
 
-    $('.btn-group-toggle [name="reason"]').on('change', function (event) {
-      $('.btn-confirm').data('reason', $('.btn-group-toggle [name="reason"]:checked').val()).attr('disabled', false)
+    $('#modalReason [name="reason"]').on('change', function (event) {
+      $('.btn-wconfirm').data('reason', $('#modalReason [name="reason"]:checked').val()).attr('disabled', false)
     })
 
     $('#modalReason').on('show.bs.modal', function (event) {
       clearRadios();
-      $('.reason').val('')
+      $('#modalReason .reason').val('')
       actualBtn = $(event.relatedTarget);
       if(actualBtn.data('type') == 'pause') {
-        $('.btn-confirm').attr('disabled', true)
+        $('.btn-wconfirm').attr('disabled', true)
       } else {
-        $('.btn-confirm').attr('disabled', false)
+        $('.btn-wconfirm').attr('disabled', false)
       }
+    })
+
+    $('#modalApprove').on('show.bs.modal', function (event) {
+      var btn = $(event.relatedTarget);
+      $('#modalApprove [name="work_id"]').val(btn.data('work_id'))
+    })
+    $('#modalApprove').on('hide.bs.modal', function (event) {
+      $('#modalApprove [name="work_id"]').val('')
+      $('#modalApprove .btn-group-toggle input').removeAttr('checked');
+      $('#modalApprove .btn-group-toggle label').removeClass('active');
     })
 
     $(document).on("click", ".work-buttons .btn", function (event) {
       if($(this).data('type') == 'pause') {
+        $('.body-title').text('¿Confirmas la actividad?');
         $('.pause-list').show();
         $('.body-title').hide();
 
-        checked = $('.btn-group-toggle [name="reason"]:checked');
+        checked = $('#modalReason .btn-group-toggle [name="reason"]:checked');
         if(checked) {
           $(this).data('reason', checked.val())
         } else {
           $(this).data('reason', $('.reason').val())
         }
       } else {
+        if($(this).data('type') == 'end') {
+          $('#modalReason .body-title').text('¿Confirmas terminar la tarea?');
+        }
         $('.pause-list').hide();
         $('.body-title').show();
       }
-      $(".modal-footer .btn-confirm").data('work_id', $(this).data('work_id'));
-      $(".modal-footer .btn-confirm").data('type', $(this).data('type'));
+      $("#modalReason .btn-wconfirm").data('work_id', $(this).data('work_id'));
+      $("#modalReason .btn-wconfirm").data('type', $(this).data('type'));
     })
 
-    $(document).on("click", ".modal-footer .btn-confirm", function (event) {
+    $(document).on("click", "#modalReason .btn-wconfirm", function (event) {
     var $this = $(this),
         work_id = $this.data('work_id'),
         d_id = $this.data('id'),
@@ -211,30 +262,41 @@
                 </li>`
                 )
             })
-
+            @if (!in_array('supervisor', $roles))
             if(type == 'start') {
               parent.find('.work-buttons').html(`
                 <button class="btn btn-pause btn-warning my-1" data-type="pause" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
 
-                <button class="btn btn-danger my-1" data-type="stop" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
+                <button class="btn btn-danger my-1" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
                 `);
             } else if(type == 'pause') {
               parent.find('.work-buttons').html(`
                 <button class="btn btn-primary my-1" data-type="continue" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button>
 
-                <button class="btn btn-danger my-1" data-type="stop" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
+                <button class="btn btn-danger my-1" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
                 `);
             } else if(type == 'continue') {
               parent.find('.work-buttons').html(`
                 <button class="btn btn-pause btn-warning my-1" data-type="pause" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
 
-                <button class="btn btn-danger my-1" data-type="stop" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
+                <button class="btn btn-danger my-1" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
                 `);
-            } else if(type == 'stop') {
+            } else if(type == 'end') {
               parent.find('.work-buttons').html(`
                 Finalizó la tarea.
                 `);
             }
+            @else
+              if(type == 'end') {
+              parent.find('.work-buttons').html(`
+                Finalizó la tarea.
+                @if (in_array('supervisor', $roles))
+                  <button class="btn btn-danger my-1" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalApprove">Terminar <i class="far fa-check ml-2"></i>Desaprobar</button>
+                  <button class="btn btn-danger my-1" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalApprove">Terminar <i class="far fa-check ml-2"></i>Aprobar</button>
+                @endif
+                `);
+              }
+            @endif
 
             $this.attr('disabled', true);
           }
@@ -242,6 +304,34 @@
         error: function(request, status, error) {
 
         }
+      });
+    })
+
+    $("#modalApprove .modal-content").on("submit", function (event) {
+      event.preventDefault();
+      var form = $(this);
+      var url = form.attr('action');
+      $.ajax({
+          type: "post",
+          url: url,
+          data: new FormData(this),
+          processData: false,
+          contentType: false,
+          beforeSend: function(data) {
+            $('#modalApprove [type="submit"]').attr('disabled', true);
+          },
+          success: function(response) {
+              if (response.success) {
+                var data = $.parseJSON(response.data);
+              }
+              $('#modalApprove [type="submit"]').attr('disabled', false);
+              $('#modalApprove').modal('hide');
+          },
+          error: function(request, status, error) {
+              var data = jQuery.parseJSON(request.responseText);
+              console.log(data);
+              $('#modalApprove [type="submit"]').attr('disabled', false);
+          }
       });
     })
 

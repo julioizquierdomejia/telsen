@@ -11,7 +11,8 @@ use App\Models\RdiServiceCost;
 use App\Models\OtWorkReason;
 use App\Models\OtWork;
 use App\Models\WorkStatus;
-use App\Models\OtWorkStatus;
+//use App\Models\OtWorkStatus;
+use App\Models\WorkLog;
 //use App\Models\MechanicalEvaluationWork;
 //use App\Models\ElectricalEvaluationWork;
 use App\Models\CostCard;
@@ -434,12 +435,23 @@ class WorkshopController extends Controller
         $status = $request->input('status_id');
         $work_id = $request->input('work_id');
 
-        $ot_work_status = new OtWorkStatus();
+        $work_log = WorkLog::where('work_id', $work_id)
+                    ->orderBy('id', 'desc')
+                    ->where('type', 'end')
+                    ->whereNull('status_id')
+                    ->first();
+
+        $work_log->status_id = $status;
+        $work_log->save();
+
+        /*$ot_work_status = new OtWorkStatus();
         $ot_work_status->work_status_id = $status;
         $ot_work_status->ot_work_id = $work_id;
-        $ot_work_status->save();
+        $ot_work_status->save();*/
 
-        if ($ot_work_status->work_status_id == 1) { //Aprobado
+        /*if ($ot_work_status->work_status_id == 1) { //Aprobado
+            
+        } else {
             $reason = OtWorkReason::where('code', 'restart')->first();
             if ($reason) {
                 $work_log = new WorkLog();
@@ -450,8 +462,8 @@ class WorkshopController extends Controller
                 $work_log->reason_id = $reason->id;
                 $work_log->save();
             }
-        }
+        }*/
 
-        return response()->json(['data'=>json_encode($ot_work_status), 'success'=>true]);
+        return response()->json(['data'=>json_encode($work_log), 'success'=>true]);
     }
 }

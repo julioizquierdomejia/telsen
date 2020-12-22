@@ -13,6 +13,12 @@ class CreateWorkLogsTable extends Migration
      */
     public function up()
     {
+        Schema::create('work_status', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
         Schema::create('work_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('work_id');
@@ -23,6 +29,10 @@ class CreateWorkLogsTable extends Migration
             $table->string('description')->nullable();
             $table->unsignedBigInteger('reason_id')->nullable();
             $table->foreign('reason_id')->references('id')->on('ot_work_reasons');
+
+            $table->unsignedBigInteger('status_id');
+            $table->foreign('status_id')->references('id')->on('work_status');
+
             $table->timestamps();
         });
     }
@@ -38,7 +48,9 @@ class CreateWorkLogsTable extends Migration
             $table->dropForeign('work_logs_work_id_foreign');
             $table->dropForeign('work_logs_user_id_foreign');
             $table->dropForeign('work_logs_reason_id_foreign');
+            $table->dropForeign('work_logs_status_id_foreign');
         });
+        Schema::dropIfExists('work_status');
         Schema::dropIfExists('work_logs');
     }
 }

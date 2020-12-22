@@ -21,9 +21,10 @@
             <tbody>
               @foreach ($services as $item)
               @php
-                $work_logs = $item->work_logs;
-                $wl_count = $work_logs->count();
-                //$work_type = $work_logs->first() ? $work_logs->first()->type == 'end' : null;
+              $work_logs = $item->work_logs;
+              $wl_count = $work_logs->count();
+              //$work_status = $item->ot_work_status->count() ? $item->ot_work_status->first()->id : false;
+              $status_id = $work_logs->first() ? $work_logs->first()->status_id : null;
               @endphp
               <tr id="service-{{$item->id}}">
                 {{-- <td>{{$item->id}}</td> --}}
@@ -39,49 +40,68 @@
               <tr class="text-center" data-id="service-{{$item->id}}" style="display: none;">
                 <td class="p-0" colspan="6">
                   <div class="d px-3" style="border-left: 10px solid #efefef;border-right: 10px solid #efefef;background-color: #f9f9f9;margin-top: -6px;">
-                  <div class="t-details px-2 py-3 mb-3 row align-items-center">
-                    <div class="history bg-dark text-white py-3 col-12 col-md-8 col-xl-10">
-                      <h5 class="h6 px-3">Historial</h5>
-                      <ul class="works-list text-left list-inline mb-0 text-info" style="max-height: 160px;overflow-y: auto;">
-                      @if ($wl_count)
-                        @foreach ($work_logs as $key => $worklog)
-                        <li class="item">{{$worklog->description ?? '-'}}
-                          @if ($worklog->type == 'pause')
+                    <div class="t-details px-2 py-3 mb-3 row align-items-center">
+                      <div class="history bg-dark text-white py-3 col-12 col-md-8 col-xl-10">
+                        <h5 class="h6 px-3">Historial</h5>
+                        <ul class="works-list text-left list-inline mb-0 text-info" style="max-height: 160px;overflow-y: auto;">
+                          @if ($wl_count)
+                          @foreach ($work_logs as $key => $worklog)
+                          <li class="item">{{$worklog->description ?? '-'}}
+                            @if ($worklog->type == 'pause')
                             <span> | {{$worklog->reason->name}}</span>
+                            @endif
+                            <span> | {{date('d-m-Y h:i a', strtotime($worklog->created_at))}}</span>
+                            <hr class="my-1" style="border-top-color: #444">
+                          </li>
+                          @endforeach
+                          @else
+                          <li class="text-muted">No hay historial aun</li>
                           @endif
-                          <span> | {{date('d-m-Y h:i a', strtotime($worklog->created_at))}}</span>
-                          <hr class="my-1" style="border-top-color: #444">
-                        </li>
-                        @endforeach
+                        </ul>
+                      </div>
+                      <div class="work-buttons py-3 col-12 col-md-4 col-xl-2">
+                      @if (in_array('supervisor', $roles))
+                        @if($work_logs->first() && $work_logs->first()->type == 'end')
+                          @if ($status_id == 1)
+                            <button class="btn btn-success my-1">Aprobada</button>
+                          @elseif($status_id == 2)
+                            <button class="btn btn-secondary my-1">Desaprobada</button>
+                          @else
+                          <button class="btn btn-primary my-1" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalApprove">Aprobar <i class="far fa-check ml-2"></i></button>
+                          @endif
+                        @else
+                          @if ($status_id == 1)
+                          <button class="btn btn-success my-1">Aprobada</button>
+                          @elseif($status_id == 2)
+                          <button class="btn btn-secondary my-1">Desaprobada</button>
+                          @endif
+                        @endif
                       @else
-                      <li class="text-muted">No hay historial aun</li>
+                      {{-- Trabajador --}}
+                        @if ($wl_count == 0)
+                          <button class="btn btn-success my-1" data-type="start" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Empezar <i class="far fa-play ml-2"></i></button>
+                        @else
+                        @php
+                          $work_type = $work_logs->first()->type;
+                        @endphp
+                          @if($work_type == 'start' || $work_type == 'continue' || $work_type == 'restart')
+                          <button class="btn btn-pause btn-warning my-1" data-type="pause" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
+                          <button class="btn btn-danger my-1" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
+                          @elseif($work_type == 'pause')
+                          <button class="btn btn-primary my-1" data-type="continue" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button>
+                          <button class="btn btn-danger my-1" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
+                          @elseif($work_type == 'end')
+                              @if ($status_id == 1)
+                                <button class="btn btn-success my-1">Aprobada</button>
+                              @elseif($status_id == 2)
+                                <button class="btn btn-secondary my-1">Desaprobada</button>
+                                <button class="btn btn-danger my-1" data-type="restart" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Reiniciar <i class="far fa-play ml-2"></i></button>
+                              @endif
+                          Finalizó la tarea.
+                          @endif
+                        @endif
                       @endif
-                      </ul>
-                    </div>
-                    <div class="work-buttons py-3 col-12 col-md-4 col-xl-2">
-                  @if (!in_array('supervisor', $roles))
-                    @if ($wl_count == 0)
-                      <button class="btn btn-success my-1" data-type="start" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Empezar <i class="far fa-play ml-2"></i></button>
-                    @else
-                      @if($work_logs->first()->type == 'start')
-                        <button class="btn btn-pause btn-warning my-1" data-type="pause" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
-                        <button class="btn btn-danger my-1" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
-                      @elseif($work_logs->first()->type == 'pause')
-                        <button class="btn btn-primary my-1" data-type="continue" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button>
-                        <button class="btn btn-danger my-1" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
-                      @elseif($work_logs->first()->type == 'continue')
-                        <button class="btn btn-pause btn-warning my-1" data-type="pause" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
-                        <button class="btn btn-danger my-1" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
-                      @elseif($work_logs->first()->type == 'end')
-                        Finalizó la tarea.
-                      @endif
-                      @endif
-                    @else
-                    @if($work_logs->first() && $work_logs->first()->type == 'end')
-                      <button class="btn btn-primary my-1" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalApprove">Aprobar <i class="far fa-check ml-2"></i></button>
-                    @endif
-                    @endif
-                    </div>
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -100,7 +120,7 @@
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Confirmar Actividad</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body text-center">
@@ -108,14 +128,14 @@
         <div class="pause-list" style="display: none;">
           <p class="text mb-0">Selecciona el motivo</p>
           <div class="p-list-content" style="max-height: calc(100vh - 252px);min-height: 100px;overflow-y: auto;">
-          <div class="btn-group flex-column btn-group-toggle mb-3" data-toggle="buttons">
-            @foreach ($work_reasons as $key => $item)
-            <label class="btn btn-outline-primary">
-              <input type="radio" name="reason" id="option{{$key}}" value="{{$item->id}}"> {{$item->name}}
-            </label>
-            @endforeach
-          </div>
-          {{-- <div class="item pt-2"><input class="form-control reason" type="text" name="" placeholder="o escribe el motivo"></div> --}}
+            <div class="btn-group flex-column btn-group-toggle mb-3" data-toggle="buttons">
+              @foreach ($work_reasons as $key => $item)
+              <label class="btn btn-outline-primary">
+                <input type="radio" name="reason" id="option{{$key}}" value="{{$item->id}}"> {{$item->name}}
+              </label>
+              @endforeach
+            </div>
+            {{-- <div class="item pt-2"><input class="form-control reason" type="text" name="" placeholder="o escribe el motivo"></div> --}}
           </div>
         </div>
       </div>
@@ -135,7 +155,7 @@
         <input type="text" hidden="" name="work_id" value="">
         <h5 class="modal-title">Aprobar</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+        <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body text-center">
@@ -263,7 +283,7 @@
                 )
             })
             @if (!in_array('supervisor', $roles))
-            if(type == 'start') {
+            if(type == 'start' || type == 'continue' || type == 'restart') {
               parent.find('.work-buttons').html(`
                 <button class="btn btn-pause btn-warning my-1" data-type="pause" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
 
@@ -272,12 +292,6 @@
             } else if(type == 'pause') {
               parent.find('.work-buttons').html(`
                 <button class="btn btn-primary my-1" data-type="continue" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button>
-
-                <button class="btn btn-danger my-1" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
-                `);
-            } else if(type == 'continue') {
-              parent.find('.work-buttons').html(`
-                <button class="btn btn-pause btn-warning my-1" data-type="pause" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
 
                 <button class="btn btn-danger my-1" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
                 `);
@@ -306,7 +320,7 @@
         }
       });
     })
-
+    @if (in_array('supervisor', $roles))
     $("#modalApprove .modal-content").on("submit", function (event) {
       event.preventDefault();
       var form = $(this);
@@ -322,10 +336,12 @@
           },
           success: function(response) {
               if (response.success) {
-                var data = $.parseJSON(response.data);
+                var data = response.data;
+                console.log(data)
               }
-              $('#modalApprove [type="submit"]').attr('disabled', false);
               $('#modalApprove').modal('hide');
+              location.reload();
+              $('#modalApprove [type="submit"]').attr('disabled', false);
           },
           error: function(request, status, error) {
               var data = jQuery.parseJSON(request.responseText);
@@ -334,6 +350,7 @@
           }
       });
     })
+    @endif
 
     function dateFormatter(date) {
       var formattedDate = new Date(date);

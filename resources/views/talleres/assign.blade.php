@@ -14,8 +14,13 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
 @endphp
 <div class="row">
   <div class="col-md-12">
-    <h5 class="h5">Taller para {{$ot_id}}</h5>
     <form class="form-group" method="POST" action="{{route('workshop.store', $ot)}}" enctype="multipart/form-data">
+      <div class="card">
+        <div class="card-header row mx-0 align-items-center py-2 justify-content-between">
+          <h5 class="h5 my-1 mr-2">Taller para {{$ot_id}}</h5>
+        <button class="btn btn-primary my-1" type="submit">Registrar Taller</button>
+        </div>
+      </div>
       @csrf
       @foreach($services as $service_key => $service_item)
       @php
@@ -73,9 +78,6 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
       </div>
       @endif
       @endforeach
-      <div class="buttons text-center">
-        <button class="btn btn-primary" type="submit">Registrar Taller</button>
-      </div>
     </form>
   </div>
 </div>

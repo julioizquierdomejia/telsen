@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\WorkLog;
+use App\Models\OtWorkReason;
 use Illuminate\Http\Request;
 
 class WorkLogController extends Controller
@@ -50,16 +51,31 @@ class WorkLogController extends Controller
         $reason = $request->input('reason');
 
         if ($type == 'start') {
-            $reason = 1; //En proceso
+            $ot_reason = OtWorkReason::where('code', 'start')->first();
+            if ($ot_reason) {
+                $reason = $ot_reason->id;
+            }
             $description = "Empezó la tarea.";
         } elseif ($type == 'pause') {
             $description = "Pausó la tarea.";
         } elseif ($type == 'continue') {
-            $reason = 2; //En proceso
+            $ot_reason = OtWorkReason::where('code', 'continue')->first();
+            if ($ot_reason) {
+                $reason = $ot_reason->id;
+            }
             $description = "Continuó la tarea.";
         } elseif ($type == 'end') {
-            $reason = 8;
+            $ot_reason = OtWorkReason::where('code', 'end')->first();
+            if ($ot_reason) {
+                $reason = $ot_reason->id;
+            }
             $description = "Finalizó la tarea.";
+        } elseif ($type == 'restart') {
+            $ot_reason = OtWorkReason::where('code', 'restart')->first();
+            if ($ot_reason) {
+                $reason = $ot_reason->id;
+            }
+            $description = "Se reinició la tarea.";
         }
 
         $work_log = new WorkLog();

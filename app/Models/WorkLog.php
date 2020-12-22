@@ -24,4 +24,9 @@ class WorkLog extends Model
     {
         return $this->hasOne(OtWorkReason::class, 'id' ,'reason_id');
     }
+
+    public function work_status()
+    {
+        return $this->hasOne(WorkStatus::class, 'id' ,'status_id');
+    }
 }

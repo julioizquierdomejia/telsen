@@ -65,8 +65,16 @@ class CreateMechanicalEvaluationsTable extends Migration
 
             $table->string('rotor_deplexion_eje')->nullable();
             $table->string('rotor_valor_balanceo')->nullable();
-            $table->string('rotor_cod_rodaje_p1')->nullable();
-            $table->string('rotor_cod_rodaje_p2')->nullable();
+
+            //$table->string('rotor_cod_rodaje_p1')->nullable();
+            //$table->string('rotor_cod_rodaje_p2')->nullable();
+
+            $table->unsignedBigInteger('rotor_cod_rodaje_p1')->unique();
+            $table->foreign('rotor_cod_rodaje_p1')->references('id')->on('rotor_cod_rodaje_pt1s');
+
+            $table->unsignedBigInteger('rotor_cod_rodaje_p2')->unique();
+            $table->foreign('rotor_cod_rodaje_p2')->references('id')->on('rotor_cod_rodaje_pt2s');
+
             $table->string('rotor_asiento_rodaje_p1')->nullable();
             $table->string('rotor_asiento_rodaje_p2')->nullable();
             $table->string('rotor_eje_zona_acople_p1')->nullable();
@@ -127,6 +135,8 @@ class CreateMechanicalEvaluationsTable extends Migration
     {
         Schema::table('mechanical_evaluations', function (Blueprint $table) {
             $table->dropForeign('mechanical_evaluations_ot_id_foreign');
+            $table->dropForeign('mechanical_evaluations_rotor_cod_rodaje_p1_foreign');
+            $table->dropForeign('mechanical_evaluations_rotor_cod_rodaje_p2_foreign');
         });
         /*Schema::table('mechanical_evaluation_works', function (Blueprint $table) {
             $table->dropForeign('mechanical_evaluation_works_me_id_foreign');

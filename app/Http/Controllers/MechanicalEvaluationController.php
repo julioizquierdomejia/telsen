@@ -355,7 +355,9 @@ class MechanicalEvaluationController extends Controller
 
         $formato = MechanicalEvaluation::
                 join('ots', 'ots.id', '=', 'mechanical_evaluations.ot_id')
-                ->select('mechanical_evaluations.*', 'ots.code as ot_code')
+                ->leftJoin('rotor_cod_rodaje_pt1s', 'mechanical_evaluations.rotor_cod_rodaje_p1', '=', 'rotor_cod_rodaje_pt1s.id')
+                ->leftJoin('rotor_cod_rodaje_pt2s', 'mechanical_evaluations.rotor_cod_rodaje_p2', '=', 'rotor_cod_rodaje_pt2s.id')
+                ->select('mechanical_evaluations.*', 'ots.code as ot_code', 'rotor_cod_rodaje_pt1s.name as rotor_cod_rodaje_p1', 'rotor_cod_rodaje_pt2s.name as rotor_cod_rodaje_p2')
                 ->where('mechanical_evaluations.id', $id)
                 ->firstOrFail();
         $works = OtWork::where('type', "mechanical")

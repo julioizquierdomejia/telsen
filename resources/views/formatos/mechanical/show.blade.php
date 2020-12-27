@@ -141,51 +141,51 @@ $aprobador = in_array("aprobador_de_evaluaciones", $role_names);
 						<h4 class="second-title text-danger py-2">ROTOR:</h4>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor deplexion eje</label>
+						<label class="c-label">Deplexion eje</label>
 						<p class="mb-0">{{$formato->rotor_deplexion_eje ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor valor balanceo</label>
+						<label class="c-label">Valor balanceo</label>
 						<p class="mb-0">{{$formato->rotor_valor_balanceo ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor cod rodaje p1</label>
+						<label class="c-label">Cod rodaje p1</label>
 						<p class="mb-0">{{$formato->rotor_cod_rodaje_p1 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor cod rodaje p2</label>
+						<label class="c-label">Cod rodaje p2</label>
 						<p class="mb-0">{{$formato->rotor_cod_rodaje_p2 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor asiento rodaje p1</label>
+						<label class="c-label">Asiento rodaje p1</label>
 						<p class="mb-0">{{$formato->rotor_asiento_rodaje_p1 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor asiento rodaje p2</label>
+						<label class="c-label">Asiento rodaje p2</label>
 						<p class="mb-0">{{$formato->rotor_asiento_rodaje_p2 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor eje zona acople p1</label>
+						<label class="c-label">Eje zona acople p1</label>
 						<p class="mb-0">{{$formato->rotor_eje_zona_acople_p1 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor eje zona acople p2</label>
+						<label class="c-label">Eje zona acople p2</label>
 						<p class="mb-0">{{$formato->rotor_eje_zona_acople_p2 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor medida chaveta p1</label>
+						<label class="c-label">Medida chaveta p1</label>
 						<p class="mb-0">{{$formato->rotor_medida_chaveta_p1 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor medida chaveta p2</label>
+						<label class="c-label">Medida chaveta p2</label>
 						<p class="mb-0">{{$formato->rotor_medida_chaveta_p2 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor canal chaveta p1</label>
+						<label class="c-label">Canal chaveta p1</label>
 						<p class="mb-0">{{$formato->rotor_canal_chaveta_p1 ?? '-'}}</p>
 					</div>
 					<div class="col-6 col-sm-6 col-lg-3 form-group">
-						<label class="c-label">Rotor canal chaveta p2</label>
+						<label class="c-label">Canal chaveta p2</label>
 						<p class="mb-0">{{$formato->rotor_canal_chaveta_p2 ?? '-'}}</p>
 					</div>
 					<div class="col-12">

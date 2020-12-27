@@ -69,10 +69,10 @@ class CreateMechanicalEvaluationsTable extends Migration
             //$table->string('rotor_cod_rodaje_p1')->nullable();
             //$table->string('rotor_cod_rodaje_p2')->nullable();
 
-            $table->unsignedBigInteger('rotor_cod_rodaje_p1')->unique();
+            $table->bigInteger('rotor_cod_rodaje_p1')->unsigned();
             $table->foreign('rotor_cod_rodaje_p1')->references('id')->on('rotor_cod_rodaje_pt1s');
 
-            $table->unsignedBigInteger('rotor_cod_rodaje_p2')->unique();
+            $table->bigInteger('rotor_cod_rodaje_p2')->unsigned();
             $table->foreign('rotor_cod_rodaje_p2')->references('id')->on('rotor_cod_rodaje_pt2s');
 
             $table->string('rotor_asiento_rodaje_p1')->nullable();

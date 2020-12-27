@@ -613,7 +613,7 @@
                       </select>
                     </td>
                     <td>
-                      <select class="dropdown2 form-control select-service" data-value="{{$item->service_id}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                      <select class="dropdown2 form-control select-service" data-value="{{$item->service_id ? $item->service_id : ''}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
                         <option value="">Seleccionar servicio</option>
                       </select>
                     </td>

@@ -670,8 +670,8 @@ class ElectricalEvaluationController extends Controller
 
         $formato = ElectricalEvaluation::
                     join('ots', 'ots.id', '=', 'electrical_evaluations.ot_id')
-                    ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                    ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
+                    ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                    ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                     ->join('eval_electrical_reception as eer', 'eer.eel_id', '=', 'electrical_evaluations.id')
                     ->join('eval_electrical_test_in as eetesting', 'eetesting.eel_id', '=', 'electrical_evaluations.id')
                     ->join('eval_electrical_characteristics as eechar', 'eechar.eel_id', '=', 'electrical_evaluations.id')

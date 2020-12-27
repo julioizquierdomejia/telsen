@@ -447,7 +447,7 @@
                   <tr>
                     <td class="cell-counter">
                       <span class="number"></span>
-                      <input type="hidden" name="works[{{$key}}][id]" value="{{old('works.'.$key.'.id', $item->id)}}">
+                      <input type="hidden" name="works[{{$key}}][id]" value="{{ isset($item->id) ? $item->id : '' }}">
                       <input class="work_status" type="hidden" name="works[{{$key}}][status]" value="1">
                     </td>
                     <td>

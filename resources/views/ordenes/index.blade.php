@@ -92,7 +92,7 @@ $allowed_users = in_array("superadmin", $role_names) || in_array("admin", $role_
       </div>
       <div class="modal-footer justify-content-center">
         <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancelar</button>
-        <button class="btn btn-primary btn-delete-confirm" type="button" data-otid=""><i class="fal fa-trash"></i> Eliminar</button>
+        <button class="btn btn-danger btn-delete-confirm" data-dismiss="modal" type="button" data-otid=""><i class="fal fa-trash"></i> Eliminar</button>
       </div>
     </div>
   </div>

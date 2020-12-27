@@ -9,6 +9,7 @@ use App\Models\ElectricalEvaluationCharacteristic;
 use App\Models\ElectricalEvaluationReception;
 use App\Models\ElectricalEvaluationTestIn;
 use App\Models\ElectricalEvaluationTransformer;
+use App\Models\ElectricalEvaluationTap;
 //use App\Models\ElectricalGallery;
 use App\Models\OtGallery;
 use App\Models\Ot;
@@ -130,6 +131,8 @@ class ElectricalEvaluationController extends Controller
     public function store(Request $request, $ot_id)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
+
+        $tran_tap = $request->input('tran_tap') ?? [];
         
         // validate
         $rules = array(
@@ -258,7 +261,7 @@ class ElectricalEvaluationController extends Controller
             'files' => 'nullable'
         );
 
-        $tran_tap = json_encode($request->input('tran_tap'));
+        //$tran_tap = json_encode($request->input('tran_tap'));
 
         $validator = $this->validate($request, $rules);
 
@@ -379,7 +382,7 @@ class ElectricalEvaluationController extends Controller
 
         $eltraneval = new ElectricalEvaluationTransformer();
         $eltraneval->eel_id = $eleval['id'];
-        $eltraneval->tap = $tran_tap;
+        //$eltraneval->tap = $tran_tap;
         $eltraneval->aisl_m = $request->input('tran_aisl_m');
         $eltraneval->nro_salidas = $request->input('tran_nro_salidas');
         $eltraneval->conexion = $request->input('tran_conexion');
@@ -404,8 +407,20 @@ class ElectricalEvaluationController extends Controller
         $eltraneval->ww = $request->input('tran_ww');
         $eltraneval->save();
 
+        foreach ($tran_tap as $key => $item) {
+            $tap = new ElectricalEvaluationTap();
+            $tap->eel_id = $eleval->id;
+            $tap->uv1 = $item['uv1'];
+            $tap->uv2 = $item['uv2'];
+            $tap->vu1 = $item['vu1'];
+            $tap->vu2 = $item['vu2'];
+            $tap->wu1 = $item['wu1'];
+            $tap->wu2 = $item['wu2'];
+            $tap->save();
+        }
+
         $works = $request->input('works') ?? [];
-        $services = [];
+        
         foreach ($works as $key => $item) {
             if (isset($item['service_id'])) {
                 $ot_work = new OtWork();
@@ -551,7 +566,7 @@ class ElectricalEvaluationController extends Controller
                         'eetesting.er_amp_a',
                         'eetesting.er_nro_polos',
 
-                        'eet.tap as tran_tap',
+                        //'eet.tap as tran_tap',
                         'eet.aisl_m as tran_aisl_m',
                         'eet.nro_salidas as tran_nro_salidas',
                         'eet.conexion as tran_conexion',
@@ -717,7 +732,7 @@ class ElectricalEvaluationController extends Controller
                         'eetesting.er_amp_a as testin_er_amp_a',
                         'eetesting.er_nro_polos as testin_er_nro_polos',
 
-                        'eet.tap as tran_tap',
+                        //'eet.tap as tran_tap',
                         'eet.aisl_m as tran_aisl_m',
                         'eet.nro_salidas as tran_nro_salidas',
                         'eet.conexion as tran_conexion',
@@ -809,8 +824,8 @@ class ElectricalEvaluationController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones']);
         
-        // validate
-        // read more on validation at http://laravel.com/docs/validation
+        $tran_tap = $request->input('tran_tap') ?? [];
+
         $rules = array(
             //'ot_id' => 'required',
             'potencia' => 'required',
@@ -938,7 +953,7 @@ class ElectricalEvaluationController extends Controller
 
         $this->validate($request, $rules);
 
-        $tran_tap = json_encode($request->input('tran_tap'));
+        $tran_tap = $request->input('tran_tap');
 
         // update
         $eleval = ElectricalEvaluation::findOrFail($id);
@@ -1051,7 +1066,7 @@ class ElectricalEvaluationController extends Controller
         $eltestineval->save();
 
         $eltraneval = ElectricalEvaluationTransformer::where('eel_id', $eleval->id)->first();
-        $eltraneval->tap = $tran_tap;
+        //$eltraneval->tap = $tran_tap;
         $eltraneval->aisl_m = $request->input('tran_aisl_m');
         $eltraneval->nro_salidas = $request->input('tran_nro_salidas');
         $eltraneval->conexion = $request->input('tran_conexion');
@@ -1103,6 +1118,33 @@ class ElectricalEvaluationController extends Controller
                 $work->qty = isset($item['qty']) ? $item['qty'] : '';
                 $work->personal = isset($item['personal']) ? $item['personal'] : '';
                 $work->save();
+            }
+        }
+
+        foreach ($tran_tap as $key => $item) {
+            if (isset($item['id'])) {
+                $tap = ElectricalEvaluationTap::find($item['id']);
+                if (isset($item['status']) && $item['status'] == 0) {
+                    $tap->delete();
+                } else {
+                    $tap->uv1 = $item['uv1'];
+                    $tap->uv2 = $item['uv2'];
+                    $tap->vu1 = $item['vu1'];
+                    $tap->vu2 = $item['vu2'];
+                    $tap->wu1 = $item['wu1'];
+                    $tap->wu2 = $item['wu2'];
+                    $tap->save();
+                }
+            } else {
+                $tap = new ElectricalEvaluationTap();
+                $tap->eel_id = $eleval->id;
+                $tap->uv1 = $item['uv1'];
+                $tap->uv2 = $item['uv2'];
+                $tap->vu1 = $item['vu1'];
+                $tap->vu2 = $item['vu2'];
+                $tap->wu1 = $item['wu1'];
+                $tap->wu2 = $item['wu2'];
+                $tap->save();
             }
         }
 

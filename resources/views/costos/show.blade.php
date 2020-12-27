@@ -56,7 +56,7 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 					</div>
 					<div class="col-md-3 col-xl-3 form-group">
 						<label class="col-form-label">Fecha</label>
-						<p class="form-control mb-0">{{date('Y-m-d', strtotime($ccost->created_at))}}</p>
+						<p class="form-control mb-0">{{date('d-m-Y', strtotime($ccost->created_at))}}</p>
 					</div>
 				</div>
 				<div class="row">

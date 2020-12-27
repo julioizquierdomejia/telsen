@@ -461,12 +461,12 @@
               @foreach($tran_tap as $key => $tap)
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv1]" value="{{old('tran_tap')[$key]['uv1']}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv2]" value="{{old('tran_tap')[$key]['uv2']}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu1]" value="{{old('tran_tap')[$key]['vu1']}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu2]" value="{{old('tran_tap')[$key]['vu2']}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu1]" value="{{old('tran_tap')[$key]['wu1']}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu2]" value="{{old('tran_tap')[$key]['wu2']}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv1]" value="{{old('tran_tap.'.$key.'uv1')}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv2]" value="{{old('tran_tap.'.$key.'uv2')}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu1]" value="{{old('tran_tap.'.$key.'vu1')}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu2]" value="{{old('tran_tap.'.$key.'vu2')}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu1]" value="{{old('tran_tap.'.$key.'wu1')}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu2]" value="{{old('tran_tap.'.$key.'wu2')}}"></td>
                 <td>
                     <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                   </td>
@@ -822,7 +822,6 @@ $(document).ready(function() {
             </td>
           </tr>`;
     $('#table-tap tbody').append(row);
-    //createJSON();
   })
   $('.btn-add-row').click(function() {
     var row_index = $('#table-works tbody tr').length;

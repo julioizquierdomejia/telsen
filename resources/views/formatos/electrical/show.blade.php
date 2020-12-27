@@ -425,7 +425,7 @@ $reception_list = [
       </div>
       <div class="card-body pb-3 pt-0">
         <hr>
-        @if ($formato->tran_tap)
+        @if ($taps = $formato->taps)
         <div class="table-responsive">
           <table class="table table-tap table-separate text-center table-numbering mb-0" id="table-tap">
             <thead>
@@ -443,21 +443,17 @@ $reception_list = [
               </tr>
             </thead>
             <tbody>
-              @php
-              $tap = json_decode($formato->tran_tap, true);
-              $tap_count = count($tap);
-              @endphp
-              @for ($i=0; $i < $tap_count; $i++)
+              @foreach ($taps as $tap)
               <tr>
                 <td class="cell-counter"><span class="number"></span></td>
-                <td><p class="mb-0">{{$tap[$i]['uv1'] ?? '-'}}</p></td>
-                <td><p class="mb-0">{{$tap[$i]['uv2'] ?? '-'}}</p></td>
-                <td><p class="mb-0">{{$tap[$i]['vu1'] ?? '-'}}</p></td>
-                <td><p class="mb-0">{{$tap[$i]['vu2'] ?? '-'}}</p></td>
-                <td><p class="mb-0">{{$tap[$i]['wu1'] ?? '-'}}</p></td>
-                <td><p class="mb-0">{{$tap[$i]['wu2'] ?? '-'}}</p></td>
+                <td><p class="mb-0">{{$tap->uv1 ?? '-'}}</p></td>
+                <td><p class="mb-0">{{$tap->uv2 ?? '-'}}</p></td>
+                <td><p class="mb-0">{{$tap->vu1 ?? '-'}}</p></td>
+                <td><p class="mb-0">{{$tap->vu2 ?? '-'}}</p></td>
+                <td><p class="mb-0">{{$tap->wu1 ?? '-'}}</p></td>
+                <td><p class="mb-0">{{$tap->wu2 ?? '-'}}</p></td>
               </tr>
-              @endfor
+              @endforeach
             </tbody>
           </table>
         </div>

@@ -141,13 +141,29 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->timestamps();
         });
 
+        Schema::create('eval_electrical_tap', function (Blueprint $table) {
+            $table->id();
+
+            $table->unsignedBigInteger('eel_id');
+            $table->foreign('eel_id')->references('id')->on('electrical_evaluations');
+
+            $table->string('uv1')->nullable();
+            $table->string('uv2')->nullable();
+            $table->string('vu1')->nullable();
+            $table->string('vu2')->nullable();
+            $table->string('wu1')->nullable();
+            $table->string('wu2')->nullable();
+
+            $table->timestamps();
+        });
+
         Schema::create('eval_electrical_transformer', function (Blueprint $table) {
             $table->id();
             
             $table->unsignedBigInteger('eel_id');
             $table->foreign('eel_id')->references('id')->on('electrical_evaluations');
 
-            $table->string('tap')->nullable();
+            //$table->string('tap')->nullable();
             $table->string('aisl_m')->nullable();
             $table->string('nro_salidas')->nullable();
             $table->string('conexion')->nullable();

@@ -445,18 +445,22 @@
               </tr>
             </thead>
             <tbody>
-              @if($tran_tap = json_decode($formato->tran_tap, true))
+              @if($tran_tap = $formato->taps)
               @foreach($tran_tap as $key => $tap)
               <tr>
-                <td class="cell-counter"><span class="number"></span></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv1]" value="{{$tap['uv1'] ?? ''}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv2]" value="{{$tap['uv2'] ?? ''}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu1]" value="{{$tap['vu1'] ?? ''}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu2]" value="{{$tap['vu2'] ?? ''}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu1]" value="{{$tap['wu1'] ?? ''}}"></td>
-                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu2]" value="{{$tap['wu2'] ?? ''}}"></td>
+                <td class="cell-counter">
+                  <span class="number"></span>
+                  <input type="hidden" name="tran_tap[{{$key}}][id]" value="{{old('tran_tap.'.$key.'.id', $tap['id'])}}">
+                  <input class="tap_status" type="hidden" name="works[{{$key}}][status]" value="1">
+                </td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv1]" value="{{old('tran_tap.'.$key.'uv1', $tap['uv1'])}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][uv2]" value="{{old('tran_tap.'.$key.'uv1', $tap['uv2'])}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu1]" value="{{old('tran_tap.'.$key.'uv1', $tap['vu1'])}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][vu2]" value="{{old('tran_tap.'.$key.'uv1', $tap['vu2'])}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu1]" value="{{old('tran_tap.'.$key.'uv1', $tap['wu1'])}}"></td>
+                <td><input type="text" class="form-control mt-0" name="tran_tap[{{$key}}][wu2]" value="{{old('tran_tap.'.$key.'uv1', $tap['wu2'])}}"></td>
                 <td>
-                    <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                    <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                   </td>
               </tr>
               @endforeach
@@ -484,7 +488,6 @@
             </tr>
             </tfoot>
           </table>
-          {{-- <input type="hidden" class="form-control" value="{{old('tran_tap', $formato->tran_tap)}}" name="tran_tap"> --}}
           <hr class="mt-0">
           <div class="row">
             <div class="col-12 col-sm-6 col-md-3 form-group">
@@ -615,19 +618,19 @@
                       </select>
                     </td>
                     <td width="120">
-                      <input type="text" class="form-control @error("works.".$key.".description") is-invalid @enderror" placeholder="Descripción" value="{{old('works.'.$key.'.desc', $item["description"])}}" name="works[{{$key}}][description]">
+                      <input type="text" class="form-control mt-0 @error("works.".$key.".description") is-invalid @enderror" placeholder="Descripción" value="{{old('works.'.$key.'.desc', $item["description"])}}" name="works[{{$key}}][description]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works.".$key.".medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works.'.$key.'.medidas', $item["medidas"])}}" name="works[{{$key}}][medidas]">
+                      <input type="text" class="form-control mt-0 @error("works.".$key.".medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works.'.$key.'.medidas', $item["medidas"])}}" name="works[{{$key}}][medidas]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works.".$key.".qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.'.$key.'.qty', $item["qty"])}}" name="works[{{$key}}][qty]">
+                      <input type="text" class="form-control mt-0 @error("works.".$key.".qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.'.$key.'.qty', $item["qty"])}}" name="works[{{$key}}][qty]">
                     </td>
                     <td width="100">
-                      <input type="text" class="form-control @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{$item["personal"]}}" name="works[{{$key}}][personal]">
+                      <input type="text" class="form-control mt-0 @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{$item["personal"]}}" name="works[{{$key}}][personal]">
                     </td>
                     <td>
-                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                      <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                     </td>
                   </tr>
                   @endforeach
@@ -926,7 +929,8 @@ $(document).ready(function() {
   $(document).on('click', '.btn-remove-tap-row', function() {
     var row_index = $('#table-tap tbody tr').length;
     if (row_index > 1) {
-      $(this).closest('tr').remove();
+      //$(this).closest('tr').remove();
+      $(this).parents('tr').addClass('d-none').find('.tap_status').val(0);
     }
     //createJSON();
   })

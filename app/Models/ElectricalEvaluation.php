@@ -42,4 +42,9 @@ class ElectricalEvaluation extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function taps()
+    {
+        return $this->hasMany(ElectricalEvaluationTap::class, 'eel_id');
+    }
 }

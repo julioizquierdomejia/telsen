@@ -608,7 +608,7 @@
                       <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
                         <option value="">Seleccionar area</option>
                         @foreach($areas as $area)
-                        <option value="{{$area->id}}" {{ old('works.'.$key.'.area_id', $item['area_id']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                        <option value="{{$area->id}}" {{ old('works.'.$key.'.area_id', isset($item['area_id']) ? $item['area_id']: '') == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
                         @endforeach
                       </select>
                     </td>

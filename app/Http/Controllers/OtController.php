@@ -983,7 +983,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="rdi/'.$ot->id.'/calcular" class="btn btn-warning" title="Calcular"><i class="fal fa-money-check-alt"></i></a>';
+            $tools = '<a href="/tarjeta-costo/'.$ot->id.'/calcular" class="btn btn-warning" title="Calcular"><i class="fal fa-money-check-alt"></i></a>';
 
             $ots_array[] = array(
               "created_at" => $created_at,

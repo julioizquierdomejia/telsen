@@ -26,7 +26,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
       @php
       $first = reset($service_item);
       @endphp
-      @if ($admin || ($first['area_id'] == $user_area_id))
+      @if ($admin || $supervisor || ($first['area_id'] == $user_area_id))
       <div class="card form-card h-100" data-id="{{$first['area_id']}}">
         <div class="card-header">
           <h5 class="card-title">{{$first['area']}}</h5>

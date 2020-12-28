@@ -74,8 +74,8 @@ class CostCardController extends Controller
             return redirect('tarjeta-costo/'.$cc->ot_id.'/ver');
         }
 
-        $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
+        $ot = Ot::leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')

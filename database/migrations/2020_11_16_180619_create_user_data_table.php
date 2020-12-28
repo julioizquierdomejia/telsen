@@ -16,7 +16,7 @@ class CreateUserDataTable extends Migration
         Schema::create('user_data', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->string('name');
             $table->string('last_name')->nullable();

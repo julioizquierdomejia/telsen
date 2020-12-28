@@ -153,14 +153,14 @@ class UserController extends Controller
             'roles'     => 'array|min:1',
             'area_id'     => 'integer|required',
             'password'    => 'string|min:6|nullable',
-            //'enabled'   => 'boolean|required',
+            'enabled'   => 'boolean|required',
         );
         $this->validate($request, $rules);
 
         $user = new User();
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
-        //$user_data->enabled = $request->input('enabled');
+        $user->enabled = $request->input('enabled');
         $user->save();
 
         $user_data = new UserData();
@@ -195,7 +195,7 @@ class UserController extends Controller
     {
         $user = User::join('user_data', 'user_data.user_id', '=' ,'users.id')
                 ->join('areas', 'areas.id', '=' ,'user_data.area_id')
-                ->select('users.id', 'users.email', 'users.password', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id', 'areas.name as area')
+                ->select('users.*', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id', 'areas.name as area')
                 ->where('users.id', $id)
                 ->firstOrFail();
         $superadmin = in_array("superadmin", array_column($user->roles->toArray(), "name"));
@@ -232,7 +232,7 @@ class UserController extends Controller
             'mlastname'   => 'string|min:3|nullable',
             'phone'       => 'string|min:6|nullable',
             'roles'       => 'sometimes|array',
-            //'enabled'   => 'boolean|required',
+            'enabled'   => 'boolean|sometimes',
         );
         if ($allowed_user) {
             array_push($rules, ['area_id'     => 'integer|required']);
@@ -246,7 +246,9 @@ class UserController extends Controller
         if ($request->input('password')) {
             $user->password = bcrypt($request->input('password'));
         }
-        //$user_data->enabled = $request->input('enabled');
+        if ($allowed_user) {
+            $user->enabled = $request->input('enabled');
+        }
         $user->save();
 
         $area_id = $request->input('area_id');

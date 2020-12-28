@@ -103,6 +103,15 @@
             <span class="badge badge-primary px-2 py-1">{{$user->area}}</span>
             @endif
             </div>
+            @if (in_array($user->roles->first()->name, $allowed_roles))
+            <div class="col-md-3 form-group">
+              <label class="col-form-label">Estado</label>
+              <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
+                <option value="1" {{old('enabled', $user->enabled) == 1 ? 'selected' : ''}}>Activo</option>
+                <option value="0" {{old('enabled', $user->enabled) == 0 ? 'selected' : ''}}>Inactivo</option>
+              </select>
+            </div>
+            @endif
           </div>
         </div>
       </div>

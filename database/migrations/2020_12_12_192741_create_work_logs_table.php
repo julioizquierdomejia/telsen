@@ -30,7 +30,7 @@ class CreateWorkLogsTable extends Migration
             $table->unsignedBigInteger('reason_id')->nullable();
             $table->foreign('reason_id')->references('id')->on('ot_work_reasons');
 
-            $table->unsignedBigInteger('status_id');
+            $table->unsignedBigInteger('status_id')->nullable();
             $table->foreign('status_id')->references('id')->on('work_status');
 
             $table->timestamps();

@@ -46,6 +46,11 @@ class UserController extends Controller
         $searchValue = $search_arr['value']; // Search value
 
         // Total records
+        $totalRecords = User::select('count(*) as allcount')
+                ->join('user_data', 'user_data.user_id', '=', 'users.id')
+                ->join('areas', 'areas.id', '=' ,'user_data.area_id')
+                ->where('users.id', '<>', 1)->count();
+
         $totalRecordswithFilter = User::select('count(*) as allcount')
                 ->join('user_data', 'user_data.user_id', '=', 'users.id')
                 ->join('areas', 'areas.id', '=' ,'user_data.area_id')
@@ -105,7 +110,7 @@ class UserController extends Controller
 
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $records->count(),
+            "iTotalRecords" => $totalRecords,
             "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $data_arr
         );

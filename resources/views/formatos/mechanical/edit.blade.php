@@ -1,7 +1,7 @@
 @php
-  $ot_id = zerosatleft($formato->ot_code, 3);
+  $ot_code = zerosatleft($formato->ot_code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Evaluación Mecánica de OT N° '.$ot_id])
+@extends('layouts.app', ['title' => 'Evaluación Mecánica de OT N° '.$ot_code])
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php
@@ -72,7 +72,7 @@
             </div>
             <div class="col-6 col-md-3 mb-2">
               <label class="col-form-label">OT</label>
-              <input type="text" class="form-control" readonly="" value="OT-{{$ot_id}}">
+              <input type="text" class="form-control" readonly="" value="OT-{{$ot_code}}">
             </div>
             <div class="col-6 col-md-3 mb-2">
               <label class="col-form-label">Fecha de creación</label>

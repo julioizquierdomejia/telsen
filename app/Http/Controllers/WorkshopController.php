@@ -311,7 +311,7 @@ class WorkshopController extends Controller
                 ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                 ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
-                ->select('cost_cards.*', 'ots.id as ot_id', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
+                ->select('cost_cards.*', 'ots.id as ot_code', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
                 ->firstOrFail();
         $services = WorkshopService::where('cc_id', $ccost->id)
                     ->leftJoin('services', 'services.id', '=', 'cost_card_service_works.service_id')

@@ -94,11 +94,7 @@ class RdiController extends Controller
                 ->select('ots.*', 'clients.razon_social')
                 ->where('ots.id', $ot_id)
                 ->firstOrFail();
-        if ($ot->client_type_id == 1) {
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 6)->get();
-        } else {
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
-        }
+        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
         $counter = RDI::count() + 1;
         $clientes = Client::where('enabled', 1)->where('client_type_id', 1)->get();
         $marcas = MotorBrand::where('enabled', 1)->get();
@@ -111,35 +107,37 @@ class RdiController extends Controller
                 ->select('services.id', 'services.name')
                 ->get();*/
 
-        $works_el = ElectricalEvaluationWork::join('services', 'services.id', '=', 'electrical_evaluation_works.service_id')
+        $works_el = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
-                ->join('electrical_evaluations', 'electrical_evaluations.id', '=', 'electrical_evaluation_works.me_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                 ->select(
-                    'electrical_evaluation_works.description',
-                    'electrical_evaluation_works.medidas',
-                    'electrical_evaluation_works.qty',
-                    'electrical_evaluation_works.personal',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
                     'services.id as service_id',
                     'areas.name as area',
                     'areas.id as area_id'
                 )
-                ->where('electrical_evaluations.ot_id', $ot->id)
+                ->where('ot_works.type', 'electrical')
+                ->where('ots.id', $ot->id)
                 ->get();
-
-        $works_mec = MechanicalEvaluationWork::join('services', 'services.id', '=', 'mechanical_evaluation_works.service_id')
+        $works_mec = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
-                ->join('mechanical_evaluations', 'mechanical_evaluations.id', '=', 'mechanical_evaluation_works.me_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                 ->select(
-                    'mechanical_evaluation_works.description',
-                    'mechanical_evaluation_works.medidas',
-                    'mechanical_evaluation_works.qty',
-                    'mechanical_evaluation_works.personal',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
                     'services.name as service',
+                    'services.id as service_id',
                     'areas.name as area',
                     'areas.id as area_id'
                 )
-                ->where('mechanical_evaluations.ot_id', $ot->id)
+                ->where('ot_works.type', 'mechanical')
+                ->where('ots.id', $ot->id)
                 ->get();
 
         return view('rdi.calcular', compact('ot', 'counter', 'clientes', 'marcas', 'maintenancetype', 'criticalitytype', 'works_el', 'works_mec', 'areas'));
@@ -265,7 +263,8 @@ class RdiController extends Controller
         foreach ($works as $key => $item) {
             if (isset($item['service_id'])) {
                 $rdi_work = new OtWork();
-                $rdi_work->rdi_id = $rdi->id;
+                $rdi_work->ot_id = $rdi->ot_id;
+                $rdi_work->type = "rdi";
                 $rdi_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
                 $rdi_work->description = isset($item['description']) ? $item['description'] : '';
                 $rdi_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
@@ -368,12 +367,22 @@ class RdiController extends Controller
                     ->join('services', 'services.id', '=', 'rdi_service_costs.service_id')
                     ->select('services.id', 'services.name', 'rdi_service_costs.subtotal')
                     ->get();*/
-        $services = OtWork::where('ot_id', $rdi->ot_id)
-                    ->where('type', 'rdi')
-                    ->leftJoin('services', 'services.id', '=', 'rdi_works.service_id')
-                    ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
-                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','rdi_works.*')
-                    ->get();
+        $works = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                ->select(
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('ot_works.type', 'rdi')
+                ->where('ots.id', $rdi->ot_id)
+                ->get();
 
         $ot_status = StatusOt::join('status', 'status_ot.status_id', '=', 'status.id')
                       ->where('status_ot.ot_id', '=', $rdi->ot_id)
@@ -398,7 +407,7 @@ class RdiController extends Controller
                         ->select('logs.*', 'users.email', 'user_data.name')
                         ->first();
 
-        return view('rdi.show', compact('rdi', 'services', 'ingresos', 'ot_status', 'maded_by', 'approved_by'));
+        return view('rdi.show', compact('rdi', 'works', 'ingresos', 'ot_status', 'maded_by', 'approved_by'));
     }
 
     /**
@@ -440,16 +449,26 @@ class RdiController extends Controller
                     ->select('rdi_services.id', 'rdi_services.name', 'rdi_service_costs.subtotal')
                     ->where('rdi_services.enabled', 1)
                     ->get();*/
-        $services = OtWork::where('ot_id', $rdi->ot_id)
-                    ->where('type', 'rdi')
-                    ->leftJoin('services', 'services.id', '=', 'rdi_works.service_id')
-                    ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
-                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','rdi_works.*')
-                    ->get();
+        $works = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                ->select(
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->where('ot_works.type', 'rdi')
+                ->where('ots.id', $rdi->ot_id)
+                ->get();
 
-        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 6)->get();
+        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
 
-        return view('rdi.edit', compact('rdi', 'clientes', 'marcas', 'services', 'maintenancetype', 'criticalitytype', 'areas'));
+        return view('rdi.edit', compact('rdi', 'clientes', 'marcas', 'works', 'maintenancetype', 'criticalitytype', 'areas'));
     }
 
     /**
@@ -473,7 +492,7 @@ class RdiController extends Controller
             'area' => 'string|nullable',
             'equipo' => 'string|nullable',
             'codigo' => 'string|nullable',
-            'ot_id' => 'integer|exists:ots,id',
+            //'ot_id' => 'integer|exists:ots,id',
             'fecha_ingreso' => 'required|date_format:Y-m-d',
             'tiempo_entrega' => 'integer|required',
             'orden_servicio' => 'string|nullable',
@@ -518,9 +537,75 @@ class RdiController extends Controller
         $rdi = Rdi::findOrFail($id);
         $original_data = $rdi->toArray();
 
-        $rdi->name       = $request->get('name');
-        $rdi->enabled    = $request->get('enabled');
+        $rdi->rdi_codigo = $request->input('rdi_codigo');
+        $rdi->version = $request->input('version');
+        $rdi->contact = $request->input('contact');
+        $rdi->area = $request->input('area');
+        $rdi->equipo = $request->input('equipo');
+        $rdi->codigo = $request->input('codigo');
+        $rdi->fecha_ingreso = $request->input('fecha_ingreso');
+        $rdi->tiempo_entrega = $request->input('tiempo_entrega');
+        $rdi->orden_servicio = $request->input('orden_servicio');
+        $rdi->marca_id = $request->input('marca_id');
+        $rdi->nro_serie = $request->input('nro_serie');
+        $rdi->frame = $request->input('frame');
+        $rdi->potencia = $request->input('potencia');
+        $rdi->tension = $request->input('tension');
+        $rdi->corriente = $request->input('corriente');
+        $rdi->velocidad = $request->input('velocidad');
+        $rdi->conexion = $request->input('conexion');
+        $rdi->deflexion_eje = $request->input('deflexion_eje');
+        $rdi->rodaje_delantero = $request->input('rodaje_delantero');
+        $rdi->rodaje_posterior = $request->input('rodaje_posterior');
+        $rdi->antecedentes = $request->input('antecedentes');
+        $rdi->diagnostico_actual = $request->input('diagnostico_actual');
+        $rdi->aislamiento_masa_ingreso = $request->input('aislamiento_masa_ingreso');
+        $rdi->rdi_maintenance_type_id = $request->input('rdi_maintenance_type_id');
+        $rdi->rdi_criticality_type_id = $request->input('rdi_criticality_type_id');
+        $rdi->hecho_por = $request->input('hecho_por');
+        $rdi->enabled = $request->input('enabled');
         $rdi->save();
+
+        //Ingresó con
+        $placa_caracteristicas = $request->input('placa_caracteristicas') ?? 0;
+        $caja_conexion = $request->input('caja_conexion') ?? 0;
+        $bornera = $request->input('bornera') ?? 0;
+        $escudos = $request->input('escudos') ?? 0;
+        $ejes = $request->input('ejes') ?? 0;
+        $funda = $request->input('funda') ?? 0;
+        $ventilador = $request->input('ventilador') ?? 0;
+        $acople = $request->input('acople') ?? 0;
+        $chaveta = $request->input('chaveta') ?? 0;
+
+        $rdi_ingreso = RdiIngreso::where('rdi_id', $rdi->id)->first();
+        $rdi_ingreso->rdi_id = $rdi->id;
+        $rdi_ingreso->placa_caracteristicas = $placa_caracteristicas;
+        $rdi_ingreso->caja_conexion = $caja_conexion;
+        $rdi_ingreso->bornera = $bornera;
+        $rdi_ingreso->escudos = $escudos;
+        $rdi_ingreso->ejes = $ejes;
+        $rdi_ingreso->funda = $funda;
+        $rdi_ingreso->ventilador = $ventilador;
+        $rdi_ingreso->acople = $acople;
+        $rdi_ingreso->chaveta = $chaveta;
+        $rdi_ingreso->save();
+
+        OtWork::where('ot_id', $rdi->ot_id)->delete();
+
+        $works = $request->input('works');
+        foreach ($works as $key => $item) {
+            if (isset($item['service_id'])) {
+                $rdi_work = new OtWork();
+                $rdi_work->ot_id = $rdi->ot_id;
+                $rdi_work->type = "rdi";
+                $rdi_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                $rdi_work->description = isset($item['description']) ? $item['description'] : '';
+                $rdi_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                $rdi_work->qty = isset($item['qty']) ? $item['qty'] : '';
+                $rdi_work->personal = isset($item['personal']) ? $item['personal'] : '';
+                $rdi_work->save();
+            }
+        }
 
         activitylog('rdi', 'update', $original_data, $rdi->toArray());
 

@@ -44,7 +44,7 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 				<div class="row">
 					<div class="col-md-2 form-group">
 						<label class="col-form-label">Número de Orden</label>
-						<p class="form-control mb-0">OT-{{zerosatleft($ccost->ot_id, 3)}}</p>
+						<p class="form-control mb-0">OT-{{zerosatleft($ccost->ot_code, 3)}}</p>
 					</div>
 					<div class="col-md-5 form-group">
 						<label class="col-form-label">Razón social</label>

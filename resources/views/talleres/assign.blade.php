@@ -1,7 +1,7 @@
 @php
-$ot_id = "OT-".zerosatleft($ot->code, 3);
+$ot_code = "OT-".zerosatleft($ot->code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Taller para OT-'.$ot_id])
+@extends('layouts.app', ['title' => 'Taller para OT-'.$ot_code])
 @section('css')
 @endsection
 @section('content')
@@ -17,7 +17,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
     <form class="form-group" method="POST" action="{{route('workshop.store', $ot)}}" enctype="multipart/form-data">
       <div class="card">
         <div class="card-header row mx-0 align-items-center py-2 justify-content-between">
-          <h5 class="h5 my-1 mr-2">Taller para {{$ot_id}}</h5>
+          <h5 class="h5 my-1 mr-2">Taller para {{$ot_code}}</h5>
         <button class="btn btn-primary my-1" type="submit">Registrar Taller</button>
         </div>
       </div>
@@ -53,7 +53,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                 <tr class="list-item" data-service="{{$service['ot_work_id']}}">
                   {{-- <td>{{$service['id']}}</td> --}}
                   <td class="px-2 text-nowrap">{{$ot_date}}</td>
-                  <td>{{$ot_id}}</td>
+                  <td>{{$ot_code}}</td>
                   <td>{{$potencia}}</td>
                   <td width="250">
                     <h6 class="subtitle mb-0">{{$service['service']}}</h6>

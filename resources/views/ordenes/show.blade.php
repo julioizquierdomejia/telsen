@@ -1,7 +1,7 @@
 @php
-$ot_id = zerosatleft($ot->code, 3);
+$ot_code = zerosatleft($ot->code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Ver OT N° '.$ot_id])
+@extends('layouts.app', ['title' => 'Ver OT N° '.$ot_code])
 @section('content')
 @php
 $ot_status = $ot->statuses;
@@ -22,7 +22,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 			<div class="card-header">
 				<h5 class="card-title d-flex justify-content-between align-items-center">
 				<span>
-					Orden de Trabajo {{$ot_id}}
+					Orden de Trabajo {{$ot_code}}
 					<span class="d-block">
 						@if ($ot_status->count())
 						@if($status_last->name == 'cc')

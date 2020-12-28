@@ -1,7 +1,7 @@
 @php
-  $ot_id = zerosatleft($formato->ot_code, 3);
+  $ot_code = zerosatleft($formato->ot_code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Evaluación Mecánica de OT N° '.$ot_id])
+@extends('layouts.app', ['title' => 'Evaluación Mecánica de OT N° '.$ot_code])
 @section('content')
 @php
 $statuses = array_column($ot_status->toArray(), "name");
@@ -48,7 +48,7 @@ $aprobador = in_array("aprobador_de_evaluaciones", $role_names);
 				<div class="row">
 					<div class="col-6 col-md-3 form-group">
 						<label class="c-label">OT</label>
-						<p class="mb-0">OT-{{$ot_id}}</p>
+						<p class="mb-0">OT-{{$ot_code}}</p>
 					</div>
 					<div class="col-6 col-md-3 form-group">
 						<label class="c-label">Fecha de creación</label>
@@ -318,7 +318,7 @@ $aprobador = in_array("aprobador_de_evaluaciones", $role_names);
             </button>
           </div>
         <div class="modal-body">
-            <p class="text-center my-3">¿Confirma aprobación de evaluación mecánica  para OT-{{$ot_id}}?</p>
+            <p class="text-center my-3">¿Confirma aprobación de evaluación mecánica  para OT-{{$ot_code}}?</p>
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>

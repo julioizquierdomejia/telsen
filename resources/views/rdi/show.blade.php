@@ -244,8 +244,8 @@ $role_fentrega = in_array("fecha_de_entrega", $role_names);
 								</tr>
 							</thead>
 							<tbody>
-								@if($services)
-								@foreach($services as $key => $work)
+								@if($works)
+								@foreach($works as $key => $work)
 								<tr>
 									<td class="cell-counter"><span class="number"></span></td>
 									<td><div class="form-control h-100 mt-0">{{$work->area}}</div></td>

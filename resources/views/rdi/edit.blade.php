@@ -1,17 +1,17 @@
 @php
-  $ot_id = zerosatleft($rdi->ot_code, 3);
+  $ot_code = zerosatleft($rdi->ot_code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Editar RDI de OT-'. $ot_id])
+@extends('layouts.app', ['title' => 'Editar RDI de OT-'. $ot_code])
 
 @section('content')
 <div class="row">
   <div class="col-md-12">
     <div class="card card-user form-card">
       <div class="card-header">
-        <h5 class="card-title">Editar RDI de OT-<strong>{{$ot_id}}</strong></h5>
+        <h5 class="card-title">Editar RDI de OT-<strong>{{$ot_code}}</strong></h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="/rdi" enctype="multipart/form-data">
+        <form class="form-group" method="POST" action="{{route('rdi.edit', $rdi->id)}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
             <div class="col-6 col-md-3 col-xl-2 form-group">
@@ -234,15 +234,15 @@
                 </tr>
               </thead>
               <tbody>
-                @if($works = old('works'))
-                @foreach($works as $key => $item)
+                @if($old_works = old('works'))
+                @foreach($old_works as $key => $item)
                 <tr>
                   <td class="cell-counter"><span class="number"></span></td>
                   <td>
                     <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
                       <option value="">Seleccionar area</option>
                       @foreach($areas as $area)
-                      <option value="{{$area->id}}" {{ old('works'.$key.'area', $item['area']) == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                      <option value="{{$area->id}}" {{ old('works.'.$key.'.area') == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
                       @endforeach
                     </select>
                   </td>
@@ -254,16 +254,52 @@
                   <td width="120">
                     <input type="text" class="form-control mt-0
                     @error("works.".$key.".description") is-invalid @enderror"
-                    placeholder="Descripción" value="{{old('works.$key.description', $item['description'])}}" name="works[{{$key}}][description]">
+                    placeholder="Descripción" value="{{old('works'.$key.'description')}}" name="works[{{$key}}][description]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control mt-0 @error("works.".$key.".medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works.$key.medidas', $item['medidas'])}}" name="works[{{$key}}][medidas]">
+                    <input type="text" class="form-control mt-0 @error("works.".$key.".medidas") is-invalid @enderror" placeholder="Medida" value="{{old('works.'.$key.'.medidas')}}" name="works[{{$key}}][medidas]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control mt-0 @error("works.".$key.".qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.$key.qty', $item['qty'])}}" name="works[{{$key}}][qty]">
+                    <input type="text" class="form-control mt-0 @error("works.".$key.".qty") is-invalid @enderror" placeholder="Cantidad" value="{{old('works.'.$key.'.qty')}}" name="works[{{$key}}][qty]">
                   </td>
                   <td width="100">
-                    <input type="text" class="form-control mt-0 @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.$key.personal', $item['personal'])}}" name="works[{{$key}}][personal]">
+                    <input type="text" class="form-control mt-0 @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.'.$key.'.personal')}}" name="works[{{$key}}][personal]">
+                  </td>
+                  <td>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                    </td>
+                </tr>
+                @endforeach
+                @elseif($works)
+                @foreach($works as $key => $item)
+                <tr>
+                  <td class="cell-counter"><span class="number"></span></td>
+                  <td>
+                    <select class="dropdown2 form-control select-area" name="works[{{$key}}][area]" style="width: 100%">
+                      <option value="">Seleccionar area</option>
+                      @foreach($areas as $area)
+                      <option value="{{$area->id}}" {{ $item['area_id'] == $area->id ? 'selected' : '' }}>{{$area->name}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td>
+                    <select class="dropdown2 form-control select-service" data-value="{{$item['service_id'] ?? ''}}" name="works[{{$key}}][service_id]" style="width: 100%"  disabled="">
+                      <option value="">Seleccionar servicio</option>
+                    </select>
+                  </td>
+                  <td width="120">
+                    <input type="text" class="form-control mt-0
+                    @error("works.".$key.".description") is-invalid @enderror"
+                    placeholder="Descripción" value="{{$item['description']}}" name="works[{{$key}}][description]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control mt-0 @error("works.".$key.".medidas") is-invalid @enderror" placeholder="Medida" value="{{$item['medidas']}}" name="works[{{$key}}][medidas]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control mt-0 @error("works.".$key.".qty") is-invalid @enderror" placeholder="Cantidad" value="{{$item['qty']}}" name="works[{{$key}}][qty]">
+                  </td>
+                  <td width="100">
+                    <input type="text" class="form-control mt-0 @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{$item['personal']}}" name="works[{{$key}}][personal]">
                   </td>
                   <td>
                       <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>

@@ -1,7 +1,7 @@
 @php
-  $ot_id = zerosatleft($ot->code, 3);
+  $ot_code = zerosatleft($ot->code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Editar Evaluación Eléctrica de OT N° '.$ot_id ])
+@extends('layouts.app', ['title' => 'Editar Evaluación Eléctrica de OT N° '.$ot_code ])
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php
@@ -58,7 +58,7 @@
       @csrf
       <div class="card form-card">
         <div class="card-header">
-          <h4 class="card-title">Editar Evaluación Eléctrica de OT N° {{$ot_id}}</h4>
+          <h4 class="card-title">Editar Evaluación Eléctrica de OT N° {{$ot_code}}</h4>
         </div>
         <div class="card-body pb-3 pt-0">
           <h5 class="text-danger mt-4">Datos del Motor</h5>
@@ -118,7 +118,7 @@
           <div class="row pt-3">
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">OT:</label>
-              <input type="text" readonly="" class="form-control" value="OT-{{$ot_id}}">
+              <input type="text" readonly="" class="form-control" value="OT-{{$ot_code}}">
             </div>
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">Fecha:</label>

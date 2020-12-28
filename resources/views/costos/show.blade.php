@@ -404,7 +404,7 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 					<div class="col">@if ($approved_by)Aprobada por: {{$approved_by->name}}@endif</div>
 				</div>
 				@endif
-			<embed class="w-100" src="{{ asset('storage/uploads/cotizacion/'.$ccost->cotizacion) }}" width="500" height="375" style="height: calc(100vh - 140px)" type="application/pdf">
+			<embed class="w-100" src="{{ asset('storage/cotizacion/'.$ccost->cotizacion) }}" width="500" height="375" style="height: calc(100vh - 140px)" type="application/pdf">
 			@endif
 		</div>
 	</div>

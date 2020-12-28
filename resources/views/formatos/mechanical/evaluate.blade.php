@@ -705,8 +705,8 @@ $('[name=rotor_cod_rodaje_p1]').change(function () {
 
   $('[name=rotor_asiento_rodaje_p1]').val(asiento ? asiento : '');
   $('.asiento-rodaje-pto1').val(asiento ? asiento : 'Ø');
-  $('[name=estator_alojamiento_rodaje_tapa_p10]').val(alojamiento ? asiento : '');
-  $('.alojamiento-tapa-pto1').val(alojamiento ? asiento : '');
+  //$('[name=estator_alojamiento_rodaje_tapa_p10]').val(alojamiento ? asiento : '');
+  //$('.alojamiento-tapa-pto1').val(alojamiento ? asiento : '');
 })
 
 $('[name=rotor_cod_rodaje_p2]').change(function () {
@@ -714,8 +714,8 @@ $('[name=rotor_cod_rodaje_p2]').change(function () {
 
   $('[name=rotor_asiento_rodaje_p2]').val(asiento ? asiento : '');
   $('.asiento-rodaje-pto2').val(asiento ? asiento : 'Ø');
-  $('[name=estator_alojamiento_rodaje_tapa_p20]').val(alojamiento ? asiento : '');
-  $('.alojamiento-tapa-pto2').val(alojamiento ? asiento : '');
+  //$('[name=estator_alojamiento_rodaje_tapa_p20]').val(alojamiento ? asiento : '');
+  //$('.alojamiento-tapa-pto2').val(alojamiento ? asiento : '');
 })
 })
 </script>

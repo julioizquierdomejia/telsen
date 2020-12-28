@@ -32,6 +32,9 @@ class CreateElectricalGalleryTable extends Migration
      */
     public function down()
     {
+        Schema::table('electrical_gallery', function (Blueprint $table) {
+            $table->dropForeign('electrical_gallery_el_id_foreign');
+        });
         Schema::dropIfExists('electrical_gallery');
     }
 }

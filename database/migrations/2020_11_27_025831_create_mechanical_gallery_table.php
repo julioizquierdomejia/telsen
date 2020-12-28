@@ -32,6 +32,9 @@ class CreateMechanicalGalleryTable extends Migration
      */
     public function down()
     {
+        Schema::table('mechanical_gallery', function (Blueprint $table) {
+            $table->dropForeign('mechanical_gallery_me_id_foreign');
+        });
         Schema::dropIfExists('mechanical_gallery');
     }
 }

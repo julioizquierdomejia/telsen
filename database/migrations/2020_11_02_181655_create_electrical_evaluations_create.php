@@ -227,6 +227,9 @@ class CreateElectricalEvaluationsCreate extends Migration
         Schema::table('eval_electrical_test_in', function (Blueprint $table) {
             $table->dropForeign('eval_electrical_test_in_eel_id_foreign');
         });
+        Schema::table('eval_electrical_tap', function (Blueprint $table) {
+            $table->dropForeign('eval_electrical_tap_eel_id_foreign');
+        });
         Schema::table('eval_electrical_transformer', function (Blueprint $table) {
             $table->dropForeign('eval_electrical_transformer_eel_id_foreign');
         });

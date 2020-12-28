@@ -612,7 +612,7 @@ class UserSeeder extends Seeder
         $user->roles()->attach($role_worker);
 
         $user = new User();
-        $user->email = 'pruebas@telsen.net';
+        $user->email = 'mecanica@telsen.net';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
         $user->save();

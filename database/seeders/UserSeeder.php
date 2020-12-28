@@ -133,6 +133,21 @@ class UserSeeder extends Seeder
         $user->roles()->attach($role_superadmin);
 
         $user = new User();
+        $user->email = 'fiestas.aguirre.sadith@gmail.com';
+        $user->password = bcrypt('12345678');
+        $user->enabled = 1;
+        $user->save();
+        $user_data = new UserData();
+        $user_data->user_id = $user->id;
+        $user_data->name = 'SADITH';
+        $user_data->last_name = 'FIESTAS';
+        $user_data->mother_last_name = 'AGUIRRE';
+        $user_data->user_phone = 912345678;
+        $user_data->area_id = 2;
+        $user_data->save();
+        $user->roles()->attach($role_superadmin);
+
+        $user = new User();
         $user->email = 'zafra.rengifo.ricardo.arturo@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
@@ -146,6 +161,8 @@ class UserSeeder extends Seeder
         $user_data->area_id = 2;
         $user_data->save();
         $user->roles()->attach($role_superadmin);
+
+        //---------------
 
         $user = new User();
         $user->email = 'arias.guitarra@gmail.com';
@@ -161,8 +178,6 @@ class UserSeeder extends Seeder
         $user_data->area_id = 2;
         $user_data->save();
         $user->roles()->attach($role_supervisor);
-
-        //---------------
 
         $user = new User();
         $user->email = 'kelwin.asencios@gmail.com';

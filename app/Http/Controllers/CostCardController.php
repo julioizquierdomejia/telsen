@@ -152,7 +152,8 @@ class CostCardController extends Controller
 
                 activitylog('cc_upload', 'store', null, $status_ot->getOriginal());
 
-                $file->move(public_path('uploads/cotizacion'), $uniqueFileName);
+                //$file->move(public_path('uploads/cotizacion'), $uniqueFileName);
+                $file->move(storage_path('cotizacion'), $uniqueFileName);
                 return response()->json(['data'=>json_encode($cost_card->id),'success'=>true]);
             }
         }

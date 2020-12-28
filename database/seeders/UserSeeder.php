@@ -34,9 +34,9 @@ class UserSeeder extends Seeder
         $role_supervisor = Role::where('name', 'supervisor')->first();
         $role_worker = Role::where('name', 'worker')->first();
         
-        User::query()->delete();
-        RoleUser::query()->delete();
-        UserData::query()->delete();
+        User::truncate();
+        RoleUser::truncate();
+        UserData::truncate();
 
         $user = new User();
         $user->email = 'admin@gmail.com';

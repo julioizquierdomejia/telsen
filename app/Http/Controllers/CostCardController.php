@@ -258,8 +258,8 @@ class CostCardController extends Controller
 
         $ccost = CostCard::where('ot_id', $ot_id)
                 ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')
-                ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
+                ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->select('cost_cards.*', 'ots.code as ot_id', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
                 ->firstOrFail();

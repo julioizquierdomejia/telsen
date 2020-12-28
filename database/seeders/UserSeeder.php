@@ -34,9 +34,11 @@ class UserSeeder extends Seeder
         $role_supervisor = Role::where('name', 'supervisor')->first();
         $role_worker = Role::where('name', 'worker')->first();
         
-        User::query()->delete();
-        RoleUser::query()->delete();
-        UserData::query()->delete();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        User::truncate();
+        RoleUser::truncate();
+        UserData::truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $user = new User();
         $user->email = 'admin@gmail.com';

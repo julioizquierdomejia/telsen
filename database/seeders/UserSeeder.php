@@ -608,7 +608,6 @@ class UserSeeder extends Seeder
         $user->roles()->attach($role_aprobador_cotizacion_tarjeta_de_costo);
         $user->roles()->attach($role_rdi);
         $user->roles()->attach($role_aprobador_rdi);
-        $user->roles()->attach($role_aprobador_cotizacion);
         $user->roles()->attach($role_supervisor);
         $user->roles()->attach($role_worker);
 
@@ -629,7 +628,6 @@ class UserSeeder extends Seeder
         $user->roles()->attach($role_aprobador_de_evaluaciones);
         $user->roles()->attach($role_rdi);
         $user->roles()->attach($role_aprobador_rdi);
-        $user->roles()->attach($role_aprobador_cotizacion);
         $user->roles()->attach($role_supervisor);
         $user->roles()->attach($role_worker);
 

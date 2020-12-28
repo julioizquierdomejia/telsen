@@ -136,8 +136,8 @@ class WorkshopController extends Controller
                 ->get()
                 ;
 
-        $ot = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
+        $ot = Ot::leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
@@ -308,8 +308,8 @@ class WorkshopController extends Controller
 
         $ccost = Workshop::where('ot_id', $ot_id)
                 ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')
-                ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->join('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
+                ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
                 ->select('cost_cards.*', 'ots.id as ot_code', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
                 ->firstOrFail();

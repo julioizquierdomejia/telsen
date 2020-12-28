@@ -394,13 +394,13 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 			@if(in_array("cc_approved", $statuses))
 				<div class="text-center py-3 row">
 					<div class="col">@if ($maded_by)Hecha por: {{$maded_by->name}} @endif</div>
-					<span class="badge badge-success px-3 py-2">Cotización Aprobada</span>
+					<div class="col"><span class="badge badge-success px-3 py-2">Cotización Aprobada</span></div>
 					<div class="col">@if ($approved_by)Aprobada por: {{$approved_by->name}}@endif</div>
 				</div>
 				@elseif(in_array("cc_disapproved", $statuses))
 				<div class="text-center py-3 row">
 					<div class="col">@if ($maded_by)Hecha por: {{$maded_by->name}} @endif</div>
-					<span class="badge badge-success px-3 py-2">Cotización Desaprobada</span>
+					<div class="col"><span class="badge badge-success px-3 py-2">Cotización Desaprobada</span></div>
 					<div class="col">@if ($approved_by)Aprobada por: {{$approved_by->name}}@endif</div>
 				</div>
 				@endif

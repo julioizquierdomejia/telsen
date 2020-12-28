@@ -103,7 +103,7 @@
             <span class="badge badge-primary px-2 py-1">{{$user->area}}</span>
             @endif
             </div>
-            @if (in_array($user->roles->first()->name, $allowed_roles))
+            @if ($user->id != Auth::id() && in_array($user->roles->first()->name, $allowed_roles))
             <div class="col-md-3 form-group">
               <label class="col-form-label">Estado</label>
               <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">

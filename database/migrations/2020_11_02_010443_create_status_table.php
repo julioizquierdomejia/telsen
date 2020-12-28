@@ -40,13 +40,15 @@ class CreateStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('status');
-
+        Schema::table('status', function (Blueprint $table) {
+            $table->dropUnique('status_name_unique');
+        });
         Schema::table('status_ot', function (Blueprint $table) {
             $table->dropForeign('status_ot_ot_id_foreign');
             $table->dropForeign('status_ot_status_id_foreign');
-            $table->dropUnique('status_name_unique');
         });
+
+        Schema::dropIfExists('status');
         Schema::dropIfExists('status_ot');
     }
 }

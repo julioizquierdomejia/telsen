@@ -239,6 +239,8 @@ class UserController extends Controller
         }
         $this->validate($request, $rules);
 
+        $enabled = $request->input('enabled');
+
         $user = User::findOrFail($id);
         $original_data = $user->getOriginal();
         
@@ -246,8 +248,9 @@ class UserController extends Controller
         if ($request->input('password')) {
             $user->password = bcrypt($request->input('password'));
         }
-        if ($allowed_user) {
-            $user->enabled = $request->input('enabled');
+        if ($allowed_user && $enabled) {
+            dd("entra a enabled");
+            $user->enabled = $enabled;
         }
         $user->save();
 

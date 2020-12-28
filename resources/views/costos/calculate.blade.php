@@ -275,10 +275,10 @@
                   <td class="cell-counter"><span class="number"></span></td>
                   <td><span class="form-control mt-0 h-100">{{$item->area}}</span></td>
                   <td><span class="form-control mt-0 h-100">{{$item->service}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->description}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->medidas}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->qty}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->personal}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->description ? $item->description : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->medidas ? $item->medidas : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->qty ? $item->qty : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->personal ? $item->personal : '-'}}</span></td>
                 </tr>
                 @endforeach
                 @else
@@ -319,10 +319,10 @@
                   <td class="cell-counter"><span class="number"></span></td>
                   <td><span class="form-control mt-0 h-100">{{$item->area}}</span></td>
                   <td><span class="form-control mt-0 h-100">{{$item->service}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->description}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->medidas}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->qty}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$item->personal}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->description ? $item->description : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->medidas ? $item->medidas : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->qty ? $item->qty : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-100">{{$item->personal ? $item->personal : '-'}}</span></td>
                 </tr>
                 @endforeach
                 @else

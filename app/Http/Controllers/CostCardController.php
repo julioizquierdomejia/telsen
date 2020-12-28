@@ -261,14 +261,14 @@ class CostCardController extends Controller
                 ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
                 ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
-                ->select('cost_cards.*', 'ots.code as ot_id', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
+                ->select('cost_cards.*', 'ots.id as otid', 'ots.code as ot_id', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
                 ->firstOrFail();
         /*$services = CostCardService::where('cost_card_id', $ccost->id)
                     ->leftJoin('services', 'services.id', '=', 'cost_card_services.service_id')
                     ->leftJoin('areas', 'areas.id', '=', 'cost_card_services.area_id')
                     ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_services.personal', 'cost_card_services.ingreso', 'cost_card_services.salida', 'cost_card_services.subtotal')
                     ->get();*/
-        $services = OtWork::where('ot_id', $ccost->ot_id)
+        $services = OtWork::where('ot_id', $ot_id)
                     ->where('type', 'cc')
                     ->leftJoin('services', 'services.id', '=', 'ot_works.service_id')
                     ->leftJoin('areas', 'areas.id', '=', 'services.area_id')
@@ -308,7 +308,7 @@ class CostCardController extends Controller
                 ->get();
 
         $ot_status = StatusOt::join('status', 'status_ot.status_id', '=', 'status.id')
-                      ->where('status_ot.ot_id', '=', $ccost->ot_id)
+                      ->where('status_ot.ot_id', '=', $ot_id)
                       ->select('status.id', 'status_ot.status_id', 'status.name')
                       ->get();
 
@@ -317,7 +317,7 @@ class CostCardController extends Controller
                         ->join('user_data', 'users.id', '=', 'user_data.user_id')
                         ->where('logs.action', 'store')
                         ->where('logs.section', 'cc_approved')
-                        ->where('logs.data', 'like', '%"ot_id":"'. $ccost->ot_id . '"%')
+                        ->where('logs.data', 'like', '%"ot_id":"'. $ot_id . '"%')
                         ->select('logs.*', 'users.email', 'user_data.name')
                         ->first();
 

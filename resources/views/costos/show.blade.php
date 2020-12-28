@@ -162,10 +162,10 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
                   <td class="cell-counter"><span class="number"></span></td>
                   <td><span class="form-control mt-0 h-auto">{{$item->area}}</span></td>
                   <td><span class="form-control mt-0 h-auto">{{$item->service}}</span></td>
-                  <td><span class="form-control mt-0 h-auto">{{$item->description}}</span></td>
-                  <td><span class="form-control mt-0 h-auto">{{$item->medidas}}</span></td>
-                  <td><span class="form-control mt-0 h-auto">{{$item->qty}}</span></td>
-                  <td><span class="form-control mt-0 h-auto">{{$item->personal}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->description ? $item->description : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->medidas ? $item->medidas : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->qty ? $item->qty : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->personal ? $item->personal : '-'}}</span></td>
                 </tr>
                 @endforeach
                 @else
@@ -206,10 +206,10 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
                   <td class="cell-counter"><span class="number"></span></td>
                   <td><span class="form-control mt-0 h-auto">{{$item->area}}</span></td>
                   <td><span class="form-control mt-0 h-auto">{{$item->service}}</span></td>
-                  <td><span class="form-control mt-0 h-auto">{{$item->description}}</span></td>
-                  <td><span class="form-control mt-0 h-auto">{{$item->medidas}}</span></td>
-                  <td><span class="form-control mt-0 h-auto">{{$item->qty}}</span></td>
-                  <td><span class="form-control mt-0 h-auto">{{$item->personal}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->description ? $item->description : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->medidas ? $item->medidas : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->qty ? $item->qty : '-'}}</span></td>
+                  <td><span class="form-control mt-0 h-auto">{{$item->personal ? $item->personal : '-'}}</span></td>
                 </tr>
                 @endforeach
                 @else
@@ -228,75 +228,6 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
           </div>
           </div>
 						<h4 class="h6 text-center mb-0"><strong>Otros Trabajos</strong></h4>
-						{{-- <table class="table table-tap table-separate table-bordered table-numbering mb-0" id="table-tap">
-							<thead class="text-center">
-								<tr>
-									<th class="py-1 px-2" width="50">ITEM</th>
-									<th class="py-1"> </th>
-									<th class="py-1">PERSONAL</th>
-									<th class="py-1">INGRESO</th>
-									<th class="py-1">SALIDA</th>
-									<th class="py-1"> </th>
-									<th class="py-1">TOTAL</th>
-								</tr>
-							</thead>
-							<tbody>
-								@if ($services)
-								<?php
-								$services_count = count($services);
-								$previousGroup = false;
-								$row_total = 0;
-								?>
-								@foreach($services as $key => $item)
-								@php
-								$lastItem = false;
-								$row_total += $item['subtotal'];
-								@endphp
-								@if($previousGroup !== false && isset($item['service']) && $previousGroup !== $item['service'])
-								@php
-								$lastItem = true;
-								@endphp
-								@endif
-								@if($item['service'] == '')
-								@if ($key > 1)
-								<tr><td colspan="7" height="20"></td></tr>
-								@endif
-								@php $row_total = $item['subtotal']; @endphp
-								<tr class="row-area" data-areaid="{{$item['area_id']}}">
-									<td class="bg-info cell-counter text-center" width="50"><span class="number"></span></td>
-									<td class="bg-info" width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['area']}}</span></td>
-									<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
-									<td class="bg-info"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
-									<td class="bg-info" width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
-									<td class="bg-info" width="100"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="{{$item['area_id']}}" value="{{$item['subtotal']}}"></td>
-									<td class="bg-info" width="50"></td>
-								</tr>
-								@else
-								<tr data-areaid="{{$item['area_id']}}" data-serviceid="{{$item['service']}}">
-									<td width="50"></td>
-									<td width="200"><span class="form-control input-expandable frm-sinput border-0 bg-white" name="area">{{$item['service']}}</span></td>
-									<td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="personal" value="{{$item['personal']}}"></td>
-									<td><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="ingreso" value="{{$item['ingreso']}}"></td>
-									<td width="100"><input type="text" class="form-control frm-sinput" data-areaid="{{$item['area_id']}}" name="salida" value="{{$item['salida']}}"></td>
-									<td width="100"><input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="subtotal" data-areaid="{{$item['area_id']}}" value="{{$item['subtotal']}}"></td>
-									<td width="50">
-										@if($lastItem)
-										<input type="number" min="0" placeholder="S/ " class="form-control frm-sinput text-right" name="areasubtotal" data-areaid="{{$item['area_id']}}" value="{{$row_total}}">
-										@endif
-									</td>
-								</tr>
-								@endif
-								@php
-								$previousGroup = $item['area_id'];
-								@endphp
-								@endforeach
-								@else
-								<tr class="empty-services text-center">
-									<td colspan="7">Seleccione un area</td>
-								</tr>
-								@endif
-							</tbody>
-						</table> --}}
 						<table class="table table-tap table-separate text-center table-numbering mb-0" id="table-tap">
 							<thead>
 								<tr>
@@ -316,10 +247,10 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 									<td class="cell-counter"><span class="number"></span></td>
 									<td><span class="form-control mt-0 border-0 h-auto">{{$work->area}}</span></td>
 									<td><span class="form-control mt-0 border-0 h-auto">{{$work->service}}</span></td>
-									<td><span class="form-control mt-0 border-0 h-auto">{{$work->description}}</span></td>
-									<td><span class="form-control mt-0 border-0 h-auto">{{$work->medidas}}</span></td>
-									<td><span class="form-control mt-0 border-0 h-auto">{{$work->qty}}</span></td>
-									<td><span class="form-control mt-0 border-0 h-auto">{{$work->personal}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->description ? $work->description : '-'}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->medidas ? $work->medidas : '-'}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->qty ? $work->qty : '-'}}</span></td>
+									<td><span class="form-control mt-0 border-0 h-auto">{{$work->personal ? $work->personal : '-'}}</span></td>
 								</tr>
 								@endforeach
 								@else

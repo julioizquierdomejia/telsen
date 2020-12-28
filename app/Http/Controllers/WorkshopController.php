@@ -438,7 +438,7 @@ class WorkshopController extends Controller
         $work_log = WorkLog::where('work_id', $work_id)
                     ->orderBy('id', 'desc')
                     ->where('type', 'end')
-                    ->where('status_id', 0)
+                    ->whereNull('status_id')
                     ->first();
 
         $work_log->status_id = $status;

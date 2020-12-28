@@ -65,7 +65,6 @@ class OtController extends Controller
         $totalRecords = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                ->where('ots.enabled', 1)
                 ->whereDoesntHave('statuses', function ($query) {
                     $query->where("status.name", "=", 'ee_disapproved');
                     $query->orWhere("status.name", "=", 'me_disapproved');
@@ -74,16 +73,16 @@ class OtController extends Controller
                     $query->where("status.name", "=", 'cc_disapproved');
                     $query->orWhere("status.name", "=", 'rdi_disapproved');
                 })
+                ->where('ots.enabled', 1)
                 ->count();
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                ->where('ots.enabled', 1)
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
                 ->whereDoesntHave('statuses', function ($query) {
                     $query->where("status.name", "=", 'ee_disapproved');
                     $query->orWhere("status.name", "=", 'me_disapproved');
@@ -92,6 +91,7 @@ class OtController extends Controller
                     $query->where("status.name", "=", 'cc_disapproved');
                     $query->orWhere("status.name", "=", 'rdi_disapproved');
                 })
+                ->where('ots.enabled', 1)
                 ->count();
 
         $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
@@ -174,6 +174,17 @@ class OtController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved')
+                        ->orWhere("status.name", "=", 'rdi_disapproved')
+                        ->orWhere("status.name", "=", 'ee_disapproved')
+                        ->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->where('ots.enabled', 1)->count();
+
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -235,11 +246,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -266,6 +276,11 @@ class OtController extends Controller
         $columnName = $columnName_arr[$columnIndex]['data']; // Column name
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where('ots.enabled', 0)->count();
 
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
@@ -318,11 +333,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -356,21 +370,37 @@ class OtController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved')
+                        ->orWhere("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->where('ots.enabled', 1)
+                ->count();
+
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                ->where('ots.enabled', 1)
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
                 ->whereDoesntHave('statuses', function ($query) {
-                    $query->where("status.name", "=", 'ee_approved');
+                    $query->where("status.name", "=", 'ee_approved')
+                          ->orWhere("status.name", "=", 'me_approved');
                 })
-                ->orWhereDoesntHave('statuses', function ($query) {
-                    $query->where("status.name", "=", 'me_approved');
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
                 })
+                ->where('ots.enabled', 1)
                 ->count();
 
         $ots_array = [];
@@ -389,10 +419,12 @@ class OtController extends Controller
                     ->orderBy($columnName, $columnSortOrder)
 
                     ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee_approved');
+                        $query->where("status.name", "=", 'ee_approved')
+                            ->orWhere("status.name", "=", 'me_approved');
                     })
-                    ->orWhereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'me_approved');
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'ee_disapproved');
+                        $query->orWhere("status.name", "=", 'me_disapproved');
                     })
                     ->where('ots.enabled', 1)->get();
 
@@ -417,11 +449,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -456,15 +487,26 @@ class OtController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_waiting');
+                })
+                ->where('ots.enabled', 1)
+                ->count();
+
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                ->where('ots.enabled', 1)
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
 
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'cc');
@@ -472,7 +514,7 @@ class OtController extends Controller
                 ->whereDoesntHave('statuses', function ($query) {
                     $query->where("status.name", "=", 'cc_waiting');
                 })
-
+                ->where('ots.enabled', 1)
                 ->count();
 
         $ots_array = [];
@@ -519,11 +561,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -558,15 +599,9 @@ class OtController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
-        $totalRecordswithFilter = Ot::select('count(*) as allcount')
+        $totalRecords = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                ->where('ots.enabled', 1)
 
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'cc_waiting');
@@ -574,7 +609,25 @@ class OtController extends Controller
                 ->whereDoesntHave('statuses', function ($query) {
                     $query->where("status.name", "=", 'cc_approved');
                 })
+                ->where('ots.enabled', 1)
+                ->count();
 
+        $totalRecordswithFilter = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_waiting');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_approved');
+                })
+                ->where('ots.enabled', 1)
                 ->count();
 
         $ots_array = [];
@@ -621,11 +674,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -653,14 +705,23 @@ class OtController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_approved');
+                })
+                ->where('ots.enabled', 1)
+                ->count();
+
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
                 ->where('ots.enabled', 1)
 
                 ->whereHas('statuses', function ($query) {
@@ -709,11 +770,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -739,6 +799,23 @@ class OtController extends Controller
         $columnName = $columnName_arr[$columnIndex]['data']; // Column name
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_waiting');
+                })
+                ->where('ots.enabled', 1)->count();
 
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
@@ -810,11 +887,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -841,6 +917,20 @@ class OtController extends Controller
         $columnName = $columnName_arr[$columnIndex]['data']; // Column name
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->where('ots.enabled', 1)->count();
 
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
@@ -906,116 +996,16 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
         echo json_encode($response);
         exit;
     }
-
-    public function getOTStatus(Ot $ot, $role_admin, $role_cc, $role_eval, $role_rdi)
-    {
-        $statuses = $ot->statuses;
-
-        $rdi = Rdi::where('enabled', 1)->where('ot_id', $ot->id)
-                ->select('id')
-                ->first();
-
-        $meval = MechanicalEvaluation::where('ot_id', $ot->id)
-                ->select('mechanical_evaluations.id')
-                ->first();
-
-        $eeval = ElectricalEvaluation::where('ot_id', $ot->id)
-                ->select('electrical_evaluations.id')
-                ->first();
-
-        $cost_card = CostCard::where('ot_id', $ot->id)
-                ->select('cost_cards.id')
-                ->first();
-
-        /*$work_shop = WorkShop::where('ot_id', $ot->id)
-                ->select('id as ws_id')
-                ->first();*/
-
-        $status['status'] = $statuses;
-        $status['html'] = '';
-        $status['fecha_entrega'] = '-';
-
-        if ($statuses) {
-            foreach ($statuses as $key => $item) {
-                if($item->name == 'cc' || $item->name == 'rdi') {
-                  $status['html'] = '<span class="badge badge-primary px-2 py-1 w-100">'.$item->description.'</span>';
-                } else if(strpos($item->name, '_waiting') !== false) {
-                  $status['html'] = '<span class="badge badge-danger px-2 py-1 w-100">'.$item->description.'</span>';
-                } else if(strpos($item->name, '_disapproved') !== false) {
-                  $status['html'] = '<span class="badge badge-danger px-2 py-1 w-100">'.$item->description.'</span>';
-                } else if(strpos($item->name, '_approved') !== false || $item->name == 'delivery_generated') {
-                    $status['html'] = '<span class="badge badge-success px-2 py-1 w-100">'.$item->description.'</span>';
-                    if($item->name == 'delivery_generated') {
-                        $fecha_entrega = '';
-                        if($ot->fecha_entrega) {
-                            $start = strtotime($ot->fecha_entrega);
-                            $end   = strtotime(date('d-m-Y'));
-                            $days  = date('d', $start - $end);
-                            $fecha = date('d-m-Y', $start);
-                            $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                            $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                            if($days > 0) {
-                                $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
-                            } else {
-                                $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
-                            }
-                        }
-                        $status['fecha_entrega'] = $fecha_entrega;
-                    }
-                } else {
-                  $status['html'] = '<span class="badge badge-secondary px-2 py-1 w-100">'.$item->description.'</span>';
-                }
-            }
-        }
-
-        $eval_html = "";
-        if (($role_admin && ($cost_card || $rdi || $meval || $eeval)) ||
-            ($role_cc && $cost_card) ||
-            ($role_rdi && $rdi) ||
-            ($role_eval && ($eeval || $meval))
-        ) {
-            $eval_html = '<div class="dropdown d-inline-block dropleft">
-            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-check"></i></button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-            if($cost_card && ($role_admin || $role_cc)) {
-              $eval_html .= '<a class="dropdown-item" href="/tarjeta-costo/'.$ot->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>';
-            }
-            if($rdi && ($role_admin || $role_rdi)) {
-            $eval_html .= '<a class="dropdown-item" href="/rdi/'.$rdi->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>';
-            }
-            if($meval && ($role_admin || $role_eval)) {
-            $eval_html .= '<a class="dropdown-item" href="/formatos/mechanical/'.$meval->id.'/ver"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>';
-            }
-            if($eeval && ($role_admin || $role_eval)) {
-            $eval_html .= '<a class="dropdown-item" href="/formatos/electrical/'.$eeval->id.'/ver"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>';
-            }
-            $eval_html .= '</div></div>';
-        }
-        $status['eval'] = $eval_html;
-
-        return $status;
-        /*return response()->json([
-            'status' => json_encode($ot_status),
-            'rdi' => json_encode($rdi),
-            'meval' => json_encode($meval),
-            'eeval' => json_encode($eeval),
-            'cost_card' => json_encode($cost_card),
-            //'work_shop' => json_encode($work_shop),
-            'success' => true
-        ]);*/
-    }
-
 
     // OT rdi y sin aprobacion
     public function list_rdi_waiting(Request $request)
@@ -1036,6 +1026,18 @@ class OtController extends Controller
         $columnName = $columnName_arr[$columnIndex]['data']; // Column name
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_waiting');
+                })
+                ->where('ots.enabled', 1)
+                ->count();
 
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
@@ -1104,8 +1106,8 @@ class OtController extends Controller
         $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -1132,19 +1134,27 @@ class OtController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_approved');
+                })
+                ->where('ots.enabled', 1)
+                ->count();
+
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                ->where('ots.enabled', 1)
-
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'cc_approved');
                 })
+                ->where('ots.enabled', 1)
                 ->count();
 
         $ots_array = [];
@@ -1191,11 +1201,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -1231,6 +1240,19 @@ class OtController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_approved');
+                    $query->orWhere("status.name", "=", 'cc_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->where('ots.enabled', 1)
+                ->count();
+
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -1239,8 +1261,6 @@ class OtController extends Controller
                         ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                         ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                ->where('ots.enabled', 1)
-
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'rdi_approved');
                     $query->orWhere("status.name", "=", 'cc_approved');
@@ -1248,7 +1268,7 @@ class OtController extends Controller
                 ->whereDoesntHave('statuses', function ($query) {
                     $query->where("status.name", "=", 'delivery_generated');
                 })
-
+                ->where('ots.enabled', 1)
                 ->count();
 
         $ots_array = [];
@@ -1296,11 +1316,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -1326,6 +1345,15 @@ class OtController extends Controller
         $columnName = $columnName_arr[$columnIndex]['data']; // Column name
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_approved');
+                })
+                ->where('ots.enabled', 1)
+                ->count();
 
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
@@ -1383,11 +1411,10 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
@@ -1426,10 +1453,10 @@ class OtController extends Controller
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
                 ->where('ots.enabled', 1)
                 ->whereDoesntHave('statuses', function ($query) {
                     $query->where("status.name", "=", 'ee');
@@ -1592,6 +1619,15 @@ class OtController extends Controller
         $columnSortOrder = $order_arr[0]['dir']; // asc or desc
         $searchValue = $search_arr['value']; // Search value
 
+        $totalRecords = Ot::select('count(*) as allcount')
+                ->join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->where('ots.enabled', 1)
+                ->count();
+
         $totalRecordswithFilter = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -1605,7 +1641,6 @@ class OtController extends Controller
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'delivery_generated');
                 })
-
                 ->count();
 
         $ots_array = [];
@@ -1648,16 +1683,104 @@ class OtController extends Controller
             );
         };
 
-        $totalRecords = count($ots_array);
         $response = array(
             "draw" => intval($draw),
-            "iTotalRecords" => $totalRecordswithFilter,
-            "iTotalDisplayRecords" => $totalRecords,
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
             "aaData" => $ots_array
         );
 
         echo json_encode($response);
         exit;
+    }
+
+    public function getOTStatus(Ot $ot, $role_admin, $role_cc, $role_eval, $role_rdi)
+    {
+        $statuses = $ot->statuses;
+
+        $rdi = Rdi::where('enabled', 1)->where('ot_id', $ot->id)
+                ->select('id')
+                ->first();
+
+        $meval = MechanicalEvaluation::where('ot_id', $ot->id)
+                ->select('mechanical_evaluations.id')
+                ->first();
+
+        $eeval = ElectricalEvaluation::where('ot_id', $ot->id)
+                ->select('electrical_evaluations.id')
+                ->first();
+
+        $cost_card = CostCard::where('ot_id', $ot->id)
+                ->select('cost_cards.id')
+                ->first();
+
+        /*$work_shop = WorkShop::where('ot_id', $ot->id)
+                ->select('id as ws_id')
+                ->first();*/
+
+        $status['status'] = $statuses;
+        $status['html'] = '';
+        $status['fecha_entrega'] = '-';
+
+        if ($statuses) {
+            foreach ($statuses as $key => $item) {
+                if($item->name == 'cc' || $item->name == 'rdi') {
+                  $status['html'] = '<span class="badge badge-primary px-2 py-1 w-100">'.$item->description.'</span>';
+                } else if(strpos($item->name, '_waiting') !== false) {
+                  $status['html'] = '<span class="badge badge-danger px-2 py-1 w-100">'.$item->description.'</span>';
+                } else if(strpos($item->name, '_disapproved') !== false) {
+                  $status['html'] = '<span class="badge badge-danger px-2 py-1 w-100">'.$item->description.'</span>';
+                } else if(strpos($item->name, '_approved') !== false || $item->name == 'delivery_generated') {
+                    $status['html'] = '<span class="badge badge-success px-2 py-1 w-100">'.$item->description.'</span>';
+                    if($item->name == 'delivery_generated') {
+                        $fecha_entrega = '';
+                        if($ot->fecha_entrega) {
+                            $start = strtotime($ot->fecha_entrega);
+                            $end   = strtotime(date('d-m-Y'));
+                            $days  = date('d', $start - $end);
+                            $fecha = date('d-m-Y', $start);
+                            $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
+                            $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
+                            if($days > 0) {
+                                $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
+                            } else {
+                                $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
+                            }
+                        }
+                        $status['fecha_entrega'] = $fecha_entrega;
+                    }
+                } else {
+                  $status['html'] = '<span class="badge badge-secondary px-2 py-1 w-100">'.$item->description.'</span>';
+                }
+            }
+        }
+
+        $eval_html = "";
+        if (($role_admin && ($cost_card || $rdi || $meval || $eeval)) ||
+            ($role_cc && $cost_card) ||
+            ($role_rdi && $rdi) ||
+            ($role_eval && ($eeval || $meval))
+        ) {
+            $eval_html = '<div class="dropdown d-inline-block dropleft">
+            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-check"></i></button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
+            if($cost_card && ($role_admin || $role_cc)) {
+              $eval_html .= '<a class="dropdown-item" href="/tarjeta-costo/'.$ot->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>';
+            }
+            if($rdi && ($role_admin || $role_rdi)) {
+            $eval_html .= '<a class="dropdown-item" href="/rdi/'.$rdi->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>';
+            }
+            if($meval && ($role_admin || $role_eval)) {
+            $eval_html .= '<a class="dropdown-item" href="/formatos/mechanical/'.$meval->id.'/ver"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>';
+            }
+            if($eeval && ($role_admin || $role_eval)) {
+            $eval_html .= '<a class="dropdown-item" href="/formatos/electrical/'.$eeval->id.'/ver"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>';
+            }
+            $eval_html .= '</div></div>';
+        }
+        $status['eval'] = $eval_html;
+
+        return $status;
     }
 
     public function list(Request $request)

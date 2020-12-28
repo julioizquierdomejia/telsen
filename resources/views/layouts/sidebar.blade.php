@@ -33,7 +33,7 @@
 
         $is_cc = request()->segment(1) == 'tarjeta-costo';
         $is_cz = request()->segment(1) == 'cotizaciones';
-        $is_delivery = request()->segment(1) == 'fecha_entrega';
+        $is_delivery = request()->segment(1) == 'fecha-entrega';
 
         $is_rotorcode = request()->segment(1) == 'rotorcoderodajept';
       @endphp

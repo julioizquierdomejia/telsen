@@ -791,7 +791,7 @@ class ElectricalEvaluationController extends Controller
 
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
                     ->where('enabled', 1)
-                    ->where('eval_type', 'evaluador', 'aprobador_de_evaluaciones')->get();
+                    ->where('eval_type', 'electrical')->get();
 
         $works = OtWork::where('type', "electrical")
                 ->where('ot_id', $formato->ot_id)

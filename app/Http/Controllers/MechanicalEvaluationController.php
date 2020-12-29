@@ -377,7 +377,7 @@ class MechanicalEvaluationController extends Controller
                 ->get();
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
                     ->where('enabled', 1)
-                    ->where('eval_type', '=', 'mechanical')->get();
+                    ->where('eval_type', 'mechanical')->get();
 
         $approved_by = \DB::table('logs')
                         ->join('users', 'users.id', '=', 'logs.user_id')

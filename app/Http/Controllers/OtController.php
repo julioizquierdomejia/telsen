@@ -2096,7 +2096,18 @@ class OtController extends Controller
         $avatarName = $image->getClientOriginalName();
         $ext = $image->getClientOriginalExtension();
         $url = 'uploads/ots/'.$ot_id.'/'.$eval_type;
-        $image->move(public_path($url), $avatarName);
+        //$image->move(public_path($url), $avatarName);
+
+        if (DIRECTORY_SEPARATOR === '/') {
+            $dir = '/var/www/html/'.$url;
+            // unix, linux, mac
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777, true);
+            }
+            $image->move($dir, $avatarName);
+        } else {
+            $image->move(public_path($url), $avatarName);
+        }
         
         /*if ($eval_type == 'mechanical') {
             $imageUpload = new OtGallery();

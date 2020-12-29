@@ -870,7 +870,7 @@ $(document).ready(function() {
   $(document).on('click', '.btn-remove-row', function() {
     var row_index = $('#table-works tbody tr').length;
     if (row_index > 1) {
-      $(this).closest('tr').remove();
+      $(this).parents('tr').addClass('d-none').find('.work_status').val(0);
     }
   })
 

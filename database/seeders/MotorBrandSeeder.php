@@ -15,17 +15,27 @@ class MotorBrandSeeder extends Seeder
     public function run()
     {
         $brand = new MotorBrand();
-        $brand->name = 'Toyota';
+        $brand->name = 'WEG';
         $brand->enabled = 1;
         $brand->save();
 
         $brand = new MotorBrand();
-        $brand->name = 'Hyundai';
+        $brand->name = 'ABB';
         $brand->enabled = 1;
         $brand->save();
 
         $brand = new MotorBrand();
-        $brand->name = 'Ford';
+        $brand->name = 'BALDOR';
+        $brand->enabled = 1;
+        $brand->save();
+
+        $brand = new MotorBrand();
+        $brand->name = 'n/a';
+        $brand->enabled = 1;
+        $brand->save();
+
+        $brand = new MotorBrand();
+        $brand->name = 'TATUNG';
         $brand->enabled = 1;
         $brand->save();
     }

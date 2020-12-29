@@ -152,7 +152,7 @@ class CostCardController extends Controller
 
                 activitylog('cc_upload', 'store', null, $status_ot->getOriginal());
 
-                $file->move(storage_path('cotizacion'), $uniqueFileName);
+                //$file->move(storage_path('cotizacion'), $uniqueFileName);
 
                 if (DIRECTORY_SEPARATOR === '/') {
                     $dir = '/var/www/html/uploads/cotizacion';

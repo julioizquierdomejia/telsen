@@ -426,7 +426,7 @@ class ElectricalEvaluationController extends Controller
                 $ot_work = new OtWork();
                 $ot_work->ot_id = $ot_id;
                 $ot_work->type = "electrical";
-                $ot_work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                $ot_work->service_id = $item['service_id'];
                 $ot_work->description = isset($item['description']) ? $item['description'] : '';
                 $ot_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
                 $ot_work->qty = isset($item['qty']) ? $item['qty'] : '';
@@ -1100,24 +1100,27 @@ class ElectricalEvaluationController extends Controller
                 if (isset($item['status']) && $item['status'] == 0) {
                     $work->delete();
                 } else {
-                    //$work->ot_id = $ot->id;
-                    $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
+                    if (isset($item['service_id'])) {
+                        $work->service_id = $item['service_id'];
+                        $work->description = isset($item['description']) ? $item['description'] : '';
+                        $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                        $work->qty = isset($item['qty']) ? $item['qty'] : '';
+                        $work->personal = isset($item['personal']) ? $item['personal'] : '';
+                        $work->save();
+                    }
+                }
+            } else {
+                if (isset($item['service_id'])) {
+                    $work = new OtWork();
+                    $work->ot_id = $ot->id;
+                    $work->type = 'electrical';
+                    $work->service_id = $item['service_id'];
                     $work->description = isset($item['description']) ? $item['description'] : '';
                     $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
                     $work->qty = isset($item['qty']) ? $item['qty'] : '';
                     $work->personal = isset($item['personal']) ? $item['personal'] : '';
                     $work->save();
                 }
-            } else {
-                $work = new OtWork();
-                $work->ot_id = $ot->id;
-                $work->type = 'electrical';
-                $work->service_id = isset($item['service_id']) ? $item['service_id'] : '';
-                $work->description = isset($item['description']) ? $item['description'] : '';
-                $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
-                $work->qty = isset($item['qty']) ? $item['qty'] : '';
-                $work->personal = isset($item['personal']) ? $item['personal'] : '';
-                $work->save();
             }
         }
 

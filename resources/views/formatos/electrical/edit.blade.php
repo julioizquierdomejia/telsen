@@ -630,7 +630,7 @@
                       <input type="text" class="form-control mt-0 @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.'.$key.'.personal')}}" name="works[{{$key}}][personal]">
                     </td>
                     <td>
-                      <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                     </td>
                   </tr>
                   @endforeach
@@ -668,7 +668,7 @@
                       <input type="text" class="form-control mt-0 @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{$item['personal']}}" name="works[{{$key}}][personal]">
                     </td>
                     <td>
-                      <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                     </td>
                   </tr>
                   @endforeach
@@ -975,7 +975,7 @@ $(document).ready(function() {
   $(document).on('click', '.btn-remove-row', function() {
     var row_index = $('#table-works tbody tr').length;
     if (row_index > 1) {
-      $(this).closest('tr').remove();
+      $(this).parents('tr').addClass('d-none').find('.work_status').val(0);
     }
   })
 

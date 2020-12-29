@@ -160,7 +160,7 @@ class CostCardController extends Controller
                     if (!is_dir($dir)) {
                         mkdir($dir, 0777, true);
                     }
-                    $image->move($dir, $uniqueFileName);
+                    $file->move($dir, $uniqueFileName);
                 } else {
                     $file->move(public_path('uploads/cotizacion'), $uniqueFileName);
                 }

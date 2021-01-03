@@ -66,9 +66,9 @@ class ElectricalEvaluationController extends Controller
             ->select('ots.*', 'clients.razon_social', 'clients.client_type_id')
             ->firstOrFail();
         if ($ot->client_type_id == 1) { //RDI
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
         } else {
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 6)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         }
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();
@@ -782,9 +782,9 @@ class ElectricalEvaluationController extends Controller
             ->firstOrFail();
         
         if ($ot->client_type_id == 1) { //RDI
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
         } else {
-            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 6)->get();
+            $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '<>', 5)->get();
         }
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();

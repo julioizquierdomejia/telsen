@@ -29,12 +29,6 @@ class AreaServicesSeeder extends Seeder
         $area->save();
 
         $area = new Area();
-        $area->name = 'ALMACEN';
-        $area->enabled = 1;
-        $area->has_services = 0;
-        $area->save();
-
-        $area = new Area();
         $area->name = 'VIGILANCIA';
         $area->enabled = 1;
         $area->has_services = 0;

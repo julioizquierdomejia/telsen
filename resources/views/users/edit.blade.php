@@ -87,7 +87,6 @@
               @enderror
             </div>
             <div class="form-group col-md-4">
-            @if (in_array($user->roles->first()->name, $allowed_roles))
               <label class="col-form-label" for="selectArea">Area</label>
               <select name="area_id" class="form-control dropdown2 @error('area_id') is-invalid @enderror" id="selectArea" data-placeholder="Selecciona el area">
                 <option value="">Selecciona el area</option>
@@ -98,10 +97,8 @@
               @error('area_id')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
-            @else
-              <label class="col-label d-block" for="selectArea">Area</label>
-            <span class="badge badge-primary px-2 py-1">{{$user->area}}</span>
-            @endif
+              {{-- <label class="col-label d-block" for="selectArea">Area</label>
+            <span class="badge badge-primary px-2 py-1">{{$user->area}}</span> --}}
             </div>
             @if ($user->id != Auth::id() && in_array($user->roles->first()->name, $allowed_roles))
             <div class="col-md-3 form-group">

@@ -94,7 +94,7 @@ class UserController extends Controller
             $email = $record->email;
             $enabled = ($record->enabled == 1 ? '<span class="badge badge-success d-block">Activo</span>' : '<span class="badge badge-secondary d-block">Inactivo</span>');
 
-            $tools = '<a href="/usuario/'.$record->id.'/perfil" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> '.($record->enabled == 1 ? '<button type="button" class="btn btn-sm btn-danger btn-mdelete" data-userid="'.$record->id.'" data-state="0" data-toggle="modal" data-target="#modalUser" title="Desactivar usuario"><i class="fal fa-trash"></i></button>' : '<button type="button" class="btn btn-sm btn-primary btn-mdelete" data-userid="'.$record->id.'" data-state="1" data-toggle="modal" data-target="#modalUser" title="Restaurar usuario"><i class="fal fa-trash-undo-alt"></i></button>');
+            $tools = '<a href="/usuario/'.$record->id.'/edit" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> '.($record->enabled == 1 ? '<button type="button" class="btn btn-sm btn-danger btn-mdelete" data-userid="'.$record->id.'" data-state="0" data-toggle="modal" data-target="#modalUser" title="Desactivar usuario"><i class="fal fa-trash"></i></button>' : '<button type="button" class="btn btn-sm btn-primary btn-mdelete" data-userid="'.$record->id.'" data-state="1" data-toggle="modal" data-target="#modalUser" title="Restaurar usuario"><i class="fal fa-trash-undo-alt"></i></button>');
 
             $data_arr[] = array(
               "id" => $counter,
@@ -191,12 +191,30 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function perfil($id)
+    public function edit($id)
     {
         $user = User::join('user_data', 'user_data.user_id', '=' ,'users.id')
                 ->join('areas', 'areas.id', '=' ,'user_data.area_id')
                 ->select('users.*', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id', 'areas.name as area')
                 ->where('users.id', $id)
+                ->firstOrFail();
+        $superadmin = in_array("superadmin", array_column($user->roles->toArray(), "name"));
+
+        $areas = Area::where('enabled', 1)->get();
+        if ($superadmin) {
+            $roles = Role::where('name', '<>', 'superadmin')->get();
+        } else {
+            $roles = Role::all();
+        }
+
+        return view('users.edit', compact('user', 'areas', 'roles'));
+    }
+    public function perfil()
+    {
+        $user = User::join('user_data', 'user_data.user_id', '=' ,'users.id')
+                ->join('areas', 'areas.id', '=' ,'user_data.area_id')
+                ->select('users.*', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id', 'areas.name as area')
+                ->where('users.id', \Auth::id())
                 ->firstOrFail();
         $superadmin = in_array("superadmin", array_column($user->roles->toArray(), "name"));
 
@@ -217,6 +235,86 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
+    public function updateProfile(Request $request)
+    {
+        $id = \Auth::id();
+        $allowed_roles = ['superadmin', 'admin'];
+        $allowed_user = \Auth::user()->roles->first() && 
+            in_array(\Auth::user()->roles->first()->name, $allowed_roles);
+        //$request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        
+        $rules = array(
+            'name'        => 'string|min:3|required',
+            'email'       => 'email|required|unique:users,email,'.$id,
+            'password'    => 'string|min:6|nullable',
+            'lastname'    => 'string|min:3|required',
+            'mlastname'   => 'string|min:3|nullable',
+            'phone'       => 'string|min:6|nullable',
+            'roles'       => 'sometimes|array',
+            'enabled'   => 'boolean|sometimes',
+        );
+        if ($allowed_user) {
+            array_push($rules, ['area_id'     => 'integer|required']);
+        }
+        $this->validate($request, $rules);
+
+        $enabled = $request->input('enabled');
+
+        $user = User::findOrFail($id);
+        $original_data = $user->getOriginal();
+        
+        $user->email = $request->input('email');
+        if ($request->input('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+        if ($allowed_user && $enabled) {
+            $user->enabled = $enabled;
+        }
+        $user->save();
+
+        $area_id = $request->input('area_id');
+
+        $user_data = UserData::where('user_id', $id)->first();
+        $user_data->name = $request->input('name');
+        $user_data->last_name = $request->input('lastname');
+        $user_data->mother_last_name = $request->input('mlastname');
+        $user_data->user_phone = $request->input('phone');
+        if ($area_id) {
+            $user_data->area_id = $request->input('area_id');
+        }
+        $user_data->save();
+
+        $roles = $request->input('roles') ?? [];
+
+        if ($roles) {
+            /*$user_roles = Role::join('role_user', 'role_user.role_id', '=' ,'roles.id')
+                        ->where('role_user.user_id', $id)
+                        ->select('roles.*')
+                        ->get();
+            foreach ($user_roles as $key => $item) {
+                if (in_array($item->id, $roles)) {
+                    unset($roles[$key]);
+                }
+            }*/
+
+            $roles_deleted = RoleUser::where('user_id', $user->id)->delete();
+            foreach ($roles as $key => $item) {
+                $role_user = new RoleUser();
+                $role_user->user_id = $user->id;
+                $role_user->role_id = $item;
+                $role_user->save();
+            }
+        }
+
+        activitylog('users', 'update', $original_data, $user->toArray());
+
+        // redirect
+        \Session::flash('message', 'Successfully updated user!');
+        if ($allowed_user) {
+            return redirect('usuarios');
+        }
+        return redirect('home');
+    }
     public function update(Request $request, $id)
     {
         $allowed_roles = ['superadmin', 'admin'];
@@ -249,7 +347,6 @@ class UserController extends Controller
             $user->password = bcrypt($request->input('password'));
         }
         if ($allowed_user && $enabled) {
-            dd("entra a enabled");
             $user->enabled = $enabled;
         }
         $user->save();
@@ -269,16 +366,6 @@ class UserController extends Controller
         $roles = $request->input('roles') ?? [];
 
         if ($roles) {
-            /*$user_roles = Role::join('role_user', 'role_user.role_id', '=' ,'roles.id')
-                        ->where('role_user.user_id', $id)
-                        ->select('roles.*')
-                        ->get();
-            foreach ($user_roles as $key => $item) {
-                if (in_array($item->id, $roles)) {
-                    unset($roles[$key]);
-                }
-            }*/
-
             $roles_deleted = RoleUser::where('user_id', $user->id)->delete();
             foreach ($roles as $key => $item) {
                 $role_user = new RoleUser();

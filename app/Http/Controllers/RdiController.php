@@ -94,7 +94,7 @@ class RdiController extends Controller
                 ->select('ots.*', 'clients.razon_social')
                 ->where('ots.id', $ot_id)
                 ->firstOrFail();
-        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
+        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
         $counter = RDI::count() + 1;
         $clientes = Client::where('enabled', 1)->where('client_type_id', 1)->get();
         $marcas = MotorBrand::where('enabled', 1)->get();
@@ -103,7 +103,7 @@ class RdiController extends Controller
         //$services = RdiService::where('enabled', 1)->get();
         /*$services = Service::where('enabled', 1) //Servicios de area cliente
                 ->where('enabled', 1)
-                ->where('area_id', 6) //Area clientes
+                ->where('area_id', 5) //Area clientes
                 ->select('services.id', 'services.name')
                 ->get();*/
 
@@ -466,7 +466,7 @@ class RdiController extends Controller
                 ->where('ots.id', $rdi->ot_id)
                 ->get();
 
-        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 6)->get();
+        $areas = Area::where('enabled', 1)->where('has_services', 1)->where('id', '=', 5)->get();
 
         return view('rdi.edit', compact('rdi', 'clientes', 'marcas', 'works', 'maintenancetype', 'criticalitytype', 'areas'));
     }

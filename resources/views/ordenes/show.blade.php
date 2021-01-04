@@ -43,8 +43,10 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 					</span>
 				</span>
 				<span class="card-title-buttons">
+					@if ($admin || $tarjeta_costo || $cotizador_tarjeta || $rol_fentrega)
 					@if ($ot->cotizacion)
 					<a class="btn btn-primary btn-round" target="_new" href="/uploads/cotizacion/{{$ot->cotizacion}}"><i class="fa fa-eye"></i> Ver Cotización</a>
+					@endif
 					@endif
 					@if ($admin || in_array("crear_ot", $role_names))
 					<a class="btn btn-primary btn-round" href="{{ route('ordenes.edit', $ot) }}"><i class="fa fa-edit"></i> Editar</a>

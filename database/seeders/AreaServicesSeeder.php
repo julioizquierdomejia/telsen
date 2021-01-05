@@ -113,6 +113,7 @@ class AreaServicesSeeder extends Seeder
         $area->has_services = 1;
         $area->save();
         //Servicios
+        $service = new Service(); $service->name = 'METALIZADO DE EJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
         $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE TURBINA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
         $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE RODAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
         $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE ACOPLE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();

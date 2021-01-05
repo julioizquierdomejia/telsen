@@ -155,7 +155,7 @@ class CostCardController extends Controller
                 //$file->move(storage_path('cotizacion'), $uniqueFileName);
 
                 if (DIRECTORY_SEPARATOR === '/') {
-                    $dir = env('FILES_PATH', public_path()). '/uploads/cotizacion';
+                    $dir = env('FILES_PATH') ? env('FILES_PATH').'/uploads/cotizacion' : public_path('/uploads/cotizacion');
                     // unix, linux, mac
                     if (!is_dir($dir)) {
                         mkdir($dir, 0777, true);

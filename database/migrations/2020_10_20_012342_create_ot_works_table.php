@@ -28,6 +28,7 @@ class CreateOtWorksTable extends Migration
             $table->string('medidas')->nullable();
             $table->string('qty')->nullable();
             $table->string('personal')->nullable();
+            $table->text('comments')->nullable();
 
             $table->timestamps();
         });

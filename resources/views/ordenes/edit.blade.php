@@ -111,7 +111,7 @@
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Velocidad</label>
-              <input type="number" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{$orden->velocidad}}" name="velocidad">
+              <input type="text" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{$orden->velocidad}}" name="velocidad">
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label" for="selectEstado">Estado</label>

@@ -111,7 +111,7 @@
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Velocidad</label>
-              <input type="number" min="1" class="form-control @error('ot_velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('ot_velocidad', $ot->velocidad)}}" name="ot_velocidad">
+              <input type="text" class="form-control @error('ot_velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('ot_velocidad', $ot->velocidad)}}" name="ot_velocidad">
             </div>
           </div>
           <h4 class="second-title text-danger py-2">Características del Equipo</h4>

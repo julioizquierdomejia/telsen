@@ -15,232 +15,237 @@ class AreaServicesSeeder extends Seeder
      */
     public function run()
     {
-        //Areas
-        $area = new Area();
-        $area->name = 'GERENCIA';
-        $area->enabled = 1;
-        $area->has_services = 0;
-        $area->save();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        Area::truncate();
+        Service::truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        $area = new Area();
-        $area->name = 'ADMINISTRACIÓN';
-        $area->enabled = 1;
-        $area->has_services = 0;
-        $area->save();
+        $areas = array(
+            array(
+                'name' => 'GERENCIA',
+                'has_services' => 0,
+                'services' => []
+            ),
+            array(
+                'name' => 'ADMINISTRACIÓN',
+                'has_services' => 0,
+                'services' => []
+            ),
+            array(
+                'name' => 'VIGILANCIA',
+                'has_services' => 0,
+                'services' => []
+            ),
+            array(
+                'name' => 'CONDUCTOR',
+                'has_services' => 0,
+                'services' => []
+            ),
+            array(
+                'name' => 'CLIENTES',
+                'has_services' => 1,
+                'services' => array (
+                    'MANTENIMIENTO DE ESTATOR',
+                    'MANTENIMIENTO DE FRENO ELÉCTRICO',
+                    'SUMINISTRO DE 02 PRENSA ESTOPA',
+                    'CAMBIO DE 02 RODAJES',
+                    'CAMBIO DE EJE (Ø18 * 171 mm) - ACERO 1045',
+                    'EMBOCINADO DE TAPA, ALOJAMIENTO DE RODAJE, PTO. 1 Y 2',
+                    'CAMBIO DE RETÉN (7*16*7)',
+                    'BALANCEO DINÁMICO',
+                    'PRUEBAS BAKER',
+                    'PINTURA',
+                    //'ADICIONALES',
+                    'CAMBIO DE GEBE DE ACOPLAMIENTO-PIÑON (Ø53.5 * 5.5 mm)',
+                    'FABRICACION DE MACHINA PARA EXTRACCION DE PIÑON DE ACOPLE',
+                )
+            ),
+            array(
+                'name' => 'PRUEBAS',
+                'has_services' => 1,
+                'services' => array (
+                    'TOMA DE DATOS',
+                    'PRUEBAS ESTÁTICAS AISLAMIENTO BAKER INICIAL',
+                    'PRUEBAS DE ARRANQUE',
+                    'INFORME PRELIMINAR',
+                    'PRUEBA DE ROTOR',
+                    'PRUEBA DE ESTATOR',
+                    'PRUEBAS EQUIPO CORE LESS',
+                    'TARJETA DE COSTOS',
+                    'PRUEBAS ESTÁTICAS BAKER SALIDA',
+                    'PRUEBAS ELÉCTRICAS',
+                    'INFORME FINAL',
+                    'PROTOCOLO',
+                    'INST. CABLES/ SENSORES PARA TAPAS',
+                    'ACABADO FINAL (CABLES DE CONEXIÓN)',
+                    'SUMINISTRO Y CAMBIO DE BORNERA',
+                    'OTROS',
+                )
+            ),
+            array(
+                'name' => 'MECANICA',
+                'has_services' => 1,
+                'services' => array (
+                    'DESMONTAJE',
+                    'MONTAJE',
+                    'TOMA DE DATOS MECÁNICA',
+                    'OTROS: INFORME MECÁNICO',
+                    'LIMPIEZA Y LAVADO/PARTES INTERNAS',
+                    'LAVADO CON SOLVENTE DIELÉCTRICO Y LIMPIEZA DE PIEZAS',
+                    'PINTADO PARTES DEL MOTOR',
+                    'PRE TRATAMIENTO TERMICO',
+                    'POS TRATAMIENTO TERMICO',
+                    'SUMINISTRO E INSTALACIÓN DE RESISTENCIAS',
+                    'SUMINISTRO CAMBIO ÁLABES',
+                    'REPARACIÓN PAQUETE MAGNETICO',
+                    'OTROS',
+                )
+            ),
+            array(
+                'name' => 'METALIZADO',
+                'has_services' => 1,
+                'services' => array (
+                    'METALIZADO DE EJE',
+                    'METALIZADO DE EJE, ASIENTO DE TURBINA',
+                    'METALIZADO DE EJE, ASIENTO DE RODAJE',
+                    'METALIZADO DE EJE, ASIENTO DE ACOPLE',
+                    'METALIZADO DE ACOPLE, DIÁMETRO INTERIOR',
+                    'METALIZADO DE EJE, ASIENTO DE VENTILADOR',
+                    'METALIZADO DE TURBINA, DIÁMETRO INTERIOR',
+                    'METALIZADO DE PESTAÑA DE TAPA',
+                    'METALIZADO DE PESTAÑA DE TAPA DE RACHI',
+                    'METALIZADO DE EJE, ASIENTO DE BABBITT',
+                    'METALIZADO DE EJE, ASIENTO DE SELLO NYLON',
+                    'METALIZADO DE EJE, ASIENTO DE RETÉN',
+                    'OTROS',
+                )
+            ),
+            array(
+                'name' => 'MAESTRANZA',
+                'has_services' => 1,
+                'services' => array (
+                    'MAQUINADO ADAPTACIÓN FELPA EN CONTRATAPA',
+                    'MAQUINADO VENTILADOR DIAMETRO INTERIOR',
+                    'MAQUINADO FABRICACIÓN/MAQUINADO CONTRATAPAS',
+                    'MAQUINADO DE EJE',
+                    'MAQUINADO ÁLABES',
+                    'EMBOCINADO TAPA, ALOJAMIENTO ',
+                    'EMBOCINADO',
+                    'FABRICACIÓN CHAVETA',
+                    'FABRICACIÓN CONTRATAPA EXTERIOR',
+                    'FABRICACIÓN ENROSCADO',
+                    'FABRICACIÓN TAPA DESFOGUE GRASA',
+                    'TORNEADO DE COLECTOR',
+                    'REPARACIÓN TAPA',
+                    'REPARACIÓN FUNDA',
+                    'REPARACIÓN CONTRATAPA',
+                    'REPARACIÓN VENTILADOR',
+                    'MAQUINADO PESTAÑAS',
+                    'MAQUINADO EJE , ASIENO DE RODAJE',
+                    'MAQUINADO EJE, ASIENTO DE ACOPLE',
+                    'MAQUINADO EJE, ASIENTO DE VENILADOR',
+                    'MAQUINADO EJE ASIENTO',
+                    'MAQUINADO DE TURBINA DIAMETRO INTERIOR',
+                    'RECIFICADO TAPA ALOJAMIENTO DE RODAJE',
+                    'RECIFICADO EJE, ASIENTO CONTRATAPA INTERIOR',
+                    'RECTIFICADO DE VENTILADOR DIAMETRO INTERIOR',
+                    'RECTIFICADO EJE ASIENTO DE RODAJE',
+                    'RECIFICADO ASIENTO DE VENTILADOR',
+                    'RECTIFICADO DE TURBINA',
+                    'BISELADO DE COLECTOR',
+                    'OTROS',
+                )
+            ),
+            array(
+                'name' => 'REBOBINADO',
+                'has_services' => 1,
+                'services' => array (
+                    'EXTRACCIÓN DEL BOBINADO ORIGINAL',
+                    'PRUEBAS EQUIPO CORE LESS',
+                    'LIMPIEZA ESTATOR',
+                    'REBOBINADO ESTATOR',
+                    'REBOBINADO DE ROTOR',
+                    'PREPARACIÓN O FABRICACION DE NUEVAS BOBINAS PREFORMADAS',
+                    'IMPREGNACION CON BARNIZ ',
+                    'MONTAJE DE BOBINAS',
+                    'RECUBRIMIENTO DE CABLES DE SALIDA',
+                    'REPARACIÓN JAULA DE ARDILLA',
+                    'OTROS',
+                )
+            ),
+            array(
+                'name' => 'SOLDADURA',
+                'has_services' => 1,
+                'services' => array (
+                    'REPARACIÓN BASE',
+                    'RELLENADO DE PESTAÑAS',
+                    'REPARACIÓN DE FUNDA CAMBIO DE MALLA',
+                    'REPARACIÓN DE TAPA CAJA DE CONEXIÓN',
+                    'REPARACIÓN ALETAS DE ESTATOR',
+                    'REPARACIÓN DE TAPA DE CAJA BORNERA',
+                    'SOLDADO DE ALETA DE VENTILADOR',
+                    'RELLENADO DE ASIENTO DE RODAJE',
+                    'RELLENADO DE ASIENTO DE VENTILADOR',
+                    'OTROS',
+                )
+            ),
+            array(
+                'name' => 'BALANCEO',
+                'has_services' => 1,
+                'services' => array (
+                    'BALANCEO DINÁMICO',
+                )
+            ),
+            array(
+                'name' => 'ACABADOS',
+                'has_services' => 1,
+                'services' => array (
+                    'LIMPIEZA',
+                    'PINTADO',
+                    'EMBALAJE',
+                )
+            ),
+            array(
+                'name' => 'ALMACÉN',
+                'has_services' => 1,
+                'services' => array (
+                    'SUMINISTRO Y FABRICACIÓN FUNDA',
+                    'FABRICACIÓN CHAVETA',
+                    'REPARACIÓN PORTA ESCOBILLAS',
+                    'MANDRINADO DE PESTAÑA ESTATOR',
+                    'ARENADO DE RODETE Y TOLVA',
+                    'BISELADO DE COLECTOR',
+                    'FABRICACIÓN CANAL CHAVETERO',
+                    'FABRICACIÓN CAJA BORNERA',
+                    'FABRICACIÓN DE POLEA',
+                    'REPARACIÓN DE CHUMACERAS',
+                    'FRESADO DE ACOPLE',
+                    'RODAJES ESPECIALES',
+                    'ROLADO DE PLATINA',
+                    'FABRICACIÓN DE RESORTES',
+                    'RANURADO ARO DE COBRE',
+                    'TREFILADO DE PLAINA',
+                    'FABRICACIÓN DE PLATINAS DE COBRE',
+                    'OTROS',
+                )
+            ),
+        );
 
-        $area = new Area();
-        $area->name = 'VIGILANCIA';
-        $area->enabled = 1;
-        $area->has_services = 0;
-        $area->save();
-
-        $area = new Area();
-        $area->name = 'CONDUCTOR';
-        $area->enabled = 1;
-        $area->has_services = 0;
-        $area->save();
-
-        //Area cliente
-        $area = new Area();
-        $area->name = 'CLIENTES';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-        //Servicios
-        \DB::table('services')->insert(array (
-            array ('area_id' => $area->id,'name' => 'MANTENIMIENTO DE ESTATOR'),
-            array ('area_id' => $area->id,'name' => 'MANTENIMIENTO DE FRENO ELÉCTRICO'),
-            array ('area_id' => $area->id,'name' => 'SUMINISTRO DE 02 PRENSA ESTOPA'),
-            array ('area_id' => $area->id,'name' => 'CAMBIO DE 02 RODAJES',),
-            array ('area_id' => $area->id,'name' => 'CAMBIO DE EJE (Ø18 * 171 mm) - ACERO 1045'),
-            array ('area_id' => $area->id,'name' => 'EMBOCINADO DE TAPA, ALOJAMIENTO DE RODAJE, PTO. 1 Y 2'),
-            array ('area_id' => $area->id,'name' => 'CAMBIO DE RETÉN (7*16*7)'),
-            array ('area_id' => $area->id,'name' => 'BALANCEO DINÁMICO'),
-            array ('area_id' => $area->id,'name' => 'PRUEBAS BAKER'),
-            array ('area_id' => $area->id,'name' => 'PINTURA'),
-            //array ('area_id' => $area->id,'name' => 'ADICIONALES'),
-            array ('area_id' => $area->id,'name' => 'CAMBIO DE GEBE DE ACOPLAMIENTO-PIÑON (Ø53.5 * 5.5 mm)'),
-            array ('area_id' => $area->id,'name' => 'FABRICACION DE MACHINA PARA EXTRACCION DE PIÑON DE ACOPLE'),
-        ));
-
-        $area = new Area();
-        $area->name = 'PRUEBAS';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-        //Servicios
-        $service = new Service(); $service->name = 'TOMA DE DATOS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PRUEBAS ESTÁTICAS AISLAMIENTO BAKER INICIAL'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PRUEBAS DE ARRANQUE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'INFORME PRELIMINAR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PRUEBA DE ROTOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PRUEBA DE ESTATOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PRUEBAS EQUIPO CORE LESS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'TARJETA DE COSTOS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PRUEBAS ESTÁTICAS BAKER SALIDA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PRUEBAS ELÉCTRICAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'INFORME FINAL'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PROTOCOLO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'INST. CABLES/ SENSORES PARA TAPAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'ACABADO FINAL (CABLES DE CONEXIÓN)'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'SUMINISTRO Y CAMBIO DE BORNERA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'OTROS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-
-        //Area
-        $area = new Area();
-        $area->name = 'MECANICA';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-        //Servicios
-        $service = new Service(); $service->name = 'DESMONTAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MONTAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'TOMA DE DATOS MECÁNICA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'OTROS: INFORME MECÁNICO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'LIMPIEZA Y LAVADO/PARTES INTERNAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'LAVADO CON SOLVENTE DIELÉCTRICO Y LIMPIEZA DE PIEZAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PINTADO PARTES DEL MOTOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PRE TRATAMIENTO TERMICO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'POS TRATAMIENTO TERMICO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'SUMINISTRO E INSTALACIÓN DE RESISTENCIAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'SUMINISTRO CAMBIO ÁLABES'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN PAQUETE MAGNETICO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'OTROS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-
-        $area = new Area();
-        $area->name = 'METALIZADO';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-        //Servicios
-        $service = new Service(); $service->name = 'METALIZADO DE EJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE TURBINA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE RODAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE ACOPLE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE ACOPLE, DIÁMETRO INTERIOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE VENTILADOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE TURBINA, DIÁMETRO INTERIOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE PESTAÑA DE TAPA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE PESTAÑA DE TAPA DE RACHI'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE BABBITT'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE SELLO NYLON'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'METALIZADO DE EJE, ASIENTO DE RETÉN'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'OTROS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-
-        $area = new Area();
-        $area->name = 'MAESTRANZA';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-        //Servicios
-        $service = new Service(); $service->name = 'MAQUINADO ADAPTACIÓN FELPA EN CONTRATAPA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO VENTILADOR DIAMETRO INTERIOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO FABRICACIÓN/MAQUINADO CONTRATAPAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO DE EJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO ÁLABES'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'EMBOCINADO TAPA, ALOJAMIENTO '; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'EMBOCINADO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN CHAVETA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN CONTRATAPA EXTERIOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN ENROSCADO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN TAPA DESFOGUE GRASA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'TORNEADO DE COLECTOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN TAPA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN FUNDA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN CONTRATAPA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN VENTILADOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO PESTAÑAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO EJE , ASIENO DE RODAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO EJE, ASIENTO DE ACOPLE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO EJE, ASIENTO DE VENILADOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO EJE ASIENTO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MAQUINADO DE TURBINA DIAMETRO INTERIOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RECIFICADO TAPA ALOJAMIENTO DE RODAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RECIFICADO EJE, ASIENTO CONTRATAPA INTERIOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RECTIFICADO DE VENTILADOR DIAMETRO INTERIOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RECTIFICADO EJE ASIENTO DE RODAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RECIFICADO ASIENTO DE VENTILADOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RECTIFICADO DE TURBINA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'BISELADO DE COLECTOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'OTROS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-
-
-        $area = new Area();
-        $area->name = 'REBOBINADO';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-        //Servicios
-        $service = new Service(); $service->name = 'EXTRACCIÓN DEL BOBINADO ORIGINAL'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PRUEBAS EQUIPO CORE LESS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'LIMPIEZA ESTATOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REBOBINADO ESTATOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REBOBINADO DE ROTOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PREPARACIÓN O FABRICACION DE NUEVAS BOBINAS PREFORMADAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'IMPREGNACION CON BARNIZ '; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MONTAJE DE BOBINAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RECUBRIMIENTO DE CABLES DE SALIDA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN JAULA DE ARDILLA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'OTROS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-
-        $area = new Area();
-        $area->name = 'SOLDADURA';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-        //Servicios
-        $service = new Service(); $service->name = 'REPARACIÓN BASE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RELLENADO DE PESTAÑAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN DE FUNDA CAMBIO DE MALLA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN DE TAPA CAJA DE CONEXIÓN'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN ALETAS DE ESTATOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN DE TAPA DE CAJA BORNERA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'SOLDADO DE ALETA DE VENTILADOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RELLENADO DE ASIENTO DE RODAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RELLENADO DE ASIENTO DE VENTILADOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'OTROS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-
-        $area = new Area();
-        $area->name = 'BALANCEO';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-        $service = new Service(); $service->name = 'BALANCEO DINÁMICO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-
-        $area = new Area();
-        $area->name = 'ACABADOS';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-        //Servicios
-        $service = new Service(); $service->name = 'LIMPIEZA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'PINTADO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'EMBALAJE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-
-        $area = new Area();
-        $area->name = 'ALMACÉN';
-        $area->enabled = 1;
-        $area->has_services = 1;
-        $area->save();
-
-        $service = new Service(); $service->name = 'SUMINISTRO Y FABRICACIÓN FUNDA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN CHAVETA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN PORTA ESCOBILLAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'MANDRINADO DE PESTAÑA ESTATOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'ARENADO DE RODETE Y TOLVA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'BISELADO DE COLECTOR'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN CANAL CHAVETERO'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN CAJA BORNERA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN DE POLEA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'REPARACIÓN DE CHUMACERAS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FRESADO DE ACOPLE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RODAJES ESPECIALES'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'ROLADO DE PLATINA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN DE RESORTES'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'RANURADO ARO DE COBRE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'TREFILADO DE PLAINA'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'FABRICACIÓN DE PLATINAS DE COBRE'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
-        $service = new Service(); $service->name = 'OTROS'; $service->area_id = $area->id; $service->enabled = 1; $service->save();
+        foreach ($areas as $key => $area_item) {
+            $services = $area_item['services'];
+            $area = new Area();
+            $area->name = $area_item['name'];
+            $area->enabled = 1;
+            $area->has_services = $area_item['has_services'];
+            $area->save();
+            foreach ($services as $key => $item) {
+                $service = new Service();
+                $service->name = $item;
+                $service->area_id = $area->id;
+                $service->enabled = 1;
+                $service->save();
+            }
+        }
 
     }
 }

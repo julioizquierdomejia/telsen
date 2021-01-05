@@ -281,7 +281,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'MIGUEL';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 7;
+        $user_data->area_id = 6;
         $user_data->save();
         $user->roles()->attach($role_supervisor);
 
@@ -295,7 +295,7 @@ class UserSeeder extends Seeder
         $user_data->last_name = 'CONDORI';
         $user_data->mother_last_name = 'MERINO';
         $user_data->user_phone = 912345678;
-        $user_data->area_id = 7;
+        $user_data->area_id = 6;
         $user_data->user_id = $user->id;
         $user_data->save();
         $user->roles()->attach($role_worker);
@@ -311,7 +311,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'CUEVA';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 7;
+        $user_data->area_id = 6;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -326,7 +326,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'SEGUNDO';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 7;
+        $user_data->area_id = 6;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -341,7 +341,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'MACHAHUAY';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 7;
+        $user_data->area_id = 6;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -356,7 +356,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'SANTES';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 7;
+        $user_data->area_id = 6;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -372,7 +372,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'MORA';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 8;
+        $user_data->area_id = 7;
         $user_data->save();
         $user->roles()->attach($role_supervisor);
 
@@ -386,7 +386,7 @@ class UserSeeder extends Seeder
         $user_data->last_name = 'CHAUPIN';
         $user_data->mother_last_name = 'FRANCO';
         $user_data->user_phone = 912345678;
-        $user_data->area_id = 8;
+        $user_data->area_id = 7;
         $user_data->user_id = $user->id;
         $user_data->save();
         $user->roles()->attach($role_worker);
@@ -402,7 +402,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'PACAYA';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 8;
+        $user_data->area_id = 7;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -417,7 +417,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'ESTEBAN';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 8;
+        $user_data->area_id = 7;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -431,7 +431,7 @@ class UserSeeder extends Seeder
         $user_data->last_name = 'MANAYAY';
         $user_data->mother_last_name = 'QUISPE';
         $user_data->user_phone = 912345678;
-        $user_data->area_id = 8;
+        $user_data->area_id = 7;
         $user_data->user_id = $user->id;
         $user_data->save();
         $user->roles()->attach($role_worker);
@@ -447,7 +447,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'SARAVIA';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 8;
+        $user_data->area_id = 7;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -462,7 +462,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'TRIGOSO';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 8;
+        $user_data->area_id = 7;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -477,7 +477,7 @@ class UserSeeder extends Seeder
         $user_data->last_name = 'SIFUENTES';
         $user_data->mother_last_name = 'FLORES';
         $user_data->user_phone = 912345678;
-        $user_data->area_id = 9;
+        $user_data->area_id = 8;
         $user_data->user_id = $user->id;
         $user_data->save();
         $user->roles()->attach($role_supervisor);
@@ -493,7 +493,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'MEDINA';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 9;
+        $user_data->area_id = 8;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -507,7 +507,7 @@ class UserSeeder extends Seeder
         $user_data->last_name = 'PORTILLO';
         $user_data->mother_last_name = 'FARIA';
         $user_data->user_phone = 912345678;
-        $user_data->area_id = 9;
+        $user_data->area_id = 8;
         $user_data->user_id = $user->id;
         $user_data->save();
         $user->roles()->attach($role_worker);
@@ -522,7 +522,7 @@ class UserSeeder extends Seeder
         $user_data->last_name = 'ROJAS';
         $user_data->mother_last_name = 'TACUCHI';
         $user_data->user_phone = 912345678;
-        $user_data->area_id = 9;
+        $user_data->area_id = 8;
         $user_data->user_id = $user->id;
         $user_data->save();
         $user->roles()->attach($role_worker);
@@ -553,7 +553,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'PAREDES';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 9;
+        $user_data->area_id = 8;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -569,7 +569,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'TORIBIO';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 11;
+        $user_data->area_id = 10;
         $user_data->save();
         $user->roles()->attach($role_supervisor);
 
@@ -584,7 +584,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'PALOMO';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 11;
+        $user_data->area_id = 10;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -599,7 +599,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'PEÑA';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 11;
+        $user_data->area_id = 10;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -614,7 +614,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'ESCALANTE';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 11;
+        $user_data->area_id = 10;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -629,7 +629,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'ESCALANTE';
         $user_data->user_id = $user->id;
         $user_data->user_phone = 912345678;
-        $user_data->area_id = 11;
+        $user_data->area_id = 10;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -644,7 +644,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'PASION';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 11;
+        $user_data->area_id = 10;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -659,7 +659,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'SANCHEZ';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 11;
+        $user_data->area_id = 10;
         $user_data->save();
         $user->roles()->attach($role_worker);
 
@@ -689,7 +689,7 @@ class UserSeeder extends Seeder
         $user_data->mother_last_name = 'TARAZONA';
         $user_data->user_phone = 912345678;
         $user_data->user_id = $user->id;
-        $user_data->area_id = 11;
+        $user_data->area_id = 10;
         $user_data->save();
         $user->roles()->attach($role_worker);
 

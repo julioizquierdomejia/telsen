@@ -2099,7 +2099,7 @@ class OtController extends Controller
         //$image->move(public_path($url), $avatarName);
 
         if (DIRECTORY_SEPARATOR === '/') {
-            $dir = '/var/www/html/'.$url;
+            $dir = env('FILES_PATH', public_path()).$url;
             // unix, linux, mac
             if (!is_dir($dir)) {
                 mkdir($dir, 0777, true);

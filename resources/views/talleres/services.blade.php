@@ -1,5 +1,7 @@
 @extends('layouts.app', ['body_class' => 'ots', 'title' => 'Mis Tareas'])
 @section('content')
+<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
+<script type="text/javascript">var drops = [];</script>
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">
@@ -55,9 +57,34 @@
                           </li>
                           @endforeach
                           @else
-                          <li class="text-muted">No hay historial aun</li>
+                          <li class="text-muted my-2">No hay historial aún</li>
                           @endif
                         </ul>
+                        <hr style="border-top-color: #2b2b2b">
+                        <div class="history-footer row">
+                          <div class="col">
+                            <label class="text-white">Comentarios:</label>
+                            <textarea class="form-control mt-0" name="comments">{{$item->comments}}</textarea>
+                          </div>
+                          <div class="col text-left">
+                            <label class="text-white">Fotos:</label>
+                            <ul class="list-inline">
+                              <li>foto</li>
+                              <li>foto 2</li>
+                            </ul>
+                            <div id="dZUpload{{$item->id}}" class="dropzone">
+                              <div class="dz-default dz-message">Sube aquí tus imágenes</div>
+                            </div>
+                            <script type="text/javascript">drops.push('dZUpload{{$item->id}}')</script>
+                          </div>
+                        </div>
+                        <hr style="border-top-color: #2b2b2b">
+                        <div class="additional">
+                          <label class="text-white">Información adicional:</label>
+                          <div class="table">
+                            
+                          </div>
+                        </div>
                       </div>
                       <div class="work-buttons py-3 col-12 col-md-4 col-xl-2">
                       @if (in_array('supervisor', $roles))
@@ -178,8 +205,39 @@
 @endif
 @endsection
 @section('javascript')
+<script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>
 <script>
+  Dropzone.autoDiscover = false;
   $(document).ready(function() {
+
+    $.each(drops, function (id, item) {
+      var myDrop = new Dropzone("#"+item, {
+        url: "{{route('gallery.store', 0)}}",
+        addRemoveLinks: true,
+        params: {
+          _token: '{{csrf_token()}}',
+          eval_type: 'workshop',
+        },
+        renameFile: function (file) {
+            let newName = new Date().getTime() + '_' + file.name;
+            return newName;
+        },
+        success: function (file, response) {
+            var imgName = response;
+            file.previewElement.classList.add("dz-success");
+            //createJSON(myDrop.files);
+        },
+        removedfile: function(file) {
+          //createJSON(myDrop.files);
+            file.previewElement.remove();
+        },
+        error: function (file, response) {
+            file.previewElement.classList.add("dz-error");
+        }
+    });
+
+    })
+
     var actualBtn;
     $('.btn-tasks').on('click', function (event) {
       $(this).parents('tr').next().slideToggle();

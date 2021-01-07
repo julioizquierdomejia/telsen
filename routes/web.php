@@ -185,7 +185,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('rotorcoderodajept/1/list', [App\Http\Controllers\RotorCodRodajePt1Controller::class, 'list'])->name('rotorcoderpt1.list');
 
 	Route::get('rotorcoderodajept/1/crear', [App\Http\Controllers\RotorCodRodajePt1Controller::class, 'create'])->name('rotorcoderpt1.create');
-	Route::post('rotorcoderodajept/1/{ot}/store', [App\Http\Controllers\RotorCodRodajePt1Controller::class, 'store'])->name('rotorcoderpt1.store');
+	Route::post('rotorcoderodajept/1', [App\Http\Controllers\RotorCodRodajePt1Controller::class, 'store'])->name('rotorcoderpt1.store');
 	Route::get('rotorcoderodajept/1/{id}/editar', [App\Http\Controllers\RotorCodRodajePt1Controller::class, 'edit'])->name('rotorcoderpt1.edit');
 	Route::post('rotorcoderodajept/1/{id}/editar', [App\Http\Controllers\RotorCodRodajePt1Controller::class, 'update'])->name('rotorcoderpt1.update');
 	//2
@@ -194,7 +194,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('rotorcoderodajept/2/list', [App\Http\Controllers\RotorCodRodajePt2Controller::class, 'list'])->name('rotorcoderpt2.list');
 
 	Route::get('rotorcoderodajept/2/crear', [App\Http\Controllers\RotorCodRodajePt2Controller::class, 'create'])->name('rotorcoderpt2.create');
-	Route::post('rotorcoderodajept/2/{ot}/store', [App\Http\Controllers\RotorCodRodajePt2Controller::class, 'store'])->name('rotorcoderpt2.store');
+	Route::post('rotorcoderodajept/2', [App\Http\Controllers\RotorCodRodajePt2Controller::class, 'store'])->name('rotorcoderpt2.store');
 	Route::get('rotorcoderodajept/2/{id}/editar', [App\Http\Controllers\RotorCodRodajePt2Controller::class, 'edit'])->name('rotorcoderpt2.edit');
 	Route::post('rotorcoderodajept/2/{id}/editar', [App\Http\Controllers\RotorCodRodajePt2Controller::class, 'update'])->name('rotorcoderpt2.update');
 

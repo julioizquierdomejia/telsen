@@ -129,7 +129,7 @@ class RotorCodRodajePt1Controller extends Controller
 
         activitylog('rotorcoderpt1', 'store', null, $rotor_cod->toArray());
 
-        return redirect('rotorcoderpt1');
+        return redirect('rotorcoderodajept/1');
     }
 
     /**

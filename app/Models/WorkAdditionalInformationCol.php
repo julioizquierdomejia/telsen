@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkAdditionalInformation extends Model
+class WorkAdditionalInformationCol extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'table_id',
+        'col_name',
+        'col_type',
+        'service_id',
     ];
 
     protected $dates = [

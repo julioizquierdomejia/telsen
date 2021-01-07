@@ -18,12 +18,47 @@ class WorkAdditionalInfoSeeder extends Seeder
         $work_addinfos = array(
             array(
                 'name' => 'Resumen de calibraciones técnicas',
+                'service_id' => 6,
                 'public' => 1,
-                'cols' => array (
-                    'Descripción',
-                    'Lado Delantero (Pto. 1)',
-                    'Lado Posterior (Pto. 2)',
-                    'Observación',
+                'cols' => array(
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Descripción',
+                        'col_type' => 'string',
+                    ),
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Lado Delantero (Pto. 1)',
+                        'col_type' => 'string',
+                    ),
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Observación',
+                        'col_type' => 'string',
+                    )
+                )
+            ),
+
+            array(
+                'name' => 'Metalizado de eje',
+                'service_id' => 42,
+                'public' => 0,
+                'cols' => array(
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Descripción',
+                        'col_type' => 'string',
+                    ),
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Lado Delantero (Pto. 1)',
+                        'col_type' => 'string',
+                    ),
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Observación',
+                        'col_type' => 'string',
+                    )
                 )
             ),
         );
@@ -37,6 +72,7 @@ class WorkAdditionalInfoSeeder extends Seeder
             foreach ($cols as $key => $item) {
                 $work_addinfo_col = new WorkAdditionalInformationCol();
                 $work_addinfo_col->service_id = $item;
+                $work_addinfo_col->work_add_in_id = $work_addinfo->id;
                 $work_addinfo_col->save();
             }
         }

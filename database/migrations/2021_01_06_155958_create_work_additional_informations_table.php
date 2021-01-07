@@ -16,6 +16,9 @@ class CreateWorkAdditionalInformationsTable extends Migration
         Schema::create('work_additional_informations', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+
+            $table->unsignedBigInteger('service_id');
+            $table->foreign('service_id')->references('id')->on('services');
             $table->boolean('public')->default(1);
             $table->timestamps();
         });
@@ -30,9 +33,6 @@ class CreateWorkAdditionalInformationsTable extends Migration
 
             $table->string('col_name');
             $table->string('col_type');
-
-            $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services');
 
             $table->timestamps();
         });
@@ -59,9 +59,11 @@ class CreateWorkAdditionalInformationsTable extends Migration
      */
     public function down()
     {
-        Schema::table('work_additional_information_cols', function (Blueprint $table) {
-            $table->dropForeign('work_additional_information_cols_table_id_foreign');
+        Schema::table('work_additional_informations', function (Blueprint $table) {
             $table->dropForeign('work_additional_information_cols_service_id_foreign');
+        });
+        Schema::table('work_additional_information_cols', function (Blueprint $table) {
+            $table->dropForeign('work_additional_information_cols_work_add_in_id_foreign');
         });
         Schema::table('work_additional_information_data', function (Blueprint $table) {
             $table->dropForeign('work_additional_information_data_col_id_foreign');

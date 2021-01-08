@@ -46,15 +46,15 @@ class RotorCodRodajeSeeder extends Seeder
                 DB::statement($createQuery, $row);*/
 
                 $rotor_cod_rodaje_pt1 = new RotorCodRodajePt1;
-                $rotor_cod_rodaje_pt1->name = $row[0];
-                $rotor_cod_rodaje_pt1->asiento_rodaje = $row[1];
-                $rotor_cod_rodaje_pt1->alojamiento_rodaje = $row[2];
+                $rotor_cod_rodaje_pt1->name = utf8_encode($row[0]);
+                $rotor_cod_rodaje_pt1->asiento_rodaje = utf8_encode($row[1]);
+                $rotor_cod_rodaje_pt1->alojamiento_rodaje = utf8_encode($row[2]);
                 $rotor_cod_rodaje_pt1->save();
 
                 $rotor_cod_rodaje_pt2 = new RotorCodRodajePt2;
-                $rotor_cod_rodaje_pt2->name = $row[0];
-                $rotor_cod_rodaje_pt2->asiento_rodaje = $row[1];
-                $rotor_cod_rodaje_pt2->alojamiento_rodaje = $row[2];
+                $rotor_cod_rodaje_pt2->name = utf8_encode($row[0]);
+                $rotor_cod_rodaje_pt2->asiento_rodaje = utf8_encode($row[1]);
+                $rotor_cod_rodaje_pt2->alojamiento_rodaje = utf8_encode($row[2]);
                 $rotor_cod_rodaje_pt2->save();
 
                 //$this->command->info($row);

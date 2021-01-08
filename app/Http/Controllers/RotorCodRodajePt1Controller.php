@@ -43,6 +43,7 @@ class RotorCodRodajePt1Controller extends Controller
         $totalRecordswithFilter = RotorCodRodajePt1::select('count(*) as allcount')
                 ->where(function($query) use ($searchValue) {
                     $query->where('asiento_rodaje', 'like', '%'.$searchValue.'%')
+                    ->orWhere('name', 'like', '%'.$searchValue.'%')
                     ->orWhere('alojamiento_rodaje', 'like', '%'.$searchValue.'%')
                         ;
                 })
@@ -54,6 +55,7 @@ class RotorCodRodajePt1Controller extends Controller
                     ->take($rowperpage)
                     ->where(function($query) use ($searchValue) {
                         $query->where('asiento_rodaje', 'like', '%'.$searchValue.'%')
+                        ->orWhere('name', 'like', '%'.$searchValue.'%')
                         ->orWhere('alojamiento_rodaje', 'like', '%'.$searchValue.'%');
                     })
                     ->orderBy($columnName, $columnSortOrder)

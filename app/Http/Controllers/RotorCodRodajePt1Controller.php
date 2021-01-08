@@ -68,6 +68,7 @@ class RotorCodRodajePt1Controller extends Controller
 
             $items_array[] = array(
               "id" => $item->id,
+              "name" => $item->name,
               "asiento_rodaje" => $item->asiento_rodaje,
               "alojamiento_rodaje" => $item->alojamiento_rodaje,
               "enabled" => $status,

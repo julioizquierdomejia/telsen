@@ -16,21 +16,12 @@
         <div class="table-responsive">
           <table class="table table-separate" id="codept">
             <thead class=" text-primary">
-              <th>
-                Id
-              </th>
-              <th>
-                Asiento Rodaje
-              </th>
-              <th>
-                Alojamiento Rodaje
-              </th>
-              <th>
-                Estado
-              </th>
-              <th class="text-right">
-                Acciones
-              </th>
+              <th>Id</th>
+              <th>Nombre</th>
+              <th>Asiento Rodaje</th>
+              <th>Alojamiento Rodaje</th>
+              <th>Estado</th>
+              <th class="text-right">Acciones</th>
             </thead>
             <tbody>
             	{{-- @foreach($codes as $code)
@@ -75,6 +66,7 @@
        lengthMenu: [ 5, 25, 50 ],
        columns: [
           { data: 'id', class: 'text-nowrap' },
+          { data: 'name', class: '' },
           { data: 'asiento_rodaje', class: 'text-nowrap' },
           { data: 'alojamiento_rodaje' },
           { data: 'enabled', class: 'text-left' },

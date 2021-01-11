@@ -104,7 +104,7 @@ array (
               @enderror
             </div>
             <div class="col-6 col-md-6 mb-2">
-              <label class="col-form-label">Serie</label>
+              <label class="col-form-label">Operario</label>{{-- pidieron cambiar serie por operario --}}
               <input type="text" class="form-control @error('serie') is-invalid @enderror" placeholder="Serie" value="{{old('serie')}}" name="serie">
               @error('serie')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -705,8 +705,8 @@ $('[name=rotor_cod_rodaje_p1]').change(function () {
 
   $('[name=rotor_asiento_rodaje_p1]').val(asiento ? asiento : '');
   $('.asiento-rodaje-pto1').val(asiento ? asiento : 'Ø');
-  //$('[name=estator_alojamiento_rodaje_tapa_p10]').val(alojamiento ? asiento : '');
-  //$('.alojamiento-tapa-pto1').val(alojamiento ? asiento : '');
+  $('[name=estator_alojamiento_rodaje_tapa_p10]').val(alojamiento ? asiento : '');
+  $('.alojamiento-tapa-pto1').val(alojamiento ? asiento : '');
 })
 
 $('[name=rotor_cod_rodaje_p2]').change(function () {
@@ -714,8 +714,8 @@ $('[name=rotor_cod_rodaje_p2]').change(function () {
 
   $('[name=rotor_asiento_rodaje_p2]').val(asiento ? asiento : '');
   $('.asiento-rodaje-pto2').val(asiento ? asiento : 'Ø');
-  //$('[name=estator_alojamiento_rodaje_tapa_p20]').val(alojamiento ? asiento : '');
-  //$('.alojamiento-tapa-pto2').val(alojamiento ? asiento : '');
+  $('[name=estator_alojamiento_rodaje_tapa_p20]').val(alojamiento ? asiento : '');
+  $('.alojamiento-tapa-pto2').val(alojamiento ? asiento : '');
 })
 })
 </script>

@@ -107,7 +107,7 @@
               @enderror
             </div>
             <div class="col-6 col-md-6 mb-2">
-              <label class="col-form-label">Serie</label>
+              <label class="col-form-label">Operario</label>{{-- pidieron cambiar serie por operario --}}
               <input type="text" class="form-control @error('serie') is-invalid @enderror" placeholder="Serie" value="{{old('serie', $formato->serie)}}" name="serie">
               @error('serie')
               <p class="error-message text-danger">{{ $message }}</p>
@@ -833,7 +833,11 @@ $('.btn-no').click(function () {
 
 $('.select-area').trigger('change');
 
+$('.asiento-rodaje-pto1').val($('[name=rotor_cod_rodaje_p1] option:selected').data('asiento'));
+$('.asiento-rodaje-pto2').val($('[name=rotor_cod_rodaje_p2] option:selected').data('asiento'));
+
 $('[name=rotor_cod_rodaje_p1]').change(function () {
+  console.log('rotor_cod_rodaje_p1');
   var $this = $(this), asiento = $this.find('option:selected').data('asiento'), alojamiento = $this.find('option:selected').data('alojamiento');
 
   $('[name=rotor_asiento_rodaje_p1]').val(asiento ? asiento : '');
@@ -843,6 +847,7 @@ $('[name=rotor_cod_rodaje_p1]').change(function () {
 })
 
 $('[name=rotor_cod_rodaje_p2]').change(function () {
+  console.log('rotor_cod_rodaje_p2');
   var $this = $(this), asiento = $this.find('option:selected').data('asiento'), alojamiento = $this.find('option:selected').data('alojamiento');
 
   $('[name=rotor_asiento_rodaje_p2]').val(asiento ? asiento : '');

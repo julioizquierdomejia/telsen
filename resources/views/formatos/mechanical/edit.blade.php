@@ -245,7 +245,7 @@
               <select class="dropdown2 form-control" name="rotor_cod_rodaje_p2" style="width: 100%">
                       <option value="">Seleccionar código</option>
                       @foreach($cod_rodaje_p2 as $item)
-                      <option value="{{$item->id}}" {{$formato->rotor_cod_rodaje_p1 == $item->id ? 'selected' : ''}} data-asiento="{{$item->asiento_rodaje}}" data-alojamiento="{{$item->alojamiento_rodaje}}" {{ old('rotor_cod_rodaje_p2', $item['item']) == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
+                      <option value="{{$item->id}}" {{$formato->rotor_cod_rodaje_p2 == $item->id ? 'selected' : ''}} data-asiento="{{$item->asiento_rodaje}}" data-alojamiento="{{$item->alojamiento_rodaje}}" {{ old('rotor_cod_rodaje_p2', $item['item']) == $item->id ? 'selected' : '' }}>{{$item->name}}</option>
                       @endforeach
                     </select>
               @error('rotor_cod_rodaje_p2')

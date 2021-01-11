@@ -69,7 +69,7 @@ class WorkshopController extends Controller
                 ->join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                ->select('ots.created_at', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                ->select('ots.created_at', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                 ->get();
         } else {
             if (in_array("supervisor", $roles)) {
@@ -77,12 +77,12 @@ class WorkshopController extends Controller
                     ->join('services', 'services.id', '=', 'ot_works.service_id')
                     ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->where('user_data.area_id', $area_id)
 
-                    /*->whereHas('work_logs', function ($query) {
+                    ->whereDoesntHave('work_logs', function ($query) {
                         $query->where("work_logs.type", "=", 'end');
-                    })*/
+                    })
 
                     ->get();
             } else {
@@ -92,25 +92,28 @@ class WorkshopController extends Controller
                     ->join('services', 'services.id', '=', 'ot_works.service_id')
                     ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->where('workshops.user_id', $user_id)
                     //->where('user_data.area_id', $area_id)
 
-                    /*->whereDoesntHave('work_logs', function ($query) {
-                        $query->where("work_logs.type", "=", 'end');
-                    })
+                    /*
                     ->whereDoesntHave('ot_work_status', function ($query) {
                         $query->where("ot_work_status.work_status_id", "=", 1); //No mostrar los aprobados
                     })
                     ->whereHas('work_logs', function ($query) {
                         $query->where("work_logs.type", "=", 'restart');
                     })*/
+                    ->whereDoesntHave('work_logs', function ($query) {
+                        $query->where("work_logs.type", "=", 'end');
+                    })
 
                     ->get();
             }
         }
 
-        return view('talleres.services', compact('services', 'work_reasons', 'roles')
+        $ots = array_unique(array_column($services->toArray(), 'ot_id'));
+
+        return view('talleres.services', compact('services', 'work_reasons', 'roles', 'ots')
         );
     }
 

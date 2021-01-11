@@ -46,7 +46,7 @@ class WorkAdditionalInfoSeeder extends Seeder
                 'cols' => array(
                     array (
                         'table_id' => 1,
-                        'col_name' => 'Descripción',
+                        'col_name' => 'Lado Acople: ',
                         'col_type' => 'string',
                     ),
                     array (

@@ -6,7 +6,15 @@
   <div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title">Mis Tareas</h4>
+        <h4 class="card-title d-flex align-items-center">
+          <span>Mis Tareas</span>
+          <select class="form-control col-5 col-md-4 col-xl-3 ml-auto">
+            <option value="">Seleccionar OT</option>
+            @foreach ($ots as $ot)
+              <option value="1">OT-{{$ot}}</option>
+            @endforeach
+          </select>
+        </h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
@@ -41,7 +49,7 @@
               </tr>
               <tr class="text-center" data-id="service-{{$item->id}}" style="display: none;">
                 <td class="p-0" colspan="6">
-                  <div class="d px-3" style="border-left: 10px solid #efefef;border-right: 10px solid #efefef;background-color: #f9f9f9;margin-top: -6px;">
+                  <div class="px-3" style="border-left: 10px solid #efefef;border-right: 10px solid #efefef;background-color: #f9f9f9;margin-top: -6px;">
                     <div class="t-details px-2 py-3 mb-3 row align-items-center">
                       <div class="history bg-dark text-white py-3 col-12 col-md-8 col-xl-10">
                         <h5 class="h6 px-3">Historial</h5>
@@ -61,7 +69,7 @@
                           @endif
                         </ul>
                         <hr style="border-top-color: #2b2b2b">
-                        <div class="history-footer row">
+                        {{-- <div class="history-footer row">
                           <div class="col">
                             <label class="text-white">Comentarios:</label>
                             <textarea class="form-control mt-0" name="comments">{{$item->comments}}</textarea>
@@ -78,7 +86,7 @@
                             <script type="text/javascript">drops.push('dZUpload{{$item->id}}')</script>
                           </div>
                         </div>
-                        <hr style="border-top-color: #2b2b2b">
+                        <hr style="border-top-color: #2b2b2b"> --}}
                         <div class="additional">
                           <label class="text-white">Información adicional:</label>
                           <div class="table">

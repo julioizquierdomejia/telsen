@@ -319,19 +319,25 @@
             <div class="row">
             <div class="col-12 col-md-6">
               <div class="row">
-                <div class="col-12 mb-2">
-                  <label class="col-form-label">Alojamiento rodaje tapa Pto 10</label>
-                  <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p10') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p10" value="{{old('estator_alojamiento_rodaje_tapa_p10', $formato->estator_alojamiento_rodaje_tapa_p10)}}" name="estator_alojamiento_rodaje_tapa_p10">
+                <div class="col-12 col-md-6 mb-2">
+                  <label class="col-form-label">Alojamiento rodaje tapa Pto 1Ø</label>
+                  <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p10') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p1Ø" value="{{old('estator_alojamiento_rodaje_tapa_p10', $formato->estator_alojamiento_rodaje_tapa_p10)}}" name="estator_alojamiento_rodaje_tapa_p10">
                   @error('estator_alojamiento_rodaje_tapa_p10')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="col-12 mb-2">
-                  <label class="col-form-label">Alojamiento rodaje tapa Pto 20</label>
-                  <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p20') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p20" value="{{old('estator_alojamiento_rodaje_tapa_p20', $formato->estator_alojamiento_rodaje_tapa_p20)}}" name="estator_alojamiento_rodaje_tapa_p20">
+                <div class="col-12 col-md-6 mb-2">
+                  <input type="text" class="form-control mt-2 alojamiento-tapa-pto1" placeholder="Ø" value="Ø" disabled="">
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                  <label class="col-form-label">Alojamiento rodaje tapa Pto 2Ø</label>
+                  <input type="text" class="form-control @error('estator_alojamiento_rodaje_tapa_p20') is-invalid @enderror" placeholder="Alojamiento rodaje tapa p2Ø" value="{{old('estator_alojamiento_rodaje_tapa_p20', $formato->estator_alojamiento_rodaje_tapa_p20)}}" name="estator_alojamiento_rodaje_tapa_p20">
                   @error('estator_alojamiento_rodaje_tapa_p20')
                   <p class="error-message text-danger">{{ $message }}</p>
                   @enderror
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                  <input type="text" class="form-control mt-2 alojamiento-tapa-pto2" placeholder="Ø" value="Ø" disabled="">
                 </div>
               </div>
             </div>
@@ -833,27 +839,31 @@ $('.btn-no').click(function () {
 
 $('.select-area').trigger('change');
 
-$('.asiento-rodaje-pto1').val($('[name=rotor_cod_rodaje_p1] option:selected').data('asiento'));
-$('.asiento-rodaje-pto2').val($('[name=rotor_cod_rodaje_p2] option:selected').data('asiento'));
+asiento1 = $('[name=rotor_cod_rodaje_p1] option:selected').data('asiento');
+alojamiento1 = $('[name=rotor_cod_rodaje_p1] option:selected').data('alojamiento');
+asiento2 = $('[name=rotor_cod_rodaje_p2] option:selected').data('asiento');
+alojamiento2 = $('[name=rotor_cod_rodaje_p2] option:selected').data('alojamiento');
+$('.asiento-rodaje-pto1').val(asiento1);
+$('.alojamiento-tapa-pto1').val(alojamiento1);
+$('.asiento-rodaje-pto2').val(asiento2);
+$('.alojamiento-tapa-pto2').val(alojamiento2);
 
 $('[name=rotor_cod_rodaje_p1]').change(function () {
-  console.log('rotor_cod_rodaje_p1');
   var $this = $(this), asiento = $this.find('option:selected').data('asiento'), alojamiento = $this.find('option:selected').data('alojamiento');
 
   $('[name=rotor_asiento_rodaje_p1]').val(asiento ? asiento : '');
   $('.asiento-rodaje-pto1').val(asiento ? asiento : 'Ø');
-  $('[name=estator_alojamiento_rodaje_tapa_p10]').val(alojamiento ? asiento : '');
-  $('.alojamiento-tapa-pto1').val(alojamiento ? asiento : '');
+  $('[name=estator_alojamiento_rodaje_tapa_p10]').val(alojamiento ? alojamiento : '');
+  $('.alojamiento-tapa-pto1').val(alojamiento ? alojamiento : '');
 })
 
 $('[name=rotor_cod_rodaje_p2]').change(function () {
-  console.log('rotor_cod_rodaje_p2');
   var $this = $(this), asiento = $this.find('option:selected').data('asiento'), alojamiento = $this.find('option:selected').data('alojamiento');
 
   $('[name=rotor_asiento_rodaje_p2]').val(asiento ? asiento : '');
   $('.asiento-rodaje-pto2').val(asiento ? asiento : 'Ø');
-  $('[name=estator_alojamiento_rodaje_tapa_p20]').val(alojamiento ? asiento : '');
-  $('.alojamiento-tapa-pto2').val(alojamiento ? asiento : '');
+  $('[name=estator_alojamiento_rodaje_tapa_p20]').val(alojamiento ? alojamiento : '');
+  $('.alojamiento-tapa-pto2').val(alojamiento ? alojamiento : '');
 })
 
 $('#galleryModal').on('show.bs.modal', function (event) {

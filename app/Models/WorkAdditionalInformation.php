@@ -9,8 +9,12 @@ class WorkAdditionalInformation extends Model
 {
     use HasFactory;
 
+    protected $table = 'work_additional_informations';
+
     protected $fillable = [
         'name',
+        'ot_work_id',
+        'public'
     ];
 
     protected $dates = [

@@ -9,6 +9,8 @@ class WorkAdditionalInformationData extends Model
 {
     use HasFactory;
 
+    protected $table = 'work_additional_information_data';
+
     protected $fillable = [
         'col_id',
         'ot_work_id',

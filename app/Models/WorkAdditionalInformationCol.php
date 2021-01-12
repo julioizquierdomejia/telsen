@@ -9,11 +9,13 @@ class WorkAdditionalInformationCol extends Model
 {
     use HasFactory;
 
+    protected $table = 'work_additional_information_cols';
+
     protected $fillable = [
+        'work_add_info_id',
         'table_id',
         'col_name',
         'col_type',
-        'service_id',
     ];
 
     protected $dates = [

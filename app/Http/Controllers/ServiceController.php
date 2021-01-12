@@ -68,7 +68,7 @@ class ServiceController extends Controller
         foreach ($records as $key => $item) {
             $status = $item->enabled == 1 ? '<span class="badge badge-success px-3 py-1">Activo</span>' : '<span class="badge badge-secondary px-3 py-1">Inactivo</span>';
 
-            $tools = '<a href="/servicios'.$item->id.'/editar" class="btn btn-warning"><i class="fal fa-edit"></i></a> '. ($item->enabled == 1 ? '<button class="btn btn-danger btn-changestatus" data-toggle="modal" data-target="#modalServices" data-status="0" type="button" data-id="'.$item->id.'"><i class="fal fa-minus-circle"></i></button>' : '<button class="btn btn-primary btn-changestatus" data-toggle="modal" data-target="#modalServices" data-status="1" type="button" data-id="'.$item->id.'"><i class="fal fa-trash-restore"></i></button>');
+            $tools = '<a href="/servicios/'.$item->id.'/editar" class="btn btn-warning"><i class="fal fa-edit"></i></a> '. ($item->enabled == 1 ? '<button class="btn btn-danger btn-changestatus" data-toggle="modal" data-target="#modalServices" data-status="0" type="button" data-id="'.$item->id.'"><i class="fal fa-minus-circle"></i></button>' : '<button class="btn btn-primary btn-changestatus" data-toggle="modal" data-target="#modalServices" data-status="1" type="button" data-id="'.$item->id.'"><i class="fal fa-trash-restore"></i></button>');
 
             $items_array[] = array(
               "id" => $item->id,

@@ -61,8 +61,11 @@
                 $userRoles = array_column($user->roles->toArray(), 'id');
               @endphp
               <label class="col-form-label" for="selectRol">Roles</label>
-              @if (in_array($user->roles->first()->name, $allowed_roles))
+              @if (in_array(Auth::user()->roles->first()->name, $allowed_roles))
               <ul class="form-check-list list-inline m-0 form-control h-auto">
+                @if (in_array($user->roles->first()->name, $allowed_roles))
+                <li class="form-check"><label class="form-check-label"><input type="checkbox" class="form-check-input align-middle" disabled="" checked=""><span class="badge badge-primary"> {{$user->roles->first()->name}}</span></label></li>
+                @endif
                 @foreach($roles as $key => $role)
                 <li class="form-check" id="role_{{$key}}">
                   <label class="form-check-label">

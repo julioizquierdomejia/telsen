@@ -129,6 +129,8 @@ class WorkshopController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
 
+        $roles = validateActionbyRole();
+        
         $users = User::join('user_data', 'user_data.user_id', 'users.id')
                 ->join('areas', 'areas.id', 'user_data.area_id')
                 ->select('users.id', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.area_id','areas.name as area')
@@ -160,24 +162,46 @@ class WorkshopController extends Controller
             $user_area_id = 0;
         }
 
-        $works = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
-            ->join('areas', 'areas.id', '=', 'services.area_id')
-            ->leftJoin('workshops', 'workshops.ot_work_id', '=', 'ot_works.id')
-            ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
-            ->select(
-                'ot_works.id',
-                'services.id as service_id',
-                'ot_works.description',
-                'ot_works.id as ot_work_id',
-                'areas.name as area',
-                'services.area_id',
-                'services.name as service',
-                'ot_works.personal',
-                \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
-                'user_data.user_id'
-            )
-            ->where('ot_works.ot_id', $ot->id)
-            ->get();
+        if (in_array('superadmin', $roles) || in_array('admin', $roles)) {
+            $works = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->leftJoin('workshops', 'workshops.ot_work_id', '=', 'ot_works.id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                ->select(
+                    'ot_works.id',
+                    'services.id as service_id',
+                    'ot_works.description',
+                    'ot_works.id as ot_work_id',
+                    'areas.name as area',
+                    'services.area_id',
+                    'services.name as service',
+                    'ot_works.personal',
+                    \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
+                    'user_data.user_id'
+                )
+                ->where('ot_works.ot_id', $ot->id)
+                ->get();
+        } else {
+            $works = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->leftJoin('workshops', 'workshops.ot_work_id', '=', 'ot_works.id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                ->select(
+                    'ot_works.id',
+                    'services.id as service_id',
+                    'ot_works.description',
+                    'ot_works.id as ot_work_id',
+                    'areas.name as area',
+                    'services.area_id',
+                    'services.name as service',
+                    'ot_works.personal',
+                    \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
+                    'user_data.user_id'
+                )
+                ->where('ot_works.ot_id', $ot->id)
+                ->where('services.area_id', $user_area_id)
+                ->get();
+        }
 
         //$services = [];
         /*if ($ot->client_type_id == 1) { //RDI

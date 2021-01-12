@@ -2,6 +2,9 @@
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 <script type="text/javascript">var drops = [];</script>
+@php
+  $single_role = count($roles) == 1;
+@endphp
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">
@@ -95,7 +98,7 @@
                         </div>
                       </div>
                       <div class="work-buttons py-3 col-12 col-md-4 col-xl-2">
-                      @if (in_array('supervisor', $roles))
+                      @if (in_array('supervisor', $roles) && $single_role)
                         @if($work_logs->first() && $work_logs->first()->type == 'end')
                           @if ($status_id == 1)
                             <button class="btn btn-success my-1">Aprobada</button>

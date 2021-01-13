@@ -13,7 +13,8 @@ class WorkAdditionalInformation extends Model
 
     protected $fillable = [
         'name',
-        'ot_work_id',
+        'service_id',
+        'mode',
         'public'
     ];
 
@@ -21,4 +22,9 @@ class WorkAdditionalInformation extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function cols()
+    {
+        return $this->hasMany(WorkAdditionalInformationCol::class, 'work_add_info_id');
+    }
 }

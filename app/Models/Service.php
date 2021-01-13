@@ -24,4 +24,9 @@ class Service extends Model
     {
         return $this->belongsTo('App\Models\Area');
     }
+
+    public function tables()
+    {
+        return $this->hasMany(WorkAdditionalInformation::class);
+    }
 }

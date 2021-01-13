@@ -18,8 +18,9 @@ class WorkAdditionalInfoSeeder extends Seeder
         $work_addinfos = array(
             array(
                 'name' => 'Resumen de calibraciones técnicas',
-                //'service_id' => 6,
+                'service_id' => 6,
                 'public' => 1,
+                'mode' => 1, // 1=cabecera horizontal y vertical
                 'cols' => array(
                     array (
                         'table_id' => 1,
@@ -46,8 +47,9 @@ class WorkAdditionalInfoSeeder extends Seeder
 
             array(
                 'name' => 'Metalizado de eje',
-                //'service_id' => 42,
+                'service_id' => 42,
                 'public' => 0,
+                'mode' => 2, //2=cabecera horizontal y columnas verticales con cabeceras laterales
                 'cols' => array(
                     array (
                         'table_id' => 1,
@@ -74,8 +76,9 @@ class WorkAdditionalInfoSeeder extends Seeder
 
             array(
                 'name' => 'Prueba de resistencia de aislamiento',
-                //'service_id' => 22,
+                'service_id' => 22,
                 'public' => 1,
+                'mode' => 3, //3=cabecera horizontal y datos
                 'cols' => array(
                     array (
                         'table_id' => 1,
@@ -97,21 +100,22 @@ class WorkAdditionalInfoSeeder extends Seeder
 
             array(
                 'name' => 'Prueba de Motor en Vacío', //Desde Pruebas electricas
-                //'service_id' => 22,
+                'service_id' => 22,
                 'public' => 1,
+                'mode' => 4, //4=
                 'cols' => array(
                     array (
-                        'table_id' => 2,
+                        'table_id' => 1,
                         'col_name' => 'Corriente | R',
                         'col_type' => 'string',
                     ),
                     array (
-                        'table_id' => 2,
+                        'table_id' => 1,
                         'col_name' => 'Corriente | S',
                         'col_type' => 'string',
                     ),
                     array (
-                        'table_id' => 2,
+                        'table_id' => 1,
                         'col_name' => 'Corriente | T',
                         'col_type' => 'string',
                     ),
@@ -141,8 +145,9 @@ class WorkAdditionalInfoSeeder extends Seeder
 
             array(
                 'name' => 'Nuevo cuadro',
-                //'service_id' => 22,
+                'service_id' => 22,
                 'public' => 0,
+                'mode' => 1,
                 'cols' => array(
                     array (
                         'table_id' => 3,
@@ -180,8 +185,9 @@ class WorkAdditionalInfoSeeder extends Seeder
 
             array(
                 'name' => 'Niveles de vibración', // Desde Pruebas mecanicas
-                //'service_id' => 22,
+                'service_id' => 22,
                 'public' => 0,
+                'mode' => 1,
                 'cols' => array(
                     array (
                         'table_id' => 4,
@@ -218,8 +224,9 @@ class WorkAdditionalInfoSeeder extends Seeder
 
             array(
                 'name' => 'Prueba de impulso (SURGE)', // Desde Pruebas dinamicas baker
-                //'service_id' => 9,
+                'service_id' => 9,
                 'public' => 0,
+                'mode' => 1,
                 'cols' => array(
                     array (
                         'table_id' => 1,
@@ -259,7 +266,8 @@ class WorkAdditionalInfoSeeder extends Seeder
             $cols = $work_ai_item['cols'];
             $work_addinfo = new WorkAdditionalInformation();
             $work_addinfo->name = $work_ai_item['name'];
-            //$work_addinfo->service_id = $work_ai_item['service_id'];
+            $work_addinfo->service_id = $work_ai_item['service_id'];
+            $work_addinfo->mode = $work_ai_item['mode'];
             $work_addinfo->public = $work_ai_item['public'];
             $work_addinfo->save();
             foreach ($cols as $key => $item) {

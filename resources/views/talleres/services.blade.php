@@ -72,12 +72,13 @@
                           @endif
                         </ul>
                         <hr style="border-top-color: #2b2b2b">
-                        {{-- <div class="history-footer row">
-                          <div class="col">
+                        <div class="history-footer row">
+                          <div class="col-12 col-md-6">
                             <label class="text-white">Comentarios:</label>
-                            <textarea class="form-control mt-0" name="comments">{{$item->comments}}</textarea>
+                            <textarea class="form-control mt-0 comments" data-otwork="{{$item->id}}" name="comments">{{$item->comments}}</textarea>
+                            <p class="mb-0 comments-msg" style="display: none;"><span class="small"><i class="fa fa-check"></i> Se guardó</span></p>
                           </div>
-                          <div class="col text-left">
+                          <div class="col-12 col-md-6 text-left">
                             <label class="text-white">Fotos:</label>
                             <ul class="list-inline">
                               <li>foto</li>
@@ -89,7 +90,7 @@
                             <script type="text/javascript">drops.push('dZUpload{{$item->id}}')</script>
                           </div>
                         </div>
-                        <hr style="border-top-color: #2b2b2b"> --}}
+                        <hr style="border-top-color: #2b2b2b">
                         <div class="additional">
                           <label class="text-white">Información adicional:</label>
                           <div class="table">
@@ -252,6 +253,35 @@
     var actualBtn;
     $('.btn-tasks').on('click', function (event) {
       $(this).parents('tr').next().slideToggle();
+    })
+
+    $('.comments').on('change', function (event) {
+      var $this = $(this), comments = $this.val(), ot_work = $this.data('otwork');
+      var comments_msg = $this.parent().find('.comments-msg');
+      $.ajax({
+          type: "post",
+          url: '/worklog/'+ot_work+'/update',
+          data: {
+            _token: '{{csrf_token()}}',
+            comments: comments,
+          },
+          beforeSend: function(data) {
+            
+          },
+          success: function(response) {
+              if (response.success) {
+                var data = response.data;
+                comments_msg.show();
+                setTimeout(function () {
+                  comments_msg.hide();
+                }, 2000)
+              }
+          },
+          error: function(request, status, error) {
+              var data = jQuery.parseJSON(request.responseText);
+              console.log(data);
+          }
+      });
     })
 
     function clearRadios() {

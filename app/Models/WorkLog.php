@@ -12,7 +12,10 @@ class WorkLog extends Model
     protected $fillable = [
         'work_id',
         'user_id',
-        'type'
+        'type',
+        'description',
+        'reason_id',
+        'status_id',
     ];
 
     protected $dates = [

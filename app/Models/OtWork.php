@@ -17,6 +17,7 @@ class OtWork extends Model
         'medidas',
         'qty',
         'personal',
+        'comments',
     ];
 
     protected $dates = [

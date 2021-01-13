@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\WorkLog;
+use App\Models\OtWork;
 use App\Models\OtWorkReason;
 use Illuminate\Http\Request;
 
@@ -102,10 +103,10 @@ class WorkLogController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Log  $log
+     * @param  \App\Models\WorkLog  $log
      * @return \Illuminate\Http\Response
      */
-    public function show(Log $log)
+    public function show(WorkLog $log)
     {
         //
     }
@@ -113,10 +114,10 @@ class WorkLogController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Log  $log
+     * @param  \App\Models\WorkLog  $log
      * @return \Illuminate\Http\Response
      */
-    public function edit(Log $log)
+    public function edit(WorkLog $log)
     {
         //
     }
@@ -125,21 +126,26 @@ class WorkLogController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Log  $log
+     * @param  \App\Models\WorkLog  $log
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Log $log)
+    public function update(Request $request, OtWork $log)
     {
-        //
+        $comments = $request->get('comments');
+
+        $log->comments = $comments;
+        $log->save();
+
+        return response()->json(['data'=>json_encode($log->comments),'success'=>true]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Log  $log
+     * @param  \App\Models\WorkLog  $log
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Log $log)
+    public function destroy(WorkLog $log)
     {
         //
     }

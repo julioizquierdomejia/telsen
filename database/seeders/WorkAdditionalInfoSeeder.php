@@ -21,27 +21,50 @@ class WorkAdditionalInfoSeeder extends Seeder
                 'service_id' => 6,
                 'public' => 1,
                 'mode' => 1, // 1=cabecera horizontal y vertical
+                'rows_quantity' => 3,
                 'cols' => array(
                     array (
                         'table_id' => 1,
-                        'col_name' => 'Descripción',
+                        'col_name' => 'Descripción | Diámetro de bocinas, alojamiento de rojas (mm) | Lado Delantero (Pto. 1)',
                         'col_type' => 'string',
                     ),
                     array (
                         'table_id' => 1,
-                        'col_name' => 'Lado Delantero (Pto. 1)',
+                        'col_name' => 'Descripción | Diámetro de bocinas, alojamiento de rojas (mm) | Lado Posterior (Pto. 2)',
                         'col_type' => 'string',
                     ),
                     array (
                         'table_id' => 1,
-                        'col_name' => 'Lado Posterior (Pto. 2)',
+                        'col_name' => 'Descripción | Diámetro de bocinas, alojamiento de rojas (mm) | Observación',
+                        'col_type' => 'string',
+                    ),
+
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Descripción | Diámetro de eje, asiento de rodajes (mm) | Lado Delantero (Pto. 1)',
                         'col_type' => 'string',
                     ),
                     array (
                         'table_id' => 1,
-                        'col_name' => 'Observación',
+                        'col_name' => 'Descripción | Diámetro de eje, asiento de rodajes (mm) | Lado Posterior (Pto. 2)',
                         'col_type' => 'string',
-                    )
+                    ),
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Descripción | Diámetro de eje, asiento de rodajes (mm) | Observación',
+                        'col_type' => 'string',
+                    ),
+
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Descripción | Paralelismo de eje | Lado Delantero (Pto. 1) / Posterior (Pto. 2)',
+                        'col_type' => 'string',
+                    ),
+                    array (
+                        'table_id' => 1,
+                        'col_name' => 'Descripción | Paralelismo de eje | Observación',
+                        'col_type' => 'string',
+                    ),
                 )
             ),
 
@@ -49,7 +72,8 @@ class WorkAdditionalInfoSeeder extends Seeder
                 'name' => 'Metalizado de eje',
                 'service_id' => 42,
                 'public' => 0,
-                'mode' => 2, //2=cabecera horizontal y columnas verticales con cabeceras laterales
+                'mode' => 2, //2=cabecera horizontal y columnas verticales con cabeceras laterales 
+                'rows_quantity' => 1,
                 'cols' => array(
                     array (
                         'table_id' => 1,
@@ -79,6 +103,7 @@ class WorkAdditionalInfoSeeder extends Seeder
                 'service_id' => 22,
                 'public' => 1,
                 'mode' => 3, //3=cabecera horizontal y datos
+                'rows_quantity' => 2,
                 'cols' => array(
                     array (
                         'table_id' => 1,
@@ -103,6 +128,7 @@ class WorkAdditionalInfoSeeder extends Seeder
                 'service_id' => 22,
                 'public' => 1,
                 'mode' => 4, //4=
+                'rows_quantity' => 1,
                 'cols' => array(
                     array (
                         'table_id' => 1,
@@ -119,7 +145,15 @@ class WorkAdditionalInfoSeeder extends Seeder
                         'col_name' => 'Corriente | T',
                         'col_type' => 'string',
                     ),
-
+                )
+            ),
+            array(
+                'name' => 'Prueba de Motor en Vacío', //Desde Pruebas electricas
+                'service_id' => 22,
+                'public' => 1,
+                'mode' => 4, //4=
+                'rows_quantity' => 1,
+                'cols' => array(
                     array (
                         'table_id' => 2,
                         'col_name' => 'Temperatura | Ambiente',
@@ -148,6 +182,7 @@ class WorkAdditionalInfoSeeder extends Seeder
                 'service_id' => 22,
                 'public' => 0,
                 'mode' => 1,
+                'rows_quantity' => 1,
                 'cols' => array(
                     array (
                         'table_id' => 3,
@@ -188,35 +223,36 @@ class WorkAdditionalInfoSeeder extends Seeder
                 'service_id' => 22,
                 'public' => 0,
                 'mode' => 1,
+                'rows_quantity' => 1,
                 'cols' => array(
                     array (
                         'table_id' => 4,
-                        'col_name' => 'Lado delantero (L.A.) | horizontal',
+                        'col_name' => 'Lado delantero (L.A.) | Horizontal',
                         'col_type' => 'string',
                     ),
                     array (
                         'table_id' => 4,
-                        'col_name' => 'Lado delantero (L.A.) | vertical',
+                        'col_name' => 'Lado delantero (L.A.) | Vertical',
                         'col_type' => 'string',
                     ),
                     array (
                         'table_id' => 4,
-                        'col_name' => 'Lado delantero (L.A.) | axial',
+                        'col_name' => 'Lado delantero (L.A.) | Axial',
                         'col_type' => 'string',
                     ),
                     array (
                         'table_id' => 4,
-                        'col_name' => 'Lado posterior (L.O.A.) | horizontal',
+                        'col_name' => 'Lado posterior (L.O.A.) | Horizontal',
                         'col_type' => 'string',
                     ),
                     array (
                         'table_id' => 4,
-                        'col_name' => 'Lado posterior (L.O.A.) | vertical',
+                        'col_name' => 'Lado posterior (L.O.A.) | Vertical',
                         'col_type' => 'string',
                     ),
                     array (
                         'table_id' => 4,
-                        'col_name' => 'Lado posterior (L.O.A.) | axial',
+                        'col_name' => 'Lado posterior (L.O.A.) | Axial',
                         'col_type' => 'string',
                     ),
                 )
@@ -227,6 +263,7 @@ class WorkAdditionalInfoSeeder extends Seeder
                 'service_id' => 9,
                 'public' => 0,
                 'mode' => 1,
+                'rows_quantity' => 1,
                 'cols' => array(
                     array (
                         'table_id' => 1,
@@ -269,6 +306,7 @@ class WorkAdditionalInfoSeeder extends Seeder
             $work_addinfo->service_id = $work_ai_item['service_id'];
             $work_addinfo->mode = $work_ai_item['mode'];
             $work_addinfo->public = $work_ai_item['public'];
+            $work_addinfo->rows_quantity = $work_ai_item['rows_quantity'];
             $work_addinfo->save();
             foreach ($cols as $key => $item) {
                 $work_addinfo_col = new WorkAdditionalInformationCol();

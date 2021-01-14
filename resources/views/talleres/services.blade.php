@@ -92,20 +92,49 @@
                         </div>
                         <hr style="border-top-color: #2b2b2b">
                         <div class="additional">
-                          <label class="text-white">Información adicional:</label>
-                          <div class="table-wrapper">
+                          <label class="text-white" data-toggle="collapse" data-target="#collapsetable{{$item->id}}">Información adicional:</label>
+                          <div class="table-wrapper mb-3 collapse show" id="collapsetable{{$item->id}}">
                             @php
                               $service = App\Models\Service::where('id', $item->service_id)->first();
+                              $tables = $service->tables;
                             @endphp
-                            @foreach ($service->tables as $table)
-                            @php
-                              //var_dump($table->toArray())
-                            @endphp
-                            <h5 class="text-white h6">{{$table->name}}</h5>
-                              <table class="table text-white">
-                                @php
-                                  var_dump($table->cols->toArray())
-                                @endphp
+                            @foreach ($tables as $table)
+                              <table class="table text-white" id="infotable{{$table->id}}">
+                                  @php
+                                    $cols_head_html = ''; $cols_html = '';
+                                    $cols = $table->cols;
+                                    $cols_count = $cols->count();
+                                    $table_rows = $table->rows_quantity;
+                                    @endphp
+                                    @foreach ($cols as $col)
+                                    @php
+                                    $cols_head_html .= '<td>'.$col->col_name.'</td>';
+                                    @endphp
+                                    @endforeach
+                                  @for ($i = 0; $i < $table_rows; $i++)
+                                  @php
+                                    $cols_html .= '<tr>';
+                                  @endphp
+                                    @foreach ($cols as $col)
+                                    @php
+                                    $cols_html .= '<td><input class="form-control frm-col" type="text" name="col_'.$col->id.'" data-col="'.$col->col_id.'"  data-ot_work="'.$item->id.'"></td>';
+                                    @endphp
+                                    @endforeach
+                                    @php
+                                    $cols_html .= '</tr>';
+                                  @endphp
+                                  @endfor
+                                <thead>
+                                  <tr>
+                                    <th colspan="{{$cols_count}}">
+                                      {{$table->name}}
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <tr>{!! $cols_head_html !!}</tr>
+                                {!! $cols_html !!}
+                                </tbody>
                               </table>
                             @endforeach
                           </div>

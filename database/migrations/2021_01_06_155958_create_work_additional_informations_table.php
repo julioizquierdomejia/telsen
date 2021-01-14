@@ -22,6 +22,7 @@ class CreateWorkAdditionalInformationsTable extends Migration
             $table->foreign('service_id')->references('id')->on('services');
             
             $table->boolean('public')->default(1);
+            $table->integer('rows_quantity')->default(1);
             $table->timestamps();
         });
 

@@ -19,7 +19,7 @@ class CreateWorkAdditionalInformationsTable extends Migration
             $table->integer('mode');
 
             $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
             
             $table->boolean('public')->default(1);
             $table->integer('rows_quantity')->default(1);
@@ -30,7 +30,7 @@ class CreateWorkAdditionalInformationsTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('work_add_info_id');
-            $table->foreign('work_add_info_id')->references('id')->on('work_additional_informations');
+            $table->foreign('work_add_info_id')->references('id')->on('work_additional_informations')->onDelete('cascade');
 
             $table->string('table_id');
             $table->string('col_name');
@@ -43,7 +43,7 @@ class CreateWorkAdditionalInformationsTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('col_id');
-            $table->foreign('col_id')->references('id')->on('work_additional_information_cols');
+            $table->foreign('col_id')->references('id')->on('work_additional_information_cols')->onDelete('cascade');
 
             $table->unsignedBigInteger('ot_work_id');
             $table->foreign('ot_work_id')->references('id')->on('ot_works');

@@ -80,7 +80,7 @@
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Modelo</label>
-              <!-- <input type="number" min="1" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
+              <!-- <input type="text" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
               <select style="width: 100%" name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
                 <option value="">Selecciona el modelo</option>
                 @foreach($modelos as $modelo)
@@ -105,7 +105,7 @@
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Velocidad</label>
-              <input type="number" min="1" class="form-control @error('ot_velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('ot_velocidad', $ot->velocidad)}}" name="ot_velocidad">
+              <input type="text" class="form-control @error('ot_velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('ot_velocidad', $ot->velocidad)}}" name="ot_velocidad">
             </div>
           </div>
           <h4 class="second-title text-danger py-2">Características del Equipo</h4>
@@ -152,7 +152,7 @@
             </div>
             <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">N° salida</label>
-              <input type="number" min="1" class="form-control @error('nro_salida') is-invalid @enderror" placeholder="N° salida" value="{{old('nro_salida')}}" name="nro_salida">
+              <input type="text" class="form-control @error('nro_salida') is-invalid @enderror" placeholder="N° salida" value="{{old('nro_salida')}}" name="nro_salida">
             </div>
             <div class="col-12 col-sm-6 col-md-4 form-group">
               <label class="col-form-label">Tipo:</label>
@@ -367,7 +367,7 @@
                 </div>
                 <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">N° salidas:</label>
-                  <input type="number" min="1" class="form-control @error('testin_motor_nro_salidas') is-invalid @enderror" placeholder="N° salidas" value="{{old('testin_motor_nro_salidas')}}" name="testin_motor_nro_salidas">
+                  <input type="text" class="form-control @error('testin_motor_nro_salidas') is-invalid @enderror" placeholder="N° salidas" value="{{old('testin_motor_nro_salidas')}}" name="testin_motor_nro_salidas">
                 </div>
                 <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Conexión:</label>
@@ -383,7 +383,7 @@
                 </div>
                 <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">RPM:</label>
-                  <input type="number" min="1" class="form-control @error('testin_motor_rpm') is-invalid @enderror" placeholder="RPM" value="{{old('testin_motor_rpm')}}" name="testin_motor_rpm">
+                  <input type="text" class="form-control @error('testin_motor_rpm') is-invalid @enderror" placeholder="RPM" value="{{old('testin_motor_rpm')}}" name="testin_motor_rpm">
                 </div>
                 <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Frec.(HZ):</label>
@@ -413,7 +413,7 @@
                 </div>
                 <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">N° salidas:</label>
-                  <input type="number" min="1" class="form-control @error('testin_er_nro_salidas') is-invalid @enderror" placeholder="N° salidas" value="{{old('testin_er_nro_salidas')}}" name="testin_er_nro_salidas">
+                  <input type="text" class="form-control @error('testin_er_nro_salidas') is-invalid @enderror" placeholder="N° salidas" value="{{old('testin_er_nro_salidas')}}" name="testin_er_nro_salidas">
                 </div>
                 <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">Conexión:</label>
@@ -429,7 +429,7 @@
                 </div>
                 <div class="col-sm-6 col-md-12 mb-2">
                   <label class="col-form-label">N° polos:</label>
-                  <input type="number" min="1" class="form-control @error('testin_er_nro_polos') is-invalid @enderror" placeholder="N° polos" value="{{old('testin_er_nro_polos')}}" name="testin_er_nro_polos">
+                  <input type="text" class="form-control @error('testin_er_nro_polos') is-invalid @enderror" placeholder="N° polos" value="{{old('testin_er_nro_polos')}}" name="testin_er_nro_polos">
                 </div>
               </div>
             </div>
@@ -505,7 +505,7 @@
             </div>
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">N° salidas:</label>
-              <input type="number" min="1" class="form-control @error('tran_nro_salidas') is-invalid @enderror" placeholder="N° salidas" value="{{old('tran_nro_salidas')}}" name="tran_nro_salidas">
+              <input type="text" class="form-control @error('tran_nro_salidas') is-invalid @enderror" placeholder="N° salidas" value="{{old('tran_nro_salidas')}}" name="tran_nro_salidas">
             </div>
             <div class="col-12 col-sm-6 col-md-3 form-group">
               <label class="col-form-label">Conexión:</label>

@@ -72,12 +72,10 @@
                           @endif
                         </ul>
                         <hr style="border-top-color: #2b2b2b">
-                        <div class="history-footer row">
-                          <div class="col-12 col-md-6">
-                            <label class="text-white">Comentarios:</label>
-                            <textarea class="form-control mt-0 comments" data-otwork="{{$item->id}}" name="comments">{{$item->comments}}</textarea>
-                            <p class="mb-0 comments-msg" style="display: none;"><span class="small"><i class="fa fa-check"></i> Se guardó</span></p>
-                          </div>
+                        <div class="history-footer">
+                          <label class="text-white">Comentarios:</label>
+                          <textarea class="form-control mt-0 comments" data-otwork="{{$item->id}}" name="comments">{{$item->comments}}</textarea>
+                          <p class="mb-0 comments-msg text-success" style="display: none;"><span class="font-weight-light"><i class="fa fa-check"></i> Se guardó.</span></p>
                           {{-- <div class="col-12 col-md-6 text-left">
                             <label class="text-white">Fotos:</label>
                             <ul class="list-inline">
@@ -148,7 +146,7 @@
                                 </tbody>
                                 <tfoot>
                                   <tr>
-                                    <td colspan="{{$cols_count}}"><p class="mb-0 coldata-msg" style="display: none;"><span class="small"><i class="fa fa-check"></i> Se guardó</span></p></td>
+                                    <td colspan="{{$cols_count}}"><p class="mb-0 coldata-msg text-success" style="display: none;"><span class="font-weight-light"><i class="fa fa-check"></i> Se guardó.</span></p></td>
                                   </tr>
                                 </tfoot>
                               </table>
@@ -333,7 +331,7 @@
                 comments_msg.show();
                 setTimeout(function () {
                   comments_msg.hide();
-                }, 2000)
+                }, 3000)
               }
           },
           error: function(request, status, error) {
@@ -369,7 +367,7 @@
                 coldata_msg.show();
                 setTimeout(function () {
                   coldata_msg.hide();
-                }, 2000)
+                }, 3000)
               }
             },
             error: function (xhr, desc, err) {

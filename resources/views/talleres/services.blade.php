@@ -78,7 +78,7 @@
                             <textarea class="form-control mt-0 comments" data-otwork="{{$item->id}}" name="comments">{{$item->comments}}</textarea>
                             <p class="mb-0 comments-msg" style="display: none;"><span class="small"><i class="fa fa-check"></i> Se guardó</span></p>
                           </div>
-                          <div class="col-12 col-md-6 text-left">
+                          {{-- <div class="col-12 col-md-6 text-left">
                             <label class="text-white">Fotos:</label>
                             <ul class="list-inline">
                               <li>foto</li>
@@ -88,36 +88,46 @@
                               <div class="dz-default dz-message">Sube aquí tus imágenes</div>
                             </div>
                             <script type="text/javascript">drops.push('dZUpload{{$item->id}}')</script>
-                          </div>
+                          </div> --}}
                         </div>
                         <hr style="border-top-color: #2b2b2b">
                         <div class="additional">
                           <label class="text-white" data-toggle="collapse" data-target="#collapsetable{{$item->id}}">Información adicional:</label>
-                          <div class="table-wrapper mb-3 collapse show" id="collapsetable{{$item->id}}">
+                          <div class="table-wrapper mb-3 collapse show">
                             @php
                               $service = App\Models\Service::where('id', $item->service_id)->first();
                               $tables = $service->tables;
                             @endphp
                             @foreach ($tables as $table)
+                            <form class="parent-table" id="parentTb{{$table->id}}" action="/worklog/update-data" method="POST">
                               <table class="table text-white" id="infotable{{$table->id}}">
                                   @php
                                     $cols_head_html = ''; $cols_html = '';
                                     $cols = $table->cols;
                                     $cols_count = $cols->count();
                                     $table_rows = $table->rows_quantity;
+                                    $counter = -1;
                                     @endphp
                                     @foreach ($cols as $col)
                                     @php
-                                    $cols_head_html .= '<td>'.$col->col_name.'</td>';
+                                    $cols_head_html .= '<th>'.$col->col_name.'</th>';
                                     @endphp
                                     @endforeach
                                   @for ($i = 0; $i < $table_rows; $i++)
                                   @php
                                     $cols_html .= '<tr>';
                                   @endphp
-                                    @foreach ($cols as $col)
+                                    @foreach ($cols as $ckey => $col)
                                     @php
-                                    $cols_html .= '<td><input class="form-control frm-col" type="text" name="col_'.$col->id.'" data-col="'.$col->col_id.'"  data-ot_work="'.$item->id.'"></td>';
+                                    //var_dump($col->data->toArray());
+                                    $counter++;
+                                    $cols_html .= '<td>
+                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][work_add_info_id]" value="'.$col->work_add_info_id.'">
+                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][row]" value="'.$i.'">
+                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][col_id]" value="'.$col->id.'">
+                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][ot_work_id]" value="'.$item->id.'">
+                                      <input class="form-control frm-col mt-0" type="text" name="coldata['.$counter.'][content]" value="'.(isset($col->data[$i]->content) ? $col->data[$i]->content : '').'">
+                                    </td>';
                                     @endphp
                                     @endforeach
                                     @php
@@ -130,12 +140,18 @@
                                       {{$table->name}}
                                     </th>
                                   </tr>
+                                  <tr>{!! $cols_head_html !!}</tr>
                                 </thead>
                                 <tbody>
-                                <tr>{!! $cols_head_html !!}</tr>
                                 {!! $cols_html !!}
                                 </tbody>
+                                <tfoot>
+                                  <tr>
+                                    <td colspan="{{$cols_count}}"><p class="mb-0 coldata-msg" style="display: none;"><span class="small"><i class="fa fa-check"></i> Se guardó</span></p></td>
+                                  </tr>
+                                </tfoot>
                               </table>
+                              </form>
                             @endforeach
                           </div>
                         </div>
@@ -325,6 +341,41 @@
           }
       });
     })
+
+    $('.frm-col').on('change', function (event) {
+      $(this).closest('.parent-table').submit();
+    })
+
+    $(document).on("submit", ".parent-table", function(event) {
+      console.log("entra a submit")
+      var coldata_msg = $(this).find('.coldata-msg');
+        event.preventDefault();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: $(this).attr("action"),
+            type: $(this).attr("method"),
+            dataType: "JSON",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            success: function (response, status) {
+              if (response.success) {
+                var data = response.data;
+                coldata_msg.show();
+                setTimeout(function () {
+                  coldata_msg.hide();
+                }, 2000)
+              }
+            },
+            error: function (xhr, desc, err) {
+
+            }
+        });        
+    });
 
     function clearRadios() {
       $('#modalReason [name="reason"]').attr('checked', false)

@@ -49,6 +49,7 @@ class CreateWorkAdditionalInformationsTable extends Migration
             $table->foreign('ot_work_id')->references('id')->on('ot_works');
 
             $table->string('content')->nullable();
+            $table->integer('row');
 
             $table->timestamps();
         });

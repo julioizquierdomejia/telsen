@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\WorkLog;
 use App\Models\OtWork;
 use App\Models\OtWorkReason;
+use App\Models\WorkAdditionalInformationData;
 use Illuminate\Http\Request;
 
 class WorkLogController extends Controller
@@ -137,6 +138,33 @@ class WorkLogController extends Controller
         $log->save();
 
         return response()->json(['data'=>json_encode($log->comments),'success'=>true]);
+    }
+    public function update_coldata(Request $request)
+    {
+        $coldata = $request->get('coldata');
+
+        $old_workaddinfo_data = WorkAdditionalInformationData::
+                join('work_additional_information_cols', 'work_additional_information_cols.id', '=', 'work_additional_information_data.col_id')
+                ->select('work_additional_information_data.*', 'work_additional_information_cols.work_add_info_id')
+                ->where('work_additional_information_data.ot_work_id', $coldata[1]['ot_work_id'])
+                ->where('work_additional_information_cols.work_add_info_id', $coldata[1]['work_add_info_id'])
+                ->delete()
+        ;
+        $set_workaddinfo_data = [];
+
+        foreach ($coldata as $key => $data) {
+            //$name = preg_split('/\\] \\[|\\[|\\]/', $data, -1, PREG_SPLIT_NO_EMPTY);
+            $work_addinfo_data = new WorkAdditionalInformationData();
+            $work_addinfo_data->col_id = $data['col_id'];
+            $work_addinfo_data->ot_work_id = $data['ot_work_id'];
+            $work_addinfo_data->row = $data['row'];
+            $work_addinfo_data->content = $data['content'];
+            $work_addinfo_data->save();
+
+            $set_workaddinfo_data[] = $work_addinfo_data;
+        }
+
+        return response()->json(['data'=>json_encode($set_workaddinfo_data),'success'=>true]);
     }
 
     /**

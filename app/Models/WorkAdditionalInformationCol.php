@@ -22,4 +22,9 @@ class WorkAdditionalInformationCol extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function data()
+    {
+        return $this->hasMany(WorkAdditionalInformationData::class, 'col_id')->orderBy('row', 'asc');
+    }
 }

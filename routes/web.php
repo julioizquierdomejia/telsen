@@ -201,5 +201,6 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	//Work Log
 	Route::post('worklog/store', [App\Http\Controllers\WorkLogController::class, 'store'])->name('worklog.store');
 	Route::post('worklog/{log}/update', [App\Http\Controllers\WorkLogController::class, 'update'])->name('worklog.update');
+	Route::post('worklog/update-data', [App\Http\Controllers\WorkLogController::class, 'update_coldata'])->name('worklog.update_coldata');
 
 });

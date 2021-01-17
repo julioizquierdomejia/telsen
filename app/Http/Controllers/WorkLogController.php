@@ -154,6 +154,29 @@ class WorkLogController extends Controller
 
         foreach ($coldata as $key => $data) {
             //$name = preg_split('/\\] \\[|\\[|\\]/', $data, -1, PREG_SPLIT_NO_EMPTY);
+
+            /*$work_addinfo_data = WorkAdditionalInformationData::
+                join('work_additional_information_cols', 'work_additional_information_cols.id', '=', 'work_additional_information_data.col_id')
+                ->select('work_additional_information_data.*', 'work_additional_information_cols.work_add_info_id')
+                ->where('work_additional_information_data.ot_work_id', $data['ot_work_id'])
+                ->where('work_additional_information_cols.work_add_info_id', $data['work_add_info_id'])
+                ->where('work_additional_information_data.id', $data['id'])
+                ->first();
+            if ($work_addinfo_data) {
+                $work_addinfo_data->col_id = $data['col_id'];
+                $work_addinfo_data->ot_work_id = $data['ot_work_id'];
+                $work_addinfo_data->row = $data['row'];
+                $work_addinfo_data->content = $data['content'];
+                $work_addinfo_data->save();
+            } else {
+                $work_addinfo_data = new WorkAdditionalInformationData();
+                $work_addinfo_data->col_id = $data['col_id'];
+                $work_addinfo_data->ot_work_id = $data['ot_work_id'];
+                $work_addinfo_data->row = $data['row'];
+                $work_addinfo_data->content = $data['content'];
+                $work_addinfo_data->save();
+            }*/
+            
             $work_addinfo_data = new WorkAdditionalInformationData();
             $work_addinfo_data->col_id = $data['col_id'];
             $work_addinfo_data->ot_work_id = $data['ot_work_id'];

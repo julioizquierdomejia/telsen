@@ -11,12 +11,12 @@
       <div class="card-header">
         <h4 class="card-title d-flex align-items-center">
           <span>Mis Tareas</span>
-          <select class="form-control col-5 col-md-4 col-xl-3 ml-auto">
+          {{-- <select class="form-control col-5 col-md-4 col-xl-3 ml-auto">
             <option value="">Seleccionar OT</option>
             @foreach ($ots as $ot)
               <option value="1">OT-{{$ot}}</option>
             @endforeach
-          </select>
+          </select> --}}
         </h4>
       </div>
       <div class="card-body">
@@ -122,6 +122,7 @@
                                     //var_dump($col->data->toArray());
                                     $counter++;
                                     $cols_html .= '<td>
+                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][id]" value="'.(isset($col->data[$i]->id) ? $col->data[$i]->id : '').'">
                                       <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][work_add_info_id]" value="'.$col->work_add_info_id.'">
                                       <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][row]" value="'.$i.'">
                                       <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][col_id]" value="'.$col->id.'">

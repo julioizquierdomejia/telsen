@@ -91,7 +91,7 @@
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label" for="selectModelo">Modelo</label>
-              <!-- <input type="number" min="1" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
+              <!-- <input type="text" class="form-control @error('modelo_id') is-invalid @enderror" placeholder="Ingrese Modelo" value="" name="modelo"> -->
               <select style="width: 100%" name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
                 <option value="">Selecciona el modelo</option>
                 @foreach($modelos as $modelo)

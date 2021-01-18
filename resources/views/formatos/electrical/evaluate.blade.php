@@ -724,6 +724,8 @@ $(document).ready(function() {
   var myDrop = new Dropzone("#dZUpload", {
     url: "{{route('gallery.store', $ot->id)}}",
     addRemoveLinks: true,
+    maxFilesize: 2000,
+    timeout: 180000,
     //autoProcessQueue: false,
     params: {
       _token: '{{csrf_token()}}',

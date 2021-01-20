@@ -79,33 +79,41 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 						<label class="col-label">Descripción del motor</label>
 						<p class="mb-1">{{$ot->descripcion_motor ?? '-'}}</p>
 					</div>
-					<div class="col-md-4 mb-2">
+					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Código</label>
 						<p class="mb-1">{{$ot->codigo_motor ?? '-'}}</p>
 					</div>
-					<div class="col-md-4 mb-2">
+					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Marca</label>
 						<p class="mb-1">{{$ot->marca ?? '-'}}</p>
 					</div>
-					<div class="col-md-4  mb-2">
+					<div class="col-6 col-md-3 mb-2">
+						<label class="col-label">Solped</label>
+						<p class="mb-1">{{$ot->solped ?? '-'}}</p>
+					</div>
+					<div class="col-6 col-md-3  mb-2">
 						<label class="col-label">Modelo</label>
 						<p class="mb-1">{{ $ot->modelo ?? '-' }}</p>
 					</div>
-					<div class="col-md-3 mb-2">
+					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Numero de potencia</label>
 						<p class="mb-1">{{$ot->numero_potencia ?? '-'}}</p>
 					</div>
-					<div class="col-md-3 mb-2">
+					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Medida de potencia</label>
 						<p class="mb-1">{{$ot->medida_potencia ?? '-'}}</p>
 					</div>
-					<div class="col-md-3 mb-2">
+					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Voltaje</label>
 						<p class="mb-1">{{$ot->voltaje ?? '-'}}</p>
 					</div>
-					<div class="col-md-3 mb-2">
+					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Velocidad</label>
 						<p class="mb-1">{{$ot->velocidad ?? '-'}}</p>
+					</div>
+					<div class="col-12 mb-2">
+						<label class="col-label">Estado</label>
+						<p class="mb-1">{!!$ot->enabled == 1 ? '<span class="badge badge-success px-3">Activo</span>' : '<span class="badge badge-danger px-3">Inactivo</span>'!!}</p>
 					</div>
 				</div>
 			</div>

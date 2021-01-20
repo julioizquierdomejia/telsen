@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Editar "O.T. ' . zerosatleft($orden->code, 3) .' | '. $orden->marca . '"' ])
+@extends('layouts.app', ['title' => 'Editar "O.T. ' . zerosatleft($orden->code, 3) .' | '. $orden->marca->name . '"' ])
 @section('content')
 <div class="row">
   
@@ -21,7 +21,7 @@
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Vendedor</label>
-              <input type="text" name="guia_cliente" class="form-control @error('guia_cliente') is-invalid @enderror" placeholder="Ingrese Vendedor" value="{{$orden->guia_cliente}}">
+              <input type="text" name="guia_cliente" class="form-control @error('guia_cliente') is-invalid @enderror" placeholder="Ingrese Vendedor" value="{{old('guia_cliente', $orden->guia_cliente)}}">
               @error('guia_cliente')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -69,7 +69,7 @@
           <div class="row">
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Código</label>
-              <input type="text" class="form-control @error('codigo_motor') is-invalid @enderror" name="codigo_motor" placeholder="Ingrese código del motor" value="{{$orden->codigo_motor}}">
+              <input type="text" class="form-control @error('codigo_motor') is-invalid @enderror" name="codigo_motor" placeholder="Ingrese código del motor" value="{{old('codigo_motor', $orden->codigo_motor)}}">
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Marca</label>
@@ -83,7 +83,7 @@
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label" for="solped">Solped</label>
-              <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped')}}" id="solped" name="solped">
+              <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped', $orden->solped)}}" id="solped" name="solped">
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label">Modelo</label>
@@ -99,19 +99,19 @@
           <div class="row">
             <div class="col-md-3 form-group">
               <label class="col-form-label">Numero de potencia</label>
-              <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Número de potencia" value="{{$orden->numero_potencia}}" name="numero_potencia">
+              <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Número de potencia" value="{{old('numero_potencia', $orden->numero_potencia)}}" name="numero_potencia">
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Medida de potencia</label>
-              <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Medida de medida_potencia" value="{{$orden->medida_potencia}}" name="medida_potencia">
+              <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Medida de medida_potencia" value="{{old('medida_potencia', $orden->medida_potencia)}}" name="medida_potencia">
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Voltaje</label>
-              <input type="text" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{$orden->voltaje}}" name="voltaje">
+              <input type="text" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('voltaje', $orden->voltaje)}}" name="voltaje">
             </div>
             <div class="col-md-3 form-group">
               <label class="col-form-label">Velocidad</label>
-              <input type="text" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{$orden->velocidad}}" name="velocidad">
+              <input type="text" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('velocidad', $orden->velocidad)}}" name="velocidad">
             </div>
             <div class="col-6 col-md-3 form-group">
               <label class="col-form-label" for="selectEstado">Estado</label>

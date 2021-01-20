@@ -1737,14 +1737,15 @@ class OtController extends Controller
                         if($ot->fecha_entrega) {
                             $start = strtotime($ot->fecha_entrega);
                             $end   = strtotime(date('d-m-Y'));
-                            $days  = date('d', $start - $end);
+                            $remaining_days = $start - $end;
                             $fecha = date('d-m-Y', $start);
-                            $i_class = ($days > 0) ? ' badge-danger ' : ' badge-success ';
-                            $fecha_entrega = '<span class="badge'. $i_class. 'px-2 py-1 w-100">'.$fecha.'</span>';
-                            if($days > 0) {
-                                $fecha_entrega .= '<span class="text-nowrap">quedan ' .$days . ' días</span>';
+                            if ($remaining_days == 0) {
+                                $fecha_entrega = '<span class="badge badge-warning px-2 py-1 w-100">'.$fecha.'</span><span class="text-nowrap text-muted">hoy</span>';
+                            } else if($remaining_days > 0) {
+                                $days  = date('d', $remaining_days);
+                                $fecha_entrega = '<span class="badge badge-danger px-2 py-1 w-100">'.$fecha.'</span><span class="text-nowrap">quedan ' .$days . ' día(s)</span>';
                             } else {
-                                $fecha_entrega .= '<span class="text-nowrap text-muted">pasado</span>';
+                                $fecha_entrega .= '<span class="badge badge-success px-2 py-1 w-100">'.$fecha.'</span><span class="text-nowrap text-muted">pasado</span>';
                             }
                         }
                         $status['fecha_entrega'] = $fecha_entrega;

@@ -317,9 +317,11 @@ $role_fentrega = in_array("fecha_de_entrega", $role_names);
             	<div class="update ml-auto mr-auto">
             		<button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>
             	</div>
+            	@if (env('SHOW_BOTH_APPROVATIONS', true))
             	<div class="update ml-auto mr-auto">
               		<button type="button" class="btn btn-secondary btn-sm px-md-5" data-action="2">No Aprobar</button>
             	</div>
+            	@endif
             	<p class="c-ots message text-danger"></p>
         	</div>
         	@endif

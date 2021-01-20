@@ -386,9 +386,11 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 				<div class="update ml-auto mr-auto">
             		<button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>
             	</div>
+            	@if (env('SHOW_BOTH_APPROVATIONS', true))
             	<div class="update ml-auto mr-auto">
               		<button type="button" class="btn btn-secondary btn-sm px-md-5" data-action="2">No Aprobar</button>
             	</div>
+            	@endif
 			</div>
 			@endif
 			@if(in_array("cc_approved", $statuses))

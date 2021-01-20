@@ -625,7 +625,9 @@ $reception_list = [
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-primary btn-sm px-md-5" data-action="1">Aprobar</button>
+          @if (env('SHOW_BOTH_APPROVATIONS', true))
           <button type="button" class="btn btn-secondary btn-sm px-md-5" data-action="2">No Aprobar</button>
+          @endif
         </div>
     </div>
   </div>

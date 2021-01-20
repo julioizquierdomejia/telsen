@@ -206,7 +206,7 @@ class WorkshopController extends Controller
                 ->get();
         }
 
-        //$services = [];
+        $services = [];
         /*if ($ot->client_type_id == 1) { //RDI
             $rdi = Rdi::where('ot_id', $ot->id)->firstOrFail();
             $services_list = Area::join('services', 'services.area_id', '=', 'areas.id')

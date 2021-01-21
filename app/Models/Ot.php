@@ -49,4 +49,11 @@ class Ot extends Model
         //return $this->belongsToMany(StatusOt::class);
         return $this->belongsToMany(Status::class, 'status_ot')->withPivot('ot_id');
     }
+
+    public function works()
+    {
+        return $this->hasMany(OtWork::class, 'ot_id')
+            //->orderBy('id', 'desc')
+            ;
+    }
 }

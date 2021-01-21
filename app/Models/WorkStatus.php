@@ -12,6 +12,7 @@ class WorkStatus extends Model
     protected $table = "work_status";
 
     protected $fillable = [
+        'code',
         'name',
     ];
 

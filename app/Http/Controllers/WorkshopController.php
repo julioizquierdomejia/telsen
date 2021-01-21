@@ -8,7 +8,7 @@ use App\Models\Status;
 use App\Models\Service;
 use App\Models\Rdi;
 use App\Models\RdiServiceCost;
-use App\Models\OtWorkReason;
+//use App\Models\OtWorkReason;
 use App\Models\OtWork;
 use App\Models\WorkStatus;
 //use App\Models\OtWorkStatus;
@@ -55,11 +55,13 @@ class WorkshopController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
-        $work_reasons = OtWorkReason::
+        $work_reasons = WorkStatus::
                           where('code', '<>', 'start')
                         ->where('code', '<>', 'end')
                         ->where('code', '<>', 'continue')
                         ->where('code', '<>', 'restart')
+                        ->where('code', '<>', 'approved')
+                        ->where('code', '<>', 'disapproved')
                         ->get();
         $area_id = \Auth::user()->data->area->id;
 
@@ -67,21 +69,24 @@ class WorkshopController extends Controller
         if (in_array("superadmin", $roles) || in_array("admin", $roles)) {
             $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
                 ->join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                 ->get();
         } else {
             if (in_array("supervisor", $roles)) {
                 $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
                     ->join('services', 'services.id', '=', 'ot_works.service_id')
+                    ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->where('user_data.area_id', $area_id)
 
                     ->whereDoesntHave('work_logs', function ($query) {
-                        $query->where("work_logs.type", "=", 'end');
+                        $query->where("work_logs.type", "=", 'end')
+                        ->where("work_logs.type", "=", 'disapproved');
                     })
 
                     ->get();
@@ -90,9 +95,10 @@ class WorkshopController extends Controller
 
                 $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
                     ->join('services', 'services.id', '=', 'ot_works.service_id')
+                    ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->where('workshops.user_id', $user_id)
                     //->where('user_data.area_id', $area_id)
 
@@ -104,7 +110,8 @@ class WorkshopController extends Controller
                         $query->where("work_logs.type", "=", 'restart');
                     })*/
                     ->whereDoesntHave('work_logs', function ($query) {
-                        $query->where("work_logs.type", "=", 'end');
+                        $query->where("work_logs.type", "=", 'end')
+                        ->where("work_logs.type", "=", 'disapproved');
                     })
 
                     ->get();
@@ -454,21 +461,25 @@ class WorkshopController extends Controller
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
 
         $rules = array(
-            'status_id'      => 'required|exists:work_status,id',
+            'status_id'      => 'required|exists:work_status,code',
             'work_id'      => 'required|integer|exists:ot_works,id',
         );
         $this->validate($request, $rules);
 
-        $status = $request->input('status_id');
+        $status_code = $request->input('status_id');
         $work_id = $request->input('work_id');
 
-        $work_log = WorkLog::where('work_id', $work_id)
+        $status = WorkStatus::where('code', $status_code)->first();
+        /*$work_log = WorkLog::where('work_id', $work_id)
                     ->orderBy('id', 'desc')
                     ->where('type', 'end')
-                    ->whereNull('status_id')
-                    ->first();
+                    ->first();*/
 
-        $work_log->status_id = $status;
+        $work_log = new WorkLog();
+        $work_log->work_id = $work_id;
+        $work_log->user_id = \Auth::id();
+        $work_log->type = $status_code;
+        $work_log->status_id = $status->id;
         $work_log->save();
 
         /*$ot_work_status = new OtWorkStatus();
@@ -479,14 +490,14 @@ class WorkshopController extends Controller
         /*if ($ot_work_status->work_status_id == 1) { //Aprobado
             
         } else {
-            $reason = OtWorkReason::where('code', 'restart')->first();
-            if ($reason) {
+            $status = WorkStatus::where('code', 'restart')->first();
+            if ($status) {
                 $work_log = new WorkLog();
                 $work_log->work_id = $request->input('work_id');
                 $work_log->user_id = \Auth::id();
                 $work_log->type = 'restart';
                 $work_log->description = 'Reinició el trabajo';
-                $work_log->reason_id = $reason->id;
+                $work_log->status_id = $status->id;
                 $work_log->save();
             }
         }*/

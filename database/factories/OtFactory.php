@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\ot;
+use App\Models\Ot;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class otFactory extends Factory

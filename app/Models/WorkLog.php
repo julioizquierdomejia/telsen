@@ -14,7 +14,6 @@ class WorkLog extends Model
         'user_id',
         'type',
         'description',
-        'reason_id',
         'status_id',
     ];
 
@@ -23,12 +22,7 @@ class WorkLog extends Model
         'updated_at'
     ];
 
-    public function reason()
-    {
-        return $this->hasOne(OtWorkReason::class, 'id' ,'reason_id');
-    }
-
-    public function work_status()
+    public function status()
     {
         return $this->hasOne(WorkStatus::class, 'id' ,'status_id');
     }

@@ -21,6 +21,7 @@
                   <th>Estado</th>
                   <th>Cliente</th>
                   <th>Potencia</th>
+                  <th>Código <br>motor</th>
                   <th class="text-center">Fecha de entrega</th>
                   <th class="text-center">Acciones</th>
                 </thead>
@@ -36,6 +37,7 @@
                   <th>Estado</th>
                   <th>Cliente</th>
                   <th>Potencia</th>
+                  <th>Código <br>motor</th>
                   <th class="text-center">Fecha de entrega</th>
                   <th class="text-center">Acciones</th>
                 </thead>
@@ -68,6 +70,7 @@ $(document).ready(function() {
             { data: 'status', class: 'text-center' },
             { data: 'razon_social' },
             { data: 'numero_potencia', class: 'text-left' },
+            { data: 'codigo_motor', class: 'text-left' },
             { data: 'fecha_entrega', class: 'text-center bg-light' },
             { data: 'tools', class: 'text-left text-nowrap'}
         ],
@@ -97,6 +100,7 @@ $(document).ready(function() {
             { data: 'status', class: 'text-center' },
             { data: 'razon_social' },
             { data: 'numero_potencia', class: 'text-left' },
+            { data: 'codigo_motor', class: 'text-left' },
             { data: 'fecha_entrega', class: 'text-center' },
             { data: 'tools', class: 'text-left text-nowrap'}
         ],

@@ -1,9 +1,5 @@
 @extends('layouts.app', ['body_class' => 'ots', 'title' => 'OTS Pendientes'])
 @section('content')
-@php
-$role_names = validateActionbyRole();
-$allowed_users = in_array("superadmin", $role_names) || in_array("admin", $role_names) || in_array("crear_ot", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);
-@endphp
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\WorkLog;
 use App\Models\OtWork;
-use App\Models\OtWorkReason;
+//use App\Models\OtWorkReason;
+use App\Models\WorkStatus;
 use App\Models\WorkAdditionalInformationData;
 use Illuminate\Http\Request;
 
@@ -50,34 +51,34 @@ class WorkLogController extends Controller
 
         $user_id = \Auth::user()->id;
         $type = $request->input('type');
-        $reason = $request->input('reason');
+        $status = $request->input('reason');
 
         if ($type == 'start') {
-            $ot_reason = OtWorkReason::where('code', 'start')->first();
-            if ($ot_reason) {
-                $reason = $ot_reason->id;
+            $work_status = WorkStatus::where('code', 'start')->first();
+            if ($work_status) {
+                $status = $work_status->id;
             }
-            $description = "Empezó la tarea.";
+            //$description = "Empezó la tarea.";
         } elseif ($type == 'pause') {
-            $description = "Pausó la tarea.";
+            //$description = "Pausó la tarea.";
         } elseif ($type == 'continue') {
-            $ot_reason = OtWorkReason::where('code', 'continue')->first();
-            if ($ot_reason) {
-                $reason = $ot_reason->id;
+            $work_status = WorkStatus::where('code', 'continue')->first();
+            if ($work_status) {
+                $status = $work_status->id;
             }
-            $description = "Continuó la tarea.";
+            //$description = "Continuó la tarea.";
         } elseif ($type == 'end') {
-            $ot_reason = OtWorkReason::where('code', 'end')->first();
-            if ($ot_reason) {
-                $reason = $ot_reason->id;
+            $work_status = WorkStatus::where('code', 'end')->first();
+            if ($work_status) {
+                $status = $work_status->id;
             }
-            $description = "Finalizó la tarea.";
+            //$description = "Finalizó la tarea.";
         } elseif ($type == 'restart') {
-            $ot_reason = OtWorkReason::where('code', 'restart')->first();
-            if ($ot_reason) {
-                $reason = $ot_reason->id;
+            $work_status = WorkStatus::where('code', 'restart')->first();
+            if ($work_status) {
+                $status = $work_status->id;
             }
-            $description = "Se reinició la tarea.";
+            //$description = "Se reinició la tarea.";
         }
 
         $work_log = new WorkLog();
@@ -85,14 +86,13 @@ class WorkLogController extends Controller
         //$work_log->user_id = $request->input('user_id');
         $work_log->user_id = $user_id;
         $work_log->type = $type;
-        $work_log->description = $description;
-        $work_log->reason_id = $reason;
+        //$work_log->description = $description;
+        $work_log->status_id = $status;
         $work_log->save();
 
-        $work_logs = WorkLog::join('ot_work_reasons', 'ot_work_reasons.id', '=', 'work_logs.reason_id')
-                    ->select('work_logs.*', 'ot_work_reasons.name as reason')
-                    ->where('user_id', $user_id)
+        $work_logs = WorkLog::where('user_id', $user_id)
                     ->where('work_id', $work_log->work_id)
+                    ->with('status')
                     ->orderBy('id', 'desc')
                     ->get();
 

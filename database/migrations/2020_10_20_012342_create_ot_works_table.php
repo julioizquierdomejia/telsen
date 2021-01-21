@@ -29,6 +29,7 @@ class CreateOtWorksTable extends Migration
             $table->string('qty')->nullable();
             $table->string('personal')->nullable();
             $table->text('comments')->nullable();
+            $table->boolean('approved')->default(0);
 
             $table->timestamps();
         });

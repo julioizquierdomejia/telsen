@@ -163,6 +163,14 @@
         </a>
       </li>
       @endif
+      @if ($admin || $supervisor)
+      <li class="{{ request()->routeIs('workshop.closure') ? 'active' : '' }}">
+        <a class="mr-0" href="{{route('workshop.closure')}}">
+          <i class="fas fa-cogs mr-1"></i>
+          <p>OT Pendientes de cierre</p>
+        </a>
+      </li>
+      @endif
       @if ($admin)
       <li class="px-3"><hr style="border-top-color: #858585;"></li>
       <li class="{{ request()->segment(1) == 'clientes' ? 'active' : '' }}">

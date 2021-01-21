@@ -1,25 +1,23 @@
-@extends('layouts.app', ['body_class' => 'ots', 'title' => 'Talleres en OTS'])
+@extends('layouts.app', ['body_class' => 'ots', 'title' => 'OTS Pendientes de cierre'])
 @section('content')
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title">Talleres en OTS</h4>
+        <h4 class="card-title">Órdenes Pendientes de cierre</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-separate data-table" id="workshop-table">
+          <table class="table table-separate data-table">
             <thead class=" text-primary">
               <th class="text-nowrap">Fecha OT</th>
               <th class="text-nowrap">N° de OT</th>
               <th>Estado</th>
               <th>Cliente</th>
               <th>Potencia</th>
-              <th>Código <br>motor</th>
               <th class="text-center">Fecha de entrega</th>
               <th class="text-center">Acciones</th>
             </thead>
-            <tbody></tbody>
           </table>
         </div>
       </div>
@@ -30,10 +28,10 @@
 @section('javascript')
 <script>
 $(document).ready(function() {
-    $('#workshop-table').DataTable({
+  pendingots = $('.data-table').DataTable({
      processing: true,
      serverSide: true,
-     ajax: "{{route('talleres.list_workshop')}}",
+     ajax: "{{route('workshop.closurelist')}}",
      pageLength: 5,
      lengthMenu: [ 5, 25, 50 ],
      columns: [
@@ -42,7 +40,6 @@ $(document).ready(function() {
         { data: 'status', class: 'text-center' },
         { data: 'razon_social' },
         { data: 'numero_potencia', class: 'text-left' },
-        { data: 'codigo_motor', class: 'text-left' },
         { data: 'fecha_entrega', class: 'text-center bg-light' },
         { data: 'tools', class: 'text-left text-nowrap'}
     ],

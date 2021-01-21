@@ -100,5 +100,17 @@ class StatusSeeder extends Seeder
         $status->description = 'Generación de fecha de entrega';
         $status->enabled = 1;
         $status->save();
+
+        $status = new Status();
+        $status->name = 'pending_closure';
+        $status->description = 'Pendiente de cierre';
+        $status->enabled = 1;
+        $status->save();
+
+        $status = new Status();
+        $status->name = 'ot_closure';
+        $status->description = 'OT Finalizada';
+        $status->enabled = 1;
+        $status->save();
     }
 }

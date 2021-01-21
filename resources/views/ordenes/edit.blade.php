@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Editar "O.T. ' . zerosatleft($orden->code, 3) .' | '. $orden->marca->name . '"' ])
+@extends('layouts.app', ['title' => 'Editar "O.T. ' . zerosatleft($orden->code, 3)])
 @section('content')
 <div class="row">
   

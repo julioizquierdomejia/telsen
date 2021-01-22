@@ -166,7 +166,7 @@
       @if ($admin || $supervisor)
       <li class="{{ request()->routeIs('workshop.closure') ? 'active' : '' }}">
         <a class="mr-0" href="{{route('workshop.closure')}}">
-          <i class="fas fa-cogs mr-1"></i>
+          <i class="fas fa-file-contract mr-1"></i>
           <p>Cierre de OTs</p>
         </a>
       </li>

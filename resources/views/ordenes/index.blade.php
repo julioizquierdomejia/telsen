@@ -153,7 +153,7 @@ $(document).ready(function() {
             { data: 'razon_social' },
             { data: 'numero_potencia', class: 'text-left' },
             { data: 'codigo_motor', class: 'text-left' },
-            { data: 'fecha_entrega', class: 'text-center' },
+            { data: 'fecha_entrega', class: 'text-center bg-light' },
             { data: 'tools', class: 'text-left text-nowrap'}
         ],
          columnDefs: [
@@ -183,7 +183,7 @@ $(document).ready(function() {
             { data: 'razon_social' },
             { data: 'numero_potencia', class: 'text-left' },
             { data: 'codigo_motor', class: 'text-left' },
-            { data: 'fecha_entrega', class: 'text-center' },
+            { data: 'fecha_entrega', class: 'text-center bg-light' },
             { data: 'tools', class: 'text-left text-nowrap'}
         ],
          columnDefs: [

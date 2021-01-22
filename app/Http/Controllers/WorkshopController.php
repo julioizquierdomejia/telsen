@@ -141,13 +141,6 @@ class WorkshopController extends Controller
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
 
         $roles = validateActionbyRole();
-        
-        $users = User::join('user_data', 'user_data.user_id', 'users.id')
-                ->join('areas', 'areas.id', 'user_data.area_id')
-                ->select('users.id', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.area_id','areas.name as area')
-                ->where('users.enabled', 1)
-                ->get()
-                ;
 
         $ot = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -155,10 +148,20 @@ class WorkshopController extends Controller
                 ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
                 ->select('ots.*', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.frecuencia', 'electrical_evaluations.conex', 'electrical_evaluations.frame', 'electrical_evaluations.amperaje', 'mechanical_evaluations.hp_kw', 'mechanical_evaluations.serie', 'mechanical_evaluations.rpm', 'mechanical_evaluations.placa_caract_orig',
                     'clients.client_type_id'
-            )
+                )
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
                 ->firstOrFail();
+
+        $users = User::join('user_data', 'user_data.user_id', 'users.id')
+                ->join('areas', 'areas.id', 'user_data.area_id')
+                ->select('users.id', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.area_id','areas.name as area')
+                ->where('users.enabled', 1)
+                ->get()
+                ;
 
         $user_id = \Auth::user()->id;
         $u_area_id = User::join('user_data', 'user_data.user_id', 'users.id')

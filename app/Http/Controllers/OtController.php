@@ -1640,6 +1640,9 @@ class OtController extends Controller
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'delivery_generated');
                 })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
                 ->where('ots.enabled', 1)
                 ->count();
 
@@ -1655,6 +1658,9 @@ class OtController extends Controller
 
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
                 })
                 ->count();
 
@@ -1675,6 +1681,9 @@ class OtController extends Controller
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'delivery_generated');
+                    })
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'ot_closure');
                     })
                     ->where('ots.enabled', 1)->get();
 

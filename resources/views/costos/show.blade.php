@@ -241,7 +241,7 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 								</tr>
 							</thead>
 							<tbody>
-								@if($services)
+								@if($services->count())
 								@foreach($services as $key => $work)
 								<tr>
 									<td class="cell-counter"><span class="number"></span></td>
@@ -255,7 +255,7 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 								@endforeach
 								@else
 								<tr>
-									<td colspan="7">-</td>
+									<td colspan="7">Ninguno registrado.</td>
 								</tr>
 								@endif
 							</tbody>

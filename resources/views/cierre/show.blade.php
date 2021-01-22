@@ -10,6 +10,7 @@ $status_last = $ot_status->last();
 $role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $before_closure = $status_last->name == 'delivery_generated';
+$not_closure = $status_last->name != 'ot_closure';
 @endphp
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 <div class="row">
@@ -119,9 +120,9 @@ $before_closure = $status_last->name == 'delivery_generated';
             @endforeach
             </ul>
             @else
-            <p class="text-center">No se agregaron imágenes.</p>
+            <p class="text-center">No se agregaron documentos.</p>
             @endif
-            @if ($status_last->name != 'ot_closure')
+            @if ($not_closure)
             <div id="dZUpload" class="dropzone">
             <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">
               <div class="dz-default dz-message">Sube aquí tus documentos.</div>
@@ -151,9 +152,11 @@ $before_closure = $status_last->name == 'delivery_generated';
               <iframe class="embed-responsive-item file" src=""></iframe>
             </div>
         </div>
+        @if ($not_closure)
         <div class="modal-footer justify-content-center">
           <button class="btn btn-danger btn-sm mt-0 btn-idelete" data-id="" type="button" data-toggle="modal" data-target="#modalDelImage">Quitar documento</button>
         </div>
+        @endif
     </div>
   </div>
 </div>
@@ -212,7 +215,7 @@ $before_closure = $status_last->name == 'delivery_generated';
 <script>
   Dropzone.autoDiscover = false;
 $(document).ready(function() {
-  @if ($status_last->name != 'ot_closure')
+  @if ($not_closure)
   var myDrop = new Dropzone("#dZUpload", {
     url: "{{route('gallery.store')}}",
     addRemoveLinks: true,

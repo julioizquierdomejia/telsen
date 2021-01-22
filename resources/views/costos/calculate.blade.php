@@ -66,7 +66,7 @@
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Modelo</label>
-              <input type="text" class="form-control" name="modelo" readonly="" value="{{$ot->modelo}}">
+              <input type="text" class="form-control" name="modelo" readonly="" value="{{isset($ot->modelo) ? $ot->modelo->name : '-'}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Amperios</label>
@@ -90,7 +90,7 @@
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Marca</label>
-              <input type="text" class="form-control" name="marca" readonly="" value="{{$ot->marca}}">
+              <input type="text" class="form-control" name="marca" readonly="" value="{{isset($ot->marca) ? $ot->marca->name : '-'}}">
             </div>
             <div class="col-md-3 col-xl-2 form-group">
               <label class="col-form-label">Frame</label>

@@ -1,7 +1,7 @@
 @php
   $ot_code = zerosatleft($ot->code, 3);
 @endphp
-@extends('layouts.app', ['body_class' => 'ots', 'title' => 'OT-'.$ot_code.' Pendiente de cierre'])
+@extends('layouts.app', ['body_class' => 'ots', 'title' => 'Ver OT-'.$ot_code.' | Cierre'])
 @section('content')
 @php
 $ot_status = $ot->statuses;
@@ -121,15 +121,15 @@ $before_closure = $status_last->name == 'delivery_generated';
             @else
             <p class="text-center">No se agregaron imágenes.</p>
             @endif
-            {{-- @if ($before_closure) --}}
+            @if ($status_last->name != 'ot_closure')
             <div id="dZUpload" class="dropzone">
             <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">
-              <div class="dz-default dz-message">Sube aquí tus archivos</div>
+              <div class="dz-default dz-message">Sube aquí tus documentos.</div>
             </div>
-            {{-- @endif --}}
             <div class="text-center">
               <button class="btn btn-primary px-5" type="button" onclick="window.location.reload()">Actualizar</button>
             </div>
+            @endif
           </div>
           </div>
         </div>
@@ -212,7 +212,7 @@ $before_closure = $status_last->name == 'delivery_generated';
 <script>
   Dropzone.autoDiscover = false;
 $(document).ready(function() {
-  
+  @if ($status_last->name != 'ot_closure')
   var myDrop = new Dropzone("#dZUpload", {
     url: "{{route('gallery.store')}}",
     addRemoveLinks: true,
@@ -242,6 +242,7 @@ $(document).ready(function() {
       file.previewElement.classList.add("dz-error");
     }
   });
+  @endif
 
   function createJSON(files) {
     var json = '{';

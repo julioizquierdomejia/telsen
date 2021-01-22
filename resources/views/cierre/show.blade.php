@@ -9,7 +9,7 @@ $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 $role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
-$before_closure = $status_last->name == 'delivery_generated' || $status_last->name == 'pending_closure';
+$before_closure = $status_last->name == 'delivery_generated';
 @endphp
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 <div class="row">
@@ -34,7 +34,7 @@ $before_closure = $status_last->name == 'delivery_generated' || $status_last->na
           </span>
         </span>
         <span class="card-title-buttons">
-        @if ($before_closure)
+        @if ($status_last->name == 'pending_closure')
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCloseOT">Cerrar OT</button>
             @endif
           </span>
@@ -148,6 +148,7 @@ $before_closure = $status_last->name == 'delivery_generated' || $status_last->na
     </div>
   </div>
 </div>
+@if ($status_last->name == 'pending_closure')
 <div class="modal fade" tabindex="-1" id="modalCloseOT">
   <div class="modal-dialog">
     <form class="modal-content" action="{{ route('ordenes.closure') }}" method="POST" enctype="multipart/form-data">
@@ -176,6 +177,7 @@ $before_closure = $status_last->name == 'delivery_generated' || $status_last->na
     </form>
   </div>
 </div>
+@endif
 @endsection
 @section('javascript')
 <script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>

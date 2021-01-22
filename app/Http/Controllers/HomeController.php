@@ -29,11 +29,18 @@ class HomeController extends Controller
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'mechanical', 'electrical']);
 
         $users = User::where('id', '<>', 1)->get();
+        $all_ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                    ->where('ots.enabled', 1)
+                    ->orderBy('ots.created_at', 'asc')
+                    ->get();
+
         $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                     ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
                     ->where('ots.enabled', 1)
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('ots.created_at', 'desc')
                     ->limit(10)
                     ->get();
 
@@ -68,7 +75,7 @@ class HomeController extends Controller
           $avarage = 0;
         }
 
-        $ots_count = $ots->count();
+        $ots_count = $all_ots->count();
 
         $greetings = self::Greetings();
 

@@ -180,7 +180,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('talleres/tareas', [App\Http\Controllers\WorkshopController::class, 'services_list'])->name('workshop.services');
 
 	Route::get('talleres/cierre', [App\Http\Controllers\OtController::class, 'closure'])->name('workshop.closure');
-	Route::get('talleres/closurelist', [App\Http\Controllers\OtController::class, 'list_closure'])->name('workshop.closurelist');
+	Route::get('talleres/ot-pendientes-cierre', [App\Http\Controllers\OtController::class, 'list_pendingclosure'])->name('workshop.pending_closurelist');
+	Route::get('talleres/ot-cerradas', [App\Http\Controllers\OtController::class, 'list_closure'])->name('workshop.closurelist');
 
 	Route::post('talleres/aprobartarea', [App\Http\Controllers\WorkshopController::class, 'approveWork'])->name('workshop.approvework');
 

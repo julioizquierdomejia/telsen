@@ -266,10 +266,15 @@ class CostCardController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo', 'fecha_de_entrega']);
 
-        $ccost = CostCard::where('ot_id', $ot_id)
+        $ccost = CostCard::where('cost_cards.ot_id', $ot_id)
                 ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
-                ->select('cost_cards.*', 'ots.code as ot_code', 'clients.razon_social', 'ots.fecha_entrega')
+                ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
+                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
+                ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
+                ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
+                ->join('eval_electrical_transformer as ee_tr', 'ee_val.id', '=', 'ee_tr.eel_id')
+                ->select('cost_cards.*', 'ots.code as ot_code', 'ots.voltaje', 'ots.fecha_entrega', 'ots.solped', 'ots.codigo_motor', 'ots.numero_potencia', 'clients.razon_social', 'clients.ruc', 'ee_val.nro_equipo', 'ee_val.frecuencia', 'ee_val.conex', 'ee_val.frame', 'ee_val.amperaje', 'me_val.hp_kw', 'me_val.serie', 'me_val.rpm', 'me_val.placa_caract_orig', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ee_tr.nro_salidas', 'ee_val.tipo')
                 ->firstOrFail();
         /*$services = CostCardService::where('cost_card_id', $ccost->id)
                     ->leftJoin('services', 'services.id', '=', 'cost_card_services.service_id')

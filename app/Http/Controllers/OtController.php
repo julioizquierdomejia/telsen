@@ -129,7 +129,7 @@ class OtController extends Controller
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
             $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.
-            ($admin ? '<a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>' : ' ')
+            ($admin ? ' <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>' : ' ')
             . $status_data['eval'];
 
             $ots_array[] = array(
@@ -2029,7 +2029,7 @@ class OtController extends Controller
             ($role_rdi && $rdi) ||
             ($role_eval && ($eeval || $meval))
         ) {
-            $eval_html = '<div class="dropdown d-inline-block dropleft">
+            $eval_html = ' <div class="dropdown d-inline-block dropleft">
             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-check"></i></button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
             if($cost_card && ($role_admin || $role_cc)) {

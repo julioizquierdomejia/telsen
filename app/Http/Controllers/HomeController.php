@@ -64,13 +64,11 @@ class HomeController extends Controller
                     ->get()
                     ->count();
 
-        $avarage_ots = \DB::select( 'SELECT AVG( ots_num ) ot_prom FROM (
-                        SELECT created_at, COUNT( DISTINCT id ) ots_num
-                        FROM  `ots` 
-                        GROUP BY MONTH( created_at )
-                        ) ots_per_month' );
+        $avarage_ots = \DB::select( 'SELECT year(created_at), month(created_at) month_prom, AVG(month(created_at)) FROM ots
+     GROUP BY year(created_at), month(created_at)
+     ORDER BY year(created_at), month(created_at)' );
         if (count($avarage_ots)) {
-          $avarage = number_format($avarage_ots[0]->ot_prom, 0);
+          $avarage = number_format(end($avarage_ots)->month_prom, 0);
         } else {
           $avarage = 0;
         }

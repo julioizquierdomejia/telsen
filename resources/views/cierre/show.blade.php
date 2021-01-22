@@ -97,13 +97,16 @@ $before_closure = $status_last->name == 'delivery_generated';
             <label class="col-label">Velocidad</label>
             <p class="mb-1">{{$ot->velocidad ?? '-'}}</p>
           </div>
-          <div class="col-12 mb-4">
+          <div class="col-12 mb-2">
             <label class="col-label">Estado</label>
             <p class="mb-1">{!!$ot->enabled == 1 ? '<span class="badge badge-success px-3">Activo</span>' : '<span class="badge badge-danger px-3">Inactivo</span>'!!}</p>
           </div>
+          <div class="col px-0">
+            <hr>
+          </div>
           <div class="col-12 mb-2">
             <div class="gallery">
-              <h6>Galería</h6>
+              <h6>Documentos</h6>
             @if($gallery->count())
             <ul class="row list-unstyled">
             @foreach($gallery as $file)
@@ -111,7 +114,7 @@ $before_closure = $status_last->name == 'delivery_generated';
               $file_name = preg_replace('/[0-9]+_/', '', $file->name);
             @endphp
             <li class="gallery-item col-12 col-md-4 col-xl-3 py-2">
-              <button class="btn m-0 text-truncate text-nowrap btn-light" style="font-size: 11px;max-width: 100%" data-toggle="modal" data-target="#galleryModal" data-src="{{ asset("uploads/ots/$ot->id/closure/$file->name") }}" title="{{$file_name}}"><i class="fa fa-file-pdf"></i> {{$file_name}}</button>
+              <button class="btn m-0 text-truncate text-nowrap btn-light" style="font-size: 11px;max-width: 100%" data-id="{{$file->id}}" data-toggle="modal" data-target="#galleryModal" data-src="{{ asset("uploads/ots/$ot->id/closure/$file->name") }}" title="{{$file_name}}"><i class="fa fa-file-pdf"></i> {{$file_name}}</button>
             </li>
             @endforeach
             </ul>
@@ -138,7 +141,7 @@ $before_closure = $status_last->name == 'delivery_generated';
     <div class="modal-dialog modal-lg" style="max-height: calc(100vh - 40px)">
       <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Galería</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Documento de cierre</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -147,6 +150,9 @@ $before_closure = $status_last->name == 'delivery_generated';
             <div class="embed-responsive embed-responsive-16by9">
               <iframe class="embed-responsive-item file" src=""></iframe>
             </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button class="btn btn-danger btn-sm mt-0 btn-idelete" data-id="" type="button" data-toggle="modal" data-target="#modalDelImage">Quitar documento</button>
         </div>
     </div>
   </div>
@@ -181,6 +187,25 @@ $before_closure = $status_last->name == 'delivery_generated';
   </div>
 </div>
 @endif
+<div class="modal fade" tabindex="-1" id="modalDelImage">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar documento</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text my-3 body-title">¿Seguro desea eliminar la documento?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancelar</button>
+        <button class="btn btn-primary btn-delete-confirm" type="button" data-id=""><i class="fal fa-trash"></i> Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('javascript')
 <script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>
@@ -237,10 +262,39 @@ $(document).ready(function() {
 
   $('#galleryModal').on('hide.bs.modal', function (event) {
       $('#galleryModal .modal-body .file').removeAttr('src');
-    })
+  })
   $('#galleryModal').on('show.bs.modal', function (event) {
-      $('#galleryModal .modal-body .file').attr('src', $(event.relatedTarget).data('src'))
-    })
+      var btn = $(event.relatedTarget);
+      $('#galleryModal .modal-body .file').attr('src', btn.data('src'))
+      $('.btn-delete-confirm').data('id', btn.data('id'));
+  })
+
+  $(document).on('click', '.btn-delete-confirm', function() {
+    var $this = $(this), id = $this.data('id');
+      $.ajax({
+        type: "POST",
+        url: "/ordenes/"+id+"/quitarimagen",
+        data: {
+          _token: '{{csrf_token()}}'
+        },
+        complete: function () {
+          $('.modal.show').modal('hide');
+          $('.gallery .btn[data-id='+id+']').parent().remove();
+        },
+        beforeSend: function() {
+          $this.attr('disabled', true);
+        },
+        success: function(response) {
+          $this.attr('disabled', false);
+          if (response.success) {
+            $('#image-'+id).remove();
+          }
+        },
+        error: function(request, status, error) {
+          $this.attr('disabled', false);
+        }
+      });
+  })
 
 });
 </script>

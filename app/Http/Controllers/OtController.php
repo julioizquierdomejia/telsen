@@ -1722,7 +1722,10 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
 
-        $ot = Ot::findOrFail($ot_id);
+        $ot = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente')
+                ->findOrFail($ot_id);
         $gallery = OtGallery::where('ot_id', $ot->id)
                     ->where('enabled', 1)
                     ->where('eval_type', '=', 'closure')->get();

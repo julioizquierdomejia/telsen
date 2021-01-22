@@ -98,7 +98,7 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Modelo</label>
-						<p class="form-control mb-0">{{$ccost->modelo ?? '-'}}</p>
+						<p class="form-control mb-0">{{isset($ccost->modelo) ? $ccost->modelo->name : '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Amperios</label>
@@ -122,7 +122,7 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Marca</label>
-						<p class="form-control mb-0">{{$ccost->marca ?? '-'}}</p>
+						<p class="form-control mb-0">{{isset($ccost->marca) ? $ccost->marca->name : '-'}}</p>
 					</div>
 					<div class="col-md-3 col-xl-2 form-group">
 						<label class="col-form-label">Frame</label>

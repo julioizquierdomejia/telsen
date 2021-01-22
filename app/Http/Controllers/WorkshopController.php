@@ -66,20 +66,21 @@ class WorkshopController extends Controller
         $area_id = \Auth::user()->data->area->id;
 
         $roles = validateActionbyRole();
+        //Cuando no hay usuarios de un area no se lista las tareas de dicha area
         if (in_array("superadmin", $roles) || in_array("admin", $roles)) {
-            $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+            $services = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
                 ->join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
-                ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                 ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                 ->get();
         } else {
             if (in_array("supervisor", $roles)) {
-                $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                $services = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
                     ->join('services', 'services.id', '=', 'ot_works.service_id')
                     ->join('areas', 'areas.id', '=', 'services.area_id')
-                    ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                     ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->where('user_data.area_id', $area_id)
@@ -93,10 +94,10 @@ class WorkshopController extends Controller
             } else {
                 $user_id = \Auth::id();
 
-                $services = OtWork::join('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                $services = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
                     ->join('services', 'services.id', '=', 'ot_works.service_id')
                     ->join('areas', 'areas.id', '=', 'services.area_id')
-                    ->join('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
                     ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->where('workshops.user_id', $user_id)
@@ -148,13 +149,11 @@ class WorkshopController extends Controller
                 ->get()
                 ;
 
-        $ot = Ot::leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
-                ->join('clients', 'clients.id', '=', 'ots.client_id')
+        $ot = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->join('electrical_evaluations', 'electrical_evaluations.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations', 'mechanical_evaluations.ot_id', '=', 'ots.id')
-                ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.frecuencia', 'electrical_evaluations.conex', 'electrical_evaluations.frame', 'electrical_evaluations.amperaje', 'mechanical_evaluations.hp_kw', 'mechanical_evaluations.serie', 'mechanical_evaluations.rpm', 'mechanical_evaluations.placa_caract_orig',
+                ->select('ots.*', 'clients.razon_social', 'clients.ruc', 'electrical_evaluations.nro_equipo', 'electrical_evaluations.frecuencia', 'electrical_evaluations.conex', 'electrical_evaluations.frame', 'electrical_evaluations.amperaje', 'mechanical_evaluations.hp_kw', 'mechanical_evaluations.serie', 'mechanical_evaluations.rpm', 'mechanical_evaluations.placa_caract_orig',
                     'clients.client_type_id'
             )
                 ->where('ots.enabled', 1)
@@ -342,10 +341,8 @@ class WorkshopController extends Controller
 
         $ccost = Workshop::where('ot_id', $ot_id)
                 ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')
-                ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
-                ->select('cost_cards.*', 'ots.id as ot_code', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
+                ->select('cost_cards.*', 'ots.id as ot_code', 'clients.razon_social', 'ots.fecha_entrega')
                 ->firstOrFail();
         $services = WorkshopService::where('cc_id', $ccost->id)
                     ->leftJoin('services', 'services.id', '=', 'cost_card_service_works.service_id')
@@ -481,6 +478,12 @@ class WorkshopController extends Controller
         $work_log->type = $status_code;
         $work_log->status_id = $status->id;
         $work_log->save();
+
+        if ($status_code == 'approved') {
+            $ot_work = OtWork::find($work_id);
+            $ot_work->approved = 1;
+            $ot_work->save();
+        }
 
         /*$ot_work_status = new OtWorkStatus();
         $ot_work_status->work_status_id = $status;

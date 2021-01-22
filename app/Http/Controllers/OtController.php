@@ -1715,7 +1715,19 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
         
-        return view('ordenes.pending_closure');
+        return view('cierre.index');
+    }
+
+    public function closure_view(Request $request, $ot_id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
+
+        $ot = Ot::findOrFail($ot_id);
+        $gallery = OtGallery::where('ot_id', $ot->id)
+                    ->where('enabled', 1)
+                    ->where('eval_type', '=', 'closure')->get();
+        
+        return view('cierre.show', compact('ot', 'gallery'));
     }
 
     // OT pendientes de cierre
@@ -1744,9 +1756,9 @@ class OtController extends Controller
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'cc_approved');
                 })
-                ->whereHas('works', function ($query) {
+                /*->whereHas('works', function ($query) {
                     $query->where("ot_works.approved", "=", 1);
-                })
+                })*/
                 ->where('ots.enabled', 1)
                 ->with('works')
                 ->count();
@@ -1763,9 +1775,9 @@ class OtController extends Controller
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'cc_approved');
                 })
-                ->whereHas('works', function ($query) {
+                /*->whereHas('works', function ($query) {
                     $query->where("ot_works.approved", "=", 1);
-                })
+                })*/
                 ->where('ots.enabled', 1)
                 ->with('works')
                 ->count();
@@ -1788,25 +1800,33 @@ class OtController extends Controller
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'delivery_generated');
                     })
-                    ->whereHas('works', function ($query) {
+                    /*->whereHas('works', function ($query) {
                         $query->where("ot_works.approved", "=", 1);
-                    })
+                    })*/
                     ->where('ots.enabled', 1)
                     ->with('works')
                     ->get();
 
         foreach ($records as $key => $ot) {
-            /*$works = $ot->works;
-            $work_logs = $works->first()->work_logs;
-            $logs_count = $work_logs->count();
-            $real_count = 0;*/
+            $works = $ot->works;
+            if ($works->count()) {
+                $cols = $works->toArray();
+                $cols_approved = array_column($cols, 'approved');
+                //Todos los trabajos tienen que estar aprobados
+                $all_approved = array_unique($cols_approved) === array(1);
+                if (!$all_approved) {
+                    $totalRecords> 0 ? $totalRecords-- : $totalRecords;
+                    $totalRecordswithFilter> 0 ? $totalRecordswithFilter-- : $totalRecordswithFilter;
+                    continue;
+                }
+            }
             $created_at = date('d-m-Y', strtotime($ot->created_at));
             $status_data = self::getOTStatus($ot, false, false, false, false);
             $ot_code = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/cierre" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1925,8 +1945,7 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
         //Listar OTs
-        $ordenes = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                    ->select('ots.*', 'motor_brands.name as marca')
+        $ordenes = Ot::select('ots.*')
                     ->where('enabled', 1)->get();
 
         return view('procesovirtual.list', compact('ordenes'));
@@ -2041,14 +2060,10 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
         
-        $orden = Ot::join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                    ->select('ots.*', 'motor_brands.name as marca')
-                    ->where('ots.enabled', 1)
+        $orden = Ot::where('ots.enabled', 1)
                     ->findOrFail($id);
 
         $ordenes = Ot::where('ots.id', '<>', $id)
-                    ->join('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                    ->select('ots.*', 'motor_brands.name as marca')
                     ->where('ots.enabled', 1)
                     ->get();
 
@@ -2064,12 +2079,11 @@ class OtController extends Controller
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                     ->select('client_types.id')->firstOrFail();
                     dd($validate_ot);*/
-            $ot = Ot::leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
-                ->join('clients', 'clients.id', '=', 'ots.client_id')
+            $ot = Ot::
+                join('clients', 'clients.id', '=', 'ots.client_id')
                 ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente', 'cost_cards.cotizacion')
+                    ->select('ots.*', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente', 'cost_cards.cotizacion')
                     ->where('ots.enabled', 1)
                     ->findOrFail($id); 
         $rdi = Ot::join('rdi', 'rdi.ot_id', '=', 'ots.id')
@@ -2221,15 +2235,45 @@ class OtController extends Controller
         return response()->json(['data'=>json_encode($ot), 'success'=>true]);
     }
 
-    public function galleryStore(Request $request, $ot_id)
+    public function closure_ot(Request $request)
     {
         $rules = array(
-            'file' => 'mimes:jpeg,jpg,png,gif|required|max:10000' // max 10000kb
+            'ot_id' => 'required|exists:ots,id',
+            'accept' => 'required|in:0,1'
+        );
+        $this->validate($request, $rules);
+
+        $ot_id = $request->get('ot_id');
+
+        $status = Status::where('name', 'ot_closure')->first();
+        if ($status) {
+            $st_exits = StatusOt::where('ot_id', '=', $ot_id)
+                            ->where('status_id', '=', $status->id)
+                            ->exists();
+            if (!$st_exits) {
+                $status_ot = new StatusOt();
+                $status_ot->status_id = $status->id;
+                $status_ot->ot_id = $ot_id;
+                $status_ot->save();
+
+            }
+            activitylog('ot_ot_closure', 'store', null, $status_ot->toArray());
+        }
+        
+        return redirect()->back();
+    }
+
+    public function galleryStore(Request $request)
+    {
+        $rules = array(
+            'file' => 'mimes:jpeg,jpg,png,gif,pdf|required|max:10000', // max 10000kb
+            'ot_id' => 'sometimes|exists:ots,id',
         );
         $this->validate($request, $rules);
 
         $image = $request->file('file');
         $eval_type = $request->input('eval_type');
+        $ot_id = $request->input('ot_id');
 
         $avatarName = $image->getClientOriginalName();
         $ext = $image->getClientOriginalExtension();
@@ -2260,7 +2304,29 @@ class OtController extends Controller
             $imageUpload->eval_type = $eval_type;
             $imageUpload->save();
         }*/
-        return response()->json(['name'=>$avatarName, 'url' => $url .'/'.$avatarName]);
+        if($eval_type == 'closure') {
+            $imageUpload = new OtGallery();
+            $imageUpload->name = $avatarName;
+            $imageUpload->ot_id = $ot_id;
+            $imageUpload->eval_type = $eval_type;
+            $imageUpload->save();
+
+            $status = Status::where('name', 'pending_closure')->first();
+            if ($status) {
+                $st_exits = StatusOt::where('ot_id', '=', $ot_id)
+                            ->where('status_id', '=', $status->id)
+                            ->exists();
+                if (!$st_exits) {
+                    $status_ot = new StatusOt();
+                    $status_ot->status_id = $status->id;
+                    $status_ot->ot_id = $ot_id;
+                    $status_ot->save();
+
+                    activitylog('ot_pending_closure', 'store', null, $status_ot->toArray());
+                }
+            }
+        }
+        return response()->json(['name'=>$avatarName, 'url' => $url .'/'.$avatarName, 'success'=>true]);
     }
 
     public function galleryDelete(Request $request, $image_id)

@@ -795,7 +795,7 @@
 Dropzone.autoDiscover = false;
 $(document).ready(function() {
   var myDrop = new Dropzone("#dZUpload", {
-    url: "{{route('gallery.store', $ot->id)}}",
+    url: "{{route('gallery.store')}}",
     addRemoveLinks: true,
     maxFilesize: 2000,
     timeout: 180000,
@@ -803,6 +803,7 @@ $(document).ready(function() {
     params: {
       _token: '{{csrf_token()}}',
       eval_type: 'electrical',
+      ot_id: {{$ot->id}},
     },
     renameFile: function(file) {
       let newName = new Date().getTime() + '_' + file.name;

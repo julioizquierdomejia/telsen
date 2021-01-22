@@ -167,7 +167,7 @@
       <li class="{{ request()->routeIs('workshop.closure') ? 'active' : '' }}">
         <a class="mr-0" href="{{route('workshop.closure')}}">
           <i class="fas fa-cogs mr-1"></i>
-          <p>OT Pendientes de cierre</p>
+          <p>Cierre de OTs</p>
         </a>
       </li>
       @endif

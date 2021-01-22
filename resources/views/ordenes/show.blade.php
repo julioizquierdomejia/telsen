@@ -85,7 +85,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 					</div>
 					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Marca</label>
-						<p class="mb-1">{{$ot->marca ?? '-'}}</p>
+						<p class="mb-1">{{isset($ot->marca) ? $ot->marca->name : '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Solped</label>
@@ -93,7 +93,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 					</div>
 					<div class="col-6 col-md-3  mb-2">
 						<label class="col-label">Modelo</label>
-						<p class="mb-1">{{ $ot->modelo ?? '-' }}</p>
+						<p class="mb-1">{{isset($ot->modelo) ? $ot->modelo->name : '-'}}</p>
 					</div>
 					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Numero de potencia</label>

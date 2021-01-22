@@ -4,7 +4,7 @@
   <div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title">Órdenes Pendientes de cierre</h4>
+        <h4 class="card-title">Cierre de OTs</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">

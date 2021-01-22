@@ -158,7 +158,7 @@
                         </div>
                       </div>
                       <div class="work-buttons py-3 col-12 col-md-4 col-xl-2 text-dark">
-                      @if ($allowed_user)
+                      @if ($allowed_user && $wl_count > 0)
                         @if ($status_code == 'approved')
                           <span class="badge badge-success d-block py-1 my-1">Aprobada</span>
                         @elseif($status_code == 'disapproved')
@@ -272,11 +272,12 @@
 
     $.each(drops, function (id, item) {
       var myDrop = new Dropzone("#"+item, {
-        url: "{{route('gallery.store', 0)}}",
+        url: "{{route('gallery.store')}}",
         addRemoveLinks: true,
         params: {
           _token: '{{csrf_token()}}',
           eval_type: 'workshop',
+          ot_id: null,
         },
         renameFile: function (file) {
             let newName = new Date().getTime() + '_' + file.name;
@@ -397,7 +398,7 @@
     })
 
     $('#modalReason').on('hide.bs.modal', function (event) {
-      $('.work-buttons .btn-action').attr('disabled', false);
+//      $('.work-buttons .btn-action').prop('disabled', false);
     })
 
     $('#modalApprove').on('show.bs.modal', function (event) {
@@ -411,7 +412,7 @@
     })
 
     $(document).on("click", ".work-buttons .btn-action", function (event) {
-      $('.work-buttons .btn-action').attr('disabled', true);
+      //$('.work-buttons .btn-action').attr('disabled', true);
       var type = $(this).data('type');
       if(type == 'pause') {
         $('.body-title').text('¿Confirmas la actividad?');
@@ -436,7 +437,7 @@
     })
 
     $(document).on("click", "#modalReason .btn-wconfirm", function (event) {
-      $('.work-buttons .btn-action').attr('disabled', true);
+      //$('.work-buttons .btn-action').attr('disabled', true);
     var $this = $(this),
         work_id = $this.data('work_id'),
         d_id = $this.data('id'),

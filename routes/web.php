@@ -59,7 +59,10 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('ordenes/{orden}/eliminar', [App\Http\Controllers\OtController::class, 'destroy'])->name('ordenes.destroy');
 	Route::get('ordenes/{orden}/status', [App\Http\Controllers\OtController::class, 'getOTStatus'])->name('ordenes.status');
 
-	Route::post('ordenes/{orden}/gallery', [App\Http\Controllers\OtController::class, 'galleryStore'])->name('gallery.store');
+	Route::get('ordenes/{orden}/cierre', [App\Http\Controllers\OtController::class, 'closure_view'])->name('ordenes.closure.show');
+	Route::post('ordenes/cierre-ot', [App\Http\Controllers\OtController::class, 'closure_ot'])->name('ordenes.closure');
+
+	Route::post('ordenes/gallery', [App\Http\Controllers\OtController::class, 'galleryStore'])->name('gallery.store');
 	Route::post('ordenes/{id}/quitarimagen', [App\Http\Controllers\OtController::class, 'galleryDelete'])->name('gallery.delete');
 
 	Route::get('ordenes/ee_list', [App\Http\Controllers\OtController::class, 'ee_list'])->name('ordenes.ee_ots');
@@ -176,7 +179,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('talleres/list', [App\Http\Controllers\OtController::class, 'list_workshop'])->name('talleres.list_workshop');
 	Route::get('talleres/tareas', [App\Http\Controllers\WorkshopController::class, 'services_list'])->name('workshop.services');
 
-	Route::get('talleres/closure', [App\Http\Controllers\OtController::class, 'closure'])->name('workshop.closure');
+	Route::get('talleres/cierre', [App\Http\Controllers\OtController::class, 'closure'])->name('workshop.closure');
 	Route::get('talleres/closurelist', [App\Http\Controllers\OtController::class, 'list_closure'])->name('workshop.closurelist');
 
 	Route::post('talleres/aprobartarea', [App\Http\Controllers\WorkshopController::class, 'approveWork'])->name('workshop.approvework');

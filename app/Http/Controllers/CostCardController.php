@@ -74,12 +74,10 @@ class CostCardController extends Controller
             return redirect('tarjeta-costo/'.$cc->ot_id.'/ver');
         }
 
-        $ot = Ot::leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
-                ->join('clients', 'clients.id', '=', 'ots.client_id')
+        $ot = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('electrical_evaluations as ee_val', 'ee_val.ot_id', '=', 'ots.id')
                 ->join('mechanical_evaluations as me_val', 'me_val.ot_id', '=', 'ots.id')
-                ->select('ots.*', 'motor_brands.name as marca', 'motor_models.name as modelo', 'clients.razon_social', 'clients.ruc', 'ee_val.nro_equipo', 'ee_val.frecuencia', 'ee_val.conex', 'ee_val.frame', 'ee_val.amperaje', 'me_val.hp_kw', 'me_val.serie', 'me_val.rpm', 'me_val.placa_caract_orig')
+                ->select('ots.*', 'clients.razon_social', 'clients.ruc', 'ee_val.nro_equipo', 'ee_val.frecuencia', 'ee_val.conex', 'ee_val.frame', 'ee_val.amperaje', 'me_val.hp_kw', 'me_val.serie', 'me_val.rpm', 'me_val.placa_caract_orig')
                 ->where('ots.enabled', 1)
                 ->where('ots.id', $id)
                 ->firstOrFail();
@@ -270,10 +268,8 @@ class CostCardController extends Controller
 
         $ccost = CostCard::where('ot_id', $ot_id)
                 ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')
-                ->leftJoin('motor_brands', 'motor_brands.id', '=', 'ots.marca_id')
-                ->leftJoin('motor_models', 'motor_models.id', '=', 'ots.modelo_id')
                 ->join('clients', 'clients.id', '=', 'ots.client_id')
-                ->select('cost_cards.*', 'ots.code as ot_code', 'clients.razon_social', 'motor_brands.name as marca', 'motor_models.name as modelo', 'ots.fecha_entrega')
+                ->select('cost_cards.*', 'ots.code as ot_code', 'clients.razon_social', 'ots.fecha_entrega')
                 ->firstOrFail();
         /*$services = CostCardService::where('cost_card_id', $ccost->id)
                     ->leftJoin('services', 'services.id', '=', 'cost_card_services.service_id')

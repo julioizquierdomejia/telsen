@@ -33,6 +33,7 @@ class UserSeeder extends Seeder
         $role_client = Role::where('name', 'client')->first();
         $role_supervisor = Role::where('name', 'supervisor')->first();
         $role_worker = Role::where('name', 'worker')->first();
+        $role_closure = Role::where('name', 'closure')->first();
         
         \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         User::truncate();
@@ -826,6 +827,21 @@ class UserSeeder extends Seeder
         $user_data->area_id = 2;
         $user_data->save();
         $user->roles()->attach($role_worker);
+
+        $user = new User();
+        $user->email = 'cierre@gmail.com';
+        $user->password = bcrypt('12345678');
+        $user->enabled = 1;
+        $user->save();
+        $user_data = new UserData();
+        $user_data->name = 'cierre';
+        $user_data->last_name = '';
+        $user_data->mother_last_name = '';
+        $user_data->user_phone = 912345678;
+        $user_data->user_id = $user->id;
+        $user_data->area_id = 2;
+        $user_data->save();
+        $user->roles()->attach($role_closure);
 
     }
 }

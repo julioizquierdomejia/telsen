@@ -87,5 +87,10 @@ class RoleSeeder extends Seeder
         $role->name = 'worker';
         $role->description = 'Trabajador';
         $role->save();
+
+        $role = new Role();
+        $role->name = 'closure';
+        $role->description = 'Encargado de subir documentos de cierre';
+        $role->save();
     }
 }

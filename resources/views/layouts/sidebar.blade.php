@@ -30,6 +30,7 @@
         $role_names = validateActionbyRole();
         $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
         $supervisor = in_array("supervisor", $role_names);
+        $role_closure = in_array("closure", $role_names);
 
         $is_cc = request()->segment(1) == 'tarjeta-costo';
         $is_cz = request()->segment(1) == 'cotizaciones';
@@ -163,8 +164,8 @@
         </a>
       </li>
       @endif
-      @if ($admin || $supervisor)
-      <li class="{{ request()->routeIs('workshop.closure') ? 'active' : '' }}">
+      @if ($admin || $role_closure)
+      <li class="{{ request()->segment(1) == 'ordenes' ? 'active' : '' }}">
         <a class="mr-0" href="{{route('workshop.closure')}}">
           <i class="fas fa-file-contract mr-1"></i>
           <p>Cierre de OTs</p>

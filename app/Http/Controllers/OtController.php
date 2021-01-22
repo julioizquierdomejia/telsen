@@ -1722,14 +1722,14 @@ class OtController extends Controller
     // Vista de OTs con/sin fecha de entrega
     public function closure(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'closure']);
         
         return view('cierre.index');
     }
 
     public function closure_view(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'closure']);
 
         $ot = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
@@ -1745,7 +1745,7 @@ class OtController extends Controller
     // OT pendientes de cierre
     public function list_pendingclosure(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'closure']);
 
         ## Read value
         $draw = $request->get('draw');
@@ -1873,7 +1873,7 @@ class OtController extends Controller
     }
     public function list_closure(Request $request)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'closure']);
 
         ## Read value
         $draw = $request->get('draw');
@@ -2356,6 +2356,8 @@ class OtController extends Controller
 
     public function closure_ot(Request $request)
     {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'closure']);
+
         $rules = array(
             'ot_id' => 'required|exists:ots,id',
             'accept' => 'required|in:0,1'
@@ -2415,6 +2417,7 @@ class OtController extends Controller
         } else {
             $image->move(public_path($url), $avatarName);
         }
+        $image_id = 0;
         
         /*if ($eval_type == 'mechanical') {
             $imageUpload = new OtGallery();
@@ -2436,6 +2439,8 @@ class OtController extends Controller
             $imageUpload->eval_type = $eval_type;
             $imageUpload->save();
 
+            $image_id = $imageUpload->id;
+
             $status = Status::where('name', 'pending_closure')->first();
             if ($status) {
                 $st_exits = StatusOt::where('ot_id', '=', $ot_id)
@@ -2451,12 +2456,12 @@ class OtController extends Controller
                 }
             }
         }
-        return response()->json(['name'=>$avatarName, 'url' => $url .'/'.$avatarName, 'success'=>true]);
+        return response()->json(['id'=>$image_id, 'name'=>$avatarName, 'url' => $url .'/'.$avatarName, 'success'=>true]);
     }
 
     public function galleryDelete(Request $request, $image_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'worker', 'closure']);
 
         $ot_gallery = OtGallery::findOrFail($image_id);
         $ot_gallery->enabled = 0;

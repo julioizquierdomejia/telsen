@@ -129,11 +129,7 @@ $not_closure = $status_last->name != 'ot_closure';
             @endif
             @if ($not_closure)
             <div id="dZUpload" class="dropzone">
-            <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">
               <div class="dz-default dz-message">Sube aquí tus documentos.</div>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-primary px-5" type="button" onclick="window.location.reload()">Actualizar</button>
             </div>
             @endif
           </div>
@@ -240,10 +236,13 @@ $(document).ready(function() {
     success: function(file, response) {
       var imgName = response;
       file.previewElement.classList.add("dz-success");
-      createJSON(myDrop.files);
+      $('.gallery ul').append(`
+        <li class="gallery-item col-12 col-md-4 col-xl-3 py-2">
+            <button class="btn m-0 text-truncate text-nowrap btn-light" style="font-size: 11px;max-width: 100%" data-id="`+response.id+`" data-toggle="modal" data-target="#galleryModal" data-src="/`+response.url+`" title="`+file.name+`"><i class="fa fa-file-pdf"></i> `+file.name+`</button>
+          </li>
+        `)
     },
     removedfile: function(file) {
-      createJSON(myDrop.files);
       file.previewElement.remove();
     },
     error: function(file, response) {
@@ -251,23 +250,6 @@ $(document).ready(function() {
     }
   });
   @endif
-
-  function createJSON(files) {
-    var json = '{';
-    var otArr = [];
-    $.each(files, function(id, item) {
-      console.log(item)
-      otArr.push('"' + id + '": {' +
-        '"name":"' + item.upload.filename +
-        '", "type":"' + item.type +
-        '", "status":"' + item.status +
-        '", "url":"' + item.url +
-        '"}');
-    });
-    json += otArr.join(",") + '}'
-    $('.images').val(json)
-    return json;
-  }
 
   $('#galleryModal').on('hide.bs.modal', function (event) {
       $('#galleryModal .modal-body .file').removeAttr('src');

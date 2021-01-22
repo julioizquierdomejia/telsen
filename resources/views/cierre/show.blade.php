@@ -118,12 +118,15 @@ $before_closure = $status_last->name == 'delivery_generated';
             @else
             <p class="text-center">No se agregaron imágenes.</p>
             @endif
-            @if ($before_closure)
+            {{-- @if ($before_closure) --}}
             <div id="dZUpload" class="dropzone">
             <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">
               <div class="dz-default dz-message">Sube aquí tus archivos</div>
             </div>
-            @endif
+            {{-- @endif --}}
+            <div class="text-center">
+              <button class="btn btn-primary px-5" type="button" onclick="window.location.reload()">Actualizar</button>
+            </div>
           </div>
           </div>
         </div>
@@ -184,7 +187,7 @@ $before_closure = $status_last->name == 'delivery_generated';
 <script>
   Dropzone.autoDiscover = false;
 $(document).ready(function() {
-  @if ($before_closure)
+  
   var myDrop = new Dropzone("#dZUpload", {
     url: "{{route('gallery.store')}}",
     addRemoveLinks: true,
@@ -214,7 +217,6 @@ $(document).ready(function() {
       file.previewElement.classList.add("dz-error");
     }
   });
-  @endif
 
   function createJSON(files) {
     var json = '{';

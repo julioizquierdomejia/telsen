@@ -121,6 +121,11 @@ $not_closure = $status_last->name != 'ot_closure';
             </ul>
             @else
             <p class="text-center">No se agregaron documentos.</p>
+            <ul class="errors lis-inline">
+              @foreach ($errors->all() as $error)
+                <li class="text-danger">{{$error}}</li>
+              @endforeach
+            </ul>
             @endif
             @if ($not_closure)
             <div id="dZUpload" class="dropzone">

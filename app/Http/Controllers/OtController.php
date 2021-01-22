@@ -2366,6 +2366,13 @@ class OtController extends Controller
 
         $status = Status::where('name', 'ot_closure')->first();
         if ($status) {
+            $gallery = OtGallery::where('ot_id', $ot_id)
+                    ->where('enabled', 1)
+                    ->where('eval_type', '=', 'closure')->exists();
+            if (!$gallery) {
+                return redirect()->back()->withErrors(['No se registró ningún documento.']);
+            }
+
             $st_exits = StatusOt::where('ot_id', '=', $ot_id)
                             ->where('status_id', '=', $status->id)
                             ->exists();
@@ -2374,7 +2381,6 @@ class OtController extends Controller
                 $status_ot->status_id = $status->id;
                 $status_ot->ot_id = $ot_id;
                 $status_ot->save();
-
             }
             activitylog('ot_ot_closure', 'store', null, $status_ot->toArray());
         }

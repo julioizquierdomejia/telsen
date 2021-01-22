@@ -9,6 +9,7 @@ $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 $role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
+$before_closure = $status_last->name == 'delivery_generated' || $status_last->name == 'pending_closure';
 @endphp
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 <div class="row">
@@ -33,7 +34,7 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
           </span>
         </span>
         <span class="card-title-buttons">
-        @if ($status_last->name == 'pending_closure')
+        @if ($before_closure)
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCloseOT">Cerrar OT</button>
             @endif
           </span>
@@ -117,7 +118,7 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
             @else
             <p class="text-center">No se agregaron imágenes.</p>
             @endif
-            @if ($status_last->name == 'pending_closure')
+            @if ($before_closure)
             <div id="dZUpload" class="dropzone">
             <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">
               <div class="dz-default dz-message">Sube aquí tus archivos</div>
@@ -181,7 +182,7 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 <script>
   Dropzone.autoDiscover = false;
 $(document).ready(function() {
-  @if ($status_last->name == 'pending_closure')
+  @if ($before_closure)
   var myDrop = new Dropzone("#dZUpload", {
     url: "{{route('gallery.store')}}",
     addRemoveLinks: true,

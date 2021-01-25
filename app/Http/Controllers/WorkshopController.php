@@ -51,7 +51,7 @@ class WorkshopController extends Controller
         );
     }
 
-    public function services_list(Request $request)
+    public function services_list_old(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
 
@@ -121,8 +121,335 @@ class WorkshopController extends Controller
 
         $ots = array_unique(array_column($services->toArray(), 'ot_id'));
 
-        return view('talleres.services', compact('services', 'work_reasons', 'roles', 'ots')
+        return view('talleres.servicesold', compact('services', 'work_reasons', 'roles', 'ots')
         );
+    }
+
+    public function tasks(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
+
+        $roles = validateActionbyRole();
+        $single_role = count($roles) == 1;
+
+        $work_reasons = WorkStatus::
+                          where('code', '<>', 'start')
+                        ->where('code', '<>', 'end')
+                        ->where('code', '<>', 'continue')
+                        ->where('code', '<>', 'restart')
+                        ->where('code', '<>', 'approved')
+                        ->where('code', '<>', 'disapproved')
+                        ->get();
+        $allowed_user = in_array('superadmin', $roles) || in_array('supervisor', $roles) && $single_role;
+
+        return view('talleres.services', compact('work_reasons', 'roles', 'allowed_user'));
+    }
+
+    public function services_list(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'worker']);
+
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        $area_id = \Auth::user()->data->area->id;
+        $roles = validateActionbyRole();
+        $single_role = count($roles) == 1;
+        $allowed_user = in_array('superadmin', $roles) || in_array('supervisor', $roles) && $single_role;
+
+        //Cuando no hay usuarios de un area no se lista las tareas de dicha area
+        if (in_array("superadmin", $roles) || in_array("admin", $roles)) {
+            $totalRecords = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                ->select('count(*) as allcount')
+                ->count();
+
+            $totalRecordswithFilter = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                ->select('count(*) as allcount')
+                ->where(function($query) use ($searchValue) {
+                    $query->where('numero_potencia', 'like', '%'.$searchValue.'%')
+                        ->orWhere('services.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%')
+                        ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->count();
+
+            $records = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('numero_potencia', 'like', '%'.$searchValue.'%')
+                        ->orWhere('services.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%')
+                        ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->get();
+        } else {
+            if (in_array("supervisor", $roles)) {
+                $totalRecords = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                    ->join('services', 'services.id', '=', 'ot_works.service_id')
+                    ->join('areas', 'areas.id', '=', 'services.area_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->select('count(*) as allcount')
+                    ->where('user_data.area_id', $area_id)
+                    ->count();
+
+                $totalRecordswithFilter = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                    ->join('services', 'services.id', '=', 'ot_works.service_id')
+                    ->join('areas', 'areas.id', '=', 'services.area_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->select('count(*) as allcount')
+                    ->where('user_data.area_id', $area_id)
+                    ->where(function($query) use ($searchValue) {
+                        $query->where('numero_potencia', 'like', '%'.$searchValue.'%')
+                            ->orWhere('services.name', 'like', '%'.$searchValue.'%')
+                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%')
+                            ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
+                    })
+                    ->orderBy($columnName, $columnSortOrder)
+                    ->count();
+
+                $records = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                    ->join('services', 'services.id', '=', 'ot_works.service_id')
+                    ->join('areas', 'areas.id', '=', 'services.area_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->skip($start)
+                    ->take($rowperpage)
+                    ->where('user_data.area_id', $area_id)
+                    ->where(function($query) use ($searchValue) {
+                        $query->where('numero_potencia', 'like', '%'.$searchValue.'%')
+                            ->orWhere('services.name', 'like', '%'.$searchValue.'%')
+                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%')
+                            ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
+                    })
+                    ->orderBy($columnName, $columnSortOrder)
+                    ->get();
+            } else {
+                $user_id = \Auth::id();
+
+                $totalRecords = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                    ->join('services', 'services.id', '=', 'ot_works.service_id')
+                    ->join('areas', 'areas.id', '=', 'services.area_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->select('count(*) as allcount')
+                    ->where('workshops.user_id', $user_id)
+                    ->count();
+
+                $totalRecordswithFilter = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                    ->join('services', 'services.id', '=', 'ot_works.service_id')
+                    ->join('areas', 'areas.id', '=', 'services.area_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->select('count(*) as allcount')
+                    ->where('workshops.user_id', $user_id)
+                    ->where(function($query) use ($searchValue) {
+                        $query->where('numero_potencia', 'like', '%'.$searchValue.'%')
+                            ->orWhere('services.name', 'like', '%'.$searchValue.'%')
+                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%')
+                            ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
+                    })
+                    ->orderBy($columnName, $columnSortOrder)
+                    ->count();
+
+                $records = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
+                    ->join('services', 'services.id', '=', 'ot_works.service_id')
+                    ->join('areas', 'areas.id', '=', 'services.area_id')
+                    ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                    ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->skip($start)
+                    ->take($rowperpage)
+                    ->where('workshops.user_id', $user_id)
+                    ->where(function($query) use ($searchValue) {
+                        $query->where('numero_potencia', 'like', '%'.$searchValue.'%')
+                            ->orWhere('services.name', 'like', '%'.$searchValue.'%')
+                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%')
+                            ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
+                    })
+                    ->orderBy($columnName, $columnSortOrder)
+                    ->get();
+            }
+        }
+
+        //$ots = array_unique(array_column($services->toArray(), 'ot_id'));
+
+        $records_array = [];
+        foreach ($records as $key => $row) {
+            $created_at = date('d-m-Y', strtotime($row->created_at));
+            $row_code = 'OT-'.zerosatleft($row->code, 3);
+            $potencia = $row->potencia;
+
+            $logs = $row->work_logs;
+            $wl_count = $logs->count();
+            $status_code = $wl_count ? $logs->first()->status->code : null;
+            $status = $wl_count ? $logs->first()->status->name : null;
+            $work_type = $wl_count ? $logs->first()->type : '';
+
+            $html_tools = '<button class="btn btn-primary btn-sm btn-tasks" data-id="'.$row->id.'">Actividades <i class="far fa-tasks ml-2"></i></button>
+
+                <div class="text-center row-details" data-id="'.$row->id.'" style="display: none;">
+                    <div class="cell-details px-3" style="border-left: 10px solid #efefef;border-right: 10px solid #efefef;background-color: #f9f9f9;margin-top: -6px;">
+                        <div class="t-details text-white px-2 py-3 mb-3 row">
+                          <div class="history bg-dark py-3 col-12 col-md-8 col-xl-10">
+                            <h5 class="h6 px-3">Historial</h5>
+                            <ul class="works-list text-left list-inline mb-0 text-info" style="max-height: 160px;overflow-y: auto;">';
+                                if ($wl_count) {
+                                    foreach ($logs as $key => $worklog) {
+                                    $html_tools .= '<li class="item"><span>'.($worklog->status->name ?? '-').'</span>
+                                      <span> | '. date('d-m-Y h:i a', strtotime($worklog->created_at)) .'</span>
+                                      <hr class="my-1" style="border-top-color: #444">
+                                    </li>';
+                                    }
+                                } else {
+                                    $html_tools .= '<li class="text-muted my-2">No hay historial aún</li>';
+                                }
+                            $html_tools .= '</ul>
+                            <hr style="border-top-color: #2b2b2b">
+                            <div class="history-footer">
+                              <label class="text-white">Comentarios:</label>
+                              <textarea class="form-control mt-0 comments" data-otwork="'.$row->id.'" name="comments">'.$row->comments.'</textarea>
+                              <p class="mb-0 comments-msg text-success" style="display: none;"><span class="font-weight-light"><i class="fa fa-check"></i> Se guardó.</span></p>
+                            </div>
+                            <hr style="border-top-color: #2b2b2b">
+                            <div class="additional">
+                              <label class="text-white" data-toggle="collapse" data-target="#collapsetable'.$row->id.'">Información adicional:</label>
+                              <div class="table-wrapper mb-3 collapse show">';
+                                  $service = Service::where('id', $row->service_id)->first();
+                                  $tables = $service->tables;
+                                foreach ($tables as $table) {
+                                    $html_tools .= '<form class="parent-table" id="parentTb'.$table->id.'" action="/worklog/update-data" method="POST">
+                                    <div class="table-responsive" style="overflow-y:hidden">
+                                    <table class="table text-white" id="infotable'.$table->id.'">';
+                                        $cols_head_html = ''; $cols_html = '';
+                                        $cols = $table->cols;
+                                        $cols_count = $cols->count();
+                                        $table_rows = $table->rows_quantity;
+                                        $counter = -1;
+                                        foreach ($cols as $col) {
+                                            $cols_head_html .= '<th>'.$col->col_name.'</th>';
+                                        }
+                                        for ($i = 0; $i < $table_rows; $i++) {
+                                            $cols_html .= '<tr>';
+                                            foreach ($cols as $ckey => $col) {
+                                                $counter++;
+                                                $cols_html .= '<td>
+                                                <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][id]" value="'.(isset($col->data[$i]->id) ? $col->data[$i]->id : '').'">
+                                                <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][work_add_info_id]" value="'.$col->work_add_info_id.'">
+                                                <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][row]" value="'.$i.'">
+                                                <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][col_id]" value="'.$col->id.'">
+                                                <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][ot_work_id]" value="'.$row->id.'">
+                                                <input class="form-control frm-col mt-0" type="text" name="coldata['.$counter.'][content]" value="'.(isset($col->data[$i]->content) ? $col->data[$i]->content : '').'">
+                                            </td>';
+                                            }
+                                            $cols_html .= '</tr>';
+                                        }
+                                        $html_tools .= '<thead>
+                                      <tr style="background-color: #3d496f;"><th colspan="'.$cols_count.'">'.$table->name.'</th></tr>
+                                      <tr style="background-color: #3d496f;">'.$cols_head_html.'</tr>
+                                    </thead>
+                                    <tbody>'. $cols_html .'</tbody>
+                                    <tfoot>
+                                      <tr>
+                                        <td colspan="'.$cols_count.'"><p class="mb-0 coldata-msg text-success" style="display: none;"><span class="font-weight-light"><i class="fa fa-check"></i> Se guardó.</span></p></td>
+                                      </tr>
+                                    </tfoot>
+                                  </table>
+                                  </div>
+                                </form>';
+                                }
+                            $html_tools .= '</div>
+                            </div>
+                            </div>
+                            <div class="work-buttons py-3 col-12 col-md-4 col-xl-2 text-dark">';
+                            if ($allowed_user && $wl_count > 0) {
+                                if ($status_code == 'approved') {
+                                    $html_tools .= ' <span class="badge badge-success d-block py-1 my-1">Aprobada</span>';
+                                } else if($status_code == 'disapproved') {
+                                    $html_tools .= '<span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span>';
+                                } else if($work_type == 'end') {
+                                    $html_tools .= '<button class="btn btn-action btn-primary my-1" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalApprove">Aprobar <i class="far fa-check ml-2"></i></button>';
+                                } else {
+                                    $html_tools .= '<span class="badge badge-light d-block py-1 my-1">En proceso.</span>';
+                                }
+                            } else {
+                            //Trabajador
+                                if ($wl_count == 0) {
+                                    $html_tools .= '<button class="btn btn-success my-1 btn-action" data-type="start" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Empezar <i class="far fa-play ml-2"></i></button>';
+                                } else {
+                                    if($work_type == 'start' || $work_type == 'continue' || $work_type == 'restart') {
+                                        $html_tools .= '<button class="btn btn-pause btn-warning my-1 btn-action" data-type="pause" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
+                                        <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
+                                    } else if($work_type == 'pause') {
+                                        $html_tools .= '<button class="btn btn-primary my-1 btn-action" data-type="continue" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button>
+                                        <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
+                                    } else if($work_type == 'approved' || $work_type == 'disapproved') {
+                                        if ($status_code == 'approved') {
+                                            $html_tools .= '<span class="badge badge-success d-block py-1 my-1">Aprobada</span>';
+                                        } else if($status_code == 'disapproved') {
+                                            $html_tools .= '<span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span>
+                                            <button class="btn btn-danger my-1 btn-action" data-type="restart" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Reiniciar <i class="far fa-play ml-2"></i></button>';
+                                        }
+                                        $html_tools .= 'Finalizó la tarea.';
+                                    }
+                                }
+                            }
+                            $html_tools .= '</div>
+                        </div>
+                      </div>
+                  </div>
+              ';
+
+            $records_array[] = array(
+                "created_at" => $created_at,
+                "id" => $row_code,
+                "numero_potencia" => $potencia ? $potencia : '-',
+                "area" => $row->area,
+                "service" => $row->service,
+                "status" => $wl_count ? '<span class="badge badge-info d-block py-1">'.$status.'</span>' : '-',
+                "tools" => $html_tools
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $records_array
+        );
+
+        echo json_encode($response);
+        exit;
     }
 
     /**

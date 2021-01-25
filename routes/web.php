@@ -62,11 +62,14 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('ordenes/{orden}/cierre', [App\Http\Controllers\OtController::class, 'closure_view'])->name('ordenes.closure.show');
 	Route::post('ordenes/cierre-ot', [App\Http\Controllers\OtController::class, 'closure_ot'])->name('ordenes.closure');
 
-	Route::post('ordenes/gallery', [App\Http\Controllers\OtController::class, 'galleryStore'])->name('gallery.store');
-	Route::post('ordenes/{id}/quitarimagen', [App\Http\Controllers\OtController::class, 'galleryDelete'])->name('gallery.delete');
-
 	Route::get('ordenes/ee_list', [App\Http\Controllers\OtController::class, 'ee_list'])->name('ordenes.ee_ots');
 	Route::get('ordenes/me_list', [App\Http\Controllers\OtController::class, 'me_list'])->name('ordenes.me_ots');
+	Route::get('ordenes/cierre', [App\Http\Controllers\OtController::class, 'closure'])->name('workshop.closure');
+	Route::get('ordenes/ot-pendientes-cierre', [App\Http\Controllers\OtController::class, 'list_pendingclosure'])->name('workshop.pending_closurelist');
+	Route::get('ordenes/ot-cerradas', [App\Http\Controllers\OtController::class, 'list_closure'])->name('workshop.closurelist');
+
+	Route::post('ordenes/gallery', [App\Http\Controllers\OtController::class, 'galleryStore'])->name('gallery.store');
+	Route::post('ordenes/{id}/quitarimagen', [App\Http\Controllers\OtController::class, 'galleryDelete'])->name('gallery.delete');
 
 	//rutas para Clientes
 	//Route::resource('clientes', App\Http\Controllers\ClientController::class);
@@ -177,11 +180,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('talleres/{ot}/asignar', [App\Http\Controllers\WorkshopController::class, 'assign'])->name('workshop.assign');
 
 	Route::get('talleres/list', [App\Http\Controllers\OtController::class, 'list_workshop'])->name('talleres.list_workshop');
-	Route::get('talleres/tareas', [App\Http\Controllers\WorkshopController::class, 'services_list'])->name('workshop.services');
-
-	Route::get('talleres/cierre', [App\Http\Controllers\OtController::class, 'closure'])->name('workshop.closure');
-	Route::get('talleres/ot-pendientes-cierre', [App\Http\Controllers\OtController::class, 'list_pendingclosure'])->name('workshop.pending_closurelist');
-	Route::get('talleres/ot-cerradas', [App\Http\Controllers\OtController::class, 'list_closure'])->name('workshop.closurelist');
+	Route::get('talleres/tareas', [App\Http\Controllers\WorkshopController::class, 'tasks'])->name('workshop.tasks');
+	Route::get('talleres/servicios', [App\Http\Controllers\WorkshopController::class, 'services_list'])->name('workshop.services');
 
 	Route::post('talleres/aprobartarea', [App\Http\Controllers\WorkshopController::class, 'approveWork'])->name('workshop.approvework');
 

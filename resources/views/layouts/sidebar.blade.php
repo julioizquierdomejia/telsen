@@ -157,15 +157,15 @@
       </li>
       @endif
       @if ($admin || $supervisor || in_array("worker", $role_names))
-      <li class="{{ request()->routeIs('workshop.services') ? 'active' : '' }}">
-        <a class="mr-0" href="{{route('workshop.services')}}">
+      <li class="{{ request()->routeIs('workshop.tasks') ? 'active' : '' }}">
+        <a class="mr-0" href="{{route('workshop.tasks')}}">
           <i class="fas fa-cogs mr-1"></i>
           <p>Mis tareas</p>
         </a>
       </li>
       @endif
       @if ($admin || $role_closure)
-      <li class="{{ request()->segment(1) == 'ordenes' ? 'active' : '' }}">
+      <li class="{{ request()->routeIs('workshop.closure') ? 'active' : '' }}">
         <a class="mr-0" href="{{route('workshop.closure')}}">
           <i class="fas fa-file-contract mr-1"></i>
           <p>Cierre de OTs</p>

@@ -1,23 +1,11 @@
 @extends('layouts.app', ['body_class' => 'ots', 'title' => 'Mis Tareas'])
 @section('content')
-<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
-<script type="text/javascript">var drops = [];</script>
-@php
-  $single_role = count($roles) == 1;
-  $allowed_user = in_array('superadmin', $roles) || in_array('supervisor', $roles) && $single_role;
-@endphp
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
         <h4 class="card-title d-flex align-items-center">
           <span>Mis Tareas</span>
-          {{-- <select class="form-control col-5 col-md-4 col-xl-3 ml-auto">
-            <option value="">Seleccionar OT</option>
-            @foreach ($ots as $ot)
-              <option value="1">OT-{{$ot}}</option>
-            @endforeach
-          </select> --}}
         </h4>
       </div>
       <div class="card-body">
@@ -34,166 +22,6 @@
               <th class="text-center">Acciones</th>
             </thead>
             <tbody>
-              @foreach ($services as $item)
-              @php
-              $logs = $item->work_logs;
-              $wl_count = $logs->count();
-              $status_code = $wl_count ? $logs->first()->status->code : null;
-              $status = $wl_count ? $logs->first()->status->name : null;
-              $work_type = $wl_count ? $logs->first()->type : '';
-              @endphp
-              <tr id="service-{{$item->id}}">
-                {{-- <td>{{$item->id}}</td> --}}
-                <td>{{date('d-m-Y', strtotime($item->created_at))}}</td>
-                <td>OT-{{$item->code}}</td>
-                <td>{{$item->potencia}}</td>
-                <td>{{$item->area}}</td>
-                <td>{{$item->service}}</td>
-                <td class="status">{!! $wl_count ? '<span class="badge badge-info d-block py-1">'.$status.'</span>' : '-' !!}</td>
-                <td class="text-center">
-                  <button class="btn btn-primary btn-sm btn-tasks">Actividades <i class="far fa-tasks ml-2"></i></button>
-                </td>
-              </tr>
-              <tr class="text-center" data-id="service-{{$item->id}}" style="display: none;">
-                <td class="p-0" colspan="7">
-                  <div class="px-3" style="border-left: 10px solid #efefef;border-right: 10px solid #efefef;background-color: #f9f9f9;margin-top: -6px;">
-                    <div class="t-details text-white px-2 py-3 mb-3 row">
-                      <div class="history bg-dark py-3 col-12 col-md-8 col-xl-10">
-                        <h5 class="h6 px-3">Historial</h5>
-                        <ul class="works-list text-left list-inline mb-0 text-info" style="max-height: 160px;overflow-y: auto;">
-                          @if ($wl_count)
-                          @foreach ($logs as $key => $worklog)
-                          <li class="item">
-                            <span>{{$worklog->status->name ?? '-'}}</span>
-                            <span> | {{date('d-m-Y h:i a', strtotime($worklog->created_at))}}</span>
-                            <hr class="my-1" style="border-top-color: #444">
-                          </li>
-                          @endforeach
-                          @else
-                          <li class="text-muted my-2">No hay historial aún</li>
-                          @endif
-                        </ul>
-                        <hr style="border-top-color: #2b2b2b">
-                        <div class="history-footer">
-                          <label class="text-white">Comentarios:</label>
-                          <textarea class="form-control mt-0 comments" data-otwork="{{$item->id}}" name="comments">{{$item->comments}}</textarea>
-                          <p class="mb-0 comments-msg text-success" style="display: none;"><span class="font-weight-light"><i class="fa fa-check"></i> Se guardó.</span></p>
-                          {{-- <div class="col-12 col-md-6 text-left">
-                            <label class="text-white">Fotos:</label>
-                            <ul class="list-inline">
-                              <li>foto</li>
-                              <li>foto 2</li>
-                            </ul>
-                            <div id="dZUpload{{$item->id}}" class="dropzone">
-                              <div class="dz-default dz-message">Sube aquí tus imágenes</div>
-                            </div>
-                            <script type="text/javascript">drops.push('dZUpload{{$item->id}}')</script>
-                          </div> --}}
-                        </div>
-                        <hr style="border-top-color: #2b2b2b">
-                        <div class="additional">
-                          <label class="text-white" data-toggle="collapse" data-target="#collapsetable{{$item->id}}">Información adicional:</label>
-                          <div class="table-wrapper mb-3 collapse show">
-                            @php
-                              $service = App\Models\Service::where('id', $item->service_id)->first();
-                              $tables = $service->tables;
-                            @endphp
-                            @foreach ($tables as $table)
-                            <form class="parent-table" id="parentTb{{$table->id}}" action="/worklog/update-data" method="POST">
-                              <table class="table text-white" id="infotable{{$table->id}}">
-                                  @php
-                                    $cols_head_html = ''; $cols_html = '';
-                                    $cols = $table->cols;
-                                    $cols_count = $cols->count();
-                                    $table_rows = $table->rows_quantity;
-                                    $counter = -1;
-                                    @endphp
-                                    @foreach ($cols as $col)
-                                    @php
-                                    $cols_head_html .= '<th>'.$col->col_name.'</th>';
-                                    @endphp
-                                    @endforeach
-                                  @for ($i = 0; $i < $table_rows; $i++)
-                                  @php
-                                    $cols_html .= '<tr>';
-                                  @endphp
-                                    @foreach ($cols as $ckey => $col)
-                                    @php
-                                    //var_dump($col->data->toArray());
-                                    $counter++;
-                                    $cols_html .= '<td>
-                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][id]" value="'.(isset($col->data[$i]->id) ? $col->data[$i]->id : '').'">
-                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][work_add_info_id]" value="'.$col->work_add_info_id.'">
-                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][row]" value="'.$i.'">
-                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][col_id]" value="'.$col->id.'">
-                                      <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][ot_work_id]" value="'.$item->id.'">
-                                      <input class="form-control frm-col mt-0" type="text" name="coldata['.$counter.'][content]" value="'.(isset($col->data[$i]->content) ? $col->data[$i]->content : '').'">
-                                    </td>';
-                                    @endphp
-                                    @endforeach
-                                    @php
-                                    $cols_html .= '</tr>';
-                                  @endphp
-                                  @endfor
-                                <thead>
-                                  <tr>
-                                    <th colspan="{{$cols_count}}">
-                                      {{$table->name}}
-                                    </th>
-                                  </tr>
-                                  <tr>{!! $cols_head_html !!}</tr>
-                                </thead>
-                                <tbody>
-                                {!! $cols_html !!}
-                                </tbody>
-                                <tfoot>
-                                  <tr>
-                                    <td colspan="{{$cols_count}}"><p class="mb-0 coldata-msg text-success" style="display: none;"><span class="font-weight-light"><i class="fa fa-check"></i> Se guardó.</span></p></td>
-                                  </tr>
-                                </tfoot>
-                              </table>
-                              </form>
-                            @endforeach
-                          </div>
-                        </div>
-                      </div>
-                      <div class="work-buttons py-3 col-12 col-md-4 col-xl-2 text-dark">
-                      @if ($allowed_user && $wl_count > 0)
-                        @if ($status_code == 'approved')
-                          <span class="badge badge-success d-block py-1 my-1">Aprobada</span>
-                        @elseif($status_code == 'disapproved')
-                          <span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span>
-                        @else
-                        <button class="btn btn-action btn-primary my-1" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalApprove">Aprobar <i class="far fa-check ml-2"></i></button>
-                        @endif
-                      @else
-                      {{-- Trabajador --}}
-                        @if ($wl_count == 0)
-                          <button class="btn btn-success my-1 btn-action" data-type="start" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Empezar <i class="far fa-play ml-2"></i></button>
-                        @else
-                          @if($work_type == 'start' || $work_type == 'continue' || $work_type == 'restart')
-                          <button class="btn btn-pause btn-warning my-1 btn-action" data-type="pause" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
-                          <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
-                          @elseif($work_type == 'pause')
-                          <button class="btn btn-primary my-1 btn-action" data-type="continue" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button>
-                          <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
-                          @elseif($work_type == 'approved' || $work_type == 'disapproved')
-                            @if ($status_code == 'approved')
-                              <span class="badge badge-success d-block py-1 my-1">Aprobada</span>
-                            @elseif($status_code == 'disapproved')
-                              <span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span>
-                              <button class="btn btn-danger my-1 btn-action" data-type="restart" data-work_id="{{$item->id}}" type="button" data-toggle="modal" data-target="#modalReason">Reiniciar <i class="far fa-play ml-2"></i></button>
-                            @endif
-                          Finalizó la tarea.
-                          @endif
-                        @endif
-                      @endif
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              @endforeach
             </tbody>
           </table>
         </div>
@@ -265,43 +93,56 @@
 @endif
 @endsection
 @section('javascript')
-<script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>
 <script>
-  Dropzone.autoDiscover = false;
   $(document).ready(function() {
-
-    $.each(drops, function (id, item) {
-      var myDrop = new Dropzone("#"+item, {
-        url: "{{route('gallery.store')}}",
-        addRemoveLinks: true,
-        params: {
-          _token: '{{csrf_token()}}',
-          eval_type: 'workshop',
-          ot_id: null,
-        },
-        renameFile: function (file) {
-            let newName = new Date().getTime() + '_' + file.name;
-            return newName;
-        },
-        success: function (file, response) {
-            var imgName = response;
-            file.previewElement.classList.add("dz-success");
-            //createJSON(myDrop.files);
-        },
-        removedfile: function(file) {
-          //createJSON(myDrop.files);
-            file.previewElement.remove();
-        },
-        error: function (file, response) {
-            file.previewElement.classList.add("dz-error");
-        }
-    });
-
-    })
+    var allowed_user = {{$allowed_user}};
+    var workshopTable;
+    if(workshopTable) {
+      workshopTable.ajax.reload();
+    } else {
+      workshopTable = $('#workshop-table').DataTable({
+         processing: true,
+         serverSide: true,
+         ajax: "{{route('workshop.services')}}",
+         pageLength: 5,
+         lengthMenu: [ 5, 25, 50 ],
+         columns: [
+            { data: 'created_at', class: 'text-nowrap' },
+            { data: 'id', class: 'otid' },
+            { data: 'numero_potencia', class: 'text-left' },
+            { data: 'area', class: 'text-left' },
+            { data: 'service', class: 'text-center' },
+            { data: 'status', class: 'status text-center' },
+            { data: 'tools', class: 'text-left text-nowrap'}
+        ],
+         columnDefs: [
+          { orderable: false, targets: 2 },
+          { orderable: false, targets: 6 }
+        ],
+        order: [[ 0, "desc" ]],
+        language: dLanguage
+      });
+    }
 
     var actualBtn;
-    $('.btn-tasks').on('click', function (event) {
-      $(this).parents('tr').next().slideToggle();
+    $(document).on('click', '.btn-tasks', function (event) {
+      var id = $(this).data('id'),
+          row = $('.row-details[data-id='+id+']'),
+          content = $(`
+          <tr class="text-center row-details row-expanded" data-id="`+id+`">
+            <td colspan="7">
+              `+row.find('.cell-details').html()+`
+            </td>
+          </tr>
+          `);
+      if(row.hasClass('row-expanded')) {
+        row.toggle();
+      } else {
+        parent = $(this).parents('tr[role="row"]');
+        row.remove();
+        content.insertAfter(parent);
+        row.toggle();
+      }
     })
 
     $('.comments').on('change', function (event) {
@@ -338,7 +179,6 @@
     })
 
     $(document).on("submit", ".parent-table", function(event) {
-      console.log("entra a submit")
       var coldata_msg = $(this).find('.coldata-msg');
         event.preventDefault();
         $.ajaxSetup({
@@ -463,7 +303,7 @@
               s_length = data.length;
             var parent = actualBtn.parents('.t-details')
                 list = parent.find('.works-list');
-            $('#service-'+work_id+ ' .status').html('<span class="badge badge-info d-block py-1">'+data[0].status.name+'</span>')
+            $('.row-details[data-id='+work_id+']').prev().find('.status').html('<span class="badge badge-info d-block py-1">'+data[0].status.name+'</span>')
             list.empty();
             $.each(data, function (id, item) {
               list.append(
@@ -474,35 +314,35 @@
                 </li>`
                 )
             })
-            @if (!in_array('supervisor', $roles))
-            if(type == 'start' || type == 'continue' || type == 'restart') {
-              parent.find('.work-buttons').html(`
-                <button class="btn btn-pause btn-warning my-1 btn-action" data-type="pause" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
-
-                <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
-                `);
-            } else if(type == 'pause') {
-              parent.find('.work-buttons').html(`
-                <button class="btn btn-primary my-1 btn-action" data-type="continue" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button>
-
-                <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>
-                `);
-            } else if(type == 'end') {
-              parent.find('.work-buttons').html(`
-                Finalizó la tarea.
-                `);
-            }
-            @else
-              if(type == 'end') {
-              parent.find('.work-buttons').html(`
-                Finalizó la tarea.
-                @if ($allowed_user)
-                  <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalApprove">Terminar <i class="far fa-check ml-2"></i>Desaprobar</button>
-                  <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="`+work_id+`" type="button" data-toggle="modal" data-target="#modalApprove">Terminar <i class="far fa-check ml-2"></i>Aprobar</button>
-                @endif
-                `);
+            last_status = data[s_length - 1].code;
+            work_type = data[s_length - 1].type;
+            html_tools = '';
+            if (allowed_user) {
+                if (last_status == 'approved') {
+                    html_tools += ' <span class="badge badge-success d-block py-1 my-1">Aprobada</span>';
+                } else if(last_status == 'disapproved') {
+                    html_tools += '<span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span>';
+                } else if(work_type == 'end') {
+                    html_tools += '<button class="btn btn-action btn-primary my-1" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalApprove">Aprobar <i class="far fa-check ml-2"></i></button>';
+                } else {
+                    html_tools += '<span class="badge badge-light d-block py-1 my-1">En proceso.</span>';
+                }
+            } else {
+            //Trabajador
+              if(work_type == 'start' || work_type == 'continue' || work_type == 'restart') {
+                  html_tools += '<button class="btn btn-pause btn-warning my-1 btn-action" data-type="pause" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button><button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
+              } else if(work_type == 'pause') {
+                  html_tools += '<button class="btn btn-primary my-1 btn-action" data-type="continue" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button><button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
+              } else if(work_type == 'approved' || work_type == 'disapproved') {
+                  if (last_status == 'approved') {
+                      html_tools += '<span class="badge badge-success d-block py-1 my-1">Aprobada</span>';
+                  } else if(last_status == 'disapproved') {
+                      html_tools += '<span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span><button class="btn btn-danger my-1 btn-action" data-type="restart" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Reiniciar <i class="far fa-play ml-2"></i></button>';
+                  }
+                  html_tools += 'Finalizó la tarea.';
               }
-            @endif
+            }
+            parent.find('.work-buttons').html(html_tools);
 
             $this.attr('disabled', true);
           }
@@ -529,7 +369,6 @@
           success: function(response) {
               if (response.success) {
                 var data = response.data;
-                console.log(data)
               }
               $('#modalApprove').modal('hide');
               location.reload();
@@ -537,7 +376,6 @@
           },
           error: function(request, status, error) {
               var data = jQuery.parseJSON(request.responseText);
-              console.log(data);
               $('#modalApprove [type="submit"]').attr('disabled', false);
           }
       });

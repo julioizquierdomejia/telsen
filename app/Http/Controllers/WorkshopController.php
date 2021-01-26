@@ -191,7 +191,6 @@ class WorkshopController extends Controller
                         ->orWhere('ots.code', 'like', '%'.$searchValue.'%')
                         ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
                 })
-                ->orderBy($columnName, $columnSortOrder)
                 ->count();
 
             $records = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
@@ -234,7 +233,6 @@ class WorkshopController extends Controller
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%')
                             ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
                     ->count();
 
                 $records = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')
@@ -279,7 +277,6 @@ class WorkshopController extends Controller
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%')
                             ->orWhere('areas.name', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
                     ->count();
 
                 $records = OtWork::leftJoin('workshops', 'ot_works.id', '=', 'workshops.ot_work_id')

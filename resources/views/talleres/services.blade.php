@@ -314,33 +314,26 @@
                 </li>`
                 )
             })
-            last_status = data[s_length - 1].code;
-            work_type = data[s_length - 1].type;
+            last_status = data[0].code;
+            work_type = data[0].type;
             html_tools = '';
-            if (allowed_user) {
-                if (last_status == 'approved') {
-                    html_tools += ' <span class="badge badge-success d-block py-1 my-1">Aprobada</span>';
-                } else if(last_status == 'disapproved') {
-                    html_tools += '<span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span>';
-                } else if(work_type == 'end') {
+            if(work_type == 'start' || work_type == 'continue' || work_type == 'restart') {
+                html_tools += '<button class="btn btn-pause btn-warning my-1 btn-action" data-type="pause" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button><button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
+            } else if(work_type == 'pause') {
+                html_tools += '<button class="btn btn-primary my-1 btn-action" data-type="continue" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button><button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
+            } else if(work_type == 'end') {
+                if (allowed_user) {
                     html_tools += '<button class="btn btn-action btn-primary my-1" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalApprove">Aprobar <i class="far fa-check ml-2"></i></button>';
                 } else {
                     html_tools += '<span class="badge badge-light d-block py-1 my-1">En proceso.</span>';
                 }
-            } else {
-            //Trabajador
-              if(work_type == 'start' || work_type == 'continue' || work_type == 'restart') {
-                  html_tools += '<button class="btn btn-pause btn-warning my-1 btn-action" data-type="pause" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button><button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
-              } else if(work_type == 'pause') {
-                  html_tools += '<button class="btn btn-primary my-1 btn-action" data-type="continue" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button><button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
-              } else if(work_type == 'approved' || work_type == 'disapproved') {
-                  if (last_status == 'approved') {
-                      html_tools += '<span class="badge badge-success d-block py-1 my-1">Aprobada</span>';
-                  } else if(last_status == 'disapproved') {
-                      html_tools += '<span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span><button class="btn btn-danger my-1 btn-action" data-type="restart" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Reiniciar <i class="far fa-play ml-2"></i></button>';
-                  }
-                  html_tools += 'Finalizó la tarea.';
-              }
+            } else if(work_type == 'approved' || work_type == 'disapproved') {
+                if (last_status == 'approved') {
+                    html_tools += '<span class="badge badge-success d-block py-1 my-1">Aprobada</span>';
+                } else if(last_status == 'disapproved') {
+                    html_tools += '<span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span><button class="btn btn-danger my-1 btn-action" data-type="restart" data-work_id="'+work_id+'" type="button" data-toggle="modal" data-target="#modalReason">Reiniciar <i class="far fa-play ml-2"></i></button>';
+                }
+                html_tools += 'Finalizó la tarea.';
             }
             parent.find('.work-buttons').html(html_tools);
 

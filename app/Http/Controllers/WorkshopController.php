@@ -787,44 +787,28 @@ class WorkshopController extends Controller
         $work_id = $request->input('work_id');
 
         $status = WorkStatus::where('code', $status_code)->first();
-        /*$work_log = WorkLog::where('work_id', $work_id)
+        $work_log_approved = WorkLog::where('work_id', $work_id)
                     ->orderBy('id', 'desc')
-                    ->where('type', 'end')
-                    ->first();*/
+                    ->where('type', 'approved')
+                    ->first();
+        //Si esta aprobada la tarea ya no cambia de estado
+        if ($work_log_approved == null) {
+            $work_log = new WorkLog();
+            $work_log->work_id = $work_id;
+            $work_log->user_id = \Auth::id();
+            $work_log->type = $status_code;
+            $work_log->status_id = $status->id;
+            $work_log->save();
 
-        $work_log = new WorkLog();
-        $work_log->work_id = $work_id;
-        $work_log->user_id = \Auth::id();
-        $work_log->type = $status_code;
-        $work_log->status_id = $status->id;
-        $work_log->save();
+            if ($status_code == 'approved') {
+                $ot_work = OtWork::find($work_id);
+                $ot_work->approved = 1;
+                $ot_work->save();
+            }
 
-        if ($status_code == 'approved') {
-            $ot_work = OtWork::find($work_id);
-            $ot_work->approved = 1;
-            $ot_work->save();
+            return response()->json(['data'=>json_encode($work_log), 'success'=>true]);
         }
 
-        /*$ot_work_status = new OtWorkStatus();
-        $ot_work_status->work_status_id = $status;
-        $ot_work_status->ot_work_id = $work_id;
-        $ot_work_status->save();*/
-
-        /*if ($ot_work_status->work_status_id == 1) { //Aprobado
-            
-        } else {
-            $status = WorkStatus::where('code', 'restart')->first();
-            if ($status) {
-                $work_log = new WorkLog();
-                $work_log->work_id = $request->input('work_id');
-                $work_log->user_id = \Auth::id();
-                $work_log->type = 'restart';
-                $work_log->description = 'Reinició el trabajo';
-                $work_log->status_id = $status->id;
-                $work_log->save();
-            }
-        }*/
-
-        return response()->json(['data'=>json_encode($work_log), 'success'=>true]);
+        return response()->json(['data'=>[], 'success'=>false]);
     }
 }

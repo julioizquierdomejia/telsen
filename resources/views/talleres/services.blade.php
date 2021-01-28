@@ -64,7 +64,7 @@
 @if ($allowed_user)
 <div class="modal fade" tabindex="-1" id="modalApprove">
   <div class="modal-dialog">
-    <form class="modal-content" action="/talleres/aprobartarea" method="POST">
+    <form class="modal-content" id="frmApprove" action="/talleres/aprobartarea" method="POST">
       <div class="modal-header">
         @csrf
         <input type="text" hidden="" name="work_id" value="">
@@ -301,7 +301,8 @@
           if (response.success) {
             var data = $.parseJSON(response.data),
               s_length = data.length;
-            var parent = actualBtn.parents('.t-details')
+              workshopTable.ajax.reload(null, false);
+            /*var parent = actualBtn.parents('.t-details')
                 list = parent.find('.works-list');
             $('.row-details[data-id='+work_id+']').prev().find('.status').html('<span class="badge badge-info d-block py-1">'+data[0].status.name+'</span>')
             list.empty();
@@ -335,7 +336,7 @@
                 }
                 html_tools += 'Finalizó la tarea.';
             }
-            parent.find('.work-buttons').html(html_tools);
+            parent.find('.work-buttons').html(html_tools);*/
 
             $this.attr('disabled', true);
           }
@@ -346,7 +347,7 @@
       });
     })
     @if ($allowed_user)
-    $("#modalApprove .modal-content").on("submit", function (event) {
+    $("#frmApprove").on("submit", function (event) {
       event.preventDefault();
       var form = $(this);
       var url = form.attr('action');
@@ -360,11 +361,11 @@
             $('#modalApprove [type="submit"]').attr('disabled', true);
           },
           success: function(response) {
+              $('#modalApprove').modal('hide');
               if (response.success) {
                 var data = response.data;
               }
-              $('#modalApprove').modal('hide');
-              location.reload();
+              workshopTable.ajax.reload(null, false);
               $('#modalApprove [type="submit"]').attr('disabled', false);
           },
           error: function(request, status, error) {

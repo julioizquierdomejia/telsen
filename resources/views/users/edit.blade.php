@@ -10,27 +10,27 @@
       @csrf
       <div class="card form-card h-100">
         <div class="card-header">
-          <h5 class="card-title">Hola, {{$user->name}}</h5>
+          <h5 class="card-title">Hola, {{$user->data->name}}</h5>
         </div>
         <div class="card-body py-md-5">
           <div class="row">
             <div class="form-group col-12 col-md-4">
               <label class="col-form-label" for="inputname">Nombre</label>
-              <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Nombre" value="{{old('name', $user->name)}}" name='name' id="inputname">
+              <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="Nombre" value="{{old('name', $user->data->name)}}" name='name' id="inputname">
               @error('name')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="form-group col-12 col-md-4">
               <label class="col-form-label" for="inputlastname">Apellidos Materno</label>
-              <input type="text" class="form-control @error('lastname') is-invalid @enderror" placeholder="Apellidos Materno" value="{{old('lastname', $user->last_name)}}" name='lastname' id="inputlastname">
+              <input type="text" class="form-control @error('lastname') is-invalid @enderror" placeholder="Apellidos Materno" value="{{old('lastname', $user->data->last_name)}}" name='lastname' id="inputlastname">
               @error('lastname')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
             <div class="form-group col-12 col-md-4">
               <label class="col-form-label" for="inputmlastname">Apellidos Paterno</label>
-              <input type="text" class="form-control @error('mlastname') is-invalid @enderror" placeholder="Apellidos Paterno" value="{{old('mlastname', $user->mother_last_name)}}" name='mlastname' id="inputmlastname">
+              <input type="text" class="form-control @error('mlastname') is-invalid @enderror" placeholder="Apellidos Paterno" value="{{old('mlastname', $user->data->mother_last_name)}}" name='mlastname' id="inputmlastname">
               @error('mlastname')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -44,7 +44,7 @@
             </div>
             <div class="form-group col-12 col-md-4">
               <label class="col-form-label" for="inputphone">Teléfono</label>
-              <input type="text" class="form-control @error('phone') is-invalid @enderror" placeholder="Email" value="{{old('phone', $user->user_phone)}}" name='phone' id="inputphone">
+              <input type="text" class="form-control @error('phone') is-invalid @enderror" placeholder="Email" value="{{old('phone', $user->data->user_phone)}}" name='phone' id="inputphone">
               @error('phone')
                 <p class="error-message text-danger">{{ $message }}</p>
               @enderror
@@ -63,13 +63,13 @@
               <label class="col-form-label" for="selectRol">Roles</label>
               @if (in_array(Auth::user()->roles->first()->name, $allowed_roles))
               <ul class="form-check-list list-inline m-0 form-control h-auto">
-                @if (in_array($user->roles->first()->name, $allowed_roles))
-                <li class="form-check"><label class="form-check-label"><input type="checkbox" class="form-check-input align-middle" disabled="" checked=""><span class="badge badge-primary"> {{$user->roles->first()->name}}</span></label></li>
-                @endif
                 @foreach($roles as $key => $role)
+                @php
+                  $isChecked = in_array($role->id, $userRoles);
+                @endphp
                 <li class="form-check" id="role_{{$key}}">
                   <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input align-middle" value="{{$role->id}}" {{in_array($role->id, old('roles', [])) || in_array($role->id, $userRoles) ? 'checked' : ''}} name="roles[]"><span class="align-middle">{{$role->description}}</span>
+                    <input type="checkbox" class="form-check-input align-middle" value="{{$role->id}}" {{in_array($role->id, old('roles', [])) || $isChecked ? 'checked' : ''}} name="roles[]"><span class="align-middle @if ($isChecked) badge badge-primary @endif">{{$role->description}}</span>
                   </label>
                 </li>
                 @endforeach
@@ -94,7 +94,7 @@
               <select name="area_id" class="form-control dropdown2 @error('area_id') is-invalid @enderror" id="selectArea" data-placeholder="Selecciona el area">
                 <option value="">Selecciona el area</option>
                 @foreach($areas as $key => $area)
-                <option value="{{ $area->id }}" {{old('area_id', $user->area_id) == $area->id ? 'selected' : ''}}>{{ $area->name }}</option>
+                <option value="{{ $area->id }}" {{old('area_id', $user->data->area_id) == $area->id ? 'selected' : ''}}>{{ $area->name }}</option>
                 @endforeach
               </select>
               @error('area_id')

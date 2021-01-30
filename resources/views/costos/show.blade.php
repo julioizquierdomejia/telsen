@@ -8,7 +8,7 @@ $cc_disapproved = in_array("cc_disapproved", $statuses);
 
 $role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
-$tarjeta_costo = in_array("tarjeta_de_costo", $role_names);
+//$tarjeta_costo = in_array("tarjeta_de_costo", $role_names);
 $cotizador_tarjeta = in_array("cotizador_tarjeta_de_costo", $role_names);
 $aprobador_cotizacion = in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names);
 $rol_fecha = in_array("fecha_de_entrega", $role_names);
@@ -32,7 +32,7 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 					@if ($ccost->cotizacion)
 					<button type="button" class="btn btn-success mt-0" data-toggle="modal" data-target="#modalCotizar"><i class="fa fa-eye"></i> Ver Cotización</button>
 					@else
-					@if (!$aprobador_cotizacion)
+					@if (($cotizador_tarjeta && !$aprobador_cotizacion) || $cotizador_tarjeta)
 					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalCotizar">Cotizar</button>
 					@endif
 					@endif

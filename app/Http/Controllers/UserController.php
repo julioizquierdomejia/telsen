@@ -49,7 +49,7 @@ class UserController extends Controller
         $totalRecords = User::select('count(*) as allcount')
                 ->join('user_data', 'user_data.user_id', '=', 'users.id')
                 ->join('areas', 'areas.id', '=' ,'user_data.area_id')
-                ->where('users.id', '<>', 1)->count();
+                ->where('users.hidden', '=', 0)->count();
 
         $totalRecordswithFilter = User::select('count(*) as allcount')
                 ->join('user_data', 'user_data.user_id', '=', 'users.id')
@@ -61,7 +61,7 @@ class UserController extends Controller
                             ->orWhere('users.email', 'like', '%' .$searchValue . '%')
                             ;
                 })
-                ->where('users.id', '<>', 1)->count();
+                ->where('users.hidden', '=', 0)->count();
 
         // Fetch records
         $records = User::leftJoin('user_data', 'user_data.user_id', '=', 'users.id')
@@ -69,7 +69,7 @@ class UserController extends Controller
                 ->select('users.*', 'areas.name as area', 'user_data.name', \DB::raw('CONCAT(user_data.last_name, " ", user_data.mother_last_name) AS lastname'))
                 ->skip($start)
                 ->take($rowperpage)
-                ->where('users.id', '<>', 1)
+                ->where('users.hidden', '=', 0)
                 ->where(function ($query) use ($searchValue) {
                     $query->where('user_data.name', 'like', '%' .$searchValue . '%')
                             ->orWhere('areas.name', 'like', '%' .$searchValue . '%')
@@ -193,10 +193,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::join('user_data', 'user_data.user_id', '=' ,'users.id')
-                ->join('areas', 'areas.id', '=' ,'user_data.area_id')
-                ->select('users.*', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id', 'areas.name as area')
+        $user = User::select('users.*')
                 ->where('users.id', $id)
+                ->where('users.hidden', 0)
                 ->firstOrFail();
         $superadmin = in_array("superadmin", array_column($user->roles->toArray(), "name"));
 
@@ -238,9 +237,10 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $id = \Auth::id();
+        $roles = $request->user()->roles;
         $allowed_roles = ['superadmin', 'admin'];
-        $allowed_user = \Auth::user()->roles->first() && 
-            in_array(\Auth::user()->roles->first()->name, $allowed_roles);
+        $allowed_user = $roles->first() && 
+            in_array($roles->first()->name, $allowed_roles);
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'worker']);
         
         $rules = array(
@@ -296,8 +296,10 @@ class UserController extends Controller
                     unset($roles[$key]);
                 }
             }*/
-
-            $roles_deleted = RoleUser::where('user_id', $user->id)->delete();
+            $roles_deleted = RoleUser::join('roles', 'role_user.role_id', 'roles.id')
+                                ->where('role_user.user_id', $user->id)
+                                ->where('roles.name', '<>', 'superadmin')
+                                ->delete();
             foreach ($roles as $key => $item) {
                 $role_user = new RoleUser();
                 $role_user->user_id = $user->id;
@@ -366,7 +368,11 @@ class UserController extends Controller
         $roles = $request->input('roles') ?? [];
 
         if ($roles) {
-            $roles_deleted = RoleUser::where('user_id', $user->id)->delete();
+            //$roles_deleted = RoleUser::where('user_id', $user->id)->delete();
+            $roles_deleted = RoleUser::join('roles', 'role_user.role_id', 'roles.id')
+                                ->where('role_user.user_id', $user->id)
+                                ->where('roles.name', '<>', 'superadmin')
+                                ->delete();
             foreach ($roles as $key => $item) {
                 $role_user = new RoleUser();
                 $role_user->user_id = $user->id;

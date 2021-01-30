@@ -45,6 +45,7 @@ class UserSeeder extends Seeder
         $user->email = 'admin@gmail.com';
         $user->password = bcrypt('_a$m&<x2o;#');
         $user->enabled = 1;
+        $user->hidden = 1;
         $user->save();
         $user_data = new UserData();
         $user_data->user_id = $user->id;
@@ -62,6 +63,7 @@ class UserSeeder extends Seeder
         $user->email = 'ponds98@hotmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->user_id = $user->id;
@@ -77,6 +79,7 @@ class UserSeeder extends Seeder
         $user->email = 'omer.caro.rios@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->user_id = $user->id;
@@ -92,6 +95,7 @@ class UserSeeder extends Seeder
         $user->email = 'luis.hidalgo@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->user_id = $user->id;
@@ -107,6 +111,7 @@ class UserSeeder extends Seeder
         $user->email = 'toribio.perez.eduardo@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->user_id = $user->id;
@@ -122,6 +127,7 @@ class UserSeeder extends Seeder
         $user->email = 'toribio.perez.arturo@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->user_id = $user->id;
@@ -137,6 +143,7 @@ class UserSeeder extends Seeder
         $user->email = 'fiestas.aguirre.sadith@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->user_id = $user->id;
@@ -152,6 +159,7 @@ class UserSeeder extends Seeder
         $user->email = 'zafra.rengifo.ricardo.arturo@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->user_id = $user->id;
@@ -169,6 +177,7 @@ class UserSeeder extends Seeder
         $user->email = 'arias.guitarra@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->user_id = $user->id;
@@ -184,6 +193,7 @@ class UserSeeder extends Seeder
         $user->email = 'kelwin.asencios@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'KELWIN';
@@ -199,6 +209,7 @@ class UserSeeder extends Seeder
         $user->email = 'roberto.condori@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'ROBERTO ALEJANDRO';
@@ -214,6 +225,7 @@ class UserSeeder extends Seeder
         $user->email = 'julioc.cruz@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'JULIO CESAR';
@@ -229,6 +241,7 @@ class UserSeeder extends Seeder
         $user->email = 'juane.estacio@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'JUAN EDUARDO';
@@ -244,6 +257,7 @@ class UserSeeder extends Seeder
         $user->email = 'teodoroc.palomino@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'TEODORO CLETO';
@@ -259,6 +273,7 @@ class UserSeeder extends Seeder
         $user->email = 'emerzon.cubas@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'EMERZON';
@@ -275,6 +290,7 @@ class UserSeeder extends Seeder
         $user->email = 'celso.ramos.mora@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'CELSO';
@@ -290,6 +306,7 @@ class UserSeeder extends Seeder
         $user->email = 'jimmy.chaupin@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'JIMMY JAIR';
@@ -305,6 +322,7 @@ class UserSeeder extends Seeder
         $user->email = 'roberto.bardales@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'ROBERTO LLOVANNY';
@@ -320,6 +338,7 @@ class UserSeeder extends Seeder
         $user->email = 'javier.casas.esteban@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'JAVIER ROBERTO';
@@ -335,6 +354,7 @@ class UserSeeder extends Seeder
         $user->email = 'juan.manayay.quispe@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'JUAN JESUS';
@@ -350,6 +370,7 @@ class UserSeeder extends Seeder
         $user->email = 'jhon.ortiz.saravia@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'JHON NEYSSER';
@@ -365,6 +386,7 @@ class UserSeeder extends Seeder
         $user->email = 'sebastian.zelada.trigoso@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'SEBASTIAN';
@@ -381,6 +403,7 @@ class UserSeeder extends Seeder
         $user->email = 'fredy.sifuentes.flores@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'FREDY ANTONIO';
@@ -396,6 +419,7 @@ class UserSeeder extends Seeder
         $user->email = 'kelvin.gomez.medina@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'KELVIN JOSE';
@@ -411,6 +435,7 @@ class UserSeeder extends Seeder
         $user->email = 'dani.portillo.faria@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'DANI ENRIQUE';
@@ -426,6 +451,7 @@ class UserSeeder extends Seeder
         $user->email = 'luis.rojas.tacuchi@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'LUIS RICARDO';
@@ -441,6 +467,7 @@ class UserSeeder extends Seeder
         $user->email = 'felix.puse.herrera@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'FELIX VICENTE';
@@ -456,6 +483,7 @@ class UserSeeder extends Seeder
         $user->email = 'freddy.rios.paredes@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'FREDDY ALEJANRO';
@@ -472,6 +500,7 @@ class UserSeeder extends Seeder
         $user->email = 'jose.abanto.toribio@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'JOSE ANTONIO';
@@ -487,6 +516,7 @@ class UserSeeder extends Seeder
         $user->email = 'luis.alejo.palomo@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'LUIS EDUARDO';
@@ -502,6 +532,7 @@ class UserSeeder extends Seeder
         $user->email = 'jason.cabanillas.pena@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'JASON JAVIER';
@@ -517,6 +548,7 @@ class UserSeeder extends Seeder
         $user->email = 'donayre.cruz.escalante@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'DONAYRE RODRIGO';
@@ -532,6 +564,7 @@ class UserSeeder extends Seeder
         $user->email = 'elmer.cruz.escalante@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'ELMER JESUS';
@@ -547,6 +580,7 @@ class UserSeeder extends Seeder
         $user->email = 'eduard.cruz.escalante@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'EDUARD CRISTIAMS';
@@ -562,6 +596,7 @@ class UserSeeder extends Seeder
         $user->email = 'jesus.ramos.sanchez@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'JESUS HONORES';
@@ -577,6 +612,7 @@ class UserSeeder extends Seeder
         $user->email = 'mario.ramos.mora@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'MARIO';
@@ -592,6 +628,7 @@ class UserSeeder extends Seeder
         $user->email = 'wilmer.obregon.tarazona@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'WILMER JOEL';
@@ -608,6 +645,7 @@ class UserSeeder extends Seeder
         $user->email = 'pruebas@telsen.net';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'Roberto';
@@ -631,6 +669,7 @@ class UserSeeder extends Seeder
         $user->email = 'mecanica@telsen.net';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'Jimmy';
@@ -652,6 +691,7 @@ class UserSeeder extends Seeder
         $user->email = 'crear_ot@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'crear_ot';
@@ -667,6 +707,7 @@ class UserSeeder extends Seeder
         $user->email = 'evaluador@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'evaluador';
@@ -682,6 +723,7 @@ class UserSeeder extends Seeder
         $user->email = 'aprobador_de_evaluaciones@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'aprobador_de_evaluaciones';
@@ -697,6 +739,7 @@ class UserSeeder extends Seeder
         $user->email = 'tarjeta_de_costo@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'tarjeta_de_costo';
@@ -712,6 +755,7 @@ class UserSeeder extends Seeder
         $user->email = 'cotizador_tarjeta_de_costo@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'cotizador_tarjeta_de_costo';
@@ -727,6 +771,7 @@ class UserSeeder extends Seeder
         $user->email = 'aprobador_cotizacion_tarjeta_de_costo@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'aprobador_cotizacion_tarjeta_de_costo';
@@ -742,6 +787,7 @@ class UserSeeder extends Seeder
         $user->email = 'rdi@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'rdi';
@@ -757,6 +803,7 @@ class UserSeeder extends Seeder
         $user->email = 'aprobador_rdi@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'aprobador_rdi';
@@ -772,6 +819,7 @@ class UserSeeder extends Seeder
         $user->email = 'fecha_de_entrega@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'fecha_de_entrega';
@@ -787,6 +835,7 @@ class UserSeeder extends Seeder
         $user->email = 'client@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'client';
@@ -802,6 +851,7 @@ class UserSeeder extends Seeder
         $user->email = 'supervisor@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'supervisor';
@@ -817,6 +867,7 @@ class UserSeeder extends Seeder
         $user->email = 'worker@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'worker';
@@ -832,6 +883,7 @@ class UserSeeder extends Seeder
         $user->email = 'cierre@gmail.com';
         $user->password = bcrypt('12345678');
         $user->enabled = 1;
+        $user->hidden = 0;
         $user->save();
         $user_data = new UserData();
         $user_data->name = 'cierre';

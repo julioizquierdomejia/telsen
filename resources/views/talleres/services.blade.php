@@ -145,7 +145,7 @@
       }
     })
 
-    $('.comments').on('change', function (event) {
+    $(document).on('change', '.comments', function (event) {
       var $this = $(this), comments = $this.val(), ot_work = $this.data('otwork');
       var comments_msg = $this.parent().find('.comments-msg');
       $.ajax({
@@ -174,7 +174,7 @@
       });
     })
 
-    $('.frm-col').on('change', function (event) {
+    $(document).on('change', '.frm-col', function (event) {
       $(this).closest('.parent-table').submit();
     })
 

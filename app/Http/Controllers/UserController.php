@@ -197,7 +197,9 @@ class UserController extends Controller
                 ->where('users.id', $id)
                 ->where('users.hidden', 0)
                 ->firstOrFail();
-        $superadmin = in_array("superadmin", array_column($user->roles->toArray(), "name"));
+        $role_names = array_column($user->roles->toArray(), "name");
+        $superadmin = in_array("superadmin", $role_names);
+        $is_admin = $superadmin || in_array("admin", $role_names);
 
         $areas = Area::where('enabled', 1)->get();
         if ($superadmin) {
@@ -206,7 +208,7 @@ class UserController extends Controller
             $roles = Role::all();
         }
 
-        return view('users.edit', compact('user', 'areas', 'roles'));
+        return view('users.edit', compact('user', 'areas', 'roles', 'is_admin'));
     }
     public function perfil()
     {
@@ -215,7 +217,9 @@ class UserController extends Controller
                 ->select('users.*', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id', 'areas.name as area')
                 ->where('users.id', \Auth::id())
                 ->firstOrFail();
-        $superadmin = in_array("superadmin", array_column($user->roles->toArray(), "name"));
+        $role_names = array_column($user->roles->toArray(), "name");
+        $superadmin = in_array("superadmin", $role_names);
+        $is_admin = $superadmin || in_array("admin", $role_names);
 
         $areas = Area::where('enabled', 1)->get();
         if ($superadmin) {
@@ -224,7 +228,7 @@ class UserController extends Controller
             $roles = Role::all();
         }
 
-        return view('users.edit', compact('user', 'areas', 'roles'));
+        return view('users.edit', compact('user', 'areas', 'roles', 'is_admin'));
     }
 
     /**
@@ -286,6 +290,11 @@ class UserController extends Controller
 
         $roles = $request->input('roles') ?? [];
 
+        $roles_deleted = RoleUser::join('roles', 'role_user.role_id', 'roles.id')
+                                ->where('role_user.user_id', $user->id)
+                                ->where('roles.name', '<>', 'superadmin')
+                                ->delete();
+
         if ($roles) {
             /*$user_roles = Role::join('role_user', 'role_user.role_id', '=' ,'roles.id')
                         ->where('role_user.user_id', $id)
@@ -296,10 +305,6 @@ class UserController extends Controller
                     unset($roles[$key]);
                 }
             }*/
-            $roles_deleted = RoleUser::join('roles', 'role_user.role_id', 'roles.id')
-                                ->where('role_user.user_id', $user->id)
-                                ->where('roles.name', '<>', 'superadmin')
-                                ->delete();
             foreach ($roles as $key => $item) {
                 $role_user = new RoleUser();
                 $role_user->user_id = $user->id;
@@ -313,7 +318,7 @@ class UserController extends Controller
         // redirect
         \Session::flash('message', 'Successfully updated user!');
         if ($allowed_user) {
-            return redirect('usuarios');
+            return redirect()->back();
         }
         return redirect('home');
     }
@@ -366,13 +371,13 @@ class UserController extends Controller
         $user_data->save();
 
         $roles = $request->input('roles') ?? [];
-
-        if ($roles) {
-            //$roles_deleted = RoleUser::where('user_id', $user->id)->delete();
-            $roles_deleted = RoleUser::join('roles', 'role_user.role_id', 'roles.id')
+        $roles_deleted = RoleUser::join('roles', 'role_user.role_id', 'roles.id')
                                 ->where('role_user.user_id', $user->id)
                                 ->where('roles.name', '<>', 'superadmin')
                                 ->delete();
+
+        if ($roles) {
+            //$roles_deleted = RoleUser::where('user_id', $user->id)->delete();
             foreach ($roles as $key => $item) {
                 $role_user = new RoleUser();
                 $role_user->user_id = $user->id;

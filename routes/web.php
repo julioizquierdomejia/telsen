@@ -30,7 +30,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('usuarios/create', [App\Http\Controllers\UserController::class, 'create'])->name('users.create');
 	Route::post('usuarios/create', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
 	Route::get('usuario/perfil', [App\Http\Controllers\UserController::class, 'perfil'])->name('users.perfil');
-	Route::get('usuario/perfil/update', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('users.perfil.update');
+	Route::post('usuario/perfil', [App\Http\Controllers\UserController::class, 'updateProfile'])->name('users.perfil.update');
 	Route::get('usuario/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('users.edit');
 	Route::post('usuarios/{user}/edit', [App\Http\Controllers\UserController::class, 'update'])->name('users.edit');
 	//Route::post('users/{user}/eliminar', [App\Http\Controllers\UserController::class, 'destroy'])->name('users.delete');

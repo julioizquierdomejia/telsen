@@ -1,12 +1,12 @@
 @extends('layouts.app', ['title' => 'Editar Perfil'])
 @section('content')
 @php
-  $allowed_roles = ['superadmin', 'admin'];
+  $edit_route = $is_admin ? route('users.perfil') : route('users.edit', $user->id)
 @endphp
 <div class="row">
   <div class="col-md-12">
     <h5 class="h5">Mi Perfil</h5>
-    <form class="form-group" method="POST" action="{{route('users.edit', $user->id)}}" enctype="multipart/form-data">
+    <form class="form-group" method="POST" action="{{$edit_route}}" enctype="multipart/form-data">
       @csrf
       <div class="card form-card h-100">
         <div class="card-header">
@@ -61,7 +61,7 @@
                 $userRoles = array_column($user->roles->toArray(), 'id');
               @endphp
               <label class="col-form-label" for="selectRol">Roles</label>
-              @if (in_array(Auth::user()->roles->first()->name, $allowed_roles))
+              @if ($is_admin)
               <ul class="form-check-list list-inline m-0 form-control h-auto">
                 @foreach($roles as $key => $role)
                 @php
@@ -103,7 +103,7 @@
               {{-- <label class="col-label d-block" for="selectArea">Area</label>
             <span class="badge badge-primary px-2 py-1">{{$user->area}}</span> --}}
             </div>
-            @if ($user->id != Auth::id() && in_array($user->roles->first()->name, $allowed_roles))
+            @if ($user->id != Auth::id() && $is_admin)
             <div class="col-md-3 form-group">
               <label class="col-form-label">Estado</label>
               <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">

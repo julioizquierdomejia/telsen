@@ -359,14 +359,15 @@ class WorkshopController extends Controller
                                         for ($i = 0; $i < $table_rows; $i++) {
                                             $cols_html .= '<tr>';
                                             foreach ($cols as $ckey => $col) {
+                                                $data = $col->data->where('row', $i)->where('col_id', $col->id)->where('ot_work_id', $row->id)->first();
                                                 $counter++;
                                                 $cols_html .= '<td>
-                                                <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][id]" value="'.(isset($col->data[$i]->id) ? $col->data[$i]->id : '').'">
+                                                <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][id]" value="'.(isset($data->id) ? $data->id : '').'">
                                                 <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][work_add_info_id]" value="'.$col->work_add_info_id.'">
                                                 <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][row]" value="'.$i.'">
                                                 <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][col_id]" value="'.$col->id.'">
                                                 <input class="form-control frm-col mt-0" type="text" hidden="" name="coldata['.$counter.'][ot_work_id]" value="'.$row->id.'">
-                                                <input class="form-control frm-col mt-0" type="text" name="coldata['.$counter.'][content]" value="'.(isset($col->data[$i]->content) ? $col->data[$i]->content : '').'">
+                                                <input class="form-control frm-col mt-0" type="text" name="coldata['.$counter.'][content]" value="'.(isset($data->content) ? $data->content : '').'">
                                             </td>';
                                             }
                                             $cols_html .= '</tr>';

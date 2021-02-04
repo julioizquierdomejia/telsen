@@ -15,6 +15,7 @@ class WorkAdditionalInformationData extends Model
         'col_id',
         'ot_work_id',
         'content',
+        'row',
     ];
 
     protected $dates = [

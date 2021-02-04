@@ -95,7 +95,7 @@
 @section('javascript')
 <script>
   $(document).ready(function() {
-    var allowed_user = {{$allowed_user}};
+    var allowed_user = {{$allowed_user ? 'true':'false'}};
     var workshopTable;
     if(workshopTable) {
       workshopTable.ajax.reload();

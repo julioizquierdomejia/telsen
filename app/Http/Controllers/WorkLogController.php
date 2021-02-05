@@ -83,9 +83,8 @@ class WorkLogController extends Controller
 
         $work_log = new WorkLog();
         $work_log->work_id = $request->input('work_id');
-        //$work_log->user_id = $request->input('user_id');
         $work_log->user_id = $user_id;
-        $work_log->type = $type;
+        //$work_log->type = $type;
         //$work_log->description = $description;
         $work_log->status_id = $status;
         $work_log->save();

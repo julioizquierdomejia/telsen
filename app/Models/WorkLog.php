@@ -12,7 +12,7 @@ class WorkLog extends Model
     protected $fillable = [
         'work_id',
         'user_id',
-        'type',
+        //'type',
         'description',
         'status_id',
     ];

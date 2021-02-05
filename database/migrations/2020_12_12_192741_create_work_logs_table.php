@@ -26,7 +26,7 @@ class CreateWorkLogsTable extends Migration
             $table->foreign('work_id')->references('id')->on('ot_works')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('type');
+            //$table->string('type');
             //$table->string('description')->nullable();
 
             $table->unsignedBigInteger('status_id')->nullable();

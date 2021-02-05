@@ -126,7 +126,9 @@
 
     var actualBtn;
     $(document).on('click', '.btn-tasks', function (event) {
-      var id = $(this).data('id'),
+      var $this = $(this),
+          id = $this.data('id'),
+          icon = $this.find('i'),
           row = $('.row-details[data-id='+id+']'),
           content = $(`
           <tr class="text-center row-details row-expanded" data-id="`+id+`">
@@ -137,11 +139,21 @@
           `);
       if(row.hasClass('row-expanded')) {
         row.toggle();
+        if(icon.hasClass('fa-tasks')) {
+          icon.addClass('fa-angle-up').removeClass('fa-tasks')
+        } else {
+          icon.removeClass('fa-angle-up').addClass('fa-tasks')
+        }
       } else {
-        parent = $(this).parents('tr[role="row"]');
+        parent = $this.parents('tr[role="row"]');
         row.remove();
         content.insertAfter(parent);
         row.toggle();
+        if(icon.hasClass('fa-tasks')) {
+          icon.addClass('fa-angle-up').removeClass('fa-tasks')
+        } else {
+          icon.removeClass('fa-angle-up').addClass('fa-tasks')
+        }
       }
     })
 

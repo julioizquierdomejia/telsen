@@ -311,7 +311,7 @@ class WorkshopController extends Controller
             $wl_count = $logs->count();
             $status_code = $wl_count ? $logs->first()->status->code : null;
             $status = $wl_count ? $logs->first()->status->name : null;
-            $work_type = $wl_count ? $logs->first()->type : '';
+            //$work_type = $wl_count ? $logs->first()->status->type : '';
 
             $html_tools = '<button class="btn btn-primary btn-sm btn-tasks" data-id="'.$row->id.'">Actividades <i class="far fa-tasks ml-2"></i></button>
 
@@ -393,19 +393,19 @@ class WorkshopController extends Controller
                             if ($wl_count == 0) {
                                 $html_tools .= '<button class="btn btn-success my-1 btn-action" data-type="start" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Empezar <i class="far fa-play ml-2"></i></button>';
                             } else {
-                                if($work_type == 'start' || $work_type == 'continue' || $work_type == 'restart') {
+                                if($status_code == 'start' || $status_code == 'continue' || $status_code == 'restart') {
                                     $html_tools .= '<button class="btn btn-pause btn-warning my-1 btn-action" data-type="pause" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Pausar <i class="far fa-pause ml-2"></i></button>
                                     <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
-                                } elseif($work_type == 'pause') {
+                                } elseif($status_code == 'pause') {
                                     $html_tools .= '<button class="btn btn-primary my-1 btn-action" data-type="continue" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Continuar <i class="far fa-play ml-2"></i></button>
                                     <button class="btn btn-danger my-1 btn-action" data-type="end" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Terminar <i class="far fa-stop ml-2"></i></button>';
-                                } elseif($work_type == 'end') {
+                                } elseif($status_code == 'end') {
                                     if ($allowed_user) {
                                         $html_tools .= '<button class="btn btn-action btn-primary my-1" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalApprove">Aprobar <i class="far fa-check ml-2"></i></button>';
                                     } else {
                                         $html_tools .= '<span class="badge badge-light d-block py-1 my-1">En proceso.</span>';
                                     }
-                                } elseif($work_type == 'approved' || $work_type == 'disapproved') {
+                                } elseif($status_code == 'approved' || $status_code == 'disapproved') {
                                     if ($status_code == 'approved') {
                                         $html_tools .= '<span class="badge badge-success d-block py-1 my-1">Aprobada</span>';
                                     } elseif($status_code == 'disapproved') {
@@ -797,7 +797,7 @@ class WorkshopController extends Controller
             $work_log = new WorkLog();
             $work_log->work_id = $work_id;
             $work_log->user_id = \Auth::id();
-            $work_log->type = $status_code;
+            //$work_log->type = $status_code;
             $work_log->status_id = $status->id;
             $work_log->save();
 

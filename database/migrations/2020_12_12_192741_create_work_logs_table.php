@@ -15,7 +15,7 @@ class CreateWorkLogsTable extends Migration
     {
         Schema::create('work_status', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code')/*->unique()*/;
             $table->string('name');
             $table->timestamps();
         });
@@ -43,6 +43,9 @@ class CreateWorkLogsTable extends Migration
      */
     public function down()
     {
+        /*Schema::table('work_status', function (Blueprint $table) {
+            $table->dropUnique('work_status_code_unique');
+        });*/
         Schema::table('work_logs', function (Blueprint $table) {
             $table->dropForeign('work_logs_work_id_foreign');
             $table->dropForeign('work_logs_user_id_foreign');

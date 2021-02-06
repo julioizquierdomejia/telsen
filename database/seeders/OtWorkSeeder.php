@@ -15,7 +15,6 @@ class OtWorkSeeder extends Seeder
      */
     public function run()
     {
-    	$code = 1;
         $work_status = new WorkStatus();
         $work_status->name = "En Proceso - iniciado";
         $work_status->code = "start";
@@ -28,32 +27,32 @@ class OtWorkSeeder extends Seeder
 
         $work_status = new WorkStatus();
         $work_status->name = "Detenido por falta de insumos";
-        $work_status->code = $code++;
+        $work_status->code = "pause";
         $work_status->save();
 
         $work_status = new WorkStatus();
         $work_status->name = "Detenido por orden del cliente";
-        $work_status->code = $code++;
+        $work_status->code = "pause";
         $work_status->save();
 
         $work_status = new WorkStatus();
         $work_status->name = "Detenido por orden de gerencia";
-        $work_status->code = $code++;
+        $work_status->code = "pause";
         $work_status->save();
 
         $work_status = new WorkStatus();
         $work_status->name = "Detenido por orden de jefe de planta";
-        $work_status->code = $code++;
+        $work_status->code = "pause";
         $work_status->save();
 
         $work_status = new WorkStatus();
         $work_status->name = "Detenido por baja prioridad";
-        $work_status->code = $code++;
+        $work_status->code = "pause";
         $work_status->save();
 
         $work_status = new WorkStatus();
         $work_status->name = "Término de jornada laboral";
-        $work_status->code = $code++;
+        $work_status->code = "pause";
         $work_status->save();
 
         $work_status = new WorkStatus();

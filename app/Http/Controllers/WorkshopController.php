@@ -790,10 +790,10 @@ class WorkshopController extends Controller
         $status = WorkStatus::where('code', $status_code)->first();
         $work_log_approved = WorkLog::where('work_id', $work_id)
                     ->orderBy('id', 'desc')
-                    ->where('type', 'approved')
+                    //->where('type', 'approved')
                     ->first();
         //Si esta aprobada la tarea ya no cambia de estado
-        if ($work_log_approved == null) {
+        if ($work_log_approved && $work_log_approved->status->code != 'approved') {
             $work_log = new WorkLog();
             $work_log->work_id = $work_id;
             $work_log->user_id = \Auth::id();

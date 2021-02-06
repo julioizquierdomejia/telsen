@@ -384,6 +384,10 @@ class OtController extends Controller
                     $query->where("status.name", "=", 'ee_disapproved');
                     $query->orWhere("status.name", "=", 'me_disapproved');
                 })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee');
+                    $query->orWhere("status.name", "=", 'me');
+                })
                 ->where('ots.enabled', 1)
                 ->count();
 
@@ -402,6 +406,10 @@ class OtController extends Controller
                 ->whereDoesntHave('statuses', function ($query) {
                     $query->where("status.name", "=", 'ee_disapproved');
                     $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee');
+                    $query->orWhere("status.name", "=", 'me');
                 })
                 ->where('ots.enabled', 1)
                 ->count();
@@ -428,6 +436,10 @@ class OtController extends Controller
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'ee_disapproved');
                         $query->orWhere("status.name", "=", 'me_disapproved');
+                    })
+                    ->whereHas('statuses', function ($query) {
+                        $query->where("status.name", "=", 'ee');
+                        $query->orWhere("status.name", "=", 'me');
                     })
                     ->where('ots.enabled', 1)->get();
 

@@ -825,7 +825,7 @@ $('#table-tap tbody').append(row);
 $('#table-tap .dropdown2').select2();
 //createJSON();
 })
-$('.btn-remove-row').click(function () {
+$(document).on('click', '.btn-remove-row', function() {
 var row_index = $('#table-tap tbody tr').length;
 if (row_index > 1) {
 //$(this).parents('tr').remove();

@@ -474,7 +474,7 @@
                 <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu1]" value=""></td>
                 <td><input type="text" class="form-control mt-0" name="tran_tap[0][wu2]" value=""></td>
                 <td>
-                    <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                    <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                   </td>
               </tr>
               @endif

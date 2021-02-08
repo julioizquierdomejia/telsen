@@ -434,7 +434,7 @@
             <div class="tap-section mb-2">
               <h4 class="h6 text-center mb-0"><strong>Trabajos</strong></h4>
               <div class="table-responsive">
-              <table class="table table-tap table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-tap">
+              <table class="table table-tap table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
                 <thead>
                   <tr>
                   <th class="text-center py-1">Item</th>
@@ -482,7 +482,7 @@
                       <input type="text" class="form-control mt-0 @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{old('works.'.$key.'.personal')}}" name="works[{{$key}}][personal]">
                     </td>
                     <td>
-                      <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                     </td>
                   </tr>
                   @endforeach
@@ -520,7 +520,7 @@
                       <input type="text" class="form-control mt-0 @error("works.".$key.".personal") is-invalid @enderror" placeholder="Personal" value="{{$item['personal']}}" name="works[{{$key}}][personal]">
                     </td>
                     <td>
-                      <button class="btn btn-secondary btn-remove-tap-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
+                      <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
                     </td>
                   </tr>
                   @endforeach
@@ -694,27 +694,6 @@ $(document).ready(function () {
     return json;
   }
 
-/*function createJSON() {
-var json = '{';
-var otArr = [];
-var tbl2 = $('#table-tap tbody tr').each(function(i) {
-x = $(this).children();
-var itArr = [];
-x.each(function() {
-if ($(this).find('.form-control').length) {
-itArr.push('"' + $(this).find('.form-control').val() + '"');
-}
-});
-otArr.push('"' + i + '": [' + itArr.join(',') + ']');
-})
-json += otArr.join(",") + '}'
-$('input[name=works]').val(json);
-return json;
-}
-$(document).on('keyup', '#table-tap .form-control', function () {
-createJSON();
-})*/
-
 $(document).on('change', '.select-area', function () {
   var $this = $(this), area = $this.val();
   var service = $(this).parents('tr').find('.select-service');
@@ -782,11 +761,11 @@ $(document).on('click', '.btn-delete-confirm', function() {
   })
 
 $(document).on('click', '.card .btn-clear', function () {
-$('#table-tap .form-control').val('');
+$('#table-works .form-control').val('');
 })
 
 $('.btn-add-tap-row').click(function () {
-  var row_index = $('#table-tap tbody tr').length;
+  var row_index = $('#table-works tbody tr').length;
 var row = `<tr>
     <td class="cell-counter">
       <span class="number"></span>
@@ -821,16 +800,15 @@ var row = `<tr>
       <button class="btn btn-secondary btn-remove-row btn-sm my-1" type="button" title="Remover fila"><i class="far fa-trash"></i></button>
     </td>
   </tr>`;
-$('#table-tap tbody').append(row);
-$('#table-tap .dropdown2').select2();
+$('#table-works tbody').append(row);
+$('#table-works .dropdown2').select2();
 //createJSON();
 })
 $(document).on('click', '.btn-remove-row', function() {
-var row_index = $('#table-tap tbody tr').length;
-if (row_index > 1) {
-//$(this).parents('tr').remove();
-$(this).parents('tr').addClass('d-none').find('.work_status').val(0);
-}
+  var row_index = $('#table-works tbody tr').length;
+  if (row_index > 1) {
+    $(this).parents('tr').addClass('d-none').find('.tap_status').val(0);
+  }
 })
 
 $('.btn-yes').click(function () {

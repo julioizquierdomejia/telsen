@@ -1,7 +1,7 @@
 @extends('layouts.app', ['title' => 'Editar Perfil'])
 @section('content')
 @php
-  $edit_route = $is_admin ? route('users.perfil') : route('users.edit', $user->id)
+  $edit_route = auth()->id() == $user->id ? route('users.perfil') : route('users.edit', $user->id)
 @endphp
 <div class="row">
   <div class="col-md-12">

@@ -1,7 +1,8 @@
 @extends('layouts.app', ['title' => 'Editar Perfil'])
 @section('content')
 @php
-  $edit_route = auth()->id() == $user->id ? route('users.perfil') : route('users.edit', $user->id)
+  $is_current = auth()->id() == $user->id;
+  $edit_route = $is_current ? route('users.perfil') : route('users.edit', $user->id)
 @endphp
 <div class="row">
   <div class="col-md-12">
@@ -61,7 +62,7 @@
                 $userRoles = array_column($user->roles->toArray(), 'id');
               @endphp
               <label class="col-form-label" for="selectRol">Roles</label>
-              @if ($is_admin)
+              @if (!$is_current)
               <ul class="form-check-list list-inline m-0 form-control h-auto">
                 @foreach($roles as $key => $role)
                 @php

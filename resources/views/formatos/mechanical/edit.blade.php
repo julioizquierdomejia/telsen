@@ -807,7 +807,7 @@ $('#table-works .dropdown2').select2();
 $(document).on('click', '.btn-remove-row', function() {
   var row_index = $('#table-works tbody tr').length;
   if (row_index > 1) {
-    $(this).parents('tr').addClass('d-none').find('.tap_status').val(0);
+    $(this).parents('tr').addClass('d-none').find('.work_status').val(0);
   }
 })
 

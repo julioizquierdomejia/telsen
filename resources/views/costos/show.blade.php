@@ -30,11 +30,11 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 				@endif
 				@if ($admin || $cotizador_tarjeta || $aprobador_cotizacion)
 					@if ($ccost->cotizacion)
+					@if ($admin || $aprobador_cotizacion)
 					<button type="button" class="btn btn-success mt-0" data-toggle="modal" data-target="#modalCotizar"><i class="fa fa-eye"></i> Ver Cotización</button>
-					@else
-					@if (($cotizador_tarjeta && !$aprobador_cotizacion) || $cotizador_tarjeta)
-					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalCotizar">Cotizar</button>
 					@endif
+					@else
+					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalCotizar">Cotizar</button>
 					@endif
 				@endif
 				</span>

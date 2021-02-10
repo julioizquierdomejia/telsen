@@ -67,6 +67,8 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('ordenes/cierre', [App\Http\Controllers\OtController::class, 'closure'])->name('workshop.closure');
 	Route::get('ordenes/ot-pendientes-cierre', [App\Http\Controllers\OtController::class, 'list_pendingclosure'])->name('workshop.pending_closurelist');
 	Route::get('ordenes/ot-cerradas', [App\Http\Controllers\OtController::class, 'list_closure'])->name('workshop.closurelist');
+	Route::get('ordenes/prioridad', [App\Http\Controllers\OtController::class, 'priority_ots'])->name('ordenes.priority_ots');
+	Route::get('ordenes/prioridad-lista', [App\Http\Controllers\OtController::class, 'priority_ots_list'])->name('ordenes.priority.list');
 
 	Route::post('ordenes/gallery', [App\Http\Controllers\OtController::class, 'galleryStore'])->name('gallery.store');
 	Route::post('ordenes/{id}/quitarimagen', [App\Http\Controllers\OtController::class, 'galleryDelete'])->name('gallery.delete');

@@ -36,6 +36,21 @@ class HomeController extends Controller
                     ->orderBy('ots.created_at', 'asc')
                     ->get();
 
+        $priority_count = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                    ->where('ots.enabled', 1)
+                    ->where('ots.priority', 1)
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'ee_disapproved');
+                        $query->orWhere("status.name", "=", 'me_disapproved');
+                    })
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'cc_disapproved');
+                        $query->orWhere("status.name", "=", 'rdi_disapproved');
+                    })
+                    ->count();
+
         $ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                     ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                     ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
@@ -78,7 +93,7 @@ class HomeController extends Controller
         $greetings = self::Greetings();
 
         //$areas = Area::where('areas.enabled', 1)->where('areas.id', '<>', 1)->get();
-        return view('home', compact('users', 'ots', 'ots_count', 'pending_ots', 'attended_ots', 'avarage', 'greetings'));
+        return view('home', compact('users', 'ots', 'ots_count', 'priority_count', 'pending_ots', 'attended_ots', 'avarage', 'greetings'));
     }
 
     function Greetings() {

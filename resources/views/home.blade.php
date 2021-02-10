@@ -16,8 +16,35 @@
 <div class="welcome px-3 px-md-4 py-4 py-md-5 text-center">
   <h3 class="title pb-md-3">¡{{$greetings}}, {{user_data()->name}}!</h3>
 </div>
-<div class="row card-list row-medium">
-  <div class="col-lg col-md-6 col-6 item created-ot">
+<div class="row card-list row-medium justify-content-center">
+  <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl item personal-ot">
+    <div class="card card-stats">
+      <div class="card-body">
+        <div class="row align-items-center mb-3">
+          <div class="col-7 col-md-8">
+            <p class="card-subtitle text-left">Hoy</p>
+          </div>
+          <div class="text-right col-5 col-md-4 icon-small">
+            <button class="btn my-0 p-1 text-muted"><i class="far fa-sync"></i></button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 text-center">
+            <p class="card-title numbers">{{abreviateTotalCount($priority_count)}}</p>
+            <p class="card-category" style="font-size: 11px;font-weight:500"><br>OT con Prioridad</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-center px-0">
+        <hr>
+        <div class="stats px-3">
+          <i class="fa fa-clock-o"></i>
+          Actualizado
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl item created-ot">
     <div class="card card-stats">
       <div class="card-body">
         <div class="row align-items-center mb-3">
@@ -31,7 +58,7 @@
         <div class="row">
           <div class="col-12 text-center">
             <p class="card-title numbers">{{abreviateTotalCount($ots_count)}}</p>
-            <p class="card-category"><br>OT Creadas</p>
+            <p class="card-category" style="font-size: 11px;font-weight:500"><br>OT Creadas</p>
           </div>
         </div>
       </div>
@@ -44,7 +71,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg col-md-6 col-6 item pending-ot">
+  <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl item pending-ot">
     <div class="card card-stats">
       <div class="card-body">
         <div class="row align-items-center mb-3">
@@ -58,7 +85,7 @@
         <div class="row">
           <div class="col-12 text-center">
             <p class="card-title numbers">{{abreviateTotalCount($pending_ots)}}</p>
-            <p class="card-category"><br>OT Pendientes</p>
+            <p class="card-category" style="font-size: 11px;font-weight:500"><br>OT Pendientes</p>
           </div>
         </div>
       </div>
@@ -71,7 +98,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg col-md-6 col-6 item atended-ot">
+  <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl item atended-ot">
     <div class="card card-stats">
       <div class="card-body">
         <div class="row align-items-center mb-3">
@@ -85,7 +112,7 @@
         <div class="row">
           <div class="col-12 text-center">
             <p class="card-title numbers">{{abreviateTotalCount($attended_ots)}}</p>
-            <p class="card-category"><br>OT Atendidas</p>
+            <p class="card-category" style="font-size: 11px;font-weight:500"><br>OT Atendidas</p>
           </div>
         </div>
       </div>
@@ -98,7 +125,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg col-md-6 col-6 item prom-ot">
+  <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl item prom-ot">
     <div class="card card-stats">
       <div class="card-body">
         <div class="row align-items-center mb-3">
@@ -112,7 +139,7 @@
         <div class="row">
           <div class="col-12 text-center">
             <p class="card-title numbers">{{abreviateTotalCount($avarage)}}</p>
-            <p class="card-category">OT <br>Promedio al Mes</p>
+            <p class="card-category" style="font-size: 11px;font-weight:500">OT <br>Promedio al Mes</p>
           </div>
         </div>
       </div>
@@ -125,7 +152,7 @@
       </div>
     </div>
   </div>
-  <div class="col-lg col-md-6 col-6 item personal-ot">
+  <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl item personal-ot">
     <div class="card card-stats">
       <div class="card-body">
         <div class="row align-items-center mb-3">
@@ -139,7 +166,7 @@
         <div class="row">
           <div class="col-12 text-center">
             <p class="card-title numbers">{{$users->count()}}</p>
-            <p class="card-category">Personal <br>en Planta</p>
+            <p class="card-category" style="font-size: 11px;font-weight:500">Personal <br>en Planta</p>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 require_once (__DIR__.'/../vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php');
 
 use App\Models\UserData;
+use App\Models\Ot;
 
 if (! function_exists('current_user')) {
     function current_user()

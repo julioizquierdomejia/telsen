@@ -52,6 +52,13 @@
               <label class="col-form-label">Tipo Cliente</label>
               <input type="text" class="form-control tipocliente" placeholder="" value="" disabled="" name="address">
             </div>
+            <div class="col-6 col-md-3 form-group">
+              <label class="col-form-label text-primary" for="selectPriority">Prioridad</label>
+              <select style="width: 100%" name="priority" class="form-control @error('priority') is-invalid @enderror dropdown2" id="selectPriority">
+                <option value="0">Normal</option>
+                <option value="1">Alta</option>
+              </select>
+            </div>
             <div class="col-md-6 form-group">
               <label class="col-form-label">Dirección</label>
               <input type="text" class="form-control direccion" placeholder="" value="" disabled="" name="address">

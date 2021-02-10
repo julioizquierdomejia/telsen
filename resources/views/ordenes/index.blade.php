@@ -104,7 +104,7 @@ $allowed_users = in_array("superadmin", $role_names) || in_array("admin", $role_
 @section('javascript')
 <script>
 $(document).ready(function() {
-  var enabledots, disapprovedots, disenabledots;
+  var enabledots, disapprovedots, disenabledots, priorityots;
   $('#nav-enabledots-tab').click(function() {
     //$.fn.dataTable.isDataTable($('#nav-enabledots .data-table'));
     if(enabledots) {
@@ -174,6 +174,36 @@ $(document).ready(function() {
          processing: true,
          serverSide: true,
          ajax: "{{route('ordenes.disabled_ots')}}",
+         pageLength: 5,
+         lengthMenu: [ 5, 25, 50 ],
+         columns: [
+            { data: 'created_at', class: 'text-nowrap' },
+            { data: 'id', class: 'otid' },
+            { data: 'status', class: 'text-center' },
+            { data: 'razon_social' },
+            { data: 'numero_potencia', class: 'text-left' },
+            { data: 'codigo_motor', class: 'text-left' },
+            { data: 'fecha_entrega', class: 'text-center bg-light' },
+            { data: 'tools', class: 'text-left text-nowrap'}
+        ],
+         columnDefs: [
+          { orderable: false, targets: 2 },
+          //{ orderable: false, targets: 6 }
+        ],
+        order: [[ 0, "desc" ]],
+        language: dLanguage
+      });
+      }
+    });
+
+    $('#nav-priorityots-tab').click(function() {
+      if(priorityots) {
+        priorityots.ajax.reload();
+      } else {
+        priorityots = $('#nav-priorityots .data-table').DataTable({
+         processing: true,
+         serverSide: true,
+         ajax: "{{route('ordenes.priority_ots')}}",
          pageLength: 5,
          lengthMenu: [ 5, 25, 50 ],
          columns: [

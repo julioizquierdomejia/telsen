@@ -111,7 +111,11 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 						<label class="col-label">Velocidad</label>
 						<p class="mb-1">{{$ot->velocidad ?? '-'}}</p>
 					</div>
-					<div class="col-12 mb-2">
+					<div class="col-6 col-md-3 mb-2">
+						<label class="col-label">Prioridad</label>
+						<p class="mb-1">{!!$ot->priority == 1 ? '<span class="badge badge-success px-3">Alta</span>' : '<span class="badge badge-secondary px-3">Normal</span>'!!}</p>
+					</div>
+					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Estado</label>
 						<p class="mb-1">{!!$ot->enabled == 1 ? '<span class="badge badge-success px-3">Activo</span>' : '<span class="badge badge-danger px-3">Inactivo</span>'!!}</p>
 					</div>

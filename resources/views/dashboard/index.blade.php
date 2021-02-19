@@ -192,7 +192,7 @@
         </span>
       </div>
       <div class="card-body">
-        <table class="table table-separate">
+        <table class="table table-separate" style="width: 100%">
           <thead class="text-uppercase">
             <tr>
               <th>Empresa</th>

@@ -140,6 +140,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia :   '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -244,6 +245,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia :   '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -332,6 +334,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia :   '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -464,6 +467,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia :   '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -593,6 +597,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia :   '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -706,6 +711,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -820,6 +826,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -917,6 +924,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -1035,6 +1043,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia :   '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -1145,6 +1154,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia :   '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -1253,6 +1263,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -1352,6 +1363,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -1468,6 +1480,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -1564,6 +1577,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -1654,6 +1668,7 @@ class OtController extends Controller
               "razon_social" => $client,
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia :   '-',
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -1743,6 +1758,7 @@ class OtController extends Controller
               "razon_social" => $client,
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia :   '-',
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -1848,6 +1864,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -2001,6 +2018,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -2099,6 +2117,7 @@ class OtController extends Controller
               "codigo_motor" => $ot->codigo_motor,
               "numero_potencia" => $potencia ? $potencia : '-',
               "fecha_entrega" => $status_data['fecha_entrega'],
+              "prioridad" => $ot->priority,
               "tools" => $tools
             );
         };
@@ -2298,6 +2317,7 @@ class OtController extends Controller
         $ot->voltaje = $request->input('voltaje');
         $ot->velocidad = $request->input('velocidad');
         $ot->enabled = $request->input('enabled');
+        $ot->priority = $request->input('priority');
 
         $ot->save();
 

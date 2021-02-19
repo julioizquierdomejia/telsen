@@ -423,8 +423,9 @@
         }
     }
 });
-  var priority_ots;
-
+  
+  @if(session('priority') == true)
+    var priority_ots;
         priority_ots = $('#tbpriority').DataTable({
          processing: true,
          serverSide: true,
@@ -441,6 +442,11 @@
             { data: 'fecha_entrega', class: 'text-center bg-light' },
             //{ data: 'tools', class: 'text-left text-nowrap'}
         ],
+        "createdRow": function( row, data, dataIndex){
+          if( data.prioridad == 1){
+            $(row).find('td').css('background-color', '#fedddd');
+          }
+        },
          columnDefs: [
           { orderable: false, targets: 2 },
           //{ orderable: false, targets: 6 }
@@ -452,5 +458,9 @@
           $('#modalOTSPriority').modal('show');
         }
     } );
+    @php
+      session()->forget('priority')
+    @endphp
+  @endif
 </script>
 @endsection

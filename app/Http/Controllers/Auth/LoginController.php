@@ -27,6 +27,7 @@ class LoginController extends Controller
     }
 
     public function logout(Request $request) {
+        //session('priority', 'false');
         $this->performLogout($request);
         return redirect('/');
     }
@@ -46,6 +47,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        $request->session()->put('priority', 'true');
         $user_roles = $user->roles()->first();
         if ($user_roles && $user_roles->name == 'client') {
             return redirect()->route('ordenes.list');

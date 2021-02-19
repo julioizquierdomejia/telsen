@@ -1,7 +1,7 @@
 @php
   $ot_code = zerosatleft($rdi->ot_code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Editar RDI de OT-'. $ot_code])
+@extends('layouts.app_real', ['title' => 'Editar RDI de OT-'. $ot_code])
 
 @section('content')
 <div class="row">

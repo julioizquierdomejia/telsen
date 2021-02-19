@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Editar "O.T. ' . zerosatleft($orden->code, 3)])
+@extends('layouts.app_real', ['title' => 'Editar "O.T. ' . zerosatleft($orden->code, 3)])
 @section('content')
 <form class="card card-user form-card" method="POST" action="{{route('ordenes.edit', ['orden' => $orden->id])}}" enctype="multipart/form-data">
   <div class="card-header">

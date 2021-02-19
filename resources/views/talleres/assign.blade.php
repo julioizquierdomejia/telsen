@@ -1,7 +1,7 @@
 @php
 $ot_code = "OT-".zerosatleft($ot->code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Taller para OT-'.$ot_code])
+@extends('layouts.app_real', ['title' => 'Taller para OT-'.$ot_code])
 @section('css')
 @endsection
 @section('content')

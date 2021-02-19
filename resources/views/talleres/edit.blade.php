@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Editar Taller' ])
+@extends('layouts.app_real', ['title' => 'Editar Taller' ])
 @section('content')
 <form class="card card-user form-card" method="POST" action="{{route('ordenes.edit', ['orden' => $orden->id])}}" enctype="multipart/form-data">
   <div class="card-header">

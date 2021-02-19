@@ -1,4 +1,4 @@
-@extends('layouts.app', ['body_class' => 'ots', 'title' => 'OTS Pendientes de cierre'])
+@extends('layouts.app_real', ['body_class' => 'ots', 'title' => 'OTS Pendientes de cierre'])
 @section('content')
 <div class="row">
   <div class="col-md-12">

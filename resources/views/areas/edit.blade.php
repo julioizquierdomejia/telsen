@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Areas | '. $area->name])
+@extends('layouts.app_real', ['title' => 'Areas | '. $area->name])
 
 @section('content')
 <div class="row">

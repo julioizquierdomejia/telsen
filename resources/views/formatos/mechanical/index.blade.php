@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Evaluación Mecánica'])
+@extends('layouts.app_real', ['title' => 'Evaluación Mecánica'])
 
 @section('content')
 

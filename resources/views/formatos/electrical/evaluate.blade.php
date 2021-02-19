@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Evaluación Eléctrica'])
+@extends('layouts.app_real', ['title' => 'Evaluación Eléctrica'])
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php

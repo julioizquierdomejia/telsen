@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Ver Tarjeta Costo'])
+@extends('layouts.app_real', ['title' => 'Ver Tarjeta Costo'])
 @section('content')
 @php
 $statuses = array_column($ot_status->toArray(), "name");

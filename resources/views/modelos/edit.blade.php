@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Editar modelo "' .$modelo->name.'"'])
+@extends('layouts.app_real', ['title' => 'Editar modelo "' .$modelo->name.'"'])
 
 @section('content')
 

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Crear Orden'])
+@extends('layouts.app_real', ['title' => 'Crear Orden'])
 @section('css')
 @endsection
 @section('content')

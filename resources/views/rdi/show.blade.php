@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Ver RDI'])
+@extends('layouts.app_real', ['title' => 'Ver RDI'])
 @section('content')
 @php
 $statuses = array_column($ot_status->toArray(), "name");

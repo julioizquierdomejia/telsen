@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Crear servicio'])
+@extends('layouts.app_real', ['title' => 'Crear servicio'])
 
 @section('content')
 <form class="card card-user form-card" method="POST" action="/servicios" enctype="multipart/form-data">

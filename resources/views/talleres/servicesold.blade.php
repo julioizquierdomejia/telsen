@@ -1,4 +1,4 @@
-@extends('layouts.app', ['body_class' => 'ots', 'title' => 'Mis Tareas'])
+@extends('layouts.app_real', ['body_class' => 'ots', 'title' => 'Mis Tareas'])
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 <script type="text/javascript">var drops = [];</script>

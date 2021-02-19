@@ -1,4 +1,4 @@
-@extends('layouts.app', ['body_class' => 'users', 'title' => 'Usuarios'])
+@extends('layouts.app_real', ['body_class' => 'users', 'title' => 'Usuarios'])
 @section('content')
 <div class="row">
   <div class="col-md-12">

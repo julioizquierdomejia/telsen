@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Editar "'. $cliente->razon_social . '"'])
+@extends('layouts.app_real', ['title' => 'Editar "'. $cliente->razon_social . '"'])
 
 @section('content')
 <form class="card card-user form-card" method="POST" action="{{route('clientes.edit', ['client' => $cliente->id])}}" enctype="multipart/form-data">

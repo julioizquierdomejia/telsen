@@ -1,7 +1,7 @@
 @php
   $ot_code = zerosatleft($ot->code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Editar Evaluación Eléctrica de OT N° '.$ot_code ])
+@extends('layouts.app_real', ['title' => 'Editar Evaluación Eléctrica de OT N° '.$ot_code ])
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php

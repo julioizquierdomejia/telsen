@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Servicios | '. $service->name])
+@extends('layouts.app_real', ['title' => 'Servicios | '. $service->name])
 
 @section('content')
 <form class="card card-user form-card" method="POST" action="{{route('services.edit', ['servicio' => $service->id])}}" enctype="multipart/form-data">

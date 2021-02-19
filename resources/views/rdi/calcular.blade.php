@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Crear Reporte de Ingreso'])
+@extends('layouts.app_real', ['title' => 'Crear Reporte de Ingreso'])
 @section('content')
 @php
   $reception_list = [

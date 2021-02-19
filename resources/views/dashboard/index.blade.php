@@ -1,4 +1,4 @@
-@extends('layouts.app', ['body_class' => 'page_home'])
+@extends('layouts.app_real', ['body_class' => 'page_home'])
 
 @section('content')
 {{-- <ul class="list list-unstyled">

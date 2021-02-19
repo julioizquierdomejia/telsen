@@ -1,4 +1,4 @@
-@extends('layouts.app', ['body_class' => 'ots', 'title' => 'OTS Pendientes de cotización'])
+@extends('layouts.app_real', ['body_class' => 'ots', 'title' => 'OTS Pendientes de cotización'])
 @section('content')
 <div class="row">
   <div class="col-md-12">

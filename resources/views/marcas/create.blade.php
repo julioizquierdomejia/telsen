@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Crear marca'])
+@extends('layouts.app_real', ['title' => 'Crear marca'])
 @section('content')
 <form class="card card-user form-card" method="POST" action="/marcas" enctype="multipart/form-data">
   <div class="card-header">

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Crear Rotor Code Pt 2'])
+@extends('layouts.app_real', ['title' => 'Crear Rotor Code Pt 2'])
 @section('content')
 <form class="card card-user form-card" method="POST" action="/rotorcoderodajept/2" enctype="multipart/form-data">
   <div class="card-header">

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Crear Usuario'])
+@extends('layouts.app_real', ['title' => 'Crear Usuario'])
 @section('css')
 @endsection
 @section('content')

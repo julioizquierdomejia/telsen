@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Tarjetas de Costos'])
+@extends('layouts.app_real', ['title' => 'Tarjetas de Costos'])
 
 @section('content')
 <div class="row">

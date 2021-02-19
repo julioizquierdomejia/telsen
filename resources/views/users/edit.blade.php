@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Editar Perfil'])
+@extends('layouts.app_real', ['title' => 'Editar Perfil'])
 @section('content')
 @php
   $is_current = auth()->id() == $user->id;

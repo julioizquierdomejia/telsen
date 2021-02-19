@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Editar Rotor Code Pt 2'])
+@extends('layouts.app_real', ['title' => 'Editar Rotor Code Pt 2'])
 @section('content')
 <form class="card card-user form-card" method="POST" action="{{route('rotorcoderpt2.edit', ['id' => $code->id])}}" enctype="multipart/form-data">
     <div class="card-header">

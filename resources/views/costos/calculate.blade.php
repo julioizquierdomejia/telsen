@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Crear Tarjeta de costo'])
+@extends('layouts.app_real', ['title' => 'Crear Tarjeta de costo'])
 @section('content')
     <form class="card card-user form-card" method="POST" action="{{route('card_cost.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
       <div class="card-header">

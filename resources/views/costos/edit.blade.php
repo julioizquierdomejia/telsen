@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Tarjeta de Costo | '. $tarjeta->name])
+@extends('layouts.app_real', ['title' => 'Tarjeta de Costo | '. $tarjeta->name])
 
 @section('content')
 <form class="card card-user form-card" method="POST" action="{{route('areas.edit', ['area' => $area->id])}}" enctype="multipart/form-data">

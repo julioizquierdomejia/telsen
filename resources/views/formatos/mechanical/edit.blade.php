@@ -1,7 +1,7 @@
 @php
   $ot_code = zerosatleft($formato->ot_code, 3);
 @endphp
-@extends('layouts.app', ['title' => 'Evaluación Mecánica de OT N° '.$ot_code])
+@extends('layouts.app_real', ['title' => 'Evaluación Mecánica de OT N° '.$ot_code])
 @section('content')
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 @php

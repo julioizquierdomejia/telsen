@@ -1,4 +1,4 @@
-@extends('layouts.app', ['body_class' => 'ots', 'title' => 'OTS'])
+@extends('layouts.app_real', ['body_class' => 'ots', 'title' => 'OTS'])
 @section('content')
 @php
 $role_names = validateActionbyRole();

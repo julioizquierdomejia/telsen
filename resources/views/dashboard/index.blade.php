@@ -31,7 +31,7 @@
         <div class="row">
           <div class="col-12 text-center">
             <p class="card-title numbers">{{abreviateTotalCount($priority_count)}}</p>
-            <p class="card-category" style="color: #ed1043;font-size: 11px;font-weight:500"><br>OT con Prioridad</p>
+            <p class="card-category" style="color: #ed1043;font-size: 11px;font-weight:500"><br>EMERGENCIAS</p>
           </div>
         </div>
       </div>

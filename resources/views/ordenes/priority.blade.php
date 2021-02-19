@@ -45,11 +45,11 @@ $(document).ready(function() {
         { data: 'fecha_entrega', class: 'text-center' },
         { data: 'tools', class: 'text-left text-nowrap'}
     ],
-    /*"createdRow": function( row, data, dataIndex){
+    "createdRow": function( row, data, dataIndex){
           if( data.prioridad == 1){
             $(row).find('td').css('background-color', '#fedddd');
           }
-        },*/
+        },
      columnDefs: [
       { orderable: false, targets: 2 },
           {

@@ -2184,7 +2184,7 @@ class OtController extends Controller
                                 $days  = date('d', $remaining_days);
                                 $fecha_entrega = '<span class="badge badge-danger px-2 py-1 w-100">'.$fecha.'</span><span class="text-nowrap">quedan ' .$days . ' día(s)</span>';
                             } else {
-                                $fecha_entrega .= '</span><span class="text-nowrap text-muted">Pasada</span><span class="badge badge-success px-2 py-1 w-100">'.$fecha.'';
+                                $fecha_entrega .= '<span class="badge badge-success px-2 py-1 w-100">'.$fecha.'</span><span class="text-nowrap text-muted">Pasada</span>';
                             }
                         }
                         $status['fecha_entrega'] = $fecha_entrega;

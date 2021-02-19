@@ -50,13 +50,13 @@
           <p>Dashboard</p>
         </a>
       </li>
+      @if ($admin)
       <li class="{{ request()->routeIs('ordenes.index') ? 'active' : '' }}">
         <a href="/ordenes">
           <i class="fal fa-network-wired mr-1"></i>
           <p>Ordenes de trabajo</p>
         </a>
       </li>
-      @if ($admin)
       <li class="{{ request()->routeIs('ordenes.priority_ots') ? 'active' : '' }}">
         <a class="pr-2" href="{{route('ordenes.priority_ots')}}">
           <i class="fal fa-network-wired mr-1"></i>

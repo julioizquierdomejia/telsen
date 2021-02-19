@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Ot;
 //use App\Models\Area;
 
-class HomeController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -48,6 +48,9 @@ class HomeController extends Controller
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'cc_disapproved');
                         $query->orWhere("status.name", "=", 'rdi_disapproved');
+                    })
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'ot_closure');
                     })
                     ->count();
 
@@ -93,7 +96,7 @@ class HomeController extends Controller
         $greetings = self::Greetings();
 
         //$areas = Area::where('areas.enabled', 1)->where('areas.id', '<>', 1)->get();
-        return view('home', compact('users', 'ots', 'ots_count', 'priority_count', 'pending_ots', 'attended_ots', 'avarage', 'greetings'));
+        return view('dashboard.index', compact('users', 'ots', 'ots_count', 'priority_count', 'pending_ots', 'attended_ots', 'avarage', 'greetings'));
     }
 
     function Greetings() {

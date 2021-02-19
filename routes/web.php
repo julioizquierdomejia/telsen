@@ -21,7 +21,7 @@ Route::middleware(['guest:' . config('admin-auth.defaults.guard')])->group(funct
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\DashboardController::class, 'index'])->name('home');
 
 Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(function () {
 

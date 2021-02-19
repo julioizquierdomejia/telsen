@@ -1,13 +1,19 @@
 @extends('layouts.app', ['title' => 'Crear Tarjeta de costo'])
 @section('content')
-<div class="row">
-  <div class="col-md-12">
-    <div class="card card-user form-card">
+    <form class="card card-user form-card" method="POST" action="{{route('card_cost.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
       <div class="card-header">
-        <h5 class="card-title">Crear Tarjeta de Costo</h5>
+        <h5 class="card-title d-flex align-items-center">
+        <span class="pl-2">Crear Tarjeta de Costo</span>
+        <div class="custom-control custom-switch ml-auto @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
+          <input type="checkbox" class="custom-control-input" id="enabled" value="1" {{old('enabled') == 1 ? 'checked': ''}} name="enabled">
+          <label class="custom-control-label text-dark" for="enabled">Activo</label>
+          @error('enabled')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+        </div>
+        </h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="{{route('card_cost.store', ['id' => $ot->id])}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
             <div class="col-md-2 form-group">
@@ -109,13 +115,6 @@
                 </select>
               </div>
             </div> --}}
-            <div class="col-md-3 ml-md-auto form-group">
-              <label class="col-form-label">Estado</label>
-              <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
-                <option value="1">Activo</option>
-                <option value="0">Inactivo</option>
-              </select>
-            </div>
             {{-- <div class="col-md-12">
               <table class="table table-tap table-separate table-bordered table-numbering mb-0" id="table-tap">
                 <thead class="text-center">
@@ -443,11 +442,8 @@
               <button type="submit" class="btn btn-primary btn-round">Enviar</button>
             </div>
           </div>
-        </form>
       </div>
-    </div>
-  </div>
-</div>
+</form>
 @endsection
 @section('javascript')
 <script>

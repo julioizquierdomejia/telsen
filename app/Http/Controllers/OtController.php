@@ -25,7 +25,7 @@ class OtController extends Controller
      */
     public function index(Request $request)
     {
-        //$request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
         
         //Listar OTs
         $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
@@ -38,7 +38,7 @@ class OtController extends Controller
 
     public function enabled_ots(Request $request)
     {
-        //$request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'crear_ot', 'aprobador_de_evaluaciones', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo', 'rdi']);
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
 
         $role_names = validateActionbyRole();
         $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
@@ -2227,10 +2227,41 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
         //Listar OTs
-        $ordenes = Ot::select('ots.*')
-                    ->where('enabled', 1)->get();
+        $ordenes = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+                    ->where('clients.id', \Auth::id())
+                    ->where('ots.enabled', 1)
+                    ->get();
 
         return view('procesovirtual.list', compact('ordenes'));
+    }
+
+    public function pvirtual(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
+
+        $ordenes = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+                    ->where('clients.id', \Auth::id())
+                    ->where('enabled', 1)
+                    ->get();
+        return view('procesovirtual.index', compact('ordenes'));
+    }
+
+    public function show(Request $request, $id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
+        
+        $orden = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+                    ->where('clients.id', \Auth::id())
+                    ->where('ots.enabled', 1)
+                    ->findOrFail($id);
+
+        $ordenes = Ot::where('ots.id', '<>', $id)
+                    ->join('clients', 'clients.id', '=', 'ots.client_id')
+                    ->where('clients.id', \Auth::id())
+                    ->where('ots.enabled', 1)
+                    ->get();
+
+        return view('procesovirtual.show', compact('orden', 'ordenes'));
     }
 
     /**
@@ -2292,7 +2323,7 @@ class OtController extends Controller
             'voltaje' => 'string|nullable',
             'velocidad' => 'string|nullable',
             'priority' => 'required|boolean',
-            'enabled' => 'required|boolean',
+            'enabled' => 'boolean',
         ];
 
         $messages = [
@@ -2316,7 +2347,7 @@ class OtController extends Controller
         $ot->medida_potencia = $request->input('medida_potencia');
         $ot->voltaje = $request->input('voltaje');
         $ot->velocidad = $request->input('velocidad');
-        $ot->enabled = $request->input('enabled');
+        $ot->enabled = $request->has('enabled');
         $ot->priority = $request->input('priority');
 
         $ot->save();
@@ -2340,19 +2371,6 @@ class OtController extends Controller
      * @param  \App\Models\Ot  $ot
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
-        
-        $orden = Ot::where('ots.enabled', 1)
-                    ->findOrFail($id);
-
-        $ordenes = Ot::where('ots.id', '<>', $id)
-                    ->where('ots.enabled', 1)
-                    ->get();
-
-        return view('procesovirtual.show', compact('orden', 'ordenes'));
-    }
 
     public function ot_show(Request $request, $id)
     {
@@ -2382,14 +2400,6 @@ class OtController extends Controller
                 ->first();
 
         return view('ordenes.show', compact('ot', 'rdi', 'meval', 'eeval', 'cost_card'));
-    }
-
-    public function pvirtual(Request $request)
-    {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
-
-        $ordenes = Ot::where('enabled', 1)->get();
-        return view('procesovirtual.index', compact('ordenes'));
     }
 
     public function generateOTDate(Request $request, $id)
@@ -2428,13 +2438,13 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
+        $orden = Ot::where('enabled', 1)->findOrFail($id);
         $clientes = Client::where('clients.enabled', 1)
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->select('clients.*', 'client_types.name as client_type')
                 ->get();
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();
-        $orden = Ot::where('enabled', 1)->findOrFail($id);
 
         return view('ordenes.edit', compact('orden', 'clientes', 'marcas', 'modelos'));
     }
@@ -2464,7 +2474,7 @@ class OtController extends Controller
             'voltaje' => 'string|nullable',
             'velocidad' => 'string|nullable',
             'priority' => 'nullable|boolean',
-            'enabled' => 'required|boolean',
+            'enabled' => 'boolean',
         );
         $this->validate($request, $rules);
 
@@ -2483,7 +2493,7 @@ class OtController extends Controller
         $ot->voltaje = $request->get('voltaje');
         $ot->velocidad = $request->get('velocidad');
         $ot->priority = $request->get('priority');
-        $ot->enabled = $request->get('enabled');
+        $ot->enabled = $request->has('enabled');
         $ot->save();
 
         activitylog('ots', 'update', $original_data, $ot->toArray());

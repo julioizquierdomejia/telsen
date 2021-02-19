@@ -21,10 +21,87 @@ class ClientController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
         
-        $clientes = Client::join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+        return view('clientes.index');
+    }
+
+    public function list(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin']);
+
+        $counter = 0;
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = Client::join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->select('clients.*', 'client_types.id as client_type_id', 'client_types.name as client_type')
-                ->get();
-        return view('clientes.index', compact('clientes'));
+                ->count();
+
+        $totalRecordswithFilter = Client::select('count(*) as allcount')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('clients.ruc', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%');
+                })
+                ->count();
+
+        $records = Client::join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('clients.*', 'client_types.id as client_type_id', 'client_types.name as client_type')
+
+                    ->skip($start)
+                    ->take($rowperpage)
+                    ->where(function($query) use ($searchValue) {
+                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                            ->orWhere('clients.ruc', 'like', '%'.$searchValue.'%')
+                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%');
+                    })
+                    ->orderBy($columnName, $columnSortOrder)
+                    ->get();
+
+        $rows_array = [];
+
+        foreach ($records as $key => $client) {
+            if($client->client_type_id == 1) {
+                $client_type = '<span class="badge badge-primary px-2 py-1 w-100">'.$client->client_type.'</span>';
+            } else {
+                $client_type = '<span class="badge badge-secondary px-2 py-1 w-100">'.$client->client_type.'</span>';
+            }
+            $enabled = ($client->enabled == 1 ? '<span class="badge badge-success d-block">Activo</span>' : '<span class="badge badge-secondary d-block">Inactivo</span>');
+            $tools = '<a href="'.route('clientes.edit', $client).'" class="btn btn-warning"><i class="fal fa-edit"></i></a>
+                        <a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>';
+
+            $rows_array[] = array(
+              "id" => $client->id,
+              "ruc" => $client->ruc,
+              "razon_social" => $client->razon_social,
+              "client_type" => $client_type,
+              "celular" => $client->celular,
+              "enabled" => $enabled,
+              "tools" => $tools
+            );
+        };
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $rows_array
+        );
+
+        echo json_encode($response);
+        exit;
     }
 
     /**
@@ -77,7 +154,7 @@ class ClientController extends Controller
         $client->email = $request->input('email');
         $client->info = $request->input('info');
         $client->client_type_id = $request->input('client_type_id');
-        $client->enabled = $request->input('enabled');
+        $client->enabled = $request->has('enabled');
 
         $client->save();
 
@@ -177,7 +254,7 @@ class ClientController extends Controller
         $client->email = $request->input('correo');
         $client->info = $request->input('info');
         $client->client_type_id = $request->input('client_type_id');
-        $client->enabled = $request->input('enabled');
+        $client->enabled = $request->has('enabled');
         $client->save();
 
         activitylog('clients', 'update', $original_data, $client->toArray());

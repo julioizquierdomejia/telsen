@@ -47,6 +47,10 @@ class Rdi extends Model
 
     ];
 
+    protected $casts = [
+        'enabled' => 'boolean',
+    ];
+
     protected $dates = [
         'fecha_ingreso',
         'orden_servicio',

@@ -3996,7 +3996,7 @@ input[type=button].btn-block {
 
 .custom-control-label::before {
   position: absolute;
-  top: 0.15rem;
+  top: 0;
   left: -1.5rem;
   display: block;
   width: 1rem;
@@ -4067,7 +4067,7 @@ input[type=button].btn-block {
 }
 
 .custom-switch .custom-control-label::after {
-  top: calc(0.15rem + 2px);
+  top: 2px;
   left: calc(-2.25rem + 2px);
   width: calc(1rem - 4px);
   height: calc(1rem - 4px);
@@ -30751,53 +30751,6 @@ img {
   background-color: #01416f;
 }
 
-.page_client .container-nav {
-  max-width: 1140px;
-}
-
-.page_client header {
-  padding-left: 0;
-  padding-right: 0;
-  padding-bottom: 0;
-}
-
-.page_client .client-nav {
-  border-top: 1px solid #c9c9c9;
-  max-width: none;
-}
-
-.page_client .client-nav .c-menu-list {
-  max-width: 1140px;
-  margin: 0 auto;
-  width: 100%;
-  padding-left: 15px;
-}
-
-.page_client .client-nav .c-menu-list li .nav-link {
-  color: #0c76b1;
-  display: block;
-  padding: 6px 10px;
-}
-
-.page_client .client-nav .c-menu-list li.active .nav-link {
-  border-bottom: 3px solid #2e4386;
-  color: #2e4386;
-}
-
-.page_client .main-panel {
-  width: 100%;
-}
-
-.page_client .main-panel .navbar {
-  background-color: #fff !important;
-}
-
-.page_client .main-panel > .content {
-  padding: 0 15px;
-  max-width: 1140px;
-  margin-top: 120px;
-}
-
 .ots-welcome {
   background-color: #003e63;
 }
@@ -31095,16 +31048,6 @@ img {
 
 .page-ot .steps .step-four .s-title {
   color: #2e4386;
-}
-
-@media (min-width: 992px) {
-  .page_client .client-nav .c-menu-list li .nav-link {
-    padding: 16px 10px;
-  }
-
-  .page_client .main-panel > .content {
-    margin-top: 150px;
-  }
 }
 
 @media (max-width: 575px) {

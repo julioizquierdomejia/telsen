@@ -18,7 +18,7 @@
 </div>
 <div class="row card-list row-medium justify-content-center">
   <div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl item personal-ot">
-    <div class="card card-stats">
+    <div class="card card-stats" style="background: #ffd1db;">
       <div class="card-body">
         <div class="row align-items-center mb-3">
           <div class="col-7 col-md-8">
@@ -31,13 +31,13 @@
         <div class="row">
           <div class="col-12 text-center">
             <p class="card-title numbers">{{abreviateTotalCount($priority_count)}}</p>
-            <p class="card-category" style="font-size: 11px;font-weight:500"><br>OT con Prioridad</p>
+            <p class="card-category" style="color: #ed1043;font-size: 11px;font-weight:500"><br>OT con Prioridad</p>
           </div>
         </div>
       </div>
       <div class="card-footer text-center px-0">
         <hr>
-        <div class="stats px-3">
+        <div class="stats px-3" style="color: #ed1043;">
           <i class="fa fa-clock-o"></i>
           Actualizado
         </div>
@@ -261,10 +261,7 @@
               <th class="text-nowrap">N° de OT</th>
               <th>Estado</th>
               <th>Cliente</th>
-              {{-- <th>Potencia</th>
-              <th>Código <br>motor</th> --}}
               <th class="text-center">Fecha de entrega</th>
-              {{-- <th class="text-center">Acciones</th> --}}
             </thead>
           </table>
           </div>
@@ -424,7 +421,7 @@
     }
 });
   
-  @if(session('priority') == true)
+  @if(session('priority') == true && $admin)
     var priority_ots;
         priority_ots = $('#tbpriority').DataTable({
          processing: true,
@@ -432,15 +429,14 @@
          ajax: "{{route('ordenes.priority.list')}}",
          pageLength: 5,
          lengthMenu: [ 5, 25, 50 ],
+         'sDom': 't',
+         searching: false,
          columns: [
             { data: 'created_at', class: 'text-nowrap' },
             { data: 'id', class: 'otid' },
             { data: 'status', class: 'text-center' },
             { data: 'razon_social' },
-            //{ data: 'numero_potencia', class: 'text-left' },
-            //{ data: 'codigo_motor', class: 'text-left' },
-            { data: 'fecha_entrega', class: 'text-center bg-light' },
-            //{ data: 'tools', class: 'text-left text-nowrap'}
+            { data: 'fecha_entrega', class: 'text-center' },
         ],
         "createdRow": function( row, data, dataIndex){
           if( data.prioridad == 1){
@@ -449,6 +445,12 @@
         },
          columnDefs: [
           { orderable: false, targets: 2 },
+          {
+            targets: 4,
+            "createdCell": function (td, cellData, rowData, row, col) {
+              $(td).addClass('bg-light')
+            },
+          }
           //{ orderable: false, targets: 6 }
         ],
         order: [[ 0, "desc" ]],

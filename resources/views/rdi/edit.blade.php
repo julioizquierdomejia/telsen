@@ -6,12 +6,20 @@
 @section('content')
 <div class="row">
   <div class="col-md-12">
-    <div class="card card-user form-card">
+    <form class="card card-user form-card" method="POST" action="{{route('rdi.edit', $rdi->id)}}" enctype="multipart/form-data">
       <div class="card-header">
-        <h5 class="card-title">Editar RDI de OT-<strong>{{$ot_code}}</strong></h5>
+        <h5 class="card-title d-flex align-items-center">
+          <span class="pl-2">Editar RDI de OT-<strong>{{$ot_code}}</strong></span>
+          <div class="custom-control custom-switch ml-auto @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
+          <input type="checkbox" class="custom-control-input" id="enabled" value="1" {{old('enabled', $rdi->enabled) == 1 ? 'checked': ''}} name="enabled">
+          <label class="custom-control-label text-dark" for="enabled">Activo</label>
+          @error('enabled')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+        </div>
+        </h5>
       </div>
       <div class="card-body">
-        <form class="form-group" method="POST" action="{{route('rdi.edit', $rdi->id)}}" enctype="multipart/form-data">
           @csrf
           <div class="row">
             <div class="col-6 col-md-3 col-xl-2 form-group">
@@ -387,22 +395,12 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-3 form-group">
-              <label class="col-form-label">Estado</label>
-              <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
-                <option value="1">Activo</option>
-                <option value="0">Inactivo</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
             <div class="update ml-auto mr-auto">
               <button type="submit" class="btn btn-primary btn-round">Enviar</button>
             </div>
           </div>
-        </form>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 @endsection

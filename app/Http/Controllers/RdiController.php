@@ -232,7 +232,7 @@ class RdiController extends Controller
         $rdi->rdi_criticality_type_id = $request->input('rdi_criticality_type_id');
         $rdi->hecho_por = $request->input('hecho_por');
         //$rdi->cost = $request->input('cost');
-        $rdi->enabled = $request->input('enabled');
+        $rdi->enabled = $request->has('enabled');
         $rdi->save();
 
         //Ingresó con
@@ -563,7 +563,7 @@ class RdiController extends Controller
         $rdi->rdi_maintenance_type_id = $request->input('rdi_maintenance_type_id');
         $rdi->rdi_criticality_type_id = $request->input('rdi_criticality_type_id');
         $rdi->hecho_por = $request->input('hecho_por');
-        $rdi->enabled = $request->input('enabled');
+        $rdi->enabled = $request->has('enabled');
         $rdi->save();
 
         //Ingresó con

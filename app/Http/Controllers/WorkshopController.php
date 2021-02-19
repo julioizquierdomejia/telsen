@@ -744,7 +744,7 @@ class WorkshopController extends Controller
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'name'       => 'required|string|unique:costos,name,'.$id,
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         $this->validate($request, $rules);
 

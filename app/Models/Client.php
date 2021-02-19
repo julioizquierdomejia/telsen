@@ -11,8 +11,12 @@ class Client extends Model
     use HasFactory;
 
     protected $fillable = [
-        'ruc', 'razon_social', 'direccion', 'telefono', 'celular', 'contacto','telefono_contacto','email', 'info', 'enabled',
+        'ruc', 'razon_social', 'direccion', 'telefono', 'celular', 'contacto','telefono_contacto','email', 'info',
+        'enabled',
 
+    ];
+    protected $casts = [
+        'enabled' => 'boolean',
     ];
 
     public function ots(){

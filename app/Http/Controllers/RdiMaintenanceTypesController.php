@@ -44,14 +44,14 @@ class RdiMaintenanceTypeController extends Controller
 
         $rules = array(
             'name'       => 'string|required|unique:rdi_criticality_types',
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         $this->validate($request, $rules);
 
         $rdictypes = new RdiMaintenanceType();
         
         $rdictypes->name = $request->input('name');
-        $rdictypes->enabled = $request->input('enabled');
+        $rdictypes->enabled = $request->has('enabled');
 
         $rdictypes->save();
 
@@ -105,7 +105,7 @@ class RdiMaintenanceTypeController extends Controller
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'name'       => 'string|required|unique:rdi_criticality_types,name,'.$id,
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         $this->validate($request, $rules);
 

@@ -18,6 +18,10 @@ class Status extends Model
         'enabled',
     ];
 
+    protected $casts = [
+        'enabled' => 'boolean',
+    ];
+
     public function ots(){
         return $this->belongsToMany(Ot::class);
     }

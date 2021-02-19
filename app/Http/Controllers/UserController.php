@@ -153,14 +153,14 @@ class UserController extends Controller
             'roles'     => 'array|min:1',
             'area_id'     => 'integer|required',
             'password'    => 'string|min:6|nullable',
-            'enabled'   => 'boolean|required',
+            'enabled'   => 'boolean',
         );
         $this->validate($request, $rules);
 
         $user = new User();
         $user->email = $request->input('email');
         $user->password = bcrypt($request->input('password'));
-        $user->enabled = $request->input('enabled');
+        $user->enabled = $request->has('enabled');
         $user->save();
 
         $user_data = new UserData();
@@ -255,14 +255,14 @@ class UserController extends Controller
             'mlastname'   => 'string|min:3|nullable',
             'phone'       => 'string|min:6|nullable',
             'roles'       => 'sometimes|array',
-            'enabled'   => 'boolean|sometimes',
+            'enabled'   => 'boolean',
         );
         if ($allowed_user) {
             array_push($rules, ['area_id'     => 'integer|required']);
         }
         $this->validate($request, $rules);
 
-        $enabled = $request->input('enabled');
+        $enabled = $request->has('enabled');
 
         $user = User::findOrFail($id);
         $original_data = $user->getOriginal();
@@ -337,14 +337,14 @@ class UserController extends Controller
             'mlastname'   => 'string|min:3|nullable',
             'phone'       => 'string|min:6|nullable',
             'roles'       => 'sometimes|array',
-            'enabled'   => 'boolean|sometimes',
+            'enabled'   => 'boolean',
         );
         if ($allowed_user) {
             array_push($rules, ['area_id'     => 'integer|required']);
         }
         $this->validate($request, $rules);
 
-        $enabled = $request->input('enabled');
+        $enabled = $request->has('enabled');
 
         $user = User::findOrFail($id);
         $original_data = $user->getOriginal();

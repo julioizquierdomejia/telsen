@@ -113,7 +113,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 					</div>
 					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Prioridad</label>
-						<p class="mb-1">{!!$ot->priority == 1 ? '<span class="badge badge-success px-3">Alta</span>' : '<span class="badge badge-secondary px-3">Normal</span>'!!}</p>
+						<p class="mb-1">{!!$ot->priority == 1 ? '<span class="badge badge-danger px-3">Alta</span>' : '<span class="badge badge-secondary px-3">Normal</span>'!!}</p>
 					</div>
 					<div class="col-6 col-md-3 mb-2">
 						<label class="col-label">Estado</label>

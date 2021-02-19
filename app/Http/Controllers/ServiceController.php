@@ -118,7 +118,7 @@ class ServiceController extends Controller
                                     ->where('name', $request->input('name'))
                                     ->where('area_id', $request->input('area_id'))],
             'area_id'      => 'integer|required',
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         
         $this->validate($request, $rules);
@@ -127,7 +127,7 @@ class ServiceController extends Controller
         
         $service->name = $request->input('name');
         $service->area_id = $request->input('area_id');
-        $service->enabled = $request->input('enabled');
+        $service->enabled = $request->has('enabled');
 
         $service->save();
 
@@ -190,7 +190,7 @@ class ServiceController extends Controller
         $rules = array(
             'name'       => 'required|string|unique:services,name,'.$id,
             'area_id'      => 'integer|required',
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         $this->validate($request, $rules);
 

@@ -1,51 +1,43 @@
-@extends('layouts.app', ['title' => 'Tarjeta de Costo | '. $area->name])
+@extends('layouts.app', ['title' => 'Tarjeta de Costo | '. $tarjeta->name])
 
 @section('content')
-<div class="row">
-  <div class="col-md-12">
-    <div class="card card-user form-card">
-      <div class="card-header">
-        <h5 class="card-title">Editar area <strong>{{$area->name}}</strong></h5>
-      </div>
-      <div class="card-body">
-        <form class="form-group" method="POST" action="{{route('areas.edit', ['area' => $area->id])}}" enctype="multipart/form-data">
-          @csrf
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label class="col-form-label">Nombre</label>
-                <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="{{$area->name}}" name="name">
-              </div>
-                @error('name')
-                  <p class="error-message text-danger">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="col-md-3 form-group">
-              <label class="col-form-label">Estado</label>
-              <select name="enabled" class="form-control @error('enabled') is-invalid @enderror dropdown2" id="selectEstado">
-                <option value="1" {{$area->enabled == 1 ? 'selected': ''}}>Activo</option>
-                <option value="0" {{$area->enabled == 0 ? 'selected': ''}}>Inactivo</option>
-              </select>
-              @error('enabled')
-                  <p class="error-message text-danger">{{ $message }}</p>
-                @enderror
-            </div>
-            <div class="col-md-9 pt-1">
-              <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#modalServices">Agregar servicios</button>
-            </div>
-            
-          </div>
-          <div class="row">
-            <div class="update ml-auto mr-auto">
-              <button type="submit" class="btn btn-primary btn-round">Actualizar</button>
-            </div>
-          </div>
-        </form>
-      </div>
+<form class="card card-user form-card" method="POST" action="{{route('areas.edit', ['area' => $area->id])}}" enctype="multipart/form-data">
+  <div class="card-header">
+    <h5 class="card-title d-flex align-items-center">
+      <span class="pl-2">Editar tarjeta <strong>{{$tarjeta->name}}</strong></span>
+      <div class="custom-control custom-switch ml-auto @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
+      <input type="checkbox" class="custom-control-input" id="enabled" value="1" {{old('enabled', $tarjeta->enabled) == 1 ? 'checked': ''}} name="enabled">
+      <label class="custom-control-label text-dark" for="enabled">Activo</label>
+      @error('enabled')
+          <p class="error-message text-danger">{{ $message }}</p>
+          @enderror
     </div>
+    </h5>
   </div>
-</div>
+  <div class="card-body">
+      @csrf
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="col-form-label">Nombre</label>
+            <input type="text" class="form-control @error('name') is-invalid @enderror" placeholder="" value="{{$area->name}}" name="name">
+          </div>
+            @error('name')
+              <p class="error-message text-danger">{{ $message }}</p>
+            @enderror
+        </div>
+        <div class="col-md-9 pt-1">
+          <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#modalServices">Agregar servicios</button>
+        </div>
+        
+      </div>
+      <div class="row">
+        <div class="update ml-auto mr-auto">
+          <button type="submit" class="btn btn-primary btn-round">Actualizar</button>
+        </div>
+      </div>
+  </div>
+</form>
 <div class="modal fade" tabindex="-1" id="modalServices">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -66,15 +58,6 @@
             </div>
 
             <input type="text" class="form-control d-none" required="" value="{{$area->id}}" name='area_id' id="sselectArea">
-
-            <div class="col-md-12">
-              <label class="col-form-label" for="sselectEstado">Estado</label>
-              <select name="enabled" class="form-control dropdown2" id="sselectEstado" style="width: 100%">
-                <option value="1">Activo</option>
-                <option value="0">Inactivo</option>
-              </select>
-              <p class="enabled_message text-danger"></p>
-            </div>
           </div>
           <p class="area_message text-danger"></p>
           <h4 class="h6"><strong>Servicios</strong></h4>

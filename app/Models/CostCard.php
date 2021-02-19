@@ -18,6 +18,10 @@ class CostCard extends Model
         'cost_m3',
         'enabled',
     ];
+    
+    protected $casts = [
+        'enabled' => 'boolean',
+    ];
 
     protected $dates = [
         'created_at',

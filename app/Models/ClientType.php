@@ -14,6 +14,10 @@ class ClientType extends Model
         'name',
         'enabled',
     ];
+    
+    protected $casts = [
+        'enabled' => 'boolean',
+    ];
 
     public function clients(){
     	return $this->hasMany(Client::class);

@@ -125,7 +125,7 @@ class RotorCodRodajePt2Controller extends Controller
         $rotor_cod->name = $request->input('name');
         $rotor_cod->asiento_rodaje = $request->input('asiento_rodaje');
         $rotor_cod->alojamiento_rodaje = $request->input('alojamiento_rodaje');
-        $rotor_cod->enabled = $request->input('enabled');
+        $rotor_cod->enabled = $request->has('enabled');
 
         $rotor_cod->save();
 
@@ -189,7 +189,7 @@ class RotorCodRodajePt2Controller extends Controller
         $rotor_cod->name = $request->input('name');
         $rotor_cod->asiento_rodaje = $request->input('asiento_rodaje');
         $rotor_cod->alojamiento_rodaje = $request->input('alojamiento_rodaje');
-        $rotor_cod->enabled = $request->input('enabled');
+        $rotor_cod->enabled = $request->has('enabled');
 
         $rotor_cod->save();
 

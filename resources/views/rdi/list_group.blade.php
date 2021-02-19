@@ -71,7 +71,7 @@ $(document).ready(function() {
             { data: 'razon_social' },
             { data: 'numero_potencia', class: 'text-left' },
             { data: 'codigo_motor', class: 'text-left' },
-            { data: 'fecha_entrega', class: 'text-center bg-light' },
+            { data: 'fecha_entrega', class: 'text-center' },
             { data: 'tools', class: 'text-left text-nowrap'}
         ],
         "createdRow": function( row, data, dataIndex){
@@ -81,6 +81,12 @@ $(document).ready(function() {
         },
          columnDefs: [
           { orderable: false, targets: 2 },
+          {
+            targets: 6,
+            "createdCell": function (td, cellData, rowData, row, col) {
+              $(td).addClass('bg-light')
+            },
+          }
           //{ orderable: false, targets: 6 }
         ],
         language: dLanguage
@@ -105,7 +111,7 @@ $(document).ready(function() {
             { data: 'razon_social' },
             { data: 'numero_potencia', class: 'text-left' },
             { data: 'codigo_motor', class: 'text-left' },
-            { data: 'fecha_entrega', class: 'text-center bg-light' },
+            { data: 'fecha_entrega', class: 'text-center' },
             { data: 'tools', class: 'text-left text-nowrap'}
         ],
         "createdRow": function( row, data, dataIndex){
@@ -115,6 +121,12 @@ $(document).ready(function() {
         },
          columnDefs: [
           { orderable: false, targets: 2 },
+          {
+            targets: 6,
+            "createdCell": function (td, cellData, rowData, row, col) {
+              $(td).addClass('bg-light')
+            },
+          }
           //{ orderable: false, targets: 6 }
         ],
         language: dLanguage

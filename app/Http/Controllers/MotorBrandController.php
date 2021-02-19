@@ -45,7 +45,7 @@ class MotorBrandController extends Controller
         $rules = array(
             'name'       => 'string|required|unique:motor_brands',
             'description'      => 'string|nullable',
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         $this->validate($request, $rules);
 
@@ -53,7 +53,7 @@ class MotorBrandController extends Controller
         
         $brand->name = $request->input('name');
         $brand->description = $request->input('description');
-        $brand->enabled = $request->input('enabled');
+        $brand->enabled = $request->has('enabled');
 
         $brand->save();
 
@@ -107,7 +107,7 @@ class MotorBrandController extends Controller
         $rules = array(
             'name'       => 'required|string|unique:motor_brands,name,'.$id,
             'description'      => 'string|nullable',
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         $this->validate($request, $rules);
 

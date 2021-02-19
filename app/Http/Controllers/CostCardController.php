@@ -182,7 +182,7 @@ class CostCardController extends Controller
         $rules = array(
             //'ot_id'       => 'integer|required|exists:ots,id',
             'hecho_por'      => 'string|required',
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
             /*'cost'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'cost_m1'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
             'cost_m2'      => 'required|regex:/^\d+(\.\d{1,2})?$/|gt:0',
@@ -414,7 +414,7 @@ class CostCardController extends Controller
         // read more on validation at http://laravel.com/docs/validation
         $rules = array(
             'name'       => 'required|string|unique:costos,name,'.$id,
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         $this->validate($request, $rules);
 

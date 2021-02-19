@@ -16,6 +16,10 @@ class RotorCodRodajePt2 extends Model
         'enabled'
     ];
 
+    protected $casts = [
+        'enabled' => 'boolean',
+    ];
+
     protected $dates = [
         'created_at',
         'updated_at'

@@ -131,11 +131,8 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 				</div>
 				<div class="row">
 					<div class="col-md-3 ml-md-auto form-group">
-						<label class="col-form-label">Estado</label>
-						<select name="enabled" disabled="" class="form-control dropdown2" id="selectEstado">
-							<option value="1" {{$ccost->enabled == 1 ? 'selected' : ''}}>Activo</option>
-							<option value="0" {{$ccost->enabled == 0 ? 'selected' : ''}}>Inactivo</option>
-						</select>
+						<label class="col-label">Estado</label>
+						<p class="mb-1">{!!$ccost->enabled == 1 ? '<span class="badge badge-success px-3">Activo</span>' : '<span class="badge badge-danger px-3">Inactivo</span>'!!}</p>
 					</div>
 					<div class="col-md-12">
 

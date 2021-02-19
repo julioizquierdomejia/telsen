@@ -45,7 +45,7 @@ class RdiServiceController extends Controller
         $rules = array(
             'name'       => 'string|required',
             'subtotal'      => 'string|required',
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         $this->validate($request, $rules);
 
@@ -53,7 +53,7 @@ class RdiServiceController extends Controller
         
         $rdiservices->name = $request->input('name');
         $rdiservices->subtotal = $request->input('subtotal');
-        $rdiservices->enabled = $request->input('enabled');
+        $rdiservices->enabled = $request->has('enabled');
 
         $rdiservices->save();
 
@@ -108,7 +108,7 @@ class RdiServiceController extends Controller
         $rules = array(
             'name'       => 'string|required',
             'subtotal'      => 'string|required',
-            'enabled'      => 'boolean|required',
+            'enabled'      => 'boolean',
         );
         $this->validate($request, $rules);
 

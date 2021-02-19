@@ -26,7 +26,10 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        //$request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'mechanical', 'electrical']);
+      //$request->user()->authorizeRoles(['superadmin', 'admin', 'reception', 'mechanical', 'electrical']);
+
+      $role_names = validateActionbyRole();
+      $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 
         $users = User::where('id', '<>', 1)->get();
         $all_ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
@@ -96,7 +99,7 @@ class DashboardController extends Controller
         $greetings = self::Greetings();
 
         //$areas = Area::where('areas.enabled', 1)->where('areas.id', '<>', 1)->get();
-        return view('dashboard.index', compact('users', 'ots', 'ots_count', 'priority_count', 'pending_ots', 'attended_ots', 'avarage', 'greetings'));
+        return view('dashboard.index', compact('users', 'ots', 'ots_count', 'priority_count', 'pending_ots', 'attended_ots', 'avarage', 'greetings', 'admin'));
     }
 
     function Greetings() {

@@ -44,7 +44,7 @@
               <label class="col-form-label">Tipo Cliente</label>
               <input type="text" class="form-control tipocliente" placeholder="" value="" disabled="" name="name">
             </div>
-            <div class="col-6 col-md-3 form-group">
+            <div class="col-6 col-md-3 form-group bg-danger" style="box-shadow: 0 7px 0px 0 #e3342f;">
               <label class="col-form-label text-primary" for="selectPriority">Prioridad</label>
               <select style="width: 100%" name="priority" class="form-control @error('priority') is-invalid @enderror dropdown2" id="selectPriority">
                 <option value="0" {{$orden->priority == 0 ? 'selected' : ''}}>Normal</option>

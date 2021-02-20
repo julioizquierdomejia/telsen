@@ -73,6 +73,9 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::post('ordenes/gallery', [App\Http\Controllers\OtController::class, 'galleryStore'])->name('gallery.store');
 	Route::post('ordenes/{id}/quitarimagen', [App\Http\Controllers\OtController::class, 'galleryDelete'])->name('gallery.delete');
 
+	Route::get('ordenes/{orden}/comments', [App\Http\Controllers\OtController::class, 'comments'])->name('ordenes.comments');
+	Route::post('ordenes/{orden}/comment', [App\Http\Controllers\OtController::class, 'comment_store'])->name('ordenes.comment.store');
+
 	//rutas para Clientes
 	//Route::resource('clientes', App\Http\Controllers\ClientController::class);
 	Route::get('clientes', [App\Http\Controllers\ClientController::class, 'index'])->name('clientes.index');

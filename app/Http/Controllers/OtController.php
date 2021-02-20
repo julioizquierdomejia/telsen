@@ -14,6 +14,7 @@ use App\Models\OtGallery;
 use App\Models\CostCard;
 use App\Models\WorkShop;
 use App\Models\Rdi;
+use App\Models\OtComment;
 use Illuminate\Http\Request;
 
 class OtController extends Controller
@@ -2501,6 +2502,90 @@ class OtController extends Controller
         // redirect
         \Session::flash('message', '¡Se actualizó la orden!');
         return redirect('ordenes');
+    }
+
+    public function comments(Request $request, $ot_id)
+    {
+        ## Read value
+        $draw = $request->get('draw');
+        $start = $request->get("start");
+        $rowperpage = $request->get("length"); // Rows display per page
+
+        $columnIndex_arr = $request->get('order');
+        $columnName_arr = $request->get('columns');
+        $order_arr = $request->get('order');
+        $search_arr = $request->get('search');
+
+        $columnIndex = $columnIndex_arr[0]['column']; // Column index
+        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+        $searchValue = $search_arr['value']; // Search value
+
+        $totalRecords = OtComment::
+                join('users', 'users.id', '=', 'ot_comments.user_id')
+                ->where('ot_id', $ot_id)
+                ->count();
+
+        $totalRecordswithFilter = OtComment::select('count(*) as allcount')
+                ->join('users', 'users.id', '=', 'ot_comments.user_id')
+                ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                ->where(function($query) use ($searchValue) {
+                    $query->where('ot_comments.comment', 'like', '%'.$searchValue.'%');
+                })
+                ->where('ot_id', $ot_id)
+                ->count();
+
+        $records = OtComment::join('users', 'users.id', '=', 'ot_comments.user_id')
+                ->join('user_data', 'users.id', '=', 'user_data.user_id')
+                ->select('ot_comments.*', 'user_data.name as user')
+
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('ot_comments.comment', 'like', '%'.$searchValue.'%');
+                })
+                ->where('ot_id', $ot_id)
+                ->orderBy($columnName, $columnSortOrder)
+                ->get();
+
+        $rows_array = [];
+
+        foreach ($records as $key => $row) {
+            $rows_array[] = array(
+              "id" => $row->id,
+              "user" => $row->user,
+              "user_id" => $row->user_id,
+              "comment" => $row->comment,
+              "created_at" => date('d-m-Y h:i a', strtotime($row->created_at)),
+            );
+        };
+
+        $response = array(
+            "draw" => intval($draw),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordswithFilter,
+            "aaData" => $rows_array
+        );
+
+        echo json_encode($response);
+        exit;
+    }
+
+    public function comment_store(Request $request, $ot_id)
+    {
+        $rules = array(
+            'comment' => 'required',
+        );
+        $this->validate($request, $rules);
+
+        $comment = new OtComment([
+            'ot_id' => $ot_id,
+            'user_id' => \Auth::id(),
+            'comment' => $request->input('comment')
+        ]);
+        $comment->save();
+
+        return $comment;
     }
 
     /**

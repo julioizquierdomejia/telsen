@@ -16,6 +16,115 @@ $role_ap_rdi = in_array("aprobador_rdi", $role_names);
 $cotizador_tarjeta = in_array("cotizador_tarjeta_de_costo", $role_names);
 $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 @endphp
+<style type="text/css">
+	table.comments_dt {
+        background-color: #e5ddd5;
+        /*border-radius: 7px;*/
+        box-sizing: border-box;
+        font-size: 12px;
+        padding: 15px 1rem;
+        width: 100% !important;
+    }
+    table.comments_dt,
+    table.comments_dt tbody,
+    table.comments_dt tr,
+    table.comments_dt td {
+    	display: block;
+    }
+
+    /*--[  This does the job of making the table rows appear as comments_dt ]----------------*/
+    .dataTable.comments_dt tbody tr {
+    	background-color: white;
+    	border-radius: 7px;
+    	box-shadow: 0 1px 0.5px #b9b9b9;
+	    margin: 5px 0;
+	    padding: 6px 10px;
+	    width: 90%;
+    }
+    .dataTable.comments_dt tbody td {
+    	border: 0;
+        width: 100%;
+        overflow: hidden;
+        padding: 0;
+        text-align: left;
+    }
+    .comments_dt .c-date {
+    	font-size: 10px;
+    	margin-top: -5px;
+    }
+    .dataTable.comments_dt tbody tr:before {
+    	content: '';
+    	font-family: "Font Awesome 5 Pro";
+    	font-weight: 900;
+    	font-size: 22px;
+    	line-height: 20px;
+    	position: absolute;
+    	top: 0;
+    }
+    .dataTable.comments_dt tbody .row-me {
+    	background-color: #dcf8c6;
+    	border-top-right-radius: 0;
+	    margin-left: auto;
+    }
+    .dataTable.comments_dt tbody .row-me:before {
+    	color: #dcf8c6;
+    	right: -4px;
+    	top: -7px;
+    	content: "\F0DA";
+    	transform: rotate(-135deg);
+    }
+    .dataTable.comments_dt tbody .row-other {
+    	border-top-left-radius: 0;
+    }
+    .dataTable.comments_dt tbody .row-other:before {
+    	color: #fff;
+    	left: -4px;
+    	top: -8px;
+    	content: "\F0D9";
+    	transform: rotate(135deg);
+    }
+    .comments .table-responsive {
+    	max-height: 300px;
+    }
+
+    #frmComment {
+    	position: relative;
+    }
+    #ot_comment {
+    	resize: none;
+    }
+    #btnComment {
+    	box-shadow: none;
+    	font-size: 18px;
+    	position: absolute;
+    	right: 5px;
+    	top: 3px;
+    }
+
+    /*---[ The remaining is just more dressing to fit my preferances ]-----------------*/
+    .table {
+        background-color: #fff;
+    }
+    .table tbody label {
+        display: none;
+        margin-right: 5px;
+        width: 50px;
+    }
+
+    .comments_dt tbody label {
+        display: inline;
+        position: relative;
+        font-size: 85%;
+        font-weight: normal;
+        top: -5px;
+        left: -3px;
+        float: left;
+        color: #808080;
+    }
+    .comments_dt tbody td:nth-child(1) {
+        text-align: center;
+    }
+</style>
 <div class="row">
 	<div class="col-md-12">
 		<div class="card card-user form-card">
@@ -120,6 +229,31 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 						<p class="mb-1">{!!$ot->enabled == 1 ? '<span class="badge badge-success px-3">Activo</span>' : '<span class="badge badge-danger px-3">Inactivo</span>'!!}</p>
 					</div>
 				</div>
+				<div class="comments border">
+					<h3 class="py-2 px-3 bg-light border-bottom mb-0 h6"><i class="far fa-comments pr-2"></i> Comentarios</h3>
+					<div class="table-responsive">
+						<table class="table comments_dt" id="commentsTD">
+						<thead class="d-none">
+							<tr>
+								<th>ID</th>
+								<th>Usuario</th>
+								<th>UD</th>
+								<th>Comentario</th>
+								<th>Fecha</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					</div>
+					<div class="comment p-3 bg-light">
+						<form class="frm" id="frmComment" method="POST" action="{{ route('ordenes.comment.store', ['orden' => $ot->id]) }}">
+							@csrf
+								<textarea class="form-control mt-0 rounded-pill pr-4 pl-3" id="ot_comment" placeholder="Comentario" name="comment"></textarea>
+								<button class="btn m-0" id="btnComment" type="submit" style="min-width: 0"><i class="far fa-paper-plane"></i></button>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 			<div class="card-footer">
 				<hr>
@@ -166,4 +300,60 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 		</div>
 	</div>
 </div>
+@endsection
+@section('javascript')
+<script type="text/javascript">
+	$(document).ready(function () {
+		dLanguage.sEmptyTable = "No hay comentarios aún.";
+		var commentsTD = $('#commentsTD').DataTable({
+			processing: true,
+			serverSide: true,
+			ajax: "{{route('ordenes.comments', ['orden'=>$ot->id])}}",
+			pageLength: 5,
+			lengthMenu: [ 5, 25, 50 ],
+			'sDom': 't',
+			searching: false,
+			columns: [
+		        { data: 'id', class: 'd-none' },
+		        { data: 'user', class: 'text-primary' },
+		        { data: 'user_id', class: 'd-none' },
+		        { data: 'comment', class: 'text-left comment' },
+		        { data: 'created_at', class: 'text-right c-date text-muted' },
+		    ],
+		    "createdRow": function( row, data, dataIndex){
+		    	console.log(data)
+	          if( data.user_id == {{auth()->id()}}){
+	            $(row).addClass('row-me');
+	          } else {
+	          	$(row).addClass('row-other');
+	          }
+	        },
+		     columnDefs: [
+		      { orderable: false, targets: 2 },
+		    ],
+		    order: [[ 0, "desc" ]],
+		    language: dLanguage
+	  	});
+
+		$(document).on("submit", "#frmComment", function(event) {
+			event.preventDefault();
+			var form = $(this);
+    		var url = form.attr('action');
+			$.ajax({
+		        type: "post",
+		        url: url,
+		        data: new FormData(this),
+		        processData: false,
+	        	contentType: false,
+		        success: function (data) {
+		          $('#ot_comment').val('');
+		          commentsTD.ajax.reload();
+		        },
+		        error: function (request, status, error) {
+		          
+		        }
+		    });
+		})
+	})
+</script>
 @endsection

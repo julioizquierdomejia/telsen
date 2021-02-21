@@ -12,6 +12,7 @@
     text-transform: none;
   }
   #collapseComments {
+    background-color: #e5ddd5;
     /*max-height: calc(100% - 32px);*/
     height: 100%;
   }
@@ -19,7 +20,7 @@
     min-height: 250px;
   }
   table.comments_dt {
-    background-color: #e5ddd5;
+    background-color: transparent;
     /*border-radius: 7px;*/
     box-sizing: border-box;
     font-size: 12px;
@@ -91,6 +92,7 @@
     max-height: 300px;
     max-height: 73%;
     max-height: calc(100% - 32px - 86px);
+    height: 100%;
   }
 
   #frmComment {

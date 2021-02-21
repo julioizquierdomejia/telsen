@@ -1,11 +1,11 @@
-@extends('layouts.app_real', ['title' => 'Editar "O.T. ' . zerosatleft($orden->code, 3)])
+@extends('layouts.app_real', ['title' => 'Editar "O.T. ' . zerosatleft($ot->code, 3)])
 @section('content')
-<form class="card card-user form-card" method="POST" action="{{route('ordenes.edit', ['orden' => $orden->id])}}" enctype="multipart/form-data">
+<form class="card card-user form-card" method="POST" action="{{route('ordenes.edit', ['orden' => $ot->id])}}" enctype="multipart/form-data">
   <div class="card-header">
     <h5 class="card-title d-flex align-items-center">
     <span class="pr-2">Editar Orden de Trabajo</span>
     <div class="custom-control custom-switch ml-auto @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
-      <input type="checkbox" class="custom-control-input" id="enabled" value="1" {{old('enabled', $orden->enabled) == 1 ? 'checked': ''}} name="enabled">
+      <input type="checkbox" class="custom-control-input" id="enabled" value="1" {{old('enabled', $ot->enabled) == 1 ? 'checked': ''}} name="enabled">
       <label class="custom-control-label text-dark" for="enabled">Activo</label>
       @error('enabled')
           <p class="error-message text-danger">{{ $message }}</p>
@@ -18,15 +18,15 @@
       <div class="row">
         <div class="col-md-5 form-group">
           <label class="col-form-label">Número de Orden</label>
-          <input type="text" class="form-control" disabled="" placeholder="Company" value="0T-{{zerosatleft($orden->code, 3)}}" name="id">
+          <input type="text" class="form-control" disabled="" placeholder="Company" value="0T-{{zerosatleft($ot->code, 3)}}" name="id">
         </div>
         <div class="col-md-4 form-group">
           <label class="col-form-label">Fecha de creación <span class="text-danger">(*)</span></label>
-          <input type="text" class="form-control" value="{{date('d-m-Y', strtotime($orden->created_at))}}" disabled="">
+          <input type="text" class="form-control" value="{{date('d-m-Y', strtotime($ot->created_at))}}" disabled="">
         </div>
         <div class="col-md-3 form-group">
           <label class="col-form-label">Vendedor</label>
-          <input type="text" name="guia_cliente" class="form-control @error('guia_cliente') is-invalid @enderror" placeholder="Ingrese Vendedor" value="{{old('guia_cliente', $orden->guia_cliente)}}">
+          <input type="text" name="guia_cliente" class="form-control @error('guia_cliente') is-invalid @enderror" placeholder="Ingrese Vendedor" value="{{old('guia_cliente', $ot->guia_cliente)}}">
           @error('guia_cliente')
           <p class="error-message text-danger">{{ $message }}</p>
           @enderror
@@ -38,7 +38,7 @@
           <select class="form-control dropdown2 @error('client_id') is-invalid @enderror" name="client_id" id="selectRuc">
             <option>Ingresa Razón Social</option>
             @foreach($clientes as $cliente)
-            <option data-rs="{{ $cliente->ruc }}" data-dir="{{ $cliente->direccion }}" data-contacto="{{$cliente->telefono_contacto}}" data-celular="{{$cliente->celular}}" data-type="{{$cliente->client_type}}" value="{{$cliente->id}}" @if(old('client_id', $orden->client_id) == $cliente->id) selected="" @endif>{{ $cliente->razon_social }}</option>
+            <option data-rs="{{ $cliente->ruc }}" data-dir="{{ $cliente->direccion }}" data-contacto="{{$cliente->telefono_contacto}}" data-celular="{{$cliente->celular}}" data-type="{{$cliente->client_type}}" value="{{$cliente->id}}" @if(old('client_id', $ot->client_id) == $cliente->id) selected="" @endif>{{ $cliente->razon_social }}</option>
             @endforeach
           </select>
           @error('client_id')
@@ -52,8 +52,8 @@
         <div class="col-6 col-md-3 form-group bg-danger" style="box-shadow: 0 7px 0px 0 #e3342f;">
           <label class="col-form-label text-primary" for="selectPriority">Prioridad</label>
           <select style="width: 100%" name="priority" class="form-control @error('priority') is-invalid @enderror dropdown2" id="selectPriority">
-            <option value="0" {{$orden->priority == 0 ? 'selected' : ''}}>Normal</option>
-            <option value="1" {{$orden->priority == 1 ? 'selected' : ''}}>Alta</option>
+            <option value="0" {{$ot->priority == 0 ? 'selected' : ''}}>Normal</option>
+            <option value="1" {{$ot->priority == 1 ? 'selected' : ''}}>Alta</option>
           </select>
         </div>
       </div>
@@ -75,34 +75,34 @@
       <div class="row">
         <div class="col-md-12 form-group">
           <label class="col-form-label">Descripción del motor</label>
-          <input type="text" class="form-control @error('descripcion_motor') is-invalid @enderror" placeholder="Ingrese descripción" value="{{$orden->descripcion_motor}}" name="descripcion_motor">
+          <input type="text" class="form-control @error('descripcion_motor') is-invalid @enderror" placeholder="Ingrese descripción" value="{{$ot->descripcion_motor}}" name="descripcion_motor">
         </div>
       </div>
       <div class="row">
         <div class="col-6 col-md-3 form-group">
           <label class="col-form-label">Código</label>
-          <input type="text" class="form-control @error('codigo_motor') is-invalid @enderror" name="codigo_motor" placeholder="Ingrese código del motor" value="{{old('codigo_motor', $orden->codigo_motor)}}">
+          <input type="text" class="form-control @error('codigo_motor') is-invalid @enderror" name="codigo_motor" placeholder="Ingrese código del motor" value="{{old('codigo_motor', $ot->codigo_motor)}}">
         </div>
         <div class="col-6 col-md-3 form-group">
           <label class="col-form-label">Marca</label>
           <!-- <input type="text" class="form-control @error('fecha_creacion') is-invalid @enderror" placeholder="Ingrese Marca" value="" name="marca"> -->
-          <select name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca" value="{{$orden->marca_id}}">
+          <select name="marca_id" class="form-control @error('marca_id') is-invalid @enderror dropdown2" id="selectMarca" value="{{$ot->marca_id}}">
             <option value="">Selecciona la marca</option>
             @foreach($marcas as $marca)
-            <option value="{{ $marca->id }}" @if($orden->marca_id == $marca->id) selected="" @endif>{{ $marca->name }}</option>
+            <option value="{{ $marca->id }}" @if($ot->marca_id == $marca->id) selected="" @endif>{{ $marca->name }}</option>
             @endforeach
           </select>
         </div>
         <div class="col-6 col-md-3 form-group">
           <label class="col-form-label" for="solped">Solped</label>
-          <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped', $orden->solped)}}" id="solped" name="solped">
+          <input type="text" min="1" class="form-control @error('solped') is-invalid @enderror" placeholder="Solped" value="{{old('solped', $ot->solped)}}" id="solped" name="solped">
         </div>
         <div class="col-6 col-md-3 form-group">
           <label class="col-form-label">Modelo</label>
           <select name="modelo_id" class="form-control @error('modelo_id') is-invalid @enderror dropdown2" id="selectModelo">
             <option value="">Selecciona el modelo</option>
             @foreach($modelos as $modelo)
-            <option value="{{ $modelo->id }}" @if($orden->modelo_id == $modelo->id) selected="" @endif>{{ $modelo->name }}</option>
+            <option value="{{ $modelo->id }}" @if($ot->modelo_id == $modelo->id) selected="" @endif>{{ $modelo->name }}</option>
             @endforeach
           </select>
         </div>
@@ -111,19 +111,19 @@
       <div class="row">
         <div class="col-md-3 form-group">
           <label class="col-form-label">Numero de potencia</label>
-          <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Número de potencia" value="{{old('numero_potencia', $orden->numero_potencia)}}" name="numero_potencia">
+          <input type="text" class="form-control @error('numero_potencia') is-invalid @enderror" placeholder="Número de potencia" value="{{old('numero_potencia', $ot->numero_potencia)}}" name="numero_potencia">
         </div>
         <div class="col-md-3 form-group">
           <label class="col-form-label">Medida de potencia</label>
-          <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Medida de medida_potencia" value="{{old('medida_potencia', $orden->medida_potencia)}}" name="medida_potencia">
+          <input type="text" class="form-control @error('medida_potencia') is-invalid @enderror" placeholder="Medida de medida_potencia" value="{{old('medida_potencia', $ot->medida_potencia)}}" name="medida_potencia">
         </div>
         <div class="col-md-3 form-group">
           <label class="col-form-label">Voltaje</label>
-          <input type="text" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('voltaje', $orden->voltaje)}}" name="voltaje">
+          <input type="text" class="form-control @error('voltaje') is-invalid @enderror" placeholder="Voltaje" value="{{old('voltaje', $ot->voltaje)}}" name="voltaje">
         </div>
         <div class="col-md-3 form-group">
           <label class="col-form-label">Velocidad</label>
-          <input type="text" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('velocidad', $orden->velocidad)}}" name="velocidad">
+          <input type="text" class="form-control @error('velocidad') is-invalid @enderror" placeholder="Velocidad" value="{{old('velocidad', $ot->velocidad)}}" name="velocidad">
         </div>
       </div>
       <div class="row">
@@ -135,46 +135,47 @@
 </form>
 @endsection
 @section('javascript')
+@include('ordenes.comments', ['ot' => $ot])
 <script type="text/javascript">
 $(document).ready(function(){
-$('#selectRuc').change(function () {
-var $this = $(this), val = $this.val(), selected = $this.find('option:selected');
-if (!val) {
-$('.razon_social').val("");
-$('.direccion').val("");
-$('.telefono').val("");
-$('.celular').val("");
-$('.tipocliente').val("");
-$('.telefono_contacto').val("");
-return;
-}
-$('.razon_social').val(selected.data('rs'));
-$('.direccion').val(selected.data('dir'));
-$('.telefono').val(selected.data('tel'));
-$('.celular').val(selected.data('celular'));
-$('.telefono_contacto').val(selected.data('contacto'));
-$('.tipocliente').val(selected.data('type'));
-/*$.ajax({
-url: "/clientes/"+val+"/ver",
-data: {},
-type: 'GET',
-beforeSend: function () {
-},
-complete: function () {
-},
-success: function (response) {
-$('.razon_social').val(response.razon_social);
-$('.direccion').val(response.direccion);
-$('.telefono').val(response.telefono);
-$('.celular').val(response.celular);
-$('.telefono_contacto').val(response.telefono_contacto);
-},
-error: function (request, status, error) { // if error occured
-}
-});*/
-})
+  $('#selectRuc').change(function () {
+  var $this = $(this), val = $this.val(), selected = $this.find('option:selected');
+  if (!val) {
+  $('.razon_social').val("");
+  $('.direccion').val("");
+  $('.telefono').val("");
+  $('.celular').val("");
+  $('.tipocliente').val("");
+  $('.telefono_contacto').val("");
+  return;
+  }
+  $('.razon_social').val(selected.data('rs'));
+  $('.direccion').val(selected.data('dir'));
+  $('.telefono').val(selected.data('tel'));
+  $('.celular').val(selected.data('celular'));
+  $('.telefono_contacto').val(selected.data('contacto'));
+  $('.tipocliente').val(selected.data('type'));
+  /*$.ajax({
+  url: "/clientes/"+val+"/ver",
+  data: {},
+  type: 'GET',
+  beforeSend: function () {
+  },
+  complete: function () {
+  },
+  success: function (response) {
+  $('.razon_social').val(response.razon_social);
+  $('.direccion').val(response.direccion);
+  $('.telefono').val(response.telefono);
+  $('.celular').val(response.celular);
+  $('.telefono_contacto').val(response.telefono_contacto);
+  },
+  error: function (request, status, error) { // if error occured
+  }
+  });*/
+  })
 
-$('#selectRuc').trigger('change');
-})
+  $('#selectRuc').trigger('change');
+  })
 </script>
 @endsection

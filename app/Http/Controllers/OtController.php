@@ -2251,7 +2251,7 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'client']);
         
-        $orden = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
+        $ot = Ot::join('clients', 'clients.id', '=', 'ots.client_id')
                     ->where('clients.id', \Auth::id())
                     ->where('ots.enabled', 1)
                     ->findOrFail($id);
@@ -2262,7 +2262,7 @@ class OtController extends Controller
                     ->where('ots.enabled', 1)
                     ->get();
 
-        return view('procesovirtual.show', compact('orden', 'ordenes'));
+        return view('procesovirtual.show', compact('ot', 'ordenes'));
     }
 
     /**
@@ -2439,7 +2439,7 @@ class OtController extends Controller
     {
         $request->user()->authorizeRoles(['superadmin', 'admin', 'crear_ot']);
 
-        $orden = Ot::where('enabled', 1)->findOrFail($id);
+        $ot = Ot::where('enabled', 1)->findOrFail($id);
         $clientes = Client::where('clients.enabled', 1)
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->select('clients.*', 'client_types.name as client_type')
@@ -2447,7 +2447,7 @@ class OtController extends Controller
         $marcas = MotorBrand::where('enabled', 1)->get();
         $modelos = MotorModel::where('enabled', 1)->get();
 
-        return view('ordenes.edit', compact('orden', 'clientes', 'marcas', 'modelos'));
+        return view('ordenes.edit', compact('ot', 'clientes', 'marcas', 'modelos'));
     }
 
     /**
@@ -2509,17 +2509,17 @@ class OtController extends Controller
         ## Read value
         $draw = $request->get('draw');
         $start = $request->get("start");
-        $rowperpage = $request->get("length"); // Rows display per page
+        $rowperpage = $request->get("length");
 
-        $columnIndex_arr = $request->get('order');
+        /*$columnIndex_arr = $request->get('order');
         $columnName_arr = $request->get('columns');
         $order_arr = $request->get('order');
         $search_arr = $request->get('search');
 
-        $columnIndex = $columnIndex_arr[0]['column']; // Column index
-        $columnName = $columnName_arr[$columnIndex]['data']; // Column name
-        $columnSortOrder = $order_arr[0]['dir']; // asc or desc
-        $searchValue = $search_arr['value']; // Search value
+        $columnIndex = $columnIndex_arr[0]['column'];
+        $columnName = $columnName_arr[$columnIndex]['data'];
+        $columnSortOrder = $order_arr[0]['dir'];
+        $searchValue = $search_arr['value'];*/
 
         $totalRecords = OtComment::
                 join('users', 'users.id', '=', 'ot_comments.user_id')
@@ -2529,9 +2529,9 @@ class OtController extends Controller
         $totalRecordswithFilter = OtComment::select('count(*) as allcount')
                 ->join('users', 'users.id', '=', 'ot_comments.user_id')
                 ->join('user_data', 'users.id', '=', 'user_data.user_id')
-                ->where(function($query) use ($searchValue) {
+                /*->where(function($query) use ($searchValue) {
                     $query->where('ot_comments.comment', 'like', '%'.$searchValue.'%');
-                })
+                })*/
                 ->where('ot_id', $ot_id)
                 ->count();
 
@@ -2541,11 +2541,11 @@ class OtController extends Controller
 
                 ->skip($start)
                 ->take($rowperpage)
-                ->where(function($query) use ($searchValue) {
+                /*->where(function($query) use ($searchValue) {
                     $query->where('ot_comments.comment', 'like', '%'.$searchValue.'%');
-                })
+                })*/
                 ->where('ot_id', $ot_id)
-                ->orderBy($columnName, $columnSortOrder)
+                ->orderBy('created_at', 'asc')
                 ->get();
 
         $rows_array = [];

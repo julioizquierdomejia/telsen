@@ -340,9 +340,9 @@
       </div>
       <div class="card form-card">
         <div class="card-header">
-          <h4 class="second-title text-danger py-2">Pruebas de Ingreso</h4>
+          <h4 class="second-title text-danger py-2" data-toggle="collapse" data-target="#collapseTest" style="cursor: pointer;">Pruebas de Ingreso</h4>
         </div>
-        <div class="card-body pb-3">
+        <div class="card-body pb-3 collapse" id="collapseTest">
           <div class="row">
             <div class="col-md-6">
               <h4 class="second-title text-danger py-2">Motor</h4>
@@ -424,11 +424,12 @@
       </div>
       <div class="card form-card">
         <div class="card-header">
-          <h4 class="second-title text-danger py-2">Transformador</h4>
+          <h4 class="second-title text-danger py-2" data-toggle="collapse" data-target="#collapseTr" style="cursor: pointer;">Transformador</h4>
         </div>
         <div class="card-body pb-3 pt-0">
           <hr>
-          <table class="table table-tap table-separate text-center table-numbering mb-0" id="table-tap">
+          <div class="table-responsive collapse" id="collapseTr">
+            <table class="table table-tap table-separate text-center table-numbering mb-0" id="table-tap">
             <thead>
               <tr>
                 <th class="text-center py-1" colspan="8">Tap</th>
@@ -488,6 +489,7 @@
             </tr>
             </tfoot>
           </table>
+          </div>
           <hr class="mt-0">
           <div class="row">
             <div class="col-12 col-sm-6 col-md-3 form-group">

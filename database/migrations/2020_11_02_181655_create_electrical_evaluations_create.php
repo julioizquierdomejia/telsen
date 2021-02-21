@@ -109,7 +109,7 @@ class CreateElectricalEvaluationsCreate extends Migration
             $table->boolean('base_has')->default(0);
 
             $table->string('otros')->nullable();
-            $table->string('detalles')->nullable();
+            $table->text('detalles')->nullable();
 
             $table->timestamps();
         });

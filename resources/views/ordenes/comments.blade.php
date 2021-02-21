@@ -232,7 +232,8 @@
 
     $('#collapseComments').on('shown.bs.collapse', function () {
       $('.comments').addClass('h-100');
-      toElement(true)
+      //toElement(true)
+      commentsTD.ajax.reload(toElement(true), false);
     })
     $('#collapseComments').on('hidden.bs.collapse', function () {
       $('.comments').removeClass('h-100');

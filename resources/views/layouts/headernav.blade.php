@@ -54,7 +54,7 @@
         @else
             <li class="nav-item dropdown">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-lowercase" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="d-none d-md-inlineblock">{{ Auth::user()->email }}</span> <span class="icon"><img src="/assets/img/logo-small.png" width="30" height="30"></span>
+                    <span class="d-none d-md-inline-block">{{ Auth::user()->email }}</span> <span class="icon"><img src="/assets/img/logo-small.png" width="30" height="30"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

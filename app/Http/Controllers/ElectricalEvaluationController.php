@@ -160,6 +160,7 @@ class ElectricalEvaluationController extends Controller
             'diseno_nema' => 'string|nullable',
             'ip' => 'string|nullable',
             'peso' => 'string|nullable',
+            'observaciones' => 'string|nullable',
 
             //OT
             'descripcion_motor' => 'string',
@@ -306,6 +307,7 @@ class ElectricalEvaluationController extends Controller
         $eleval->diseno_nema = $request->input('diseno_nema');
         $eleval->ip = $request->input('ip');
         $eleval->peso = $request->input('peso');
+        $eleval->observaciones = $request->input('observaciones');
         //$eleval->approved = 0;
         $eleval->save();
 
@@ -851,6 +853,7 @@ class ElectricalEvaluationController extends Controller
             'diseno_nema' => 'string|nullable',
             'ip' => 'string|nullable',
             'peso' => 'string|nullable',
+            'observaciones' => 'string|nullable',
 
             //OT
             'descripcion_motor' => 'string',
@@ -984,6 +987,7 @@ class ElectricalEvaluationController extends Controller
         $eleval->diseno_nema = $request->input('diseno_nema');
         $eleval->ip = $request->input('ip');
         $eleval->peso = $request->input('peso');
+        $eleval->observaciones = $request->input('observaciones');
         $eleval->save();
 
         $ot = Ot::find($eleval->ot_id);

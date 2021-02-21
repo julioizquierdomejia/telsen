@@ -689,6 +689,13 @@
                   <input class="form-control" type="file" name="files[]" multiple="" id="evalImages">
                 </div>
             </div> --}}
+            <div class="col-12 mb-2">
+              <label class="col-form-label">Observaciones</label>
+              <textarea class="form-control @error('observaciones') is-invalid @enderror" placeholder="" name="observaciones">{{old('observaciones')}}</textarea>
+              @error('observaciones')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+            </div>
             <div class="col-12">
               <label for="dZUpload">Galería</label>
               <input class="form-control images d-none" type="text" name="files" value="{{old('files')}}">

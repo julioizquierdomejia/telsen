@@ -585,7 +585,13 @@ $reception_list = [
                   @endif
                 </tbody>
               </table>
-              </div>
+            </div>
+            <div class="form-group">
+            <label class="c-label">Observaciones</label>
+            <div class="text">
+              {{$formato->observaciones ?? '-'}}
+            </div>
+          </div>
       </div>
     </div>
     <div class="card form-card">

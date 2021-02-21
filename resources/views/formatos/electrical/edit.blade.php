@@ -719,6 +719,13 @@
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
             </div>
+            <div class="obs mb-2 col-12">
+              <label class="col-form-label">Observaciones</label>
+              <textarea class="form-control @error('observaciones') is-invalid @enderror" placeholder="" name="observaciones">{{old('observaciones', $formato->observaciones)}}</textarea>
+              @error('observaciones')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+            </div>
             <div class="col-12">
               <div class="gallery pt-3">
               <h6>Galería</h6>

@@ -18,7 +18,7 @@ package-lock.json
 
 public/css/*
 public/js/*
-public/fonts/vendor/*
+public/fonts/*
 public/media
 public/images/vendor/*
 public/uploads

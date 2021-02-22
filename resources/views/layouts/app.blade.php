@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
   <meta charset="utf-8" />
@@ -31,7 +31,7 @@ Coded by www.creative-tim.com
   <!--     Fonts and icons     -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   {{-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;900&display=swap" rel="stylesheet"> --}}
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
   <!-- CSS Files -->
   <link href="{{ asset('assets/css/paper-dashboard.css?v=2.0.1') }}" rel="stylesheet" />
 
@@ -40,14 +40,13 @@ Coded by www.creative-tim.com
 
   @yield('css')
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
-
 </head>
 <body class="page {{isset($body_class) ? $body_class : ''}}">
   <div class="wrapper ">
     @include('layouts.sidebar')
     <div class="main-panel">
       <!-- Navbar -->
-        @include('layouts.headernav')
+      @include('layouts.headernav')
       <!-- End Navbar -->
       <div class="content container">
         @yield('content')
@@ -110,7 +109,5 @@ Coded by www.creative-tim.com
     });
   </script>
   @yield('javascript')
-
 </body>
-
 </html>

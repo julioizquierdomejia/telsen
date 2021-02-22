@@ -1813,7 +1813,8 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
     width: initial; }
   .navbar .navbar-wrapper {
     display: inline-flex;
-    align-items: center; }
+    align-items: center;
+  }
     .navbar .navbar-wrapper .navbar-minimize {
       padding-right: 10px; }
       .navbar .navbar-wrapper .navbar-minimize .btn {
@@ -1880,7 +1881,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
     padding-bottom: 0.5rem;
     line-height: 1.625rem; }
   .navbar .navbar-toggler {
-    width: 37px;
+    width: 27px;
     height: 27px;
     vertical-align: middle;
     outline: 0;
@@ -3706,6 +3707,9 @@ License - nucleoapp.com/license/
     padding: 0; }
     .navbar.navbar-absolute {
       padding-top: 0; }
+  .navbar .navbar-wrapper{
+    font-size: 12px;
+  }
     .navbar .navbar-brand {
       font-size: 16px;
       margin-right: 0; }
@@ -3729,17 +3733,6 @@ License - nucleoapp.com/license/
     display: block; }
   .navbar .dropdown .dropdown-menu {
     display: none; }
-  .navbar .dropdown.show .dropdown-menu,
-  .navbar .dropdown .dropdown-menu {
-    border: 0;
-    transition: none;
-    -webkit-box-shadow: none;
-    width: auto;
-    margin: 0px 1rem;
-    margin-top: 0px;
-    box-shadow: none;
-    position: static;
-    padding-left: 10px; }
     .navbar .dropdown.show .dropdown-menu:before,
     .navbar .dropdown .dropdown-menu:before {
       display: none; }

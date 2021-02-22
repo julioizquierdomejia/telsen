@@ -9,7 +9,7 @@
     </div>
     <div class="navbar-wrapper">
       <a class="btn-link" href="/"><i class="fa fa-envelope"></i> mantenimiento@telsen.net</a>
-      <a class="btn-link" href="tel:515642536"><i class="fa fa-phone"></i> +51 564-2536</a>
+      <a class="btn-link" href="tel:515642536"><i class="fa fa-phone"></i> <span class="d-none d-md-inline-block">+51 564-2536</span></a>
     </div>
     <div class="collapse navbar-collapse justify-content-end" id="navigation">
       <!--form>

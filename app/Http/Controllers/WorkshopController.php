@@ -140,7 +140,7 @@ class WorkshopController extends Controller
                         ->where('code', '<>', 'approved')
                         ->where('code', '<>', 'disapproved')
                         ->get();
-        $allowed_user = in_array('superadmin', $roles) || in_array('supervisor', $roles) && $single_role;
+        $allowed_user = in_array('superadmin', $roles) || in_array('supervisor', $roles);
 
         return view('talleres.services', compact('work_reasons', 'roles', 'allowed_user'));
     }
@@ -166,8 +166,7 @@ class WorkshopController extends Controller
 
         $area_id = \Auth::user()->data->area->id;
         $roles = validateActionbyRole();
-        $single_role = count($roles) == 1;
-        $allowed_user = in_array('superadmin', $roles) || in_array('supervisor', $roles) && $single_role;
+        $allowed_user = in_array('superadmin', $roles) || in_array('admin', $roles) || in_array('supervisor', $roles);
 
         //Cuando no hay usuarios de un area no se lista las tareas de dicha area
         if (in_array("superadmin", $roles) || in_array("admin", $roles)) {

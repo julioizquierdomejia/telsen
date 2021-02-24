@@ -73,7 +73,7 @@ class WorkshopController extends Controller
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                ->select('ots.created_at', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                 ->get();
         } else {
             if (in_array("supervisor", $roles)) {
@@ -82,7 +82,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->where('user_data.area_id', $area_id)
 
                     ->whereDoesntHave('work_logs', function ($query) {
@@ -99,7 +99,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->where('workshops.user_id', $user_id)
                     //->where('user_data.area_id', $area_id)
 
@@ -197,7 +197,7 @@ class WorkshopController extends Controller
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                ->select('ots.created_at', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                 ->skip($start)
                 ->take($rowperpage)
                 ->where(function($query) use ($searchValue) {
@@ -239,7 +239,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->skip($start)
                     ->take($rowperpage)
                     ->where('user_data.area_id', $area_id)
@@ -283,7 +283,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->skip($start)
                     ->take($rowperpage)
                     ->where('workshops.user_id', $user_id)
@@ -423,10 +423,13 @@ class WorkshopController extends Controller
             $records_array[] = array(
                 "created_at" => $created_at,
                 "id" => $row_code,
-                "numero_potencia" => $potencia ? $potencia : '-',
+                //"numero_potencia" => $potencia ? $potencia : '-',
                 "area" => $row->area,
+                "medidas" => $row->medidas,
+                "qty" => $row->qty,
+                "personal" => $row->personal,
                 "service" => $row->service,
-                "status" => $wl_count ? '<span class="badge badge-info d-block py-1">'.$status.'</span>' : '-',
+                "status" => $wl_count ? '<span class="badge badge-info d-block py-1">'.$status.'</span>' : '<span class="badge badge-secondary"><i class="fal fa-watch"></i> Pendiente</span>',
                 "tools" => $html_tools
             );
         }

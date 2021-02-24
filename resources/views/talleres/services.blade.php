@@ -15,9 +15,12 @@
               {{-- <th class="text-nowrap">ID</th> --}}
               <th class="text-nowrap">Fecha OT</th>
               <th class="text-nowrap">N° de OT</th>
-              <th>Potencia</th>
+              {{-- <th>Potencia</th> --}}
               <th class="text-nowrap">Area</th>
               <th class="text-nowrap">Servicio</th>
+              <th class="text-nowrap">Medidas</th>
+              <th class="text-nowrap">Cant.</th>
+              <th class="text-nowrap">Personal</th>
               <th class="text-nowrap">Estado</th>
               <th class="text-center">Acciones</th>
             </thead>
@@ -108,22 +111,21 @@
          lengthMenu: [ 5, 25, 50 ],
          columns: [
             { data: 'created_at', class: 'text-nowrap' },
-            { data: 'id', class: 'otid' },
-            { data: 'numero_potencia', class: 'text-left' },
-            { data: 'area', class: 'text-left' },
+            { data: 'id', class: 'otid text-nowrap' },
+            /*{ data: 'numero_potencia', class: 'text-left' },*/
+            { data: 'area', class: 'text-center', orderable: true },
             { data: 'service', class: 'text-center' },
-            { data: 'status', class: 'status text-center' },
-            { data: 'tools', class: 'text-left text-nowrap'}
+            { data: 'medidas', class: 'text-center' },
+            { data: 'qty', class: 'text-center' },
+            { data: 'personal', class: 'text-center' },
+            { data: 'status', class: 'status text-center', orderable: false },
+            { data: 'tools', class: 'text-center text-nowrap', orderable: false}
         ],
         "createdRow": function( row, data, dataIndex){
           if( data.prioridad == 1){
             $(row).find('td').css('background-color', '#fedddd');
           }
         },
-         columnDefs: [
-          { orderable: false, targets: 2 },
-          { orderable: false, targets: 6 }
-        ],
         order: [[ 0, "desc" ]],
         language: dLanguage
       });
@@ -137,7 +139,7 @@
           row = $('.row-details[data-id='+id+']'),
           content = $(`
           <tr class="text-center row-details row-expanded" data-id="`+id+`">
-            <td colspan="7">
+            <td colspan="9">
               `+row.find('.cell-details').html()+`
             </td>
           </tr>

@@ -48,10 +48,7 @@
         { data: 'client_type', class: 'text-left' },
         { data: 'celular', class: 'text-left' },
         { data: 'enabled', class: 'text-left' },
-        { data: 'tools', class: 'text-left text-nowrap'}
-    ],
-     columnDefs: [
-      { orderable: false, targets: 2 },
+        { data: 'tools', class: 'text-center text-nowrap', orderable: false}
     ],
     order: [[ 0, "desc" ]],
     language: dLanguage

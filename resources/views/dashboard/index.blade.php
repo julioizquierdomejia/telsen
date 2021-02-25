@@ -203,9 +203,9 @@
           <tbody>
             @foreach($ots as $ot)
             <tr>
-              <td>{{$ot->razon_social}}</td>
-              <td class="text-center text-nowrap">OT-{{zerosatleft($ot->code, 3)}}</td>
-              <td class="text-center">
+              <td class="bg-white">{{$ot->razon_social}}</td>
+              <td class="bg-white text-center text-nowrap">OT-{{zerosatleft($ot->code, 3)}}</td>
+              <td class="bg-white text-center">
                 <ul class="list-steps list-unstyled mb-0 step-{{$ot['progress']}}">
                   @for($i=1;$i<=4;$i++)
                   <li class="step step-{{$i}} {{$i <= $ot['progress'] ? 'step-active' : ''}}"></li>
@@ -433,8 +433,8 @@
          searching: false,
          columns: [
             { data: 'created_at', class: 'text-nowrap' },
-            { data: 'id', class: 'otid' },
-            { data: 'status', class: 'text-center' },
+            { data: 'id', class: 'otid text-nowrap' },
+            { data: 'status', class: 'text-center', orderable: false },
             { data: 'razon_social' },
             { data: 'fecha_entrega', class: 'text-center' },
         ],
@@ -444,7 +444,6 @@
           }
         },
          columnDefs: [
-          { orderable: false, targets: 2 },
           {
             targets: 4,
             "createdCell": function (td, cellData, rowData, row, col) {

@@ -75,10 +75,7 @@
           { data: 'name', class: 'service' },
           { data: 'area' },
           { data: 'status', class: 'text-left' },
-          { data: 'tools', class: 'text-left text-nowrap'}
-      ],
-       columnDefs: [
-        { orderable: false, targets: 4 }
+          { data: 'tools', class: 'text-center text-nowrap', orderable: false}
       ],
       language: dLanguage
     });

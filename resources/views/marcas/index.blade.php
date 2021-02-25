@@ -17,18 +17,10 @@
         <div class="table-responsive">
           <table class="table table-separate" id="tablas">
             <thead class="text-primary">
-              <th>
-                Id
-              </th>
-              <th>
-                Nombre
-              </th>
-              <th>
-                Descripción
-              </th>
-              <th class="text-right">
-                Acciones
-              </th>
+              <th>Id</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th class="text-center">Acciones</th>
             </thead>
             <tbody>
             	@foreach($marcas as $marca)
@@ -39,10 +31,10 @@
 	                <td>
 	                  {{$marca->name}}
 	                </td>
-	                <td>
-	                  {{$marca->description}}
+	                <td class="text-left">
+	                  {{$marca->description ?? '-'}}
 	                </td>
-	                <td class="text-right">
+	                <td class="text-center">
 	                	<a href="{{ route('marcas.edit', $marca) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
 	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
 	                </td>

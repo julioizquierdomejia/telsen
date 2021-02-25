@@ -12,21 +12,11 @@
         <div class="table-responsive">
           <table class="table table-separate data-table ee-table">
             <thead class="text-primary">
-              <th>
-                Fecha OT
-              </th>
-              <th>
-                N° de OT
-              </th>
-              <th>
-                Cliente
-              </th>
-              <th>
-                Motor
-              </th>
-              <th class="text-right">
-                Acciones
-              </th>
+              <th>Fecha OT</th>
+              <th>N° de OT</th>
+              <th>Cliente</th>
+              <th>Motor</th>
+              <th class="text-center">Acciones</th>
             </thead>
             <tbody>
             	{{-- @foreach($ots as $ot)
@@ -64,13 +54,10 @@
        lengthMenu: [ 5, 25, 50 ],
        columns: [
           { data: 'created_at', class: 'text-nowrap' },
-          { data: 'id', class: 'otid' },
+          { data: 'id', class: 'otid text-nowrap' },
           { data: 'razon_social' },
           { data: 'numero_potencia', class: 'text-left' },
-          { data: 'tools', class: 'text-left text-nowrap'}
-      ],
-       columnDefs: [
-        { orderable: false, targets: 4 }
+          { data: 'tools', class: 'text-center text-nowrap', orderable: false}
       ],
       order: [[ 0, "desc" ]],
       language: dLanguage

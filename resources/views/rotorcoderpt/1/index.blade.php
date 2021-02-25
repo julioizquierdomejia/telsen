@@ -70,10 +70,10 @@
           { data: 'asiento_rodaje', class: 'text-nowrap' },
           { data: 'alojamiento_rodaje' },
           { data: 'enabled', class: 'text-left' },
-          { data: 'tools', class: 'text-right text-nowrap'}
+          { data: 'tools', class: 'text-center text-nowrap', orderable: false}
       ],
        columnDefs: [
-        { orderable: false, targets: 4 }
+        { , targets: 4 }
       ],
       language: dLanguage
     });

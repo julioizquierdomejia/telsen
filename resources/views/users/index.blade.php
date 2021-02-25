@@ -62,15 +62,11 @@ $(document).ready(function() {
             { data: 'id' },
             { data: 'name', class: 'user_name' },
             { data: 'lastname' },
-            { data: 'role' },
+            { data: 'role', orderable: false },
             { data: 'area' },
             { data: 'email' },
             { data: 'enabled' },
-            { data: 'tools', class: 'text-nowrap'}
-        ],
-         columnDefs: [
-          { orderable: false, targets: 3 },
-          { orderable: false, targets: 7 }
+            { data: 'tools', class: 'text-nowrap', orderable: false}
         ],
         language: dLanguage
       });

@@ -62,7 +62,7 @@ class DashboardController extends Controller
                     ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
                     ->where('ots.enabled', 1)
                     ->orderBy('ots.created_at', 'desc')
-                    ->limit(10)
+                    ->limit(5)
                     ->get();
 
         $attended_ots = Ot::join('clients', 'ots.client_id', '=', 'clients.id')

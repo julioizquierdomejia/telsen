@@ -57,13 +57,13 @@ $(document).ready(function() {
      lengthMenu: [ 5, 25, 50 ],
      columns: [
         { data: 'created_at', class: 'text-nowrap' },
-        { data: 'id', class: 'otid' },
-        { data: 'status', class: 'text-center' },
+        { data: 'id', class: 'otid text-nowrap' },
+        { data: 'status', class: 'text-center', orderable: false },
         { data: 'razon_social' },
         { data: 'numero_potencia', class: 'text-left' },
         { data: 'codigo_motor', class: 'text-left' },
         { data: 'fecha_entrega', class: 'text-center' },
-        { data: 'tools', class: 'text-left text-nowrap'}
+        { data: 'tools', class: 'text-center text-nowrap', orderable: false}
     ],
     "createdRow": function( row, data, dataIndex){
           if( data.prioridad == 1){
@@ -71,14 +71,12 @@ $(document).ready(function() {
           }
         },
      columnDefs: [
-      { orderable: false, targets: 2 },
-          {
-            targets: 6,
-            "createdCell": function (td, cellData, rowData, row, col) {
-              $(td).addClass('bg-light')
-            },
-          }
-      //{ orderable: false, targets: 6 }
+      {
+        targets: 6,
+        "createdCell": function (td, cellData, rowData, row, col) {
+          $(td).addClass('bg-light')
+        },
+      }
     ],
     order: [[ 0, "desc" ]],
     language: dLanguage

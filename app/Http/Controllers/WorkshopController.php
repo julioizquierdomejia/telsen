@@ -508,6 +508,8 @@ class WorkshopController extends Controller
                     'services.area_id',
                     'services.name as service',
                     'ot_works.personal',
+                    'ot_works.medidas',
+                    'ot_works.qty',
                     \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
                     'user_data.user_id'
                 )
@@ -527,6 +529,8 @@ class WorkshopController extends Controller
                     'services.area_id',
                     'services.name as service',
                     'ot_works.personal',
+                    'ot_works.medidas',
+                    'ot_works.qty',
                     \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
                     'user_data.user_id'
                 )

@@ -42,13 +42,16 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                 <th>Potencia</th>
                 <th class="text-nowrap">Servicio</th>
                 <th class="text-nowrap">Descripción</th>
-                <th class="text-center">Personal</th>
+                <th class="text-center">Trabajador</th>
+                <th class="text-center">Medidas</th>
+                <th class="text-center">Cant.</th>
+                <th class="text-center">Trabajador</th>
                 <th class="text-center">Acciones</th>
               </thead>
               <tbody>
                 @foreach($service_item as $service)
                 @php
-                $service_personal = old("personal_name_".$service['ot_work_id'], $service['user_name']);
+                $service_trabajador = old("trabajador_name_".$service['ot_work_id'], $service['user_name']);
                 @endphp
                 <tr class="list-item" data-service="{{$service['ot_work_id']}}">
                   {{-- <td>{{$service['id']}}</td> --}}
@@ -59,15 +62,18 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                     <h6 class="subtitle mb-0">{{$service['service']}}</h6>
                   </td>
                   <td>{{$service['description']}}</td>
+                  <td>{{$service['medidas']}}</td>
+                  <td>{{$service['qty']}}</td>
+                  <td>{{$service['personal']}}</td>
                   <td>
-                    <div class="text-center service-personal @error("data.".$service['ot_work_id'].".user_id") d-block is-invalid @enderror">
-                      <span class="form-control mt-0 h-auto personal_name" name="personal_name_{{$service['ot_work_id']}}" style="white-space: nowrap;text-overflow: ellipsis;width: 120px;overflow: hidden;" title="{{$service_personal}}" data-toggle="tooltip"> {{ $service_personal ?? '-' }}</span>
+                    <div class="text-center service-trabajador @error("data.".$service['ot_work_id'].".user_id") d-block is-invalid @enderror">
+                      <span class="form-control mt-0 h-auto trabajador_name" name="trabajador_name_{{$service['ot_work_id']}}" style="white-space: nowrap;text-overflow: ellipsis;width: 120px;overflow: hidden;" title="{{$service_trabajador}}" data-toggle="tooltip"> {{ $service_trabajador ?? '-' }}</span>
                       <input class="form-control user_id d-none" type="text" name="data[{{$service['ot_work_id']}}][user_id]" value="{{ old('data.'.$service['ot_work_id'].'.user_id', $service['user_id']) }}">
                       <input class="form-control d-none" type="text" name="data[{{$service['ot_work_id']}}][ot_work_id]" value="{{ old('data.'.$service['ot_work_id'].'.ot_work_id',  $service['ot_work_id']) }}">
                     </div>
                   </td>
                   <td>
-                    <button type="button" class="btn btn-primary btn-sm btn-personal my-0 d-flex align-items-center" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['ot_work_id']}}" data-toggle="modal" data-target="#modalPersonal"><i class="fal fa-user-hard-hat mr-2"></i> {{$service_personal ? 'Cambiar Personal': 'Asignar Personal'}}</button>
+                    <button type="button" class="btn btn-primary btn-sm btn-trabajador my-0 d-flex align-items-center" data-area="{{$first['area']}}" data-areaid="{{$first['area_id']}}" data-service="{{$service['ot_work_id']}}" data-toggle="modal" data-target="#modalWorker"><i class="fal fa-user-hard-hat mr-2"></i> {{$service_trabajador ? 'Cambiar Trabajador': 'Asignar Trabajador'}}</button>
                   </td>
                 </tr>
                 @endforeach
@@ -81,28 +87,28 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
     </form>
   </div>
 </div>
-<div class="modal fade" tabindex="-1" id="modalPersonal">
+<div class="modal fade" tabindex="-1" id="modalWorker">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Personal <span></span></h5>
+        <h5 class="modal-title">Trabajador <span></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="search bg-white">
-          <input class="form-control p-search" type="text" placeholder="Buscar personal">
+          <input class="form-control p-search" type="text" placeholder="Buscar trabajador">
         </div>
         <ul class="list-group user-select-none" style="max-height: 380px;max-height: calc(100vh - 240px); overflow-y: auto">
           @foreach ($users as $user)
-          <li type="button" data-userid="{{$user->id}}" data-areaid="{{$user->area_id}}" class="list-group-item list-group-item-action d-none"><span class="align-middle personal">{{$user->name .' '.$user->last_name.' '.$user->mother_last_name}} {{-- - {{$user->area}} --}}</span> <span class="badge badge-dark align-middle">Seleccionar</span></li>
+          <li type="button" data-userid="{{$user->id}}" data-areaid="{{$user->area_id}}" class="list-group-item list-group-item-action d-none"><span class="align-middle trabajador">{{$user->name .' '.$user->last_name.' '.$user->mother_last_name}} {{-- - {{$user->area}} --}}</span> <span class="badge badge-dark align-middle">Seleccionar</span></li>
           @endforeach
         </ul>
       </div>
       <div class="modal-footer">
         <div class="update ml-auto mr-auto">
-          <button type="button" id="btnPersonal" data-service="" class="btn btn-primary btn-round px-md-5" data-dismiss="modal">Confirmar personal</button>
+          <button type="button" id="btnWorker" data-service="" class="btn btn-primary btn-round px-md-5" data-dismiss="modal">Confirmar trabajador</button>
         </div>
       </div>
     </div>
@@ -111,43 +117,43 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
 @endsection
 @section('javascript')
 <script>
-  $('#modalPersonal .list-group-item').on('click dblclick', function () {
-    $('#modalPersonal .list-group-item').removeClass('active');
+  $('#modalWorker .list-group-item').on('click dblclick', function () {
+    $('#modalWorker .list-group-item').removeClass('active');
     $(this).addClass('active');
-    $('#btnPersonal').prop('disabled', false);
+    $('#btnWorker').prop('disabled', false);
   })
 
-  $('#modalPersonal .list-group-item').bind('dblclick', function () {
-    $('#btnPersonal').trigger('click');
+  $('#modalWorker .list-group-item').bind('dblclick', function () {
+    $('#btnWorker').trigger('click');
   })
 
-  $('#btnPersonal').on('click', function () {
+  $('#btnWorker').on('click', function () {
     var $this = $(this),
-        item = $('#modalPersonal .list-group-item.active'),
+        item = $('#modalWorker .list-group-item.active'),
         userid = item.data('userid'),
         areaid = item.data('areaid'),
-        personal = item.find('.personal').text();
+        trabajador = item.find('.trabajador').text();
 
-    var service_item = $('.list-item[data-service="'+$this.data('service')+'"] .service-personal');
+    var service_item = $('.list-item[data-service="'+$this.data('service')+'"] .service-trabajador');
     service_item.show();
-    service_item.find('.personal_name').text(personal).attr({
-      'title': personal,
+    service_item.find('.trabajador_name').text(trabajador).attr({
+      'title': trabajador,
     });
     service_item.find('.user_id').val(userid);
   })
 
-  $('#modalPersonal').on('hide.bs.modal', function (event) {
+  $('#modalWorker').on('hide.bs.modal', function (event) {
     $('.p-search').val('').trigger('keyup');
   })
 
-  $('#modalPersonal').on('show.bs.modal', function (event) {
+  $('#modalWorker').on('show.bs.modal', function (event) {
     var btn = $(event.relatedTarget), area_id = btn.data('areaid');
-    $('#modalPersonal .modal-title span').text(" de "+btn.data('area'));
-    $('#modalPersonal .list-group-item').addClass('d-none');
-    $('#modalPersonal #btnPersonal').data('service', btn.data('service'));
-    $('#modalPersonal .list-group-item[data-areaid="'+area_id+'"]').removeClass('d-none');
-    $('#modalPersonal .list-group-item.active').removeClass('active');
-    $('#btnPersonal').prop('disabled', true);
+    $('#modalWorker .modal-title span').text(" de "+btn.data('area'));
+    $('#modalWorker .list-group-item').addClass('d-none');
+    $('#modalWorker #btnWorker').data('service', btn.data('service'));
+    $('#modalWorker .list-group-item[data-areaid="'+area_id+'"]').removeClass('d-none');
+    $('#modalWorker .list-group-item.active').removeClass('active');
+    $('#btnWorker').prop('disabled', true);
   })
 
   $('.p-search').on('keyup', function() {

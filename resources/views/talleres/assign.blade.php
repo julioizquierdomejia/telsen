@@ -42,7 +42,7 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                 <th>Potencia</th>
                 <th class="text-nowrap">Servicio</th>
                 <th class="text-nowrap">Descripción</th>
-                <th class="text-center">Trabajador</th>
+                <th class="text-center">Personal</th>
                 <th class="text-center">Medidas</th>
                 <th class="text-center">Cant.</th>
                 <th class="text-center">Trabajador</th>
@@ -62,9 +62,9 @@ $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
                     <h6 class="subtitle mb-0">{{$service['service']}}</h6>
                   </td>
                   <td>{{$service['description']}}</td>
+                  <td>{{$service['personal']}}</td>
                   <td>{{$service['medidas']}}</td>
                   <td>{{$service['qty']}}</td>
-                  <td>{{$service['personal']}}</td>
                   <td>
                     <div class="text-center service-trabajador @error("data.".$service['ot_work_id'].".user_id") d-block is-invalid @enderror">
                       <span class="form-control mt-0 h-auto trabajador_name" name="trabajador_name_{{$service['ot_work_id']}}" style="white-space: nowrap;text-overflow: ellipsis;width: 120px;overflow: hidden;" title="{{$service_trabajador}}" data-toggle="tooltip"> {{ $service_trabajador ?? '-' }}</span>

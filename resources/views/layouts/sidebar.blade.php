@@ -37,6 +37,7 @@
         $rdi = in_array("rdi", $role_names);
         $aprobador_rdi = in_array("aprobador_rdi", $role_names);
         $tarjeta_costo = in_array("tarjeta_de_costo", $role_names);
+        $aprobador_eval = in_array("aprobador_de_evaluaciones", $role_names);
 
         $is_cc = $segment_1 == 'tarjeta-costo';
         $is_cz = $segment_1 == 'cotizaciones';
@@ -64,14 +65,14 @@
         </a>
       </li>
       @endif
-      @if ($admin || $evaluador || in_array("aprobador_de_evaluaciones", $role_names))
+      @if ($admin || $evaluador || $aprobador_eval)
       <li class="{{ $is_format ? 'active' : '' }}">
         <a href="#" data-toggle="collapse" data-target="#collapseFormatos" aria-expanded="true">
           <i class="fal fa-file-check mr-1"></i>
           <p>Evaluaciones <i class="fal fa-angle-down float-right"></i></p>
         </a>
         <ul class="collapse list-inline pl-3 {{$is_format ? 'show': ''}}" id="collapseFormatos">
-          @if (!$evaluador)
+          @if ($admin || $aprobador_eval)
           <li class="{{ request()->routeIs('formatos.pending_ots') ? 'active' : '' }}">
             <a class="mr-0" href="{{route('formatos.pending_ots')}}">
               <i class="fas fa-charging-station mr-1"></i>

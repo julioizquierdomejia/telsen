@@ -283,7 +283,7 @@ class MechanicalEvaluationController extends Controller
             if (isset($item['service_id'])) {
                 $me_work = new OtWork();
                 $me_work->ot_id = $ot_id;
-                $me_work->type = "mechanical";
+                $me_work->type = isset($item['type']) ? $item['type'] : 'mechanical';
                 $me_work->service_id = $item['service_id'];
                 $me_work->description = isset($item['description']) ? $item['description'] : '';
                 $me_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
@@ -375,6 +375,23 @@ class MechanicalEvaluationController extends Controller
                     'services.area_id'
                 )
                 ->get();
+        $additional_works = OtWork::where('type', 'add_mechanical')
+                ->where('ot_id', $formato->ot_id)
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->select(
+                    'ot_works.id',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'services.area_id'
+                )
+                ->get();
+
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
                     ->where('enabled', 1)
                     ->where('eval_type', 'mechanical')->get();
@@ -401,7 +418,7 @@ class MechanicalEvaluationController extends Controller
                       ->select('status.id', 'status_ot.status_id', 'status.name')
                       ->get();
 
-        return view('formatos.mechanical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by', 'ot_status'));
+        return view('formatos.mechanical.show', compact('formato', 'additional_works', 'works', 'gallery', 'approved_by', 'maded_by', 'ot_status'));
     }
 
     /**
@@ -449,8 +466,24 @@ class MechanicalEvaluationController extends Controller
                     'services.area_id'
                 )
                 ->get();
+        $additional_works = OtWork::where('type', 'add_mechanical')
+                ->where('ot_id', $formato->ot_id)
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->select(
+                    'ot_works.id',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'services.area_id'
+                )
+                ->get();
 
-        return view('formatos.mechanical.edit', compact('formato', 'ot', 'areas', 'works', 'gallery', 'cod_rodaje_p1', 'cod_rodaje_p2'));
+        return view('formatos.mechanical.edit', compact('formato', 'ot', 'areas', 'additional_works', 'works', 'gallery', 'cod_rodaje_p1', 'cod_rodaje_p2'));
     }
 
     /**
@@ -618,38 +651,10 @@ class MechanicalEvaluationController extends Controller
         $meval->save();
 
         $works = $request->input('works');
-        //$work_ids = array_column($works, 'id');
-        //$update_works = MechanicalEvaluationWork::where('me_id', $meval->id)->delete();
-        $services = [];
-        foreach ($works as $key => $item) {
-            if (isset($item['id'])) {
-                $work = OtWork::find($item['id']);
-                if (isset($item['status']) && $item['status'] == 0) {
-                    $work->delete();
-                } else {
-                    if (isset($item['service_id'])) {
-                        $work->service_id = $item['service_id'];
-                        $work->description = isset($item['description']) ? $item['description'] : '';
-                        $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
-                        $work->qty = isset($item['qty']) ? $item['qty'] : '';
-                        $work->personal = isset($item['personal']) ? $item['personal'] : '';
-                        $work->save();
-                    }
-                }
-            } else {
-                if (isset($item['service_id'])) {
-                    $work = new OtWork();
-                    $work->ot_id = $meval->ot_id;
-                    $work->type = 'mechanical';
-                    $work->service_id = $item['service_id'];
-                    $work->description = isset($item['description']) ? $item['description'] : '';
-                    $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
-                    $work->qty = isset($item['qty']) ? $item['qty'] : '';
-                    $work->personal = isset($item['personal']) ? $item['personal'] : '';
-                    $work->save();
-                }
-            }
-        }
+        $additional_works = $request->input('additional_works');
+        
+        $this->runWorks($works, $meval->ot_id, 'update');
+        $this->runWorks($additional_works, $meval->ot_id, 'update');
 
         /*if ($request->file('files')) {
             $files = $request->file('files');
@@ -679,6 +684,55 @@ class MechanicalEvaluationController extends Controller
 
         \Session::flash('message', 'Successfully updated formato!');
         return redirect('formatos/mechanical');
+    }
+
+    private function runWorks($works, $ot_id, $type)
+    {
+        if ($type == 'store') {
+            foreach ($works as $key => $item) {
+                if (isset($item['service_id'])) {
+                    $ot_work = new OtWork();
+                    $ot_work->ot_id = $ot_id;
+                    $ot_work->type = isset($item['type']) ? $item['type'] : 'mechanical';
+                    $ot_work->service_id = $item['service_id'];
+                    $ot_work->description = isset($item['description']) ? $item['description'] : '';
+                    $ot_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                    $ot_work->qty = isset($item['qty']) ? $item['qty'] : '';
+                    $ot_work->personal = isset($item['personal']) ? $item['personal'] : '';
+                    $ot_work->save();
+                }
+            }
+        } else {
+            foreach ($works as $key => $item) {
+                if (isset($item['id'])) {
+                    $work = OtWork::find($item['id']);
+                    if (isset($item['status']) && $item['status'] == 0) {
+                        $work->delete();
+                    } else {
+                        if (isset($item['service_id'])) {
+                            $work->service_id = $item['service_id'];
+                            $work->description = isset($item['description']) ? $item['description'] : '';
+                            $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                            $work->qty = isset($item['qty']) ? $item['qty'] : '';
+                            $work->personal = isset($item['personal']) ? $item['personal'] : '';
+                            $work->save();
+                        }
+                    }
+                } else {
+                    if (isset($item['service_id'])) {
+                        $work = new OtWork();
+                        $work->ot_id = $ot_id;
+                        $work->type = isset($item['type']) ? $item['type'] : 'mechanical';
+                        $work->service_id = $item['service_id'];
+                        $work->description = isset($item['description']) ? $item['description'] : '';
+                        $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                        $work->qty = isset($item['qty']) ? $item['qty'] : '';
+                        $work->personal = isset($item['personal']) ? $item['personal'] : '';
+                        $work->save();
+                    }
+                }
+            }
+        }
     }
 
     /**

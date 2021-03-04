@@ -171,7 +171,9 @@
     }, 100)
   }
   $(document).ready(function () {
-    dLanguage.sEmptyTable = "No hay comentarios aún.";
+    var tbLanguage = dLanguage;
+    tbLanguage.sEmptyTable = "No hay comentarios aún.";
+    tbLanguage.sZeroRecords = "No hay comentarios aún.";
     var commentsTD = $('#commentsTD').DataTable({
       processing: true,
       serverSide: true,
@@ -199,7 +201,7 @@
           { orderable: false, targets: 2 },
         ],
         order: [[ 0, "desc" ]],
-        language: dLanguage
+        language: tbLanguage
       });
 
     $(document).on("submit", "#frmComment", function(event) {

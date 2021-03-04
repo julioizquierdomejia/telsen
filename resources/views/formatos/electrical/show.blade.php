@@ -550,48 +550,85 @@ $reception_list = [
           </div>
         </div>
         <div class="table-responsive">
-              <table class="table table-separate text-center table-numbering mb-0 @error('works') is-invalid @enderror" id="table-works">
-                <thead>
-                  <tr>
-                    <th class="text-center py-1" colspan="7">Trabajos</th>
-                  </tr>
-                  <tr>
-                  <th class="text-center py-1">Item</th>
-                  <th class="text-center py-1">Área</th>
-                  <th class="text-center py-1">Tarea</th>
-                  <th class="text-center py-1">Descripción</th>
-                  <th class="text-center py-1">Medidas</th>
-                  <th class="text-center py-1">Cantidad</th>
-                  <th class="text-center py-1">Personal</th>
-                </tr>
-                </thead>
-                <tbody>
-                  @if($works->count())
-                  @foreach($works as $key => $work)
-                  <tr>
-                    <td class="cell-counter"><span class="number"></span></td>
-                  <td><span class="form-control mt-0 h-100">{{$work->area}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$work->service}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$work->description}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$work->medidas}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$work->qty}}</span></td>
-                  <td><span class="form-control mt-0 h-100">{{$work->personal}}</span></td>
-                  </tr>
-                  @endforeach
-                  @else
-                  <tr>
-                    <td class="text-center" colspan="7">No se agregaron trabajos</td>
-                  </tr>
-                  @endif
-                </tbody>
-              </table>
-            </div>
-            <div class="form-group">
-            <label class="c-label">Observaciones</label>
-            <div class="text">
-              {{$formato->observaciones ?? '-'}}
-            </div>
+          <table class="table table-separate text-center table-numbering mb-0" id="table-works">
+            <thead>
+              <tr>
+                <th class="text-center py-1" colspan="7">Trabajos</th>
+              </tr>
+              <tr>
+              <th class="text-center py-1">Item</th>
+              <th class="text-center py-1">Área</th>
+              <th class="text-center py-1">Tarea</th>
+              <th class="text-center py-1">Descripción</th>
+              <th class="text-center py-1">Medidas</th>
+              <th class="text-center py-1">Cantidad</th>
+              <th class="text-center py-1">Personal</th>
+            </tr>
+            </thead>
+            <tbody>
+              @if($works->count())
+              @foreach($works as $key => $work)
+              <tr>
+                <td class="cell-counter"><span class="number"></span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->area}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->service}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->description}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->medidas}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->qty}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->personal}}</span></td>
+              </tr>
+              @endforeach
+              @else
+              <tr>
+                <td class="text-center" colspan="7">No se agregaron trabajos.</td>
+              </tr>
+              @endif
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-separate text-center table-numbering mb-0" id="table-additionalworks">
+            <thead>
+              <tr>
+                <th class="text-center py-1" colspan="7">Trabajos Adicionales</th>
+              </tr>
+              <tr>
+              <th class="text-center py-1">Item</th>
+              <th class="text-center py-1">Área</th>
+              <th class="text-center py-1">Tarea</th>
+              <th class="text-center py-1">Descripción</th>
+              <th class="text-center py-1">Medidas</th>
+              <th class="text-center py-1">Cantidad</th>
+              <th class="text-center py-1">Personal</th>
+            </tr>
+            </thead>
+            <tbody>
+              @if($additional_works->count())
+              @foreach($additional_works as $key => $work)
+              <tr>
+                <td class="cell-counter"><span class="number"></span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->area}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->service}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->description}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->medidas}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->qty}}</span></td>
+              <td><span class="form-control mt-0 h-100">{{$work->personal}}</span></td>
+              </tr>
+              @endforeach
+              @else
+              <tr>
+                <td class="text-center" colspan="7">No se agregaron trabajos adicionales.</td>
+              </tr>
+              @endif
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group">
+          <label class="c-label">Observaciones</label>
+          <div class="text">
+            {{$formato->observaciones ?? '-'}}
           </div>
+        </div>
       </div>
     </div>
     <div class="card form-card">

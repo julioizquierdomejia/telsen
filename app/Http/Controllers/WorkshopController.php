@@ -197,7 +197,7 @@ class WorkshopController extends Controller
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                ->select('ots.created_at', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                ->select('ots.created_at', 'ot_works.type', 'ot_works.description', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                 ->skip($start)
                 ->take($rowperpage)
                 ->where(function($query) use ($searchValue) {
@@ -239,7 +239,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.type', 'ot_works.description', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->skip($start)
                     ->take($rowperpage)
                     ->where('user_data.area_id', $area_id)
@@ -283,7 +283,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
-                    ->select('ots.created_at', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
+                    ->select('ots.created_at', 'ot_works.type', 'ot_works.description', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->skip($start)
                     ->take($rowperpage)
                     ->where('workshops.user_id', $user_id)
@@ -334,7 +334,7 @@ class WorkshopController extends Controller
                             <hr style="border-top-color: #2b2b2b">
                             <div class="history-footer">
                               <label class="text-white">Comentarios:</label>
-                              <textarea class="form-control mt-0 comments" data-otwork="'.$row->id.'" name="comments">'.$row->comments.'</textarea>
+                              <textarea class="form-control mt-0 comments" data-otwork="'.$row->id.'" name="comments" rows="5" placeholder="Comentarios">'.$row->comments.'</textarea>
                               <p class="mb-0 comments-msg text-success" style="display: none;"><span class="font-weight-light"><i class="fa fa-check"></i> Se guardó.</span></p>
                             </div>
                             <hr style="border-top-color: #2b2b2b">
@@ -425,6 +425,8 @@ class WorkshopController extends Controller
                 "id" => $row_code,
                 //"numero_potencia" => $potencia ? $potencia : '-',
                 "area" => $row->area,
+                "type" => $row->type,
+                "description" => $row->description,
                 "medidas" => $row->medidas,
                 "qty" => $row->qty,
                 "personal" => $row->personal,
@@ -507,7 +509,10 @@ class WorkshopController extends Controller
                     'areas.name as area',
                     'services.area_id',
                     'services.name as service',
+                    'ot_works.medidas',
+                    'ot_works.qty',
                     'ot_works.personal',
+                    'ot_works.type',
                     \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
                     'user_data.user_id'
                 )
@@ -526,7 +531,10 @@ class WorkshopController extends Controller
                     'areas.name as area',
                     'services.area_id',
                     'services.name as service',
+                    'ot_works.medidas',
+                    'ot_works.qty',
                     'ot_works.personal',
+                    'ot_works.type',
                     \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
                     'user_data.user_id'
                 )

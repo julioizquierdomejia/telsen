@@ -18,6 +18,8 @@
               {{-- <th>Potencia</th> --}}
               <th class="text-nowrap">Area</th>
               <th class="text-nowrap">Servicio</th>
+              <th class="text-nowrap d-none">Tipo</th>
+              <th class="text-nowrap d-none">Descripción</th>
               <th class="text-nowrap">Medidas</th>
               <th class="text-nowrap">Cant.</th>
               <th class="text-nowrap">Personal</th>
@@ -110,11 +112,19 @@
          pageLength: 5,
          lengthMenu: [ 5, 25, 50 ],
          columns: [
-            { data: 'created_at', class: 'text-nowrap' },
+            { data: 'created_at', class: 'text-nowrap position-relative' },
             { data: 'id', class: 'otid text-nowrap' },
             /*{ data: 'numero_potencia', class: 'text-left' },*/
             { data: 'area', class: 'text-center', orderable: true },
             { data: 'service', class: 'text-center' },
+            { data: 'type', class: 'text-center d-none',
+              "createdCell": function (td, cellData, rowData, rowIndex, colIndex) {
+                if (rowData.type.indexOf('add') > -1) {
+                  $(td).parent('tr').attr('title', 'Tarea adicional').find('td:first').prepend('<div class="bg-success position-absolute text-white px-1 d-flex align-items-center" style="top:0;bottom:0;left:0;"><i class="fa fa-plus"></i></div>');
+                }
+              },
+            },
+            { data: 'description', class: 'text-center d-none' },
             { data: 'medidas', class: 'text-center' },
             { data: 'qty', class: 'text-center' },
             { data: 'personal', class: 'text-center' },

@@ -161,6 +161,8 @@ class ElectricalEvaluationController extends Controller
             'ip' => 'string|nullable',
             'peso' => 'string|nullable',
             'observaciones' => 'string|nullable',
+            'works' => 'array|nullable',
+            'additional_works' => 'array|nullable',
 
             //OT
             'descripcion_motor' => 'string',
@@ -422,20 +424,9 @@ class ElectricalEvaluationController extends Controller
         }
 
         $works = $request->input('works') ?? [];
-        
-        foreach ($works as $key => $item) {
-            if (isset($item['service_id'])) {
-                $ot_work = new OtWork();
-                $ot_work->ot_id = $ot_id;
-                $ot_work->type = "electrical";
-                $ot_work->service_id = $item['service_id'];
-                $ot_work->description = isset($item['description']) ? $item['description'] : '';
-                $ot_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
-                $ot_work->qty = isset($item['qty']) ? $item['qty'] : '';
-                $ot_work->personal = isset($item['personal']) ? $item['personal'] : '';
-                $ot_work->save();
-            }
-        }
+        $additional_works = $request->input('additional_works') ?? [];
+        $this->runWorks($works, 'store');
+        $this->runWorks($additional_works, 'store');
 
         /*if ($request->file('files')) {
             $files = $request->file('files');
@@ -482,6 +473,55 @@ class ElectricalEvaluationController extends Controller
         // redirect
         \Session::flash('message', 'Successfully updated formato!');
         return redirect('formatos/electrical');
+    }
+
+    private function runWorks($works, $ot_id, $type)
+    {
+        if ($type == 'store') {
+            foreach ($works as $key => $item) {
+                if (isset($item['service_id'])) {
+                    $ot_work = new OtWork();
+                    $ot_work->ot_id = $ot_id;
+                    $ot_work->type = isset($item['type']) ? $item['type'] : 'electrical';
+                    $ot_work->service_id = $item['service_id'];
+                    $ot_work->description = isset($item['description']) ? $item['description'] : '';
+                    $ot_work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                    $ot_work->qty = isset($item['qty']) ? $item['qty'] : '';
+                    $ot_work->personal = isset($item['personal']) ? $item['personal'] : '';
+                    $ot_work->save();
+                }
+            }
+        } else {
+            foreach ($works as $key => $item) {
+                if (isset($item['id'])) {
+                    $work = OtWork::find($item['id']);
+                    if (isset($item['status']) && $item['status'] == 0) {
+                        $work->delete();
+                    } else {
+                        if (isset($item['service_id'])) {
+                            $work->service_id = $item['service_id'];
+                            $work->description = isset($item['description']) ? $item['description'] : '';
+                            $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                            $work->qty = isset($item['qty']) ? $item['qty'] : '';
+                            $work->personal = isset($item['personal']) ? $item['personal'] : '';
+                            $work->save();
+                        }
+                    }
+                } else {
+                    if (isset($item['service_id'])) {
+                        $work = new OtWork();
+                        $work->ot_id = $ot_id;
+                        $work->type = isset($item['type']) ? $item['type'] : 'electrical';
+                        $work->service_id = $item['service_id'];
+                        $work->description = isset($item['description']) ? $item['description'] : '';
+                        $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
+                        $work->qty = isset($item['qty']) ? $item['qty'] : '';
+                        $work->personal = isset($item['personal']) ? $item['personal'] : '';
+                        $work->save();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -630,6 +670,23 @@ class ElectricalEvaluationController extends Controller
                 )
                 ->get();
 
+        $additional_works = OtWork::where('type', "add_electrical")
+                ->where('ot_id', $formato->ot_id)
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->select(
+                    'ot_works.id',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->get();
+
         $gallery = OtGallery::where('ot_id', $formato->ot_id)
                     ->where('enabled', 1)
                     ->where('eval_type', '=', 'electrical')->get();
@@ -657,7 +714,7 @@ class ElectricalEvaluationController extends Controller
                       ->select('status.id', 'status_ot.status_id', 'status.name')
                       ->get();
 
-        return view('formatos.electrical.show', compact('formato', 'works', 'gallery', 'approved_by', 'maded_by', 'ot_status'));
+        return view('formatos.electrical.show', compact('formato', 'additional_works', 'works', 'gallery', 'approved_by', 'maded_by', 'ot_status'));
     }
 
     /**
@@ -811,8 +868,24 @@ class ElectricalEvaluationController extends Controller
                     'areas.id as area_id'
                 )
                 ->get();
+        $additional_works = OtWork::where('type', "add_electrical")
+                ->where('ot_id', $formato->ot_id)
+                ->join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->select(
+                    'ot_works.id',
+                    'ot_works.description',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
+                    'services.name as service',
+                    'services.id as service_id',
+                    'areas.name as area',
+                    'areas.id as area_id'
+                )
+                ->get();
 
-        return view('formatos.electrical.edit', compact('formato', 'ot', 'marcas', 'modelos', 'areas', 'works', 'gallery'));
+        return view('formatos.electrical.edit', compact('formato', 'ot', 'marcas', 'modelos', 'areas', 'additional_works', 'works', 'gallery'));
     }
 
     /**
@@ -854,6 +927,7 @@ class ElectricalEvaluationController extends Controller
             'ip' => 'string|nullable',
             'peso' => 'string|nullable',
             'observaciones' => 'string|nullable',
+            'works' => 'array|nullable',
 
             //OT
             'descripcion_motor' => 'string',
@@ -1096,37 +1170,9 @@ class ElectricalEvaluationController extends Controller
         $eltraneval->save();
 
         $works = $request->input('works') ?? [];
-        //$work_ids = array_column($works, 'id');
-        //$update_works = ElectricalEvaluationWork::where('me_id', $eleval->id)->delete();
-        foreach ($works as $key => $item) {
-            if (isset($item['id'])) {
-                $work = OtWork::find($item['id']);
-                if (isset($item['status']) && $item['status'] == 0) {
-                    $work->delete();
-                } else {
-                    if (isset($item['service_id'])) {
-                        $work->service_id = $item['service_id'];
-                        $work->description = isset($item['description']) ? $item['description'] : '';
-                        $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
-                        $work->qty = isset($item['qty']) ? $item['qty'] : '';
-                        $work->personal = isset($item['personal']) ? $item['personal'] : '';
-                        $work->save();
-                    }
-                }
-            } else {
-                if (isset($item['service_id'])) {
-                    $work = new OtWork();
-                    $work->ot_id = $ot->id;
-                    $work->type = 'electrical';
-                    $work->service_id = $item['service_id'];
-                    $work->description = isset($item['description']) ? $item['description'] : '';
-                    $work->medidas = isset($item['medidas']) ? $item['medidas'] : '';
-                    $work->qty = isset($item['qty']) ? $item['qty'] : '';
-                    $work->personal = isset($item['personal']) ? $item['personal'] : '';
-                    $work->save();
-                }
-            }
-        }
+        $additional_works = $request->input('additional_works') ?? [];
+        $this->runWorks($works, $eleval->ot_id, 'update');
+        $this->runWorks($additional_works, $eleval->ot_id, 'update');
 
         foreach ($tran_tap as $key => $item) {
             if (isset($item['id'])) {

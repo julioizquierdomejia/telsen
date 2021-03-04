@@ -5,7 +5,10 @@
   <div class="card-header">
     <h5 class="card-title d-flex align-items-center">
       <span class="pl-2">Editar tarjeta <strong>{{$tarjeta->name}}</strong></span>
-      <div class="custom-control custom-switch ml-auto @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
+      <div class="d-flex align-items-center ml-auto">
+        <button class="btn btn-outline-primary btnAddComment my-0 mr-2" data-otcode="{{$tarjeta->ot->code}}" data-otid="{{$tarjeta->ot->id}}" type="button" title="Comentar"><i class="fa fa-comments"></i></button>
+      </div>
+      <div class="custom-control custom-switch @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
       <input type="checkbox" class="custom-control-input" id="enabled" value="1" {{old('enabled', $tarjeta->enabled) == 1 ? 'checked': ''}} name="enabled">
       <label class="custom-control-label text-dark" for="enabled">Activo</label>
       @error('enabled')

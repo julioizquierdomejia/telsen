@@ -58,7 +58,12 @@
       @csrf
       <div class="card form-card">
         <div class="card-header">
-          <h4 class="card-title">Editar Evaluación Eléctrica de OT N° {{$ot_code}}</h4>
+          <h4 class="card-title d-flex align-items-center justify-content-between">
+            <span>Editar Evaluación Eléctrica de OT N° {{$ot_code}}</span>
+            <span class="card-title-buttons">
+              <button class="btn btn-light btnAddComment" data-otid="{{$ot->id}}" data-otcode="{{$ot_code}}" type="button"><i class="fa fa-comments"></i></button>
+            </span>
+          </h4>
         </div>
         <div class="card-body pb-3 pt-0">
           <h5 class="text-danger mt-4">Datos del Motor</h5>

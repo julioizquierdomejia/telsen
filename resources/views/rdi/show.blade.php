@@ -44,6 +44,7 @@ $role_fentrega = in_array("fecha_de_entrega", $role_names);
 						@if($rdi_forapprove)
 						<a class="btn btn-primary" href="{{route('rdi.edit', $rdi->id)}}">Editar <i class="fa fa-edit"></i></a>
 						@endif
+						<button class="btn btn-outline-primary btnAddComment my-0 mr-2" data-otcode="{{$rdi->ot_code}}" data-otid="{{$rdi->ot_id}}" type="button" title="Comentar"><i class="fa fa-comments"></i></button>
 					</span>
 				</h5>
 				@if($maded_by)

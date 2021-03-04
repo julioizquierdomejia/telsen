@@ -4,12 +4,15 @@
   <div class="card-header">
     <h5 class="card-title d-flex align-items-center">
     <span class="pr-2">Editar Orden de Trabajo</span>
-    <div class="custom-control custom-switch ml-auto @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
+    <div class="ml-auto d-flex align-items-center card-title-buttons">
+    <button class="btn btn-outline-primary btnAddComment my-0 mr-2" data-otcode="{{$ot->code}}" data-otid="{{$ot->id}}" type="button" title="Comentar"><i class="fa fa-comments"></i></button>
+    <div class="custom-control custom-switch @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
       <input type="checkbox" class="custom-control-input" id="enabled" value="1" {{old('enabled', $ot->enabled) == 1 ? 'checked': ''}} name="enabled">
       <label class="custom-control-label text-dark" for="enabled">Activo</label>
       @error('enabled')
           <p class="error-message text-danger">{{ $message }}</p>
           @enderror
+    </div>
     </div>
     </h5>
   </div>
@@ -135,7 +138,6 @@
 </form>
 @endsection
 @section('javascript')
-@include('ordenes.comments', ['ot' => $ot])
 <script type="text/javascript">
 $(document).ready(function(){
   $('#selectRuc').change(function () {

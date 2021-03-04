@@ -10,13 +10,16 @@
       <div class="card-header">
         <h5 class="card-title d-flex align-items-center">
           <span class="pl-2">Editar RDI de OT-<strong>{{$ot_code}}</strong></span>
-          <div class="custom-control custom-switch ml-auto @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
+          <div class="ml-auto d-flex align-items-center card-title-buttons">
+            <button class="btn btn-outline-primary btnAddComment my-0 mr-2" data-otcode="{{$ot_code}}" data-otid="{{$rdi->ot_id}}" type="button" title="Comentar"><i class="fa fa-comments"></i></button>
+          <div class="custom-control custom-switch @error('enabled') is-invalid @enderror"  style="font-size: 12px;text-transform: none;font-weight: 500;">
           <input type="checkbox" class="custom-control-input" id="enabled" value="1" {{old('enabled', $rdi->enabled) == 1 ? 'checked': ''}} name="enabled">
           <label class="custom-control-label text-dark" for="enabled">Activo</label>
           @error('enabled')
               <p class="error-message text-danger">{{ $message }}</p>
               @enderror
-        </div>
+          </div>
+          </div>
         </h5>
       </div>
       <div class="card-body">

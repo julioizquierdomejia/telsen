@@ -455,9 +455,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.
-            (' <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>')
-            . $status_data['eval'];
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> '.$status_data['eval'].' <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -587,7 +585,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -701,7 +699,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -816,7 +814,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -914,7 +912,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1033,7 +1031,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="rdi/'.$ot->id.'/calcular" class="btn btn-warning" title="Calcular"><i class="fal fa-money-check-alt"></i></a>';
+            $tools = '<a href="rdi/'.$ot->id.'/calcular" class="btn btn-warning" title="Calcular"><i class="fal fa-money-check-alt"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1144,7 +1142,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/tarjeta-costo/'.$ot->id.'/calcular" class="btn btn-warning" title="Calcular"><i class="fal fa-money-check-alt"></i></a>';
+            $tools = '<a href="/tarjeta-costo/'.$ot->id.'/calcular" class="btn btn-warning" title="Calcular"><i class="fal fa-money-check-alt"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1253,7 +1251,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1353,7 +1351,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1470,7 +1468,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1567,7 +1565,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1660,7 +1658,7 @@ class OtController extends Controller
             $ot_code = 'OT-'.zerosatleft($ot->code, 3);
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/formatos/electrical/'.$ot->id.'/evaluar" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a>';
+            $tools = '<a href="/formatos/electrical/'.$ot->id.'/evaluar" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1750,7 +1748,7 @@ class OtController extends Controller
             $ot_code = 'OT-'.zerosatleft($ot->code, 3);
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/formatos/mechanical/'.$ot->id.'/evaluar" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a>';
+            $tools = '<a href="/formatos/mechanical/'.$ot->id.'/evaluar" class="btn btn-orange btn-sm">Evaluar <i class="fal fa-edit ml-2"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1854,7 +1852,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/talleres/'.$ot->id.'/asignar" class="btn btn-sm btn-primary">Ver tareas <i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/talleres/'.$ot->id.'/asignar" class="btn btn-sm btn-primary">Ver tareas <i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -2008,7 +2006,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/cierre" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/cierre" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -2107,7 +2105,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/cierre" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/cierre" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -2218,6 +2216,7 @@ class OtController extends Controller
             }
             $eval_html .= '</div></div>';
         }
+        $eval_html .= '<button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
         $status['eval'] = $eval_html;
 
         return $status;

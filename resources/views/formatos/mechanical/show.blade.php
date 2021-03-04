@@ -33,6 +33,7 @@ $aprobador = in_array("aprobador_de_evaluaciones", $role_names);
 			            <button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalAprobar">Aprobar</button>
 			            @endif
 			        @endif
+			        <button class="btn btn-light btnAddComment" data-otid="{{$formato->ot_id}}" data-otcode="{{$ot_code}}" type="button"><i class="fa fa-comments"></i></button>
 					</span>
 				</h4>
 				@if($maded_by)

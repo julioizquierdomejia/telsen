@@ -37,6 +37,7 @@ $rol_fecha = in_array("fecha_de_entrega", $role_names);
 					<button type="button" class="btn btn-primary mt-0" data-toggle="modal" data-target="#modalCotizar">Cotizar</button>
 					@endif
 				@endif
+				<button class="btn btn-outline-primary btnAddComment my-0 mr-2" data-otcode="{{$ccost->ot->code}}" data-otid="{{$ccost->ot->id}}" type="button" title="Comentar"><i class="fa fa-comments"></i></button>
 				</span>
 				</h5>
 			</div>

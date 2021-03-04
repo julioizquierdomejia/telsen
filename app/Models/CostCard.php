@@ -27,4 +27,9 @@ class CostCard extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function ot()
+    {
+        return $this->belongsTo('App\Models\Ot', 'ot_id');
+    }
 }

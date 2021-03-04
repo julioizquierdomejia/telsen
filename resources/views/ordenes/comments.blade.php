@@ -1,5 +1,5 @@
 <style type="text/css">
-  .comments {
+  .comments-section {
     width: 100%;
     max-width: 280px;
     position: fixed;
@@ -8,7 +8,7 @@
     max-height: 80%;
     z-index: 99999;
   }
-  .comments .btn {
+  .comments-section .btn {
     text-transform: none;
   }
   #collapseComments {
@@ -16,7 +16,7 @@
     /*max-height: calc(100% - 32px);*/
     height: 100%;
   }
-  .comments .collapse.show {
+  .comments-section .collapse.show {
     min-height: 250px;
   }
   table.comments_dt {
@@ -88,7 +88,7 @@
     content: "\F0D9";
     transform: rotate(135deg);
   }
-  .comments .table-responsive {
+  .comments-section .table-responsive {
     max-height: 300px;
     max-height: 73%;
     max-height: calc(100% - 32px - 86px);
@@ -134,8 +134,11 @@
       text-align: center;
   }
 </style>
-<div class="comments border">
-    <button class="py-2 px-3 btn btn-block btn-dark m-0 collapsed" data-toggle="collapse" data-target="#collapseComments" type="button"><i class="far fa-comments pr-2"></i> Comentarios de OT-{{$ot->code}}</button>
+@php
+  //dd(request()->route()->getAction()['as'])
+@endphp
+<div class="comments-section border" style="display: none;">
+    <button class="py-2 px-3 btn btn-block btn-dark m-0 collapsed" data-toggle="collapse" data-target="#collapseComments" type="button"><i class="far fa-comments pr-2"></i> Comentarios de OT-<span class="comment_ot_code"></span></button>
     <div class="collapse" id="collapseComments">
     <div class="table-responsive pb-0">
       <table class="table comments_dt" id="commentsTD">
@@ -151,8 +154,8 @@
       <tbody></tbody>
     </table>
     </div>
-    <div class="comment p-3 bg-light">
-      <form class="frm" id="frmComment" method="POST" action="{{ route('ordenes.comment.store', ['orden' => $ot->id]) }}">
+    <div class="ot-comment p-3 bg-light">
+      <form class="frm" id="frmComment" method="POST" action="/ordenes/-1/comment">
         @csrf
         <textarea class="form-control mt-0 rounded-pill pr-4 pl-3" id="ot_comment" placeholder="Comentario" name="comment"></textarea>
         <button class="btn m-0" id="btnComment" type="submit" style="min-width: 0"><i class="far fa-paper-plane"></i></button>
@@ -162,7 +165,7 @@
 </div>
 <script type="text/javascript">
   function toElement(focus) {
-    var element = $(".comments .table-responsive");
+    var element = $(".comments-section .table-responsive");
     setTimeout(function () {
       element.animate({ scrollTop: element[0].scrollHeight }, 50);
       if(focus) {
@@ -170,39 +173,54 @@
       }
     }, 100)
   }
+
   $(document).ready(function () {
-    var tbLanguage = dLanguage;
-    tbLanguage.sEmptyTable = "No hay comentarios aún.";
-    tbLanguage.sZeroRecords = "No hay comentarios aún.";
-    var commentsTD = $('#commentsTD').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: "{{route('ordenes.comments', ['orden'=>$ot->id])}}",
-      pageLength: 5000,
-      lengthMenu: [ 5, 25, 50 ],
-      'sDom': 't',
-      searching: false,
-      columns: [
-            { data: 'id', class: 'd-none' },
-            { data: 'user', class: 'text-primary' },
-            { data: 'user_id', class: 'd-none' },
-            { data: 'comment', class: 'text-left comment' },
-            { data: 'created_at', class: 'text-right c-date text-muted' },
-        ],
-        "createdRow": function( row, data, dataIndex){
-          //console.log(data)
-            if( data.user_id == {{auth()->id()}}){
-              $(row).addClass('row-me');
-            } else {
-              $(row).addClass('row-other');
-            }
-          },
-         columnDefs: [
-          { orderable: false, targets: 2 },
-        ],
-        order: [[ 0, "desc" ]],
-        language: tbLanguage
-      });
+    var commentsTD;
+    $(document).on("click", ".btnAddComment", function (event) {
+      var tbLanguage = dLanguage;
+      tbLanguage.sEmptyTable = "No hay comentarios aún.";
+      tbLanguage.sZeroRecords = "No hay comentarios aún.";
+      var base_url = '{{ url('') }}/',
+          ot_id = $(this).data('otid'),
+          ot_code = $(this).data('otcode'),
+          commentsUrl = base_url+'ordenes/'+ot_id+'/comments';
+      $('.comment_ot_code').text(ot_code);
+      $('#frmComment').attr('action', base_url+'ordenes/'+ot_id+'/comment');
+      $('.comments-section').show();
+      $('#collapseComments').collapse('show');
+      if(commentsTD) {
+        commentsTD.ajax.url( commentsUrl ).load(toElement(), false);
+      } else {
+        commentsTD = $('#commentsTD').DataTable({
+          processing: true,
+          serverSide: true,
+          ajax: commentsUrl,
+          pageLength: 5000,
+          lengthMenu: [ 5, 25, 50 ],
+          'sDom': 't',
+          searching: false,
+          columns: [
+                { data: 'id', class: 'd-none' },
+                { data: 'user', class: 'text-primary' },
+                { data: 'user_id', class: 'd-none' },
+                { data: 'comment', class: 'text-left comment' },
+                { data: 'created_at', class: 'text-right c-date text-muted' },
+            ],
+            "createdRow": function( row, data, dataIndex){
+                if( data.user_id == {{auth()->id()}}){
+                  $(row).addClass('row-me');
+                } else {
+                  $(row).addClass('row-other');
+                }
+              },
+             columnDefs: [
+              { orderable: false, targets: 2 },
+            ],
+            order: [[ 0, "desc" ]],
+            language: tbLanguage
+        });
+      }
+    })
 
     $(document).on("submit", "#frmComment", function(event) {
       event.preventDefault();
@@ -233,12 +251,12 @@
     }, 2000)*/
 
     $('#collapseComments').on('shown.bs.collapse', function () {
-      $('.comments').addClass('h-100');
+      $('.comments-section').addClass('h-100').show();
       //toElement(true)
-      commentsTD.ajax.reload(toElement(true), false);
+      //commentsTD.ajax.reload(toElement(true), false);
     })
     $('#collapseComments').on('hidden.bs.collapse', function () {
-      $('.comments').removeClass('h-100');
+      $('.comments-section').removeClass('h-100').hide();
     })
   })
 </script>

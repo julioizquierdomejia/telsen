@@ -60,7 +60,10 @@
   <div class="col-md-12">
     <div class="card card-user form-card">
       <div class="card-header">
-        <h5 class="card-title">Editar Evaluación Mecánica</h5>
+        <h5 class="card-title d-flex align-items-center justify-content-between">
+          <span>Editar Evaluación Mecánica</span>
+          <button class="btn btn-light btnAddComment" data-otid="{{$formato->ot_id}}" data-otcode="{{$ot_code}}" type="button"><i class="fa fa-comments"></i></button>
+        </h5>
       </div>
       <div class="card-body">
         <form class="form-group" method="POST" action="{{route('formatos.mechanical.edit', ['id' => $formato->id])}}" enctype="multipart/form-data">

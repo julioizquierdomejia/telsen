@@ -357,7 +357,7 @@ class RdiController extends Controller
                 ->join('motor_brands', 'motor_brands.id', '=', 'rdi.marca_id')
                 ->join('rdi_maintenance_types', 'rdi_maintenance_types.id', '=', 'rdi.rdi_maintenance_type_id')
                 ->join('rdi_criticality_types', 'rdi_criticality_types.id', '=', 'rdi.rdi_criticality_type_id')
-                ->select('rdi.*', 'clients.razon_social', 'motor_brands.name as marca', 'rdi_maintenance_types.name as maintenancetype', 'rdi_criticality_types.name as criticalitytype', 'ots.fecha_entrega')
+                ->select('rdi.*', 'clients.razon_social', 'motor_brands.name as marca', 'rdi_maintenance_types.name as maintenancetype', 'rdi_criticality_types.name as criticalitytype', 'ots.fecha_entrega', 'ots.code as ot_code')
                 ->where('rdi.id', $id)
                 ->firstOrFail();
 

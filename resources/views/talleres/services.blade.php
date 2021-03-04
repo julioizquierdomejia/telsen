@@ -174,7 +174,7 @@
       }
     })
 
-    $(document).on('change', '.comments', function (event) {
+    $(document).on('change', '.work-comments', function (event) {
       var $this = $(this), comments = $this.val(), ot_work = $this.data('otwork');
       var comments_msg = $this.parent().find('.comments-msg');
       $.ajax({

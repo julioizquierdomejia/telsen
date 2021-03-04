@@ -313,6 +313,7 @@ class WorkshopController extends Controller
             //$work_type = $wl_count ? $logs->first()->status->type : '';
 
             $html_tools = '<button class="btn btn-primary btn-sm btn-tasks" data-id="'.$row->id.'">Actividades <i class="far fa-tasks ml-2"></i></button>
+                <button class="btn btn-light btnAddComment" data-otid="'.$row->ot_id.'" data-otcode="'.$row->code.'" type="button"><i class="fa fa-comments"></i></button>
 
                 <div class="text-center row-details" data-id="'.$row->id.'" style="display: none;">
                     <div class="cell-details px-3" style="border-left: 10px solid #efefef;border-right: 10px solid #efefef;background-color: #f9f9f9;margin-top: -6px;">
@@ -334,7 +335,7 @@ class WorkshopController extends Controller
                             <hr style="border-top-color: #2b2b2b">
                             <div class="history-footer">
                               <label class="text-white">Comentarios:</label>
-                              <textarea class="form-control mt-0 comments" data-otwork="'.$row->id.'" name="comments" rows="5" placeholder="Comentarios">'.$row->comments.'</textarea>
+                              <textarea class="form-control mt-0 work-comments" data-otwork="'.$row->id.'" name="comments" rows="5" placeholder="Comentarios">'.$row->comments.'</textarea>
                               <p class="mb-0 comments-msg text-success" style="display: none;"><span class="font-weight-light"><i class="fa fa-check"></i> Se guardó.</span></p>
                             </div>
                             <hr style="border-top-color: #2b2b2b">

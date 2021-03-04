@@ -43,6 +43,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 					</span>
 				</span>
 				<span class="card-title-buttons">
+					<button class="btn btn-outline-primary btnAddComment" data-otcode="{{$ot->code}}" data-otid="{{$ot->id}}" type="button" title="Comentar"><i class="fa fa-comments"></i></button>
 					@if ($admin || $tarjeta_costo || $cotizador_tarjeta || $rol_fentrega)
 					@if ($ot->cotizacion)
 					<a class="btn btn-primary btn-round" target="_new" href="/uploads/cotizacion/{{$ot->cotizacion}}"><i class="fa fa-eye"></i> Ver Cotización</a>
@@ -166,7 +167,4 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 		</div>
 	</div>
 </div>
-@endsection
-@section('javascript')
-@include('ordenes.comments', ['ot' => $ot])
 @endsection

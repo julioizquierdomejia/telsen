@@ -102,5 +102,6 @@ Coded by www.creative-tim.com
     });
   </script>
   @yield('javascript')
+  @include('ordenes.comments')
 </body>
 </html>

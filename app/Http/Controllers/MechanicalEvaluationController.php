@@ -317,9 +317,10 @@ class MechanicalEvaluationController extends Controller
         }*/
         $files = $request->input('files') ? json_decode($request->input('files'), true) : [];
         foreach ($files as $key => $file) {
-            $uniqueFileName = $file['name'];
+            $uniqueFileName = $file['file'];
             $imageUpload = new OtGallery();
-            $imageUpload->name = $uniqueFileName;
+            $imageUpload->name = $file['name'];
+            $imageUpload->file = $uniqueFileName;
             $imageUpload->ot_id = $ot_id;
             $imageUpload->eval_type = "mechanical";
             $imageUpload->save();
@@ -672,9 +673,10 @@ class MechanicalEvaluationController extends Controller
         }*/
         $files = $request->input('files') ? json_decode($request->input('files'), true) : [];
         foreach ($files as $key => $file) {
-            $uniqueFileName = $file['name'];
+            $uniqueFileName = $file['file'];
             $imageUpload = new OtGallery();
-            $imageUpload->name = $uniqueFileName;
+            $imageUpload->name = $file['name'];
+            $imageUpload->file = $uniqueFileName;
             $imageUpload->ot_id = $meval->ot_id;
             $imageUpload->eval_type = "mechanical";
             $imageUpload->save();

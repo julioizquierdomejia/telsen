@@ -425,8 +425,8 @@ class ElectricalEvaluationController extends Controller
 
         $works = $request->input('works') ?? [];
         $additional_works = $request->input('additional_works') ?? [];
-        $this->runWorks($works, 'store');
-        $this->runWorks($additional_works, 'store');
+        $this->runWorks($works, $eleval->ot_id, 'store');
+        $this->runWorks($additional_works, $eleval->ot_id, 'store');
 
         /*if ($request->file('files')) {
             $files = $request->file('files');
@@ -445,14 +445,10 @@ class ElectricalEvaluationController extends Controller
 
         $files = $request->input('files') ? json_decode($request->input('files'), true) : [];
         foreach ($files as $key => $file) {
-            $uniqueFileName = $file['name'];
-
-            /*$image = new ElectricalGallery();
-            $image->el_id = $eleval->id;
-            $image->name = $uniqueFileName;
-            $image->save();*/
+            $uniqueFileName = $file['file'];
             $imageUpload = new OtGallery();
-            $imageUpload->name = $uniqueFileName;
+            $imageUpload->name = $file['name'];
+            $imageUpload->file = $uniqueFileName;
             $imageUpload->ot_id = $ot_id;
             $imageUpload->eval_type = "electrical";
             $imageUpload->save();
@@ -1217,9 +1213,10 @@ class ElectricalEvaluationController extends Controller
         }*/
         $files = $request->input('files') ? json_decode($request->input('files'), true) : [];
         foreach ($files as $key => $file) {
-            $uniqueFileName = $file['name'];
+            $uniqueFileName = $file['file'];
             $imageUpload = new OtGallery();
-            $imageUpload->name = $uniqueFileName;
+            $imageUpload->name = $file['name'];
+            $imageUpload->file = $uniqueFileName;
             $imageUpload->ot_id = $eleval->ot_id;
             $imageUpload->eval_type = "electrical";
             $imageUpload->save();

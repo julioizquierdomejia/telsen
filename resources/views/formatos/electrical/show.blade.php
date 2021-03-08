@@ -642,7 +642,8 @@ $reception_list = [
             <ul class="row list-unstyled">
             @foreach($gallery as $file)
             <li class="gallery-item col-12 col-md-4 col-xl-3 py-2">
-              <img class="btn p-0" data-toggle="modal" data-target="#galleryModal" src="{{ asset("uploads/ots/$formato->ot_id/electrical/$file->name") }}" width="250">
+              <img class="btn p-0" data-toggle="modal" data-target="#galleryModal" src="{{ asset("uploads/ots/$formato->ot_id/electrical/$file->file") }}" width="250">
+              <p class="mb-0">{{$file->name}}</p>
             </li>
             @endforeach
             </ul>

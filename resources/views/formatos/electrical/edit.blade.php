@@ -883,7 +883,8 @@
               <ul class="row list-unstyled text-center">
               @foreach($gallery as $file)
               <li class="gallery-item col-12 col-md-4 col-xl-3" id="image-{{$file->id}}">
-                <img class="btn p-0" data-toggle="modal" data-target="#galleryModal" src="{{ asset("uploads/ots/$formato->ot_id/electrical/$file->name") }}">
+                <img class="btn p-0 mb-0" data-toggle="modal" data-target="#galleryModal" src="{{ asset("uploads/ots/$formato->ot_id/electrical/$file->file") }}">
+                <p class="mb-0">{{$file->name}}</p>
                 <button class="btn btn-danger btn-sm mt-0 btn-idelete" data-id="{{$file->id}}" type="button" data-toggle="modal" data-target="#modalDelImage">Quitar imagen</button>
               </li>
               @endforeach
@@ -958,6 +959,7 @@ $(document).ready(function() {
     addRemoveLinks: true,
     maxFilesize: 2000,
     timeout: 180000,
+    acceptedFiles: 'image/*',
     //autoProcessQueue: false,
     params: {
       _token: '{{csrf_token()}}',
@@ -981,6 +983,29 @@ $(document).ready(function() {
       file.previewElement.classList.add("dz-error");
     }
   });
+  myDrop.on("addedfile", function(file) {
+    caption = file.caption == undefined ? "" : file.caption;
+    file._captionLabel = Dropzone.createElement("<p>Leyenda:</p>");
+    file._captionBox = Dropzone.createElement("<textarea class='caption form-control' id='"+file.upload.uuid+"' type='text' name='caption' class='dropzone_caption'>"+caption+"</textarea>");
+    file.previewElement.appendChild(file._captionLabel);
+    file.previewElement.appendChild(file._captionBox);
+
+    $(file._captionBox).on('keyup', function (event) {
+      var json = $.parseJSON($('.images').val());
+      var text = $(this).val();
+      if(Object.keys(json).length) {
+        $.each(json, function (id, item) {
+          if(item.uuid == file.upload.uuid) {
+            //json[id].name = text;
+            if(text.length) {
+              json[id].name = text;
+            }
+          }
+        })
+        $('.images').val(JSON.stringify(json));
+      }
+    })
+  });
 
   function createJSON(files) {
     var json = '{';
@@ -988,7 +1013,9 @@ $(document).ready(function() {
     $.each(files, function(id, item) {
       console.log(item)
       otArr.push('"' + id + '": {' +
-        '"name":"' + item.upload.filename +
+        '"uuid":"' + item.upload.uuid +
+        '", "file":"' + item.upload.filename +
+        '", "name":"' + item.upload.filename +
         '", "type":"' + item.type +
         '", "status":"' + item.status +
         '", "url":"' + item.url +

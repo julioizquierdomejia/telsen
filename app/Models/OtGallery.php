@@ -14,11 +14,13 @@ class OtGallery extends Model
     protected $fillable = [
         'ot_id',
     	'eval_type',
+        'file',
         'name',
+        'work_id',
         'enabled',
     ];
     protected $casts = [
-        'enabled' => 'boolean',
+        //'enabled' => 'boolean',
     ];
 
     protected $dates = [

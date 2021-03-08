@@ -16,7 +16,7 @@ class RdiCriticalityType extends Model
     ];
 
     protected $casts = [
-        'enabled' => 'boolean',
+        //'enabled' => 'boolean',
     ];
 
     protected $dates = [

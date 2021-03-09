@@ -2654,17 +2654,23 @@ class OtController extends Controller
     {
         $rules = array(
             'file' => 'mimes:jpeg,jpg,png,gif,pdf|required|max:10000', // max 10000kb
-            'ot_id' => 'sometimes|exists:ots,id',
+            'ot_id' => 'nullable|exists:ots,id',
+            'work_id' => 'nullable|integer|exists:ot_works,id',
         );
         $this->validate($request, $rules);
 
         $image = $request->file('file');
         $eval_type = $request->input('eval_type');
         $ot_id = $request->input('ot_id');
+        $work_id = $request->input('work_id');
 
         $avatarName = $image->getClientOriginalName();
         $ext = $image->getClientOriginalExtension();
-        $url = 'uploads/ots/'.$ot_id.'/'.$eval_type;
+        if ($work_id) {
+            $url = 'uploads/works/'.$work_id;
+        } else {
+            $url = 'uploads/ots/'.$ot_id.'/'.$eval_type;
+        }
         //$image->move(public_path($url), $avatarName);
 
         if (DIRECTORY_SEPARATOR === '/') {

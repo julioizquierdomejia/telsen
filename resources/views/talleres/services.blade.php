@@ -1,4 +1,7 @@
 @extends('layouts.app_real', ['body_class' => 'ots', 'title' => 'Mis Tareas'])
+@section('css')
+<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
+@endsection
 @section('content')
 <div class="row">
   <div class="col-md-12">
@@ -96,9 +99,63 @@
   </div>
 </div>
 @endif
+<div class="modal fade" tabindex="-1" id="galleryModal">
+    <div class="modal-dialog modal-lg" style="max-height: calc(100vh - 40px)">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Galería</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <div class="modal-body h-100 text-center">
+            <img class="image img-fluid" src="" width="600">
+        </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" tabindex="-1" id="modalDelImage">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Eliminar Imagen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text my-3 body-title">¿Seguro desea eliminar la Imagen?</p>
+      </div>
+      <div class="modal-footer justify-content-center">
+        <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancelar</button>
+        <button class="btn btn-primary btn-delete-confirm" type="button" data-id=""><i class="fal fa-trash"></i> Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('javascript')
+<script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>
 <script>
+  Dropzone.autoDiscover = false;
+  function createImageJSON(images, files, work_id) {
+    var json = '{';
+    var otArr = [];
+    $.each(files, function(id, item) {
+      otArr.push('"' + id + '": {' + 
+        '"uuid":"' + item.upload.uuid +
+        '", "work_id":"' + work_id +
+        '", "file":"' + item.upload.filename +
+        '", "name":"' + item.upload.filename +
+        '", "type":"' + item.type + 
+        '", "status":"' + item.status + 
+        '", "url":"' + item.url + 
+        '"}');
+    });
+    json += otArr.join(",") + '}'
+    images.val(json)
+    return json;
+  }
   $(document).ready(function() {
     var allowed_user = {{$allowed_user ? 'true':'false'}};
     var workshopTable;
@@ -137,9 +194,112 @@
           }
         },
         order: [[ 0, "desc" ]],
-        language: dLanguage
+        language: dLanguage,
+        /*"drawCallback": function( settings ) {
+          getDZ()
+        }*/
       });
     }
+
+    function getDZ() {
+        var dropzone = $(".upload-gallery .dropzone");
+        $.each(dropzone, function (id, item) {
+          var $item = $(item);
+          var $item_parent = $item.parents('.t-details');
+          if($item[0].dropzone) {
+            return;
+          }
+          var myDrop = new Dropzone('#'+$item.attr('id'), {
+            url: "{{route('gallery.store')}}",
+            addRemoveLinks: true,
+            maxFilesize: 2000,
+            timeout: 180000,
+            acceptedFiles: 'image/*',
+            //autoProcessQueue: false,
+            params: {
+              _token: '{{csrf_token()}}',
+              eval_type: 'works',
+              //ot_id: null, //solor se usara work_id
+              work_id: $item_parent.find('.btn-action').data('work_id'),
+            },
+            renameFile: function (file) {
+                let newName = new Date().getTime() + '_' + file.name;
+                return newName;
+            },
+            success: function (file, response) {
+                var imgName = response;
+                file.previewElement.classList.add("dz-success");
+                $item_parent.find('.btn-uploadWF').attr('disabled', false);
+                createImageJSON($item_parent.find('.images'), myDrop.files, $item_parent.find('.btn-action').data('work_id'));
+            },
+            removedfile: function(file) {
+              //createImageJSON(myDrop.files);
+              createImageJSON($item_parent.find('.images'), myDrop.files, $item_parent.find('.btn-action').data('work_id'));
+                file.previewElement.remove();
+            },
+            error: function (file, response) {
+                file.previewElement.classList.add("dz-error");
+            }
+          });
+          myDrop.on("addedfile", function(file) {
+            caption = file.caption == undefined ? "" : file.caption;
+            file._captionLabel = Dropzone.createElement("<p>Leyenda:</p>");
+            file._captionBox = Dropzone.createElement("<textarea class='caption form-control' id='"+file.upload.uuid+"' type='text' name='caption' class='dropzone_caption'>"+caption+"</textarea>");
+            file.previewElement.appendChild(file._captionLabel);
+            file.previewElement.appendChild(file._captionBox);
+
+            $(file._captionBox).on('keyup', function (event) {
+              var json = $.parseJSON($(this).parents('.t-details').find('.images').val());
+              var text = $(this).val();
+              if(Object.keys(json).length) {
+                $.each(json, function (id, item) {
+                  if(item.uuid == file.upload.uuid) {
+                    //json[id].name = text;
+                    if(text.length) {
+                      json[id].name = text;
+                    }
+                  }
+                })
+                $(this).parents('.t-details').find('.images').val(JSON.stringify(json));
+              }
+            })
+          });
+        })
+    }
+
+    $(document).on('click', '.btn-uploadWF', function (event) {
+      var $this = $(this),
+          work_id = $this.data('id'),
+          ot_id = $this.data('otid'),
+          files = $this.parents('.t-details').find('.images').val();
+      $.ajax({
+          type: "post",
+          url: '{{route('workshop.store')}}',
+          data: {
+            _token: '{{csrf_token()}}',
+            ot_id: ot_id,
+            work_id: work_id,
+            files: files,
+          },
+          beforeSend: function(data) {
+            
+          },
+          success: function(response) {
+            if (response.success) {
+              workshopTable.ajax.reload(function () {
+                $('.btn-tasks[data-id='+work_id+']').trigger('click');
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: $this.parents('.t-details').offset().top
+                }, 200);
+              }, false);
+            }
+          },
+          error: function(request, status, error) {
+              var data = jQuery.parseJSON(request.responseText);
+              console.log(data);
+          }
+      });
+    })
 
     var actualBtn;
     $(document).on('click', '.btn-tasks', function (event) {
@@ -171,6 +331,7 @@
         } else {
           icon.removeClass('fa-angle-up').addClass('fa-tasks')
         }
+        getDZ();
       }
     })
 

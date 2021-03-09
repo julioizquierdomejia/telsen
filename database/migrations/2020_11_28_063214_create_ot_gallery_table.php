@@ -16,7 +16,7 @@ class CreateOtGalleryTable extends Migration
         Schema::create('ot_gallery', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('ot_id');
+            $table->unsignedBigInteger('ot_id')->nullable();
             $table->foreign('ot_id')->references('id')->on('ots');
 
             $table->string('eval_type');

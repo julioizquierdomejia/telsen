@@ -19,6 +19,7 @@ use App\Models\CostCard;
 use App\Models\Area;
 use App\Models\Client;
 use App\Models\User;
+use App\Models\OtGallery;
 use Illuminate\Http\Request;
 
 class WorkshopController extends Controller
@@ -310,6 +311,15 @@ class WorkshopController extends Controller
             $wl_count = $logs->count();
             $status_code = $wl_count ? $logs->first()->status->code : null;
             $status = $wl_count ? $logs->first()->status->name : null;
+
+            $service = Service::where('id', $row->service_id)->first();
+            $tables = $service->tables;
+
+            $gallery = OtGallery::where('work_id', $row->id)
+                    ->where('enabled', 1)
+                    //->where('eval_type', '=', 'ot_work')
+                    ->get();
+
             //$work_type = $wl_count ? $logs->first()->status->type : '';
 
             $html_tools = '<button class="btn btn-primary btn-sm btn-tasks" data-id="'.$row->id.'">Actividades <i class="far fa-tasks ml-2"></i></button>
@@ -337,13 +347,12 @@ class WorkshopController extends Controller
                               <label class="text-white">Comentarios:</label>
                               <textarea class="form-control mt-0 work-comments" data-otwork="'.$row->id.'" name="comments" rows="5" placeholder="Comentarios">'.$row->comments.'</textarea>
                               <p class="mb-0 comments-msg text-success" style="display: none;"><span class="font-weight-light"><i class="fa fa-check"></i> Se guardó.</span></p>
-                            </div>
-                            <hr style="border-top-color: #2b2b2b">
+                            </div>';
+                            if ($tables->count()) {
+                            $html_tools .= '<hr style="border-top-color: #2b2b2b">
                             <div class="additional">
                               <label class="text-white" data-toggle="collapse" data-target="#collapsetable'.$row->id.'">Información adicional:</label>
                               <div class="table-wrapper mb-3 collapse show">';
-                                  $service = Service::where('id', $row->service_id)->first();
-                                  $tables = $service->tables;
                                 foreach ($tables as $table) {
                                     $html_tools .= '<form class="parent-table" id="parentTb'.$table->id.'" action="/worklog/update-data" method="POST">
                                     <div class="table-responsive" style="overflow-y:hidden">
@@ -387,7 +396,33 @@ class WorkshopController extends Controller
                                 </form>';
                                 }
                             $html_tools .= '</div>
+                            </div>';
+                            }
+
+                            $html_tools .= '<hr style="border-top-color: #2b2b2b">
+                                <div class="upload-gallery pb-3">
+                                    <h5 class="h6 px-3">Galería</h5>';
+
+                            if($gallery->count()) {
+                                $html_tools .= '<ul class="row list-unstyled text-center">';
+                                foreach($gallery as $file) {
+                                    $html_tools .= '<li class="gallery-item col-12 col-md-4 col-xl-3" id="image-'.$file->id.'">
+                                    <img class="btn p-0" data-toggle="modal" data-target="#galleryModal" src="'. asset("uploads/works/$row->id/$file->file") .'">
+                                    <p class="mb-0">'.$file->name.'</p>
+                                    <button class="btn btn-danger btn-sm mt-0 btn-idelete" data-id="'.$file->id.'" type="button" data-toggle="modal" data-target="#modalDelImage">Quitar imagen</button>
+                                    </li>';
+                                }
+                                $html_tools .= '</ul>';
+                            } else {
+                                $html_tools .= '<p class="text-center">No hay imágenes.</p>';
+                            }
+                                $html_tools .= '<input class="form-control images d-none" type="text" name="work_files'.$row->id.'" value="">
+                                <div id="dZUpload'.$row->id.'" class="dropzone text-dark">
+                                    <div class="dz-default dz-message">Sube aquí tus imágenes</div>
+                                </div>
+                                <div class="buttons-set mt-2"><button class="btn btn-light btn-uploadWF" data-id="'.$row->id.'" data-otid="'.$row->ot_id.'" type="button" disabled=""><i class="fa fa-camera pr-2"></i> Subir fotos</button></div>
                             </div>
+
                             </div>
                             <div class="work-buttons py-3 col-12 col-md-4 col-xl-2 text-dark">';
                             if ($wl_count == 0) {
@@ -417,9 +452,9 @@ class WorkshopController extends Controller
                             }
                             $html_tools .= '</div>
                         </div>
-                      </div>
-                  </div>
-              ';
+                    </div>
+                </div>
+                ';
 
             $records_array[] = array(
                 "created_at" => $created_at,
@@ -822,5 +857,29 @@ class WorkshopController extends Controller
         }
 
         return response()->json(['data'=>[], 'success'=>false]);
+    }
+
+    public function galleryStore(Request $request)
+    {
+        $rules = array(
+            'files'      => 'required',
+            //'ot_id'      => 'required',
+            'work_id'      => 'required|exists:ot_works,id',
+        );
+        $this->validate($request, $rules);
+
+        $files = $request->input('files') ? json_decode($request->input('files'), true) : [];
+        foreach ($files as $key => $file) {
+            $uniqueFileName = $file['file'];
+            $imageUpload = new OtGallery();
+            $imageUpload->name = $file['name'];
+            $imageUpload->file = $uniqueFileName;
+            $imageUpload->ot_id = NULL;
+            $imageUpload->work_id = $request->get('work_id');
+            $imageUpload->eval_type = "ot_work";
+            $imageUpload->save();
+        }
+
+        return response()->json(['data'=>[], 'success'=>true]);
     }
 }

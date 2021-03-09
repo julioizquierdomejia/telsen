@@ -1,7 +1,7 @@
 @php
   $ot_code = zerosatleft($ot->code, 3);
 @endphp
-@extends('layouts.app_real', ['body_class' => 'ots', 'title' => 'Ver OT-'.$ot_code.' | Cierre'])
+@extends('layouts.app_real', ['body_class' => 'ots', 'title' => 'Cierre de OT-'.$ot_code])
 @section('content')
 @php
 $ot_status = $ot->statuses;
@@ -15,7 +15,7 @@ $not_closure = $status_last->name != 'ot_closure';
 <link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 <div class="row">
   <div class="col-md-12">
-    <div class="card card-user form-card">
+    <div class="card form-card">
       <div class="card-header">
         <h5 class="card-title d-flex justify-content-between align-items-center">
         <span>
@@ -102,10 +102,8 @@ $not_closure = $status_last->name != 'ot_closure';
             <label class="col-label">Estado</label>
             <p class="mb-1">{!!$ot->enabled == 1 ? '<span class="badge badge-success px-3">Activo</span>' : '<span class="badge badge-danger px-3">Inactivo</span>'!!}</p>
           </div>
-          <div class="col px-0">
-            <hr>
           </div>
-          <div class="col-12 mb-2">
+            <hr>
             <div class="gallery">
               <h6>Documentos</h6>
             @if($gallery->count())
@@ -133,6 +131,14 @@ $not_closure = $status_last->name != 'ot_closure';
             </div>
             @endif
           </div>
+          <hr>
+          <div class="closure_comments form-group">
+            <label class="col-form-label" for="cl_comments">Comentarios</label>
+            <textarea class="form-control" id="cl_comments" name="closure_comments" placeholder="Comentarios de cierre" rows="5">{!!$ot->closure_comments!!}</textarea>
+            <div class="text-center comments-msg" style="display: none;">
+              <span class="text-success"><i class="fa fa-check"></i> Guardado</span>
+            </div>
+            <p class="mb-0 text-muted small">(Click afuera de la caja de comentarios para guardar.)</p>
           </div>
         </div>
       </div>
@@ -283,6 +289,32 @@ $(document).ready(function() {
         },
         error: function(request, status, error) {
           $this.attr('disabled', false);
+        }
+      });
+  })
+
+  $(document).on('change', '#cl_comments', function (event) {
+    var $this = $(this);
+    $.ajax({
+        type: "POST",
+        url: "{{route('ordenes.closure_comment.store', $ot->id)}}",
+        data: {
+          _token: '{{csrf_token()}}',
+          comments: $this.val()
+        },
+        beforeSend: function() {
+          $('.comments-msg').hide();
+        },
+        success: function(response) {
+          if (response.success) {
+            $('.comments-msg').show();
+            setTimeout(function () {
+              $('.comments-msg').hide();
+            }, 3000)
+          }
+        },
+        error: function(request, status, error) {
+          $('.comments-msg').hide();
         }
       });
   })

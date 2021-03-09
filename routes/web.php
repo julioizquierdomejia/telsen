@@ -75,6 +75,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	Route::get('ordenes/{orden}/comments', [App\Http\Controllers\OtController::class, 'comments'])->name('ordenes.comments');
 	Route::post('ordenes/{orden}/comment', [App\Http\Controllers\OtController::class, 'comment_store'])->name('ordenes.comment.store');
+	Route::post('ordenes/{orden}/closure_comment', [App\Http\Controllers\OtController::class, 'closure_comment_store'])->name('ordenes.closure_comment.store');
 
 	//rutas para Clientes
 	//Route::resource('clientes', App\Http\Controllers\ClientController::class);

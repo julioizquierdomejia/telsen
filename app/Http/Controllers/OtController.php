@@ -3045,6 +3045,22 @@ class OtController extends Controller
         return redirect()->back();
     }
 
+    public function closure_comment_store(Request $request, $ot_id)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'closure']);
+
+        $rules = array(
+            'comments' => 'nullable|string',
+        );
+        $this->validate($request, $rules);
+
+        $ot = Ot::where('id', $ot_id)->update(
+            ['closure_comments' => $request->input('comments')]
+        );
+
+        return response()->json(['data'=>json_encode($ot), 'success'=>true]);
+    }
+
     public function galleryStore(Request $request)
     {
         $rules = array(

@@ -38,7 +38,7 @@ $(document).ready(function() {
      columns: [
         { data: 'created_at', class: 'text-nowrap' },
         { data: 'id', class: 'otid text-nowrap' },
-        { data: 'status', class: 'text-center', orderable: false },
+        { data: 'status', class: 'text-center' },
         { data: 'razon_social' },
         { data: 'numero_potencia', class: 'text-left' },
         { data: 'codigo_motor', class: 'text-left' },

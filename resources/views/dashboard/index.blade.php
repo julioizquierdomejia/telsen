@@ -434,7 +434,7 @@
          columns: [
             { data: 'created_at', class: 'text-nowrap' },
             { data: 'id', class: 'otid text-nowrap' },
-            { data: 'status', class: 'text-center', orderable: false },
+            { data: 'status', class: 'text-center' },
             { data: 'razon_social' },
             { data: 'fecha_entrega', class: 'text-center' },
         ],

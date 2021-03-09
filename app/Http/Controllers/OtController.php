@@ -106,7 +106,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'ee_disapproved');
@@ -222,7 +228,13 @@ class OtController extends Controller
                         ->orWhere("status.name", "=", 'ee_disapproved')
                         ->orWhere("status.name", "=", 'me_disapproved');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->where('ots.enabled', 1)->get();
 
@@ -309,7 +321,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->where('ots.enabled', 0)->get();
 
@@ -428,7 +446,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'ee_disapproved');
@@ -561,7 +585,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'ee_approved')
@@ -681,7 +711,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'cc');
@@ -796,7 +832,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'cc_waiting');
@@ -897,7 +939,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'cc_approved');
@@ -1021,7 +1069,13 @@ class OtController extends Controller
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'rdi_waiting');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
                     ->where('ots.enabled', 1)->get();
 
         foreach ($records as $key => $ot) {
@@ -1132,7 +1186,13 @@ class OtController extends Controller
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'cc');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
                     ->where('ots.enabled', 1)->get();
 
         foreach ($records as $key => $ot) {
@@ -1232,7 +1292,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'rdi_waiting');
@@ -1333,7 +1399,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'rdi_approved');
@@ -1449,7 +1521,13 @@ class OtController extends Controller
                         ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                         ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                ->orderBy($columnName, $columnSortOrder)
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'rdi_approved');
@@ -1550,7 +1628,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'delivery_generated');
@@ -1643,7 +1727,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'ee');
@@ -1733,7 +1823,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'me');
@@ -1835,7 +1931,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'delivery_generated');
@@ -1972,7 +2074,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'delivery_generated');
@@ -2089,7 +2197,13 @@ class OtController extends Controller
                             ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                             ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
-                    ->orderBy($columnName, $columnSortOrder)
+                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                        if ($columnName == 'status') {
+                            $q->orderBy('status.name', $columnSortOrder);
+                        } else {
+                            $q->orderBy($columnName, $columnSortOrder);
+                        }
+                    }])
 
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'ot_closure');

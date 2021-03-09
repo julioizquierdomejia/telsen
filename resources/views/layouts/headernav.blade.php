@@ -8,7 +8,7 @@
         </button>
     </div>
     <div class="navbar-wrapper">
-      <a class="btn-link" href="/"><i class="fa fa-envelope"></i> mantenimiento@telsen.net</a>
+      <a class="btn-link" href="mailto:mantenimiento@telsen.net"><i class="fa fa-envelope"></i> mantenimiento@telsen.net</a>
       <a class="btn-link" href="tel:515642536"><i class="fa fa-phone"></i> <span class="d-none d-md-inline-block">+51 564-2536</span></a>
     </div>
     <div class="collapse navbar-collapse justify-content-end" id="navigation">
@@ -54,7 +54,7 @@
         @else
             <li class="nav-item dropdown">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-lowercase" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="d-none d-md-inline-block">{{ Auth::user()->email }}</span> <span class="icon"><img src="/assets/img/logo-small.png" width="30" height="30"></span>
+                    <span class="d-none d-md-inline-block">{{ Auth::user()->email }}</span> <span class="icon"><img src="{{user_photo()}}" width="30" height="30"></span>
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

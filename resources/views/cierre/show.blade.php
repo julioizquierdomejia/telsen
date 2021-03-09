@@ -2,6 +2,9 @@
   $ot_code = zerosatleft($ot->code, 3);
 @endphp
 @extends('layouts.app_real', ['body_class' => 'ots', 'title' => 'Cierre de OT-'.$ot_code])
+@section('css')
+<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
+@endsection
 @section('content')
 @php
 $ot_status = $ot->statuses;
@@ -12,7 +15,6 @@ $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
 $before_closure = $status_last->name == 'delivery_generated';
 $not_closure = $status_last->name != 'ot_closure';
 @endphp
-<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
 <div class="row">
   <div class="col-md-12">
     <div class="card form-card">

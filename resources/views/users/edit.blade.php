@@ -1,4 +1,7 @@
 @extends('layouts.app_real', ['title' => 'Editar Perfil'])
+@section('css')
+<link rel="stylesheet" href="{{ asset('assets/dropzone/dropzone.min.css') }}" />
+@endsection
 @section('content')
 @php
   $is_current = auth()->id() == $user->id;
@@ -118,9 +121,62 @@
         <span class="badge badge-primary px-2 py-1">{{$user->area}}</span> --}}
         </div>
       </div>
+      <hr>
+      <div class="photo row">
+        <div class="col-md-6 mx-auto">
+          <div id="dZUpload" class="dropzone">
+            <div class="dz-default dz-message">Sube aquí tu foto.</div>
+          </div>
+        </div>
+      </div>
+      <hr>
     </div>
-  <div class="buttons text-center">
-    <button class="btn btn-primary" type="submit">Enviar</button>
+  <div class="buttons text-center pb-3">
+    <button class="btn btn-primary mt-0" type="submit">Enviar</button>
   </div>
 </form>
+@endsection
+@section('javascript')
+<script src="{{ asset('assets/dropzone/dropzone.min.js') }}"></script>
+<script type="text/javascript">
+  Dropzone.autoDiscover = false;
+  $(document).ready(function() {
+    var myDrop = new Dropzone("#dZUpload", {
+    url: "{{route('gallery.store')}}",
+    addRemoveLinks: true,
+    maxFilesize: 2000,
+    timeout: 180000,
+    multiple: false,
+    acceptedFiles: "image/*",
+    //autoProcessQueue: false,
+    params: {
+      _token: '{{csrf_token()}}',
+      eval_type: 'profile',
+      user_id: {{$user->id}},
+      name: '{{$user->data->name}}',
+    },
+    renameFile: function(file) {
+      let newName = new Date().getTime() + '_' + file.name;
+      return newName;
+    },
+    success: function(file, response) {
+      var imgName = response;
+      file.previewElement.classList.add("dz-success");
+      setTimeout(function () {
+        file.previewElement.remove();
+        myDrop.removeFile(file);
+      }, 3000)
+      @if ($is_current)
+        $('.icon img').attr('src', '/'+imgName.url);
+      @endif
+    },
+    removedfile: function(file) {
+      file.previewElement.remove();
+    },
+    error: function(file, response) {
+      file.previewElement.classList.add("dz-error");
+    }
+  });
+  })
+</script>
 @endsection

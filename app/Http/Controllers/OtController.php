@@ -3067,6 +3067,7 @@ class OtController extends Controller
             'file' => 'mimes:jpeg,jpg,png,gif,pdf|required|max:10000', // max 10000kb
             'ot_id' => 'nullable|exists:ots,id',
             'work_id' => 'nullable|integer|exists:ot_works,id',
+            'user_id' => 'nullable|integer|exists:users,id',
         );
         $this->validate($request, $rules);
 
@@ -3074,10 +3075,13 @@ class OtController extends Controller
         $eval_type = $request->input('eval_type');
         $ot_id = $request->input('ot_id');
         $work_id = $request->input('work_id');
+        $user_id = $request->input('user_id');
 
         $avatarName = $image->getClientOriginalName();
         $ext = $image->getClientOriginalExtension();
-        if ($work_id) {
+        if ($user_id) {
+            $url = 'uploads/profile/'.$user_id;
+        } else if ($work_id) {
             $url = 'uploads/works/'.$work_id;
         } else {
             $url = 'uploads/ots/'.$ot_id.'/'.$eval_type;
@@ -3096,27 +3100,36 @@ class OtController extends Controller
         }
         $image_id = 0;
         
-        if($eval_type == 'closure') {
+        if($eval_type == 'closure' || $eval_type == 'profile') {
+            if ($eval_type == 'profile') {
+                /*OtGallery::where('user_id', $user_id)->update(
+                    ['enabled' => 0]
+                );*/
+                OtGallery::where('user_id', $user_id)->delete();
+            }
             $imageUpload = new OtGallery();
             $imageUpload->name = $avatarName;
+            $imageUpload->file = $avatarName;
             $imageUpload->ot_id = $ot_id;
             $imageUpload->eval_type = $eval_type;
+            $imageUpload->user_id = $user_id;
             $imageUpload->save();
 
             $image_id = $imageUpload->id;
+            if ($eval_type == 'closure') {
+                $status = Status::where('name', 'pending_closure')->first();
+                if ($status) {
+                    $st_exits = StatusOt::where('ot_id', '=', $ot_id)
+                                ->where('status_id', '=', $status->id)
+                                ->exists();
+                    if (!$st_exits) {
+                        $status_ot = new StatusOt();
+                        $status_ot->status_id = $status->id;
+                        $status_ot->ot_id = $ot_id;
+                        $status_ot->save();
 
-            $status = Status::where('name', 'pending_closure')->first();
-            if ($status) {
-                $st_exits = StatusOt::where('ot_id', '=', $ot_id)
-                            ->where('status_id', '=', $status->id)
-                            ->exists();
-                if (!$st_exits) {
-                    $status_ot = new StatusOt();
-                    $status_ot->status_id = $status->id;
-                    $status_ot->ot_id = $ot_id;
-                    $status_ot->save();
-
-                    activitylog('ot_pending_closure', 'store', null, $status_ot->toArray());
+                        activitylog('ot_pending_closure', 'store', null, $status_ot->toArray());
+                    }
                 }
             }
         }

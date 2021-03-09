@@ -1,3 +1,7 @@
+@php
+  $user = Auth::user();
+  $user_photo = user_photo();
+@endphp
 <div class="sidebar text-white d-print-none" data-color="white" data-active-color="danger">
   <div class="sidebar-top">
     <div class="logo text-center">
@@ -16,15 +20,15 @@
     </div>
     <div class="sidebar-account text-center pt-3">
       <h4 class="account-name">{{user_data()->name}}</h4>
-      <p><a class="text-white" href="mailto:{{ Auth::user()->email }}">{{ Auth::user()->email }}</a></p>
+      <p><a class="text-white" href="mailto:{{ $user->email }}">{{ $user->email }}</a></p>
       <div class="logo-image-small">
-        <span class="icon"><img src="/assets/img/logo-small.png" width="50" height="50"></span>
+        <span class="icon"><img src="{{$user_photo}}" width="50" height="50"></span>
       </div>
     </div>
   </div>
   <div class="sidebar-wrapper pt-4">
     <ul class="nav">
-      @if (Auth::user()->roles->count())
+      @if ($user->roles->count())
       @php
         $segment_1 = request()->segment(1);
         $segment_2 = request()->segment(2);

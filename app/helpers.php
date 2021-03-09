@@ -23,6 +23,18 @@ if (! function_exists('user_data')) {
     }
 }
 
+if (! function_exists('user_photo')) {
+    function user_photo()
+    {
+    	$user = auth()->user();
+    	$photo = '';
+    	if ($user) {
+    		$photo = $user->photo ? '/uploads/profile/'.$user->id.'/'.$user->photo->file : '/assets/img/logo-small.png';
+    	}
+    	return $photo;
+    }
+}
+
 if (! function_exists('validateActionbyRole')) {
 	function validateActionbyRole()
 	{

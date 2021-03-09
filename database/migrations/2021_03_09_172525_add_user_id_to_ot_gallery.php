@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateOtGalleryTable extends Migration
+class AddUserIdToOtGallery extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,8 @@ class UpdateOtGalleryTable extends Migration
     public function up()
     {
         Schema::table('ot_gallery', function (Blueprint $table) {
-            $table->unsignedBigInteger('work_id')->nullable()->after('eval_type');
-            $table->foreign('work_id')->references('id')->on('ot_works')->onDelete('cascade');
-            $table->string('file')->after('name');
+            $table->unsignedBigInteger('user_id')->nullable()->after('eval_type');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -28,8 +27,8 @@ class UpdateOtGalleryTable extends Migration
     public function down()
     {
         Schema::table('ot_gallery', function (Blueprint $table) {
-            $table->dropForeign('ot_gallery_work_id_foreign');
-            $table->dropColumn('work_id');
+            $table->dropForeign('ot_gallery_user_id_foreign');
+            $table->dropColumn('user_id');
         });
     }
 }

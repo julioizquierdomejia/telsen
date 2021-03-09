@@ -54,6 +54,10 @@ class User extends Authenticatable
         return $this->hasOne(UserData::class);
     }
 
+    public function photo(){
+        return $this->hasOne(OtGallery::class, 'user_id', 'id')->where('enabled', 1);
+    }
+
     //Auth
     public function authorizeRoles($roles)
     {

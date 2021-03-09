@@ -7,6 +7,7 @@ use App\Models\UserData;
 use App\Models\Role;
 use App\Models\RoleUser;
 use App\Models\Area;
+use App\Models\OtGallery;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -212,10 +213,11 @@ class UserController extends Controller
     }
     public function perfil()
     {
+        $user_id = \Auth::id();
         $user = User::join('user_data', 'user_data.user_id', '=' ,'users.id')
                 ->join('areas', 'areas.id', '=' ,'user_data.area_id')
                 ->select('users.*', 'user_data.name', 'user_data.last_name', 'user_data.mother_last_name', 'user_data.user_phone', 'user_data.area_id', 'areas.name as area')
-                ->where('users.id', \Auth::id())
+                ->where('users.id', $user_id)
                 ->firstOrFail();
         $role_names = array_column($user->roles->toArray(), "name");
         $superadmin = in_array("superadmin", $role_names);
@@ -228,7 +230,11 @@ class UserController extends Controller
             $roles = Role::all();
         }
 
-        return view('users.edit', compact('user', 'areas', 'roles', 'is_admin'));
+        $photo = OtGallery::where('enabled', 1)
+                    ->where('user_id', $user_id)
+                    ->where('eval_type', '=', 'profile')->get();
+
+        return view('users.edit', compact('user', 'areas', 'photo', 'roles', 'is_admin'));
     }
 
     /**

@@ -27,14 +27,8 @@ class OtController extends Controller
     public function index(Request $request)
     {
         $request->user()->authorizeRoles(['superadmin', 'admin']);
-        
-        //Listar OTs
-        $ordenes = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-                    ->where('ots.enabled', 1)->get();
 
-        return view('ordenes.index', compact('ordenes'));
+        return view('ordenes.index');
     }
 
     public function enabled_ots(Request $request)
@@ -95,35 +89,51 @@ class OtController extends Controller
                 ->where('ots.enabled', 1)
                 ->count();
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee_disapproved');
-                        $query->orWhere("status.name", "=", 'me_disapproved');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'cc_disapproved');
-                        $query->orWhere("status.name", "=", 'rdi_disapproved');
-                    })
-
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved');
+                    $query->orWhere("status.name", "=", 'rdi_disapproved');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved');
+                    $query->orWhere("status.name", "=", 'rdi_disapproved');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->where('ots.enabled', 1)->get();
+        }
 
         $ots_array = [];
 
@@ -211,32 +221,47 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->whereHas('statuses', function ($query) {
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'cc_disapproved')
                         ->orWhere("status.name", "=", 'rdi_disapproved')
                         ->orWhere("status.name", "=", 'ee_disapproved')
                         ->orWhere("status.name", "=", 'me_disapproved');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->where('ots.enabled', 1)->get();
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved')
+                        ->orWhere("status.name", "=", 'rdi_disapproved')
+                        ->orWhere("status.name", "=", 'ee_disapproved')
+                        ->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -310,26 +335,35 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->where('ots.enabled', 0)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->where('ots.enabled', 0)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->where('ots.enabled', 0)->get();
+        }
 
         $counter = $start;
 
@@ -435,40 +469,61 @@ class OtController extends Controller
                 ->where('ots.priority', 1)
                 ->count();
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee_disapproved');
-                        $query->orWhere("status.name", "=", 'me_disapproved');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'cc_disapproved');
-                        $query->orWhere("status.name", "=", 'rdi_disapproved');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ot_closure');
-                    })
-
-                    ->where('ots.enabled', 1)
-                    ->where('ots.priority', 1)
-                    ->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved');
+                    $query->orWhere("status.name", "=", 'rdi_disapproved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
+                ->where('ots.enabled', 1)
+                ->where('ots.priority', 1)
+                ->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_disapproved');
+                    $query->orWhere("status.name", "=", 'rdi_disapproved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
+                ->where('ots.enabled', 1)
+                ->where('ots.priority', 1)
+                ->get();
+        }
 
         $ots_array = [];
 
@@ -574,38 +629,59 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee_approved')
-                            ->orWhere("status.name", "=", 'me_approved');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee_disapproved');
-                        $query->orWhere("status.name", "=", 'me_disapproved');
-                    })
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee');
-                        $query->orWhere("status.name", "=", 'me');
-                    })
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved')
+                        ->orWhere("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee');
+                    $query->orWhere("status.name", "=", 'me');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved')
+                        ->orWhere("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_disapproved');
+                    $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee');
+                    $query->orWhere("status.name", "=", 'me');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -700,32 +776,47 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'cc');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'cc_waiting');
-                    })
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_waiting');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_waiting');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -821,32 +912,47 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'cc_waiting');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'cc_approved');
-                    })
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_waiting');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_approved');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_waiting');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_approved');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -928,29 +1034,41 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'cc_approved');
-                    })
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_approved');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc_approved');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -1046,37 +1164,59 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee_approved');
-                    })
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'me_approved');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'cc');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'rdi_waiting');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_waiting');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_waiting');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -1166,34 +1306,53 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee_approved');
-                    })
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'me_approved');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'cc');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee_approved');
+                })
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -1281,33 +1440,49 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'rdi_waiting');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'rdi_approved');
-                        $query->orWhere("status.name", "=", 'rdi_disapproved');
-                    })
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_waiting');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_approved');
+                    $query->orWhere("status.name", "=", 'rdi_disapproved');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_waiting');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_approved');
+                    $query->orWhere("status.name", "=", 'rdi_disapproved');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -1388,32 +1563,47 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'rdi_approved');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'delivery_generated');
-                    })
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -1510,10 +1700,10 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
                 ->skip($start)
                 ->take($rowperpage)
                 ->where(function($query) use ($searchValue) {
@@ -1522,13 +1712,8 @@ class OtController extends Controller
                         ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                     })
                 ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'rdi_approved');
                     $query->orWhere("status.name", "=", 'cc_approved');
@@ -1537,6 +1722,27 @@ class OtController extends Controller
                     $query->where("status.name", "=", 'delivery_generated');
                 })
                 ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                    })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'rdi_approved');
+                    $query->orWhere("status.name", "=", 'cc_approved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -1617,29 +1823,41 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'delivery_generated');
-                    })
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -1716,30 +1934,41 @@ class OtController extends Controller
                 })
                 ->count();
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee');
-                    })
-
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ee');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         $ots_array = [];
 
@@ -1812,30 +2041,41 @@ class OtController extends Controller
                 })
                 ->count();
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'me');
-                    })
-
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'me');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         $ots_array = [];
 
@@ -1920,32 +2160,47 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'delivery_generated');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ot_closure');
-                    })
-                    ->where('ots.enabled', 1)->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
+                ->where('ots.enabled', 1)->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
+                ->where('ots.enabled', 1)->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -2063,37 +2318,54 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'delivery_generated');
-                    })
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ot_closure');
-                    })
-                    /*->whereHas('works', function ($query) {
-                        $query->where("ot_works.approved", "=", 1);
-                    })*/
-                    ->where('ots.enabled', 1)
-                    ->with('works')
-                    ->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
+                /*->whereHas('works', function ($query) {
+                    $query->where("ot_works.approved", "=", 1);
+                })*/
+                ->where('ots.enabled', 1)
+                ->with('works')
+                ->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'delivery_generated');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
+                ->where('ots.enabled', 1)
+                ->with('works')
+                ->get();
+        }
 
         foreach ($records as $key => $ot) {
             $works = $ot->works;
@@ -2186,31 +2458,45 @@ class OtController extends Controller
 
         $ots_array = [];
 
-        $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
-
-                    ->skip($start)
-                    ->take($rowperpage)
-                    ->where(function($query) use ($searchValue) {
-                        $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
-                            ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
-                            ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
-                    })
-                    ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
-                        if ($columnName == 'status') {
-                            $q->orderBy('status.name', $columnSortOrder);
-                        } else {
-                            $q->orderBy($columnName, $columnSortOrder);
-                        }
-                    }])
-
-                    ->whereHas('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ot_closure');
-                    })
-                    ->where('ots.enabled', 1)
-                    ->with('works')
-                    ->get();
+        if ($columnName == 'status') {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->with(['statuses' => function ($q) use ($columnName, $columnSortOrder) {
+                    $q->orderBy('status_ot.id', $columnSortOrder);
+                }])
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
+                ->where('ots.enabled', 1)
+                ->with('works')
+                ->get();
+        } else {
+            $records = Ot::join('clients', 'ots.client_id', '=', 'clients.id')
+                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'clients.client_type_id', 'client_types.name as client_type')
+                ->skip($start)
+                ->take($rowperpage)
+                ->where(function($query) use ($searchValue) {
+                    $query->where('clients.razon_social', 'like', '%'.$searchValue.'%')
+                        ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
+                        ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
+                })
+                ->orderBy($columnName, $columnSortOrder)
+                ->whereHas('statuses', function ($query) {
+                    $query->where("status.name", "=", 'ot_closure');
+                })
+                ->where('ots.enabled', 1)
+                ->with('works')
+                ->get();
+        }
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
@@ -2489,18 +2775,13 @@ class OtController extends Controller
     {
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
 
-        /*$validate_ot = Ot::where('ots.enabled', 1)->where('ots.id', $id)
-                    ->join('clients', 'clients.id', '=', 'ots.client_id')
-                    ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('client_types.id')->firstOrFail();
-                    dd($validate_ot);*/
-            $ot = Ot::
-                join('clients', 'clients.id', '=', 'ots.client_id')
-                ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
-                ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                    ->select('ots.*', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente', 'cost_cards.cotizacion')
-                    ->where('ots.enabled', 1)
-                    ->findOrFail($id); 
+        $ot = Ot::
+            join('clients', 'clients.id', '=', 'ots.client_id')
+            ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
+            ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
+                ->select('ots.*', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente', 'cost_cards.cotizacion')
+                ->where('ots.enabled', 1)
+                ->findOrFail($id); 
         $rdi = Ot::join('rdi', 'rdi.ot_id', '=', 'ots.id')
                 ->where('rdi.enabled', 1)
                 ->where('rdi.ot_id', $id)
@@ -2799,19 +3080,6 @@ class OtController extends Controller
         }
         $image_id = 0;
         
-        /*if ($eval_type == 'mechanical') {
-            $imageUpload = new OtGallery();
-            $imageUpload->name = $avatarName;
-            $imageUpload->ot_id = $ot_id;
-            $imageUpload->eval_type = $eval_type;
-            $imageUpload->save();
-        } else if($eval_type == 'electrical') {
-            $imageUpload = new OtGallery();
-            $imageUpload->name = $avatarName;
-            $imageUpload->ot_id = $ot_id;
-            $imageUpload->eval_type = $eval_type;
-            $imageUpload->save();
-        }*/
         if($eval_type == 'closure') {
             $imageUpload = new OtGallery();
             $imageUpload->name = $avatarName;

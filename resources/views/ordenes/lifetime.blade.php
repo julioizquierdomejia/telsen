@@ -188,6 +188,12 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 												<span class="personal_name badge {{$service_personal ? 'badge-success' : 'badge-secondary'}}">{{ $service_personal ?? 'No asignado' }}</span>
 											</td>
 											<td>
+												@php
+													$dias = '--';
+													$hrs = '--';
+													$min = '--';
+													$seg = '--';
+												@endphp
 											@if (count($logs))
 												@php
 													$firstDate = reset($logs)['created_at'];
@@ -195,17 +201,22 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 													$date1 = new DateTime($secondDate);
 													$date2 = new DateTime($firstDate);
 													$interval = $date1->diff($date2, true);
+													$dias = $interval->d;
+													$hrs = $interval->h;
+													$min = $interval->i;
+													$seg = $interval->s;
 												@endphp
+											@endif
 												<table class="table-counter text-center mx-auto">
 													<tbody>
 													<tr>
-														<td>{{$interval->d}}</td>
+														<td>{{$dias}}</td>
 														<td style="background-color: transparent !important; color: #121212 !important;width: 6px !important">:</td>
-														<td>{{$interval->h}}</td>
+														<td>{{$hrs}}</td>
 														<td style="background-color: transparent !important; color: #121212 !important;width: 6px !important">:</td>
-														<td>{{$interval->i}}</td>
+														<td>{{$min}}</td>
 														<td style="background-color: transparent !important; color: #121212 !important;width: 6px !important">:</td>
-														<td>{{$interval->s}}</td>
+														<td>{{$seg}}</td>
 													</tr>
 													</tbody>
 													<tfoot>
@@ -220,7 +231,6 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 													</tr>
 													</tfoot>
 												</table>
-											@endif
 											</td>
 										</tr>
 										@endforeach

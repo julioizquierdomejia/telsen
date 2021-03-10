@@ -22,7 +22,7 @@
       <h4 class="account-name">{{user_data()->name}}</h4>
       <p><a class="text-white" href="mailto:{{ $user->email }}">{{ $user->email }}</a></p>
       <div class="logo-image-small">
-        <span class="icon"><img src="{{$user_photo}}" width="50" height="50"></span>
+        <span class="icon"><img class="rounded-circle" src="{{$user_photo}}" width="50" height="50"></span>
       </div>
     </div>
   </div>

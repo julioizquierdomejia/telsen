@@ -151,7 +151,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 				@endif
 				@if ($admin || $evaluador)
 						@if($ot->meval)
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $ot->meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
 						@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
 						@endif

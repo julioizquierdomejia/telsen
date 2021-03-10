@@ -48,7 +48,7 @@ class Ot extends Model
     }
 
     public function clientes(){
-    	return $this->hasOne(Client::class);
+    	return $this->hasOne(Client::class, 'id', 'client_id');
     }
 
     public function statuses(){
@@ -61,5 +61,16 @@ class Ot extends Model
         return $this->hasMany(OtWork::class, 'ot_id')
             //->orderBy('id', 'desc')
             ;
+    }
+
+
+    public function cost_card(){
+        return $this->hasOne(CostCard::class, 'ot_id', 'id');
+    }
+    public function eeval(){
+        return $this->hasOne(ElectricalEvaluation::class, 'ot_id', 'id');
+    }
+    public function meval(){
+        return $this->hasOne(MechanicalEvaluation::class, 'ot_id', 'id');
     }
 }

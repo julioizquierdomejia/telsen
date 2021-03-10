@@ -44,6 +44,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 	Route::get('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'edit'])->name('ordenes.edit');
 	Route::get('ordenes/procesovirtual', [App\Http\Controllers\OtController::class, 'pvirtual'])->name('ordenes.pvirtual');
 	Route::get('ordenes/{orden}/ver', [App\Http\Controllers\OtController::class, 'ot_show'])->name('ordenes.ot_show');
+	Route::get('ordenes/{orden}/hoja-vida', [App\Http\Controllers\OtController::class, 'ot_lifetime'])->name('ordenes.ot_lifetime');
 	Route::get('ordenes/client/{orden}/ver', [App\Http\Controllers\OtController::class, 'show'])->name('ordenes.show');
 	Route::post('ordenes/{orden}/editar', [App\Http\Controllers\OtController::class, 'update'])->name('ordenes.update');
 	Route::post('ordenes/{orden}/fechaentrega', [App\Http\Controllers\OtController::class, 'generateOTDate'])->name('ordenes.generateotdate');

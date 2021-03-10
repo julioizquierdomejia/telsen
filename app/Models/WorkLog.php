@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+//use DateTimeInterface;
 
 class WorkLog extends Model
 {
@@ -21,6 +22,10 @@ class WorkLog extends Model
         'created_at',
         'updated_at'
     ];
+    /*protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d h:i:s');
+    }*/
 
     public function status()
     {

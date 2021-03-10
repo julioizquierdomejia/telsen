@@ -15,6 +15,7 @@ use App\Models\CostCard;
 use App\Models\WorkShop;
 use App\Models\Rdi;
 use App\Models\OtComment;
+use App\Models\OtWork;
 use Illuminate\Http\Request;
 
 class OtController extends Controller
@@ -40,6 +41,7 @@ class OtController extends Controller
         $evaluador = in_array("evaluador", $role_names) || in_array("aprobador_de_evaluaciones", $role_names);
         $tarjeta_costo = in_array("tarjeta_de_costo", $role_names) || in_array("aprobador_cotizacion_tarjeta_de_costo", $role_names);
         $rdi = in_array("rdi", $role_names) || in_array("aprobador_rdi", $role_names);
+        $role_lifetime = in_array("lifetime", $role_names);
 
         $counter = 0;
         ## Read value
@@ -139,13 +141,13 @@ class OtController extends Controller
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
-            $status_data = self::getOTStatus($ot, $admin, $tarjeta_costo, $evaluador, $rdi);
+            $status_data = self::getOTStatus($ot, $admin, $tarjeta_costo, $evaluador, $rdi, $role_lifetime);
             //$ot_code = 'OT-'.zerosatleft($ot->id, 3);
             $ot_code = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].''.
             ($admin ? ' <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> '.$status_data['eval'].' <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>' : ' ');
 
             $ots_array[] = array(
@@ -265,13 +267,13 @@ class OtController extends Controller
 
         foreach ($records as $key => $ot) {
             $created_at = date('d-m-Y', strtotime($ot->created_at));
-            $status_data = self::getOTStatus($ot, false, false, false, false);
+            $status_data = self::getOTStatus($ot, false, false, false, false, true);
             //$ot_code = 'OT-'.zerosatleft($ot->id, 3);
             $ot_code = 'OT-'.zerosatleft($ot->code, 3);
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].'
             <button type="button" class="btn btn-sm btn-primary btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>';
 
             $ots_array[] = array(
@@ -534,7 +536,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> '.$status_data['eval'].' <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].' <a href="/ordenes/'.$ot->id.'/editar" class="btn btn-sm btn-warning"><i class="fal fa-edit"></i></a> '.$status_data['eval'].' <button type="button" class="btn btn-sm btn-danger btn-mdelete" data-otid="'.$ot->id.'" data-toggle="modal" data-target="#modalDelOT"><i class="fal fa-trash"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -691,7 +693,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].' <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -826,7 +828,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].' <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -962,7 +964,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].' <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1078,7 +1080,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].' <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1492,7 +1494,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].' <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1613,7 +1615,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].' <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1752,7 +1754,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].' <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -1867,7 +1869,7 @@ class OtController extends Controller
             $status = $status_data['html'];
             $client = $ot->razon_social ."</span>".(($ot->client_type_id == 1) ? '<span class="badge badge-success px-2 py-1 ml-1 align-middle">'.$ot->client_type.'</span>' : '<span class="badge badge-danger px-2 py-1 ml-1">'.$ot->client_type.'</span>');
             $potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
-            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a> <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
+            $tools = '<a href="/ordenes/'.$ot->id.'/ver" class="btn btn-sm btn-primary"><i class="fal fa-eye"></i></a>'.$status_data['lifetime'].' <button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
 
             $ots_array[] = array(
               "created_at" => $created_at,
@@ -2531,11 +2533,9 @@ class OtController extends Controller
         exit;
     }
 
-    public function getOTStatus(Ot $ot, $role_admin, $role_cc, $role_eval, $role_rdi)
+    public function getOTStatus(Ot $ot, $role_admin, $role_cc, $role_eval, $role_rdi, $role_lifetime = false)
     {
-        $statuses = $ot->statuses;
-
-        $rdi = Rdi::where('enabled', 1)->where('ot_id', $ot->id)
+        /*$rdi = Rdi::where('enabled', 1)->where('ot_id', $ot->id)
                 ->select('id')
                 ->first();
 
@@ -2549,13 +2549,12 @@ class OtController extends Controller
 
         $cost_card = CostCard::where('ot_id', $ot->id)
                 ->select('cost_cards.id')
-                ->first();
+                ->first();*/
 
         /*$work_shop = WorkShop::where('ot_id', $ot->id)
                 ->select('id as ws_id')
                 ->first();*/
-
-        $status['status'] = $statuses;
+        $statuses = $ot->statuses;
         $status['html'] = '';
         $status['fecha_entrega'] = '<i class="fa fa-watch d-block"></i><span class="text-nowrap text-muted">Pendiente</span>';
 
@@ -2594,29 +2593,30 @@ class OtController extends Controller
         }
 
         $eval_html = "";
-        if (($role_admin && ($cost_card || $rdi || $meval || $eeval)) ||
-            ($role_cc && $cost_card) ||
-            ($role_rdi && $rdi) ||
-            ($role_eval && ($eeval || $meval))
+        $status['lifetime'] = $role_lifetime || $role_admin ? ' <a href="/ordenes/'.$ot->id.'/hoja-vida" class="btn btn-sm btn-primary" title="Hoja de vida"><i class="fas fa-file-chart-line"></i></a> ' : '';
+        if (($role_admin && ($ot->cost_card || $ot->rdi || $ot->meval || $ot->eeval)) ||
+            ($role_cc && $ot->cost_card) ||
+            ($role_rdi && $ot->rdi) ||
+            ($role_eval && ($ot->eeval || $ot->meval))
         ) {
             $eval_html = ' <div class="dropdown d-inline-block dropleft">
             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" title="Ver Evaluaciones" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-check"></i></button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">';
-            if($cost_card && ($role_admin || $role_cc)) {
+            if($ot->cost_card && ($role_admin || $role_cc)) {
               $eval_html .= '<a class="dropdown-item" href="/tarjeta-costo/'.$ot->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver Tarjeta de Costo</a>';
             }
-            if($rdi && ($role_admin || $role_rdi)) {
-            $eval_html .= '<a class="dropdown-item" href="/rdi/'.$rdi->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>';
+            if($ot->rdi && ($role_admin || $role_rdi)) {
+            $eval_html .= '<a class="dropdown-item" href="/rdi/'.$ot->rdi->id.'/ver"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>';
             }
-            if($meval && ($role_admin || $role_eval)) {
-            $eval_html .= '<a class="dropdown-item" href="/formatos/mechanical/'.$meval->id.'/ver"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>';
+            if($ot->meval && ($role_admin || $role_eval)) {
+            $eval_html .= '<a class="dropdown-item" href="/formatos/mechanical/'.$ot->meval->id.'/ver"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>';
             }
-            if($eeval && ($role_admin || $role_eval)) {
-            $eval_html .= '<a class="dropdown-item" href="/formatos/electrical/'.$eeval->id.'/ver"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>';
+            if($ot->eeval && ($role_admin || $role_eval)) {
+            $eval_html .= '<a class="dropdown-item" href="/formatos/electrical/'.$ot->eeval->id.'/ver"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>';
             }
             $eval_html .= '</div></div>';
         }
-        $eval_html .= '<button class="btn btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button>';
+        $eval_html .= ' <button class="btn btn-sm btn-light btnAddComment" data-otid="'.$ot->id.'" data-otcode="'.$ot->code.'" type="button"><i class="fa fa-comments"></i></button> ';
         $status['eval'] = $eval_html;
 
         return $status;
@@ -2775,13 +2775,13 @@ class OtController extends Controller
     {
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
 
-        $ot = Ot::
+        /*$ot = Ot::
             join('clients', 'clients.id', '=', 'ots.client_id')
             ->leftJoin('cost_cards', 'cost_cards.ot_id', '=', 'ots.id')
             ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
                 ->select('ots.*', 'clients.razon_social', 'client_types.id as tipo_cliente_id', 'client_types.name as tipo_cliente', 'cost_cards.cotizacion')
                 ->where('ots.enabled', 1)
-                ->findOrFail($id); 
+                ->findOrFail($id);
         $rdi = Ot::join('rdi', 'rdi.ot_id', '=', 'ots.id')
                 ->where('rdi.enabled', 1)
                 ->where('rdi.ot_id', $id)
@@ -2791,9 +2791,57 @@ class OtController extends Controller
 
         $cost_card = CostCard::where('ot_id', $id)
                 ->select('cost_cards.id as cc_id')
-                ->first();
+                ->first();*/
 
-        return view('ordenes.show', compact('ot', 'rdi', 'meval', 'eeval', 'cost_card'));
+        $ot = Ot::where('ots.enabled', 1)
+                ->findOrFail($id);
+
+        return view('ordenes.show', compact('ot'/*, 'rdi', 'meval', 'eeval', 'cost_card'*/));
+    }
+
+    public function ot_lifetime(Request $request, $id)
+    {
+        //$request->user()->authorizeRoles(['superadmin', 'admin', 'evaluador', 'aprobador_de_evaluaciones', 'crear_ot', 'tarjeta_de_costo', 'cotizador_tarjeta_de_costo', 'aprobador_cotizacion_tarjeta_de_costo']);
+
+        $ot = Ot::where('ots.enabled', 1)
+                ->findOrFail($id);
+
+        $user_id = \Auth::user()->id;
+        $u_area_id = \Auth::user()->data->area;
+        if ($u_area_id) {
+            $user_area_id = $u_area_id->id;
+        } else {
+            $user_area_id = 0;
+        }
+
+        $works = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->leftJoin('workshops', 'workshops.ot_work_id', '=', 'ot_works.id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                ->select(
+                    'ot_works.id',
+                    'services.id as service_id',
+                    'ot_works.description',
+                    'ot_works.id as ot_work_id',
+                    'areas.name as area',
+                    'services.area_id',
+                    'services.name as service',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
+                    'ot_works.type',
+                    \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
+                    'user_data.user_id'
+                )
+                ->with('work_logs')
+                ->where('ot_works.ot_id', $ot->id)
+                ->get();
+        $services = [];
+        foreach($works as $key => $item) {
+            $services[$item->area_id][$key] = $item->toArray();
+        }
+
+        return view('ordenes.lifetime', compact('ot', 'services', 'user_area_id'));
     }
 
     public function generateOTDate(Request $request, $id)

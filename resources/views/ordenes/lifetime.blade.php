@@ -2,6 +2,34 @@
 $ot_code = zerosatleft($ot->code, 3);
 @endphp
 @extends('layouts.app_real', ['title' => 'Ver OT N° '.$ot_code])
+@section('css')
+<style type="text/css">
+	.table .table-counter {
+		background-color: transparent !important;
+		border-collapse: separate;
+    	border-spacing: 2px 0;
+		width: auto;
+	}
+	.table .table-counter td {
+		padding: 5px !important;
+		width: 38px !important;
+	}
+	.table .table-counter tbody td {
+		background-color: #121212 !important;
+		color: #fff !important;
+		border-radius: 6px;
+		font-size: 14px !important;
+		padding: 12px 2px !important;
+	}
+	.table .table-counter tfoot td {
+		background-color: transparent !important;
+		color: #000 !important;
+		border-radius: 0 0 6px 6px;
+		font-size: 11px !important;
+		padding: 0px 2px 2px 2px !important;
+	}
+</style>
+@endsection
 @section('content')
 @php
 $ot_status = $ot->statuses;
@@ -121,23 +149,106 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 						<p class="mb-1">{!!$ot->enabled == 1 ? '<span class="badge badge-success px-3">Activo</span>' : '<span class="badge badge-danger px-3">Inactivo</span>'!!}</p>
 					</div>
 				</div>
+				<div class="works">
+					@php
+					$ot_date = date('d-m-Y', strtotime($ot->created_at));
+					$potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
+					@endphp
+					@foreach($services as $service_key => $service_item)
+					@php
+					$first = reset($service_item);
+					@endphp
+					<div class="card form-card h-100">
+						<div class="card-header">
+							<h5 class="card-title">{{$first['area']}}</h5>
+						</div>
+						<div class="card-body">
+							<h5 class="small text-dark">Servicios</h5>
+							<div class="table-responsive pb-0">
+								<table class="table table-separate data-table mb-0">
+									<thead class=" text-primary">
+										<th class="text-nowrap px-2" width="90">Fecha OT</th>
+										<th class="text-nowrap">Servicio</th>
+										<th class="text-center">Trabajador</th>
+										<th class="text-center">Tiempo trabajado</th>
+									</thead>
+									<tbody>
+										@foreach($service_item as $service)
+										@php
+										$service_personal = old("personal_name_".$service['ot_work_id'], $service['user_name']);
+										$additional = strpos($service['type'], 'add') !== false ? 'background-color: #bdfdb5;' : '';
+										$logs = $service['work_logs'];
+										@endphp
+										<tr class="list-item" data-service="{{$service['ot_work_id']}}">
+											<td class="px-2 text-nowrap" style="{{$additional}}">{{$ot_date}}</td>
+											<td width="250" style="{{$additional}}">
+												<h6 class="subtitle mb-0">{{$service['service']}}</h6>
+											</td>
+											<td style="{{$additional}}">
+												<span class="personal_name badge {{$service_personal ? 'badge-success' : 'badge-secondary'}}">{{ $service_personal ?? 'No asignado' }}</span>
+											</td>
+											<td>
+											@if (count($logs))
+												@php
+													$firstDate = reset($logs)['created_at'];
+													$secondDate = end($logs)['created_at'];
+													$date1 = new DateTime($secondDate);
+													$date2 = new DateTime($firstDate);
+													$interval = $date1->diff($date2, true);
+												@endphp
+												<table class="table-counter text-center mx-auto">
+													<tbody>
+													<tr>
+														<td>{{$interval->d}}</td>
+														<td style="background-color: transparent !important; color: #121212 !important;width: 6px !important">:</td>
+														<td>{{$interval->h}}</td>
+														<td style="background-color: transparent !important; color: #121212 !important;width: 6px !important">:</td>
+														<td>{{$interval->i}}</td>
+														<td style="background-color: transparent !important; color: #121212 !important;width: 6px !important">:</td>
+														<td>{{$interval->s}}</td>
+													</tr>
+													</tbody>
+													<tfoot>
+													<tr>
+														<td>días</td>
+														<td style="background-color: transparent !important; color: #121212 !important;width: 6px !important"></td>
+														<td>hrs.</td>
+														<td style="background-color: transparent !important; color: #121212 !important;width: 6px !important"></td>
+														<td>min.</td>
+														<td style="background-color: transparent !important; color: #121212 !important;width: 6px !important"></td>
+														<td>seg.</td>
+													</tr>
+													</tfoot>
+												</table>
+											@endif
+											</td>
+										</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					@endforeach
+				</div>
+				{{-- Termina works --}}
 			</div>
 			<div class="card-footer">
 				<hr>
 				<div class="row text-center">
 					<div class="col">
-				@if($ot->eeval && $ot->meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
-					@if ($ot->tipo_cliente_id == 1)
+						@if($ot->eeval && $ot->meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
+						@if ($ot->tipo_cliente_id == 1)
 						@if ($admin || $rol_rdi || $role_ap_rdi || $rol_fentrega)
-							@if($ot->rdi)
-							<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
-							@else
-							@if ($admin || $rol_rdi)
-							<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
-							@endif
-							@endif
+						@if($ot->rdi)
+						<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
+						@else
+						@if ($admin || $rol_rdi)
+						<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
 						@endif
-					@else
+						@endif
+						@endif
+						@else
 						@if ($admin || $tarjeta_costo || $cotizador_tarjeta || $rol_fentrega)
 						@if($ot->cost_card)
 						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-money-check-alt"></i> Ver Tarjeta de Costo</a>
@@ -147,11 +258,11 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 						@endif
 						@endif
 						@endif
-					@endif
-				@endif
-				@if ($admin || $evaluador)
+						@endif
+						@endif
+						@if ($admin || $evaluador)
 						@if($ot->meval)
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $ot->meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
 						@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
 						@endif
@@ -160,11 +271,16 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 						@else
 						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
 						@endif
-				@endif
+						@endif
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+@endsection
+@section('javascript')
+<script type="text/javascript">
+	
+</script>
 @endsection

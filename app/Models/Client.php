@@ -22,4 +22,8 @@ class Client extends Model
     public function ots(){
     	return $this->hasMany(Ot::class);
     }
+
+    public function client_type(){
+        return $this->hasOne(ClientType::class, 'id', 'client_type_id');
+    }
 }

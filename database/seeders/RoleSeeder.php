@@ -92,5 +92,10 @@ class RoleSeeder extends Seeder
         $role->name = 'closure';
         $role->description = 'Encargado de subir documentos de cierre';
         $role->save();
+
+        $role = new Role();
+        $role->name = 'lifetime';
+        $role->description = 'Ve hoja de vida de OT';
+        $role->save();
     }
 }

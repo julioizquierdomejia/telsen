@@ -176,6 +176,7 @@ class WorkshopController extends Controller
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                ->where('ots.enabled', 1)
                 ->select('count(*) as allcount')
                 ->count();
 
@@ -184,6 +185,7 @@ class WorkshopController extends Controller
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                ->where('ots.enabled', 1)
                 ->select('count(*) as allcount')
                 ->where(function($query) use ($searchValue) {
                     $query->where('numero_potencia', 'like', '%'.$searchValue.'%')
@@ -198,6 +200,7 @@ class WorkshopController extends Controller
                 ->join('areas', 'areas.id', '=', 'services.area_id')
                 ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                 ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                ->where('ots.enabled', 1)
                 ->select('ots.created_at', 'ot_works.type', 'ot_works.description', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                 ->skip($start)
                 ->take($rowperpage)
@@ -216,6 +219,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->where('ots.enabled', 1)
                     ->select('count(*) as allcount')
                     ->where('user_data.area_id', $area_id)
                     ->count();
@@ -225,6 +229,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->where('ots.enabled', 1)
                     ->select('count(*) as allcount')
                     ->where('user_data.area_id', $area_id)
                     ->where(function($query) use ($searchValue) {
@@ -240,6 +245,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->where('ots.enabled', 1)
                     ->select('ots.created_at', 'ot_works.type', 'ot_works.description', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->skip($start)
                     ->take($rowperpage)
@@ -260,6 +266,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->where('ots.enabled', 1)
                     ->select('count(*) as allcount')
                     ->where('workshops.user_id', $user_id)
                     ->count();
@@ -269,6 +276,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->where('ots.enabled', 1)
                     ->select('count(*) as allcount')
                     ->where('workshops.user_id', $user_id)
                     ->where(function($query) use ($searchValue) {
@@ -284,6 +292,7 @@ class WorkshopController extends Controller
                     ->join('areas', 'areas.id', '=', 'services.area_id')
                     ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
                     ->join('ots', 'ots.id', '=', 'ot_works.ot_id')
+                    ->where('ots.enabled', 1)
                     ->select('ots.created_at', 'ot_works.type', 'ot_works.description', 'ot_works.comments', 'ot_works.medidas', 'ot_works.qty', 'ot_works.personal', 'ot_works.id', 'areas.name as area', 'services.id as service_id' ,'services.name as service', 'ots.code', 'ots.id as ot_id', \DB::raw('CONCAT(ots.numero_potencia, " ",ots.medida_potencia) AS potencia'))
                     ->skip($start)
                     ->take($rowperpage)

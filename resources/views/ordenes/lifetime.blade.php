@@ -46,7 +46,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 @endphp
 <div class="row">
 	<div class="col-md-12">
-		<div class="card card-user form-card">
+		<div class="card form-card">
 			<div class="card-header">
 				<h5 class="card-title d-flex justify-content-between align-items-center">
 				<span>
@@ -84,6 +84,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 				</h5>
 			</div>
 			<div class="card-body">
+
 				<div class="row">
 					<div class="col-md-3 mb-2">
 						<label class="col-label">Fecha de creación <span class="text-danger">(*)</span></label>
@@ -149,7 +150,52 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 						<p class="mb-1">{!!$ot->enabled == 1 ? '<span class="badge badge-success px-3">Activo</span>' : '<span class="badge badge-danger px-3">Inactivo</span>'!!}</p>
 					</div>
 				</div>
+				<hr class="mb-0">
+				<div class="row text-center">
+					<div class="col">
+						@if($ot->eeval && $ot->meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
+						@if ($ot->tipo_cliente_id == 1)
+						@if ($admin || $rol_rdi || $role_ap_rdi || $rol_fentrega)
+						@if($ot->rdi)
+						<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
+						@else
+						@if ($admin || $rol_rdi)
+						<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
+						@endif
+						@endif
+						@endif
+						@else
+						@if ($admin || $tarjeta_costo || $cotizador_tarjeta || $rol_fentrega)
+						@if($ot->cost_card)
+						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-money-check-alt"></i> Ver Tarjeta de Costo</a>
+						@else
+						@if ($admin || $tarjeta_costo)
+						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
+						@endif
+						@endif
+						@endif
+						@endif
+						@endif
+						@if ($admin || $evaluador)
+						@if($ot->meval)
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $ot->meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
+						@else
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
+						@endif
+						@if($ot->eeval)
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $ot->eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
+						@else
+						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
+						@endif
+						@endif
+					</div>
+				</div>
+				<hr class="mt-0">
+			</div>
+			<div class="card-footer">
 				<div class="works">
+					<h5>Tareas</h5>
+					@if (count($services))
 					@php
 					$ot_date = date('d-m-Y', strtotime($ot->created_at));
 					$potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
@@ -240,50 +286,11 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 						</div>
 					</div>
 					@endforeach
+					@else
+					<p class="text-muted">No hay tareas.</p>
+					@endif
 				</div>
 				{{-- Termina works --}}
-			</div>
-			<div class="card-footer">
-				<hr>
-				<div class="row text-center">
-					<div class="col">
-						@if($ot->eeval && $ot->meval && in_array("ee_approved", $statuses) && in_array("me_approved", $statuses))
-						@if ($ot->tipo_cliente_id == 1)
-						@if ($admin || $rol_rdi || $role_ap_rdi || $rol_fentrega)
-						@if($ot->rdi)
-						<a class="btn btn-sm btn-primary" href="{{ route('rdi.show', $rdi->id) }}"><i class="fas fa-money-check-alt pr-2"></i> Ver RDI</a>
-						@else
-						@if ($admin || $rol_rdi)
-						<a class="btn btn-sm btn-primary" href="{{ route('rdi.calculate', $ot) }}"><i class="fas fa-money-check-alt pr-2"></i> Generar RDI</a>
-						@endif
-						@endif
-						@endif
-						@else
-						@if ($admin || $tarjeta_costo || $cotizador_tarjeta || $rol_fentrega)
-						@if($ot->cost_card)
-						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.cc_show', $ot) }}" class="btn btn-warning"><i class="fal fa-money-check-alt"></i> Ver Tarjeta de Costo</a>
-						@else
-						@if ($admin || $tarjeta_costo)
-						<a class="btn btn-sm btn-primary" href="{{ route('card_cost.calculate', $ot) }}" class="btn btn-warning"><i class="fal fa-edit"></i> Generar Tarjeta de Costo</a>
-						@endif
-						@endif
-						@endif
-						@endif
-						@endif
-						@if ($admin || $evaluador)
-						@if($ot->meval)
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.show', $ot->meval->id) }}"><i class="fas fa-wrench pr-2"></i> Ver Evaluación mecánica</a>
-						@else
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.mechanical.evaluate', $ot) }}"><i class="fas fa-wrench pr-2"></i> Evaluación mecánica</a>
-						@endif
-						@if($ot->eeval)
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.show', $ot->eeval->id) }}"><i class="fas fa-charging-station pr-2"></i> Ver Evaluación eléctrica</a>
-						@else
-						<a class="btn btn-sm btn-primary" href="{{ route('formatos.electrical.evaluate', $ot) }}"><i class="fas fa-charging-station pr-2"></i> Evaluación eléctrica</a>
-						@endif
-						@endif
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>

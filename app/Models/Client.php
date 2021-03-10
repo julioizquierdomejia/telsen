@@ -16,7 +16,7 @@ class Client extends Model
 
     ];
     protected $casts = [
-        'enabled' => 'boolean',
+        //'enabled' => 'boolean',
     ];
 
     public function ots(){

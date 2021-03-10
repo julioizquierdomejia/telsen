@@ -18,7 +18,7 @@ class OtGallery extends Model
         'enabled',
     ];
     protected $casts = [
-        'enabled' => 'boolean',
+        //'enabled' => 'boolean',
     ];
 
     protected $dates = [

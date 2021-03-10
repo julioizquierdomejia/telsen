@@ -17,7 +17,7 @@ class Workshop extends Model
     ];
 
     protected $casts = [
-        'enabled' => 'boolean',
+        //'enabled' => 'boolean',
     ];
 
     protected $dates = [

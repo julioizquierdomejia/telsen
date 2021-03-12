@@ -2805,14 +2805,9 @@ class OtController extends Controller
 
         $ot = Ot::where('ots.enabled', 1)
                 ->findOrFail($id);
-
-        $user_id = \Auth::user()->id;
-        $u_area_id = \Auth::user()->data->area;
-        if ($u_area_id) {
-            $user_area_id = $u_area_id->id;
-        } else {
-            $user_area_id = 0;
-        }
+        $closure_gallery = OtGallery::where('ot_id', $ot->id)
+                    ->where('enabled', 1)
+                    ->where('eval_type', '=', 'closure')->get();
 
         $works = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
                 ->join('areas', 'areas.id', '=', 'services.area_id')
@@ -2833,7 +2828,11 @@ class OtController extends Controller
                     \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
                     'user_data.user_id'
                 )
-                ->with('work_logs')
+                //->with('work_logs')
+                ->with(array('work_logs' => function($query) {
+                    $query->join('work_status', 'work_status.id', '=', 'work_logs.status_id')
+                        ->select('work_logs.*', 'work_status.name as status', 'work_status.code as status_code');
+                }))
                 ->where('ot_works.ot_id', $ot->id)
                 ->get();
         $services = [];
@@ -2841,7 +2840,7 @@ class OtController extends Controller
             $services[$item->area_id][$key] = $item->toArray();
         }
 
-        return view('ordenes.lifetime', compact('ot', 'services', 'user_area_id'));
+        return view('ordenes.lifetime', compact('ot', 'services', 'closure_gallery'));
     }
 
     public function generateOTDate(Request $request, $id)

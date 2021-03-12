@@ -1,7 +1,7 @@
 @php
 $ot_code = zerosatleft($ot->code, 3);
 @endphp
-@extends('layouts.app_real', ['title' => 'Ver OT N° '.$ot_code])
+@extends('layouts.app_real', ['title' => 'Hoja de vida de OT-'.$ot_code])
 @section('css')
 <style type="text/css">
 	.table .table-counter {
@@ -28,6 +28,11 @@ $ot_code = zerosatleft($ot->code, 3);
 		font-size: 11px !important;
 		padding: 0px 2px 2px 2px !important;
 	}
+	@media (max-width: 767px) {
+		.st-list {
+			white-space: normal;
+		}
+	}
 </style>
 @endsection
 @section('content')
@@ -50,7 +55,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 			<div class="card-header">
 				<h5 class="card-title d-flex justify-content-between align-items-center">
 				<span>
-					Orden de Trabajo {{$ot_code}}
+					Hoja de vida de OT-{{$ot_code}}
 					<span class="d-block">
 						@if ($ot_status->count())
 						@if($status_last->name == 'cc')
@@ -195,14 +200,15 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 			<div class="card-footer">
 				<div class="works">
 					<h5>Tareas</h5>
-					@if (count($services))
 					@php
 					$ot_date = date('d-m-Y', strtotime($ot->created_at));
 					$potencia = trim($ot->numero_potencia . ' ' . $ot->medida_potencia);
 					@endphp
-					@foreach($services as $service_key => $service_item)
+					@forelse($services as $service_key => $service_item)
 					@php
 					$first = reset($service_item);
+					$counter = 0;
+					$services_count = count($service_item);
 					@endphp
 					<div class="card form-card h-100">
 						<div class="card-header">
@@ -216,14 +222,44 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 										<th class="text-nowrap px-2" width="90">Fecha OT</th>
 										<th class="text-nowrap">Servicio</th>
 										<th class="text-center">Trabajador</th>
+										<th class="text-center">Retrocesos</th>
+										<th class="text-center">Pausas</th>
+										<th class="text-center">Estado</th>
 										<th class="text-center">Tiempo trabajado</th>
 									</thead>
 									<tbody>
-										@foreach($service_item as $service)
+										@forelse($service_item as $service)
 										@php
+										$dias = '--'; $hrs = '--'; $min = '--'; $seg = '--';
 										$service_personal = old("personal_name_".$service['ot_work_id'], $service['user_name']);
 										$additional = strpos($service['type'], 'add') !== false ? 'background-color: #bdfdb5;' : '';
 										$logs = $service['work_logs'];
+										//$log_status = array_column($logs, 'status_code');
+										$status_approved = [];
+										$status_restart = [];
+										$status_pause = [];
+										$status_pause_html = '<ul class="st-list list-inline mb-0">';
+										@endphp
+										@foreach ($logs as $element)
+											@if ($element['status_code'] == 'approved')
+												@php
+													$status_approved[] = $element;
+												@endphp
+											@endif
+											@if ($element['status_code'] == 'restart')
+												@php
+													$status_restart[] = $element;
+												@endphp
+											@endif
+											@if ($element['status_code'] == 'pause')
+												@php
+													$status_pause[] = $element;
+													$status_pause_html .= '<li class="list-item px-3 py-2">'.$element['status'].' - '.date('d-m-Y h:i:s a', strtotime($element['created_at'])).'</li>';
+												@endphp
+											@endif
+										@endforeach
+										@php
+											$status_pause_html .= '</ul>';
 										@endphp
 										<tr class="list-item" data-service="{{$service['ot_work_id']}}">
 											<td class="px-2 text-nowrap" style="{{$additional}}">{{$ot_date}}</td>
@@ -233,13 +269,33 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 											<td style="{{$additional}}">
 												<span class="personal_name badge {{$service_personal ? 'badge-success' : 'badge-secondary'}}">{{ $service_personal ?? 'No asignado' }}</span>
 											</td>
+											<td>{{count($status_restart)}}</td>
+											<td class="text-nowrap">
+												<div class="d-flex align-items-center">
+												<span class="col-1">{{count($status_pause)}}</span>
+												@if ($status_pause)
+												<div class="col-11 pl-0">
+												<div class="dropdown">
+												 	<button class="btn btn-primary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton{{$service['id']}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-eye"></i> </button>
+													<div class="dropdown-menu dropdown-menu-right py-0" aria-labelledby="dropdownMenuButton{{$service['id']}}">
+													    {!! $status_pause_html !!}
+													</div>
+												</div>
+												</div>
+												@endif
+												</div>
+											</td>
 											<td>
+												@if ($status_approved)
 												@php
-													$dias = '--';
-													$hrs = '--';
-													$min = '--';
-													$seg = '--';
+													$counter += 1;
 												@endphp
+													<span class="badge badge-success">Terminado</span>
+												@else
+												<span class="badge badge-secondary">Pendiente</span>
+												@endif
+											</td>
+											<td>
 											@if (count($logs))
 												@php
 													$firstDate = reset($logs)['created_at'];
@@ -279,25 +335,84 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 												</table>
 											</td>
 										</tr>
-										@endforeach
+										@empty
+										<tr>
+											<td colspan="8"></td>
+										</tr>
+										@endforelse
 									</tbody>
 								</table>
 							</div>
+							@php
+							$percentage = number_format(($counter * 100) / $services_count, 2);
+							@endphp
+							<div class="percent">
+								<div class="progress">
+									<div class="progress-bar" role="progressbar" style="width: {{$percentage}}%" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					@endforeach
-					@else
+					@empty
 					<p class="text-muted">No hay tareas.</p>
-					@endif
+					@endforelse
 				</div>
 				{{-- Termina works --}}
+				<hr>
+				<div class="closure">
+					<div class="gallery">
+						<h6>Documentos</h6>
+			            <ul class="row list-unstyled">
+			            @forelse($closure_gallery as $file)
+			            @php
+			              $file_name = preg_replace('/[0-9]+_/', '', $file->name);
+			            @endphp
+			            <li class="gallery-item col-12 col-md-4 col-xl-3 py-2">
+			              <button class="btn m-0 text-truncate text-nowrap btn-light" style="font-size: 11px;max-width: 100%" data-id="{{$file->id}}" data-toggle="modal" data-target="#galleryModal" data-src="{{ asset("uploads/ots/$ot->id/closure/$file->name") }}" title="{{$file_name}}"><i class="fa fa-file-pdf"></i> {{$file_name}}</button>
+			            </li>
+			            @empty
+			            <li class="col-12 text-muted"><i class="fa fa-file pr-3"></i> No se agregaron documentos.</li>
+			            @endforelse
+			            </ul>
+					</div>
+					<div class="closure_comments form-group">
+						<div class="comments">{!! $ot->closure_comments ?? '<div class="text-muted border rounded-lg px-3 py-2">No hay comentarios.</div>' !!}</div>
+					</div>
+				</div>
+          		{{--Termina cierre--}}
 			</div>
 		</div>
 	</div>
 </div>
+<div class="modal fade" tabindex="-1" id="galleryModal">
+    <div class="modal-dialog modal-lg" style="max-height: calc(100vh - 40px)">
+      <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Documento de cierre</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        <div class="modal-body h-100 text-center">
+            <div class="embed-responsive embed-responsive-16by9">
+              <iframe class="embed-responsive-item file" src=""></iframe>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
 @endsection
 @section('javascript')
 <script type="text/javascript">
-	
+	$(document).ready(function (event) {
+		$('#galleryModal').on('hide.bs.modal', function (event) {
+			$('#galleryModal .modal-body .file').removeAttr('src');
+		})
+		$('#galleryModal').on('show.bs.modal', function (event) {
+			var btn = $(event.relatedTarget);
+			$('#galleryModal .modal-body .file').attr('src', btn.data('src'))
+			$('.btn-delete-confirm').data('id', btn.data('id'));
+		})
+	})
 </script>
 @endsection

@@ -31,8 +31,8 @@ Coded by www.creative-tim.com
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
   <!-- CSS Files -->
-  @yield('css')
   <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+  @yield('css')
 </head>
 <body class="page {{isset($body_class) ? $body_class : ''}}">
   <div class="wrapper">

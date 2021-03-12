@@ -33,4 +33,9 @@ class Service extends Model
     {
         return $this->hasMany(WorkAdditionalInformation::class);
     }
+
+    public function works()
+    {
+        return $this->hasMany(OtWork::class);
+    }
 }

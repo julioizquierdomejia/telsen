@@ -713,25 +713,50 @@ class WorkshopController extends Controller
      */
     public function show(Request $request, $ot_id)
     {
-        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
-
-        $ccost = Workshop::where('ot_id', $ot_id)
-                ->join('ots', 'ots.id', '=', 'cost_cards.ot_id')
-                ->join('clients', 'clients.id', '=', 'ots.client_id')
-                ->select('cost_cards.*', 'ots.id as ot_code', 'clients.razon_social', 'ots.fecha_entrega')
-                ->firstOrFail();
-        $services = WorkshopService::where('cc_id', $ccost->id)
-                    ->leftJoin('services', 'services.id', '=', 'cost_card_service_works.service_id')
-                    ->leftJoin('areas', 'areas.id', '=', 'cost_card_service_works.area_id')
-                    ->select('areas.name as area', 'areas.id as area_id','services.name as service','cost_card_service_works.personal', 'cost_card_service_works.ingreso', 'cost_card_service_works.salida')
-                    ->get();
-
-        $ot_status = StatusOt::join('status', 'status_ot.status_id', '=', 'status.id')
-                      ->where('status_ot.ot_id', '=', $ot_id)
-                      ->select('status.id', 'status_ot.status_id', 'status.name')
-                      ->get();
+        
 
         return view('talleres.show', compact('ccost', 'services', 'ot_status'));
+    }
+
+    public function monitoreo(Request $request)
+    {
+        $request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor']);
+
+        $u_area_id = \Auth::user()->join('user_data', 'user_data.user_id', 'users.id')
+                        ->join('areas', 'areas.id', 'user_data.area_id')
+                        ->select('areas.id')->first();
+
+        $works = OtWork::join('services', 'services.id', '=', 'ot_works.service_id')
+                ->join('areas', 'areas.id', '=', 'services.area_id')
+                ->leftJoin('workshops', 'workshops.ot_work_id', '=', 'ot_works.id')
+                ->leftJoin('user_data', 'user_data.user_id', '=', 'workshops.user_id')
+                ->select(
+                    'ot_works.id',
+                    'services.id as service_id',
+                    'ot_works.description',
+                    'ot_works.id as ot_work_id',
+                    'areas.name as area',
+                    'services.area_id',
+                    'services.name as service',
+                    'ot_works.medidas',
+                    'ot_works.qty',
+                    'ot_works.personal',
+                    'ot_works.type',
+                    \DB::raw('CONCAT(user_data.name, " ",user_data.last_name, " ", user_data.mother_last_name) AS user_name'),
+                    'user_data.user_id'
+                )
+                ->limit(6)
+                ->get();
+
+        $areas = Area::limit(6)
+                ->where('has_services', 1)
+                ->get();
+        $services = [];
+        foreach($works as $key => $item) {
+            $services[$item->area_id][$key] = $item->toArray();
+        }
+
+        return view('talleres.monitoreo', compact('services', 'areas'));
     }
 
     public function approveTC(Request $request, $id)

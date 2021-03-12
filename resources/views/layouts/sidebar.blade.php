@@ -50,11 +50,17 @@
       @endphp
       <li class="{{ request()->routeIs('home') ? 'active' : '' }}">
         <a href="{{ route('home')}}">
-          <i class="nc-icon nc-tv-2 mr-1"></i>
+          <i class="fa fa-tachometer-alt-slow mr-1"></i>
           <p>Dashboard</p>
         </a>
       </li>
       @if ($admin)
+      <li class="{{ request()->routeIs('workshop.monitoreo') ? 'active' : '' }}">
+        <a href="{{ route('workshop.monitoreo')}}">
+          <i class="nc-icon nc-tv-2 mr-1"></i>
+          <p>Monitoreo</p>
+        </a>
+      </li>
       <li class="{{ request()->routeIs('ordenes.index') ? 'active' : '' }}">
         <a href="/ordenes">
           <i class="fal fa-network-wired mr-1"></i>

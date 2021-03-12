@@ -12,7 +12,7 @@ $statuses = array_column($ot_status->toArray(), "name");
 $status_last = $ot_status->last();
 $role_names = validateActionbyRole();
 $admin = in_array("superadmin", $role_names) || in_array("admin", $role_names);
-$before_closure = $status_last->name == 'delivery_generated';
+//$before_closure = $status_last->name == 'delivery_generated';
 $not_closure = $status_last->name != 'ot_closure';
 @endphp
 <div class="row">

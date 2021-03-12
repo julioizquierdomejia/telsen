@@ -31,6 +31,11 @@ class OtWork extends Model
         return $this->hasMany(WorkLog::class, 'work_id')->orderBy('id', 'desc');
     }
 
+    public function ot()
+    {
+        return $this->belongsTo(Ot::class, 'ot_id');
+    }
+
     /*public function ot_work_status() {
         return $this->belongsToMany(WorkStatus::class, 'ot_work_status')->withPivot('ot_work_id');
     }*/

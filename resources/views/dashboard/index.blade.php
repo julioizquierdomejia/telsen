@@ -1,4 +1,4 @@
-@extends('layouts.app_real', ['body_class' => 'page_home'])
+@extends('layouts.app_real', ['body_class' => 'page_home', 'title' => 'Dashboard'])
 
 @section('content')
 {{-- <ul class="list list-unstyled">
@@ -192,7 +192,7 @@
         </span>
       </div>
       <div class="card-body">
-        <table class="table table-separate" style="width: 100%">
+        <table class="table table-separate bg-transparent" style="width: 100%">
           <thead class="text-uppercase">
             <tr>
               <th>Empresa</th>

@@ -1,7 +1,7 @@
 @php
 $ot_code = zerosatleft($ot->code, 3);
 @endphp
-@extends('layouts.app_real', ['title' => 'Ver OT N° '.$ot_code])
+@extends('layouts.app_real', ['title' => 'Ver OT-'.$ot_code])
 @section('content')
 @php
 $ot_status = $ot->statuses;

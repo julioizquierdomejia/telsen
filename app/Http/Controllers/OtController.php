@@ -512,13 +512,22 @@ class OtController extends Controller
         $totalRecords = Ot::select('count(*) as allcount')
                 ->join('clients', 'ots.client_id', '=', 'clients.id')
                 ->join('client_types', 'client_types.id', '=', 'clients.client_type_id')
-                ->whereDoesntHave('statuses', function ($query) {
-                    $query->where("status.name", "=", 'ee_approved')
+                ->whereHas('statuses', function ($query) {
+                    $query->where(function($subquery){
+                        $subquery->where("status.name", "=", 'ee_approved')
                         ->orWhere("status.name", "=", 'me_approved');
+                    })->orWhere(function($subquery){
+                        $subquery->where("status.name", "<>", 'ee_approved')
+                        ->orWhere("status.name", "<>", 'me_approved');
+                    });
                 })
                 ->whereDoesntHave('statuses', function ($query) {
                     $query->where("status.name", "=", 'ee_disapproved');
                     $query->orWhere("status.name", "=", 'me_disapproved');
+                })
+                ->whereDoesntHave('statuses', function ($query) {
+                    $query->where("status.name", "=", 'cc');
+                    $query->orWhere("status.name", "=", 'rdi_waiting');
                 })
                 ->whereHas('statuses', function ($query) {
                     $query->where("status.name", "=", 'ee');
@@ -535,9 +544,18 @@ class OtController extends Controller
                         ->orWhere('client_types.name', 'like', '%'.$searchValue.'%')
                         ->orWhere('ots.code', 'like', '%'.$searchValue.'%');
                 })
+                ->whereHas('statuses', function ($query) {
+                    $query->where(function($subquery){
+                        $subquery->where("status.name", "=", 'ee_approved')
+                        ->orWhere("status.name", "=", 'me_approved');
+                    })->orWhere(function($subquery){
+                        $subquery->where("status.name", "<>", 'ee_approved')
+                        ->orWhere("status.name", "<>", 'me_approved');
+                    });
+                })
                 ->whereDoesntHave('statuses', function ($query) {
-                    $query->where("status.name", "=", 'ee_approved')
-                          ->orWhere("status.name", "=", 'me_approved');
+                    $query->where("status.name", "=", 'cc');
+                    $query->orWhere("status.name", "=", 'rdi_waiting');
                 })
                 ->whereDoesntHave('statuses', function ($query) {
                     $query->where("status.name", "=", 'ee_disapproved');
@@ -565,13 +583,22 @@ class OtController extends Controller
                     })
                     ->orderBy($columnName, $columnSortOrder)
 
-                    ->whereDoesntHave('statuses', function ($query) {
-                        $query->where("status.name", "=", 'ee_approved')
+                    ->whereHas('statuses', function ($query) {
+                        $query->where(function($subquery){
+                            $subquery->where("status.name", "=", 'ee_approved')
                             ->orWhere("status.name", "=", 'me_approved');
+                        })->orWhere(function($subquery){
+                            $subquery->where("status.name", "<>", 'ee_approved')
+                            ->orWhere("status.name", "<>", 'me_approved');
+                        });
                     })
                     ->whereDoesntHave('statuses', function ($query) {
                         $query->where("status.name", "=", 'ee_disapproved');
                         $query->orWhere("status.name", "=", 'me_disapproved');
+                    })
+                    ->whereDoesntHave('statuses', function ($query) {
+                        $query->where("status.name", "=", 'cc');
+                        $query->orWhere("status.name", "=", 'rdi_waiting');
                     })
                     ->whereHas('statuses', function ($query) {
                         $query->where("status.name", "=", 'ee');

@@ -11,6 +11,8 @@ class Area extends Model
 
     protected $fillable = [
         'name',
+        'has_services',
+        'in_monitor',
         'enabled'
     ];
 

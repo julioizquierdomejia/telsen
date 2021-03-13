@@ -144,6 +144,7 @@ Route::middleware(['auth:' . config('admin-auth.defaults.guard')])->group(functi
 
 	//rutas para Areas
 	Route::get('areas', [App\Http\Controllers\AreaController::class, 'index'])->name('areas.index');
+	Route::get('areas/lista', [App\Http\Controllers\AreaController::class, 'list'])->name('areas.list');
 	Route::get('areas/crear', [App\Http\Controllers\AreaController::class, 'create'])->name('areas.create');
 	Route::post('areas', [App\Http\Controllers\AreaController::class, 'store'])->name('areas.store');
 	Route::get('areas/{area}/editar', [App\Http\Controllers\AreaController::class, 'edit'])->name('areas.edit');

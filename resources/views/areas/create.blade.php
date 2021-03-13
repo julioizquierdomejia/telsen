@@ -26,6 +26,17 @@
           				<p class="error-message text-danger">{{ $message }}</p>
           			@enderror
             </div>
+            <div class="col-6 col-md-3 form-group">
+              <label class="col-form-label" for="selectTMonitoreo">En Monitoreo</label>
+              <select style="width: 100%" class="form-control dropdown2 @error('in_monitor') is-invalid @enderror" name="in_monitor" id="selectTMonitoreo">
+                <option value="">Seleccionar</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+              @error('in_monitor')
+              <p class="error-message text-danger">{{ $message }}</p>
+              @enderror
+            </div>
           </div>
 
           <div class="row">

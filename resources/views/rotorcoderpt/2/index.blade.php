@@ -73,7 +73,7 @@
           { data: 'tools', class: 'text-center text-nowrap', orderable: false}
       ],
        columnDefs: [
-        { , targets: 4 }
+        { targets: 4 }
       ],
       language: dLanguage
     });

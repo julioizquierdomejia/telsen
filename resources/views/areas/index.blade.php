@@ -10,42 +10,43 @@
 	<div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h4 class="card-title"> Area</h4>
+        <h4 class="card-title">Areas</h4>
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-separate" id="tablas">
+          <table class="table table-separate" id="areasTB">
             <thead class="text-primary">
-              <th>
-                Id
-              </th>
-              <th>
-                Nombre
-              </th>
-              <th class="text-right">
-                Acciones
-              </th>
+              <th>Id</th>
+              <th>Nombre</th>
+              <th>En monitoreo</th>
+              <th>Estado</th>
+              <th class="text-center">Acciones</th>
             </thead>
-            <tbody>
-            	@foreach($areas as $area)
-	              <tr>
-	                <td>
-	                  {{$area->id}}
-	                </td>
-	                <td>
-	                  {{$area->name}}
-	                </td>
-	                <td class="text-right">
-	                	<a href="{{ route('areas.edit', $area) }}" class="btn btn-warning"><i class="fal fa-edit"></i></a>
-	                	<a href="" class="btn btn-danger"><i class="fal fa-minus-circle"></i></a>
-	                </td>
-	              </tr>
-              @endforeach
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
 </div>
+@endsection
+@section('javascript')
+<script type="text/javascript">
+  areasTB = $('#areasTB').DataTable({
+     processing: true,
+     serverSide: true,
+     ajax: "{{route('areas.list')}}",
+     pageLength: 5,
+     lengthMenu: [ 5, 25, 50 ],
+     columns: [
+        { data: 'id', class: 'text-center' },
+        { data: 'name', class: 'text-left' },
+        { data: 'in_monitor', class: 'text-left' },
+        { data: 'enabled', class: 'text-left' },
+        { data: 'tools', class: 'text-center text-nowrap', orderable: false}
+    ],
+    order: [[ 0, "desc" ]],
+    language: dLanguage
+  });
+</script>
 @endsection

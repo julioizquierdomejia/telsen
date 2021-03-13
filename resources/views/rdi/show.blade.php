@@ -18,7 +18,7 @@ $role_fentrega = in_array("fecha_de_entrega", $role_names);
 	<div class="col-md-12">
 		<div class="card card-user form-card">
 			<div class="card-header">
-				<h5 class="card-title d-flex justify-content-between align-items-center">
+				<h5 class="card-title row mx-0 justify-content-between align-items-center">
 					<span>Ver Reporte de Ingreso (R.D.I.)@if($rdi_forapprove)
 						<span class="badge badge-danger px-3 py-1">Por aprobar</span>@endif</span>
 					<span class="card-title-buttons text-right">

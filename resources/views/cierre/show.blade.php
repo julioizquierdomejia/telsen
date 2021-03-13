@@ -19,7 +19,7 @@ $not_closure = $status_last->name != 'ot_closure';
   <div class="col-md-12">
     <div class="card form-card">
       <div class="card-header">
-        <h5 class="card-title d-flex justify-content-between align-items-center">
+        <h5 class="card-title row mx-0 justify-content-between align-items-center">
         <span>
           Orden de Trabajo {{$ot_code}}
           <span class="d-block">

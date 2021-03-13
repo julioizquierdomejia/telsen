@@ -446,17 +446,19 @@ class WorkshopController extends Controller
                                 } elseif($status_code == 'end') {
                                     if ($allowed_user) {
                                         $html_tools .= '<button class="btn btn-action btn-primary my-1" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalApprove">Aprobar <i class="far fa-check ml-2"></i></button>';
+                                        $html_tools .= 'Pendiente de aprobación.';
                                     } else {
                                         $html_tools .= '<span class="badge badge-light d-block py-1 my-1">En proceso.</span>';
                                     }
                                 } elseif($status_code == 'approved' || $status_code == 'disapproved') {
                                     if ($status_code == 'approved') {
                                         $html_tools .= '<span class="badge badge-success d-block py-1 my-1">Aprobada</span>';
+                                        $html_tools .= 'Finalizó la tarea.';
                                     } elseif($status_code == 'disapproved') {
                                         $html_tools .= '<span class="badge badge-secondary d-block py-1 my-1">Desaprobada</span>
                                         <button class="btn btn-danger my-1 btn-action" data-type="restart" data-work_id="'.$row->id.'" type="button" data-toggle="modal" data-target="#modalReason">Reiniciar <i class="far fa-play ml-2"></i></button>';
+                                        $html_tools .= 'Tarea pendiente de reinicio.';
                                     }
-                                    $html_tools .= 'Finalizó la tarea.';
                                 }
                             }
                             $html_tools .= '</div>

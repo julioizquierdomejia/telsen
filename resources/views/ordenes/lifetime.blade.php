@@ -53,7 +53,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 	<div class="col-md-12">
 		<div class="card form-card">
 			<div class="card-header">
-				<h5 class="card-title d-flex justify-content-between align-items-center">
+				<h5 class="card-title row mx-0 justify-content-between align-items-center">
 				<span>
 					Hoja de vida de OT-{{$ot_code}}
 					<span class="d-block">
@@ -214,7 +214,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 						<div class="card-header">
 							<h5 class="card-title">{{$first['area']}}</h5>
 						</div>
-						<div class="card-body">
+						<div class="card-body position-relative">
 							<h5 class="small text-dark">Servicios</h5>
 							<div class="table-responsive pb-0">
 								<table class="table table-separate data-table mb-0">
@@ -346,9 +346,9 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 							@php
 							$percentage = number_format(($counter * 100) / $services_count, 2);
 							@endphp
-							<div class="percent">
+							<div class="percent mt-3" style="position: absolute;left: 15px;right: 15px;top: 0;">
 								<div class="progress">
-									<div class="progress-bar" role="progressbar" style="width: {{$percentage}}%" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
+									<div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{$percentage}}%" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
 								</div>
 							</div>
 						</div>

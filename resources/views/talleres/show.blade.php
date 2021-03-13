@@ -8,7 +8,7 @@ $status_last = $ot_status->last();
 	<div class="col-md-12">
 		<div class="card card-user form-card">
 			<div class="card-header">
-				<h5 class="card-title d-flex justify-content-between align-items-center">
+				<h5 class="card-title row mx-0 justify-content-between align-items-center">
 				<span>
 					Orden de Trabajo {{zerosatleft($ot->code, 3)}}
                     <span class="d-block">

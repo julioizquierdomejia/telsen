@@ -348,7 +348,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 							@endphp
 							<div class="percent mt-3" style="position: absolute;left: 15px;right: 15px;top: 0;">
 								<div class="progress">
-									<div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{$percentage}}%" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
+									<div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: {{$percentage}}%" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
 								</div>
 							</div>
 						</div>

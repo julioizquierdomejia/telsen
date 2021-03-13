@@ -238,7 +238,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 										$status_approved = [];
 										$status_restart = [];
 										$status_pause = [];
-										$status_pause_html = '<ul class="st-list list-inline mb-0">';
+										$status_pause_html = '<ul class="list-inline mb-0 py-2">';
 										@endphp
 										@foreach ($logs as $element)
 											@if ($element['status_code'] == 'approved')
@@ -254,7 +254,7 @@ $rol_fentrega = in_array("fecha_de_entrega", $role_names);
 											@if ($element['status_code'] == 'pause')
 												@php
 													$status_pause[] = $element;
-													$status_pause_html .= '<li class="list-item px-3 py-2">'.$element['status'].' - '.date('d-m-Y h:i:s a', strtotime($element['created_at'])).'</li>';
+													$status_pause_html .= '<li class="list-item px-3" style="padding: 2px 0;">'.$element['status'].' - '.date('d-m-Y h:i a', strtotime($element['created_at'])).'</li>';
 												@endphp
 											@endif
 										@endforeach

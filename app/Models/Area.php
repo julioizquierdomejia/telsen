@@ -26,4 +26,9 @@ class Area extends Model
     public function services() {
     	return $this->hasMany('App\Models\Service');
     }
+
+    public function users() {
+        return $this->hasMany('App\Models\UserData');
+    }
+
 }
